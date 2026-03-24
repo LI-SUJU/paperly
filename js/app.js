@@ -519,6 +519,16 @@ function initEventListeners() {
   
   // 其他原有的事件监听器
   document.getElementById('closeModal').addEventListener('click', closeModal);
+
+  // Intercept arrow keys on the modal body before the browser can scroll it
+  document.getElementById('modalBody').addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.key === 'ArrowLeft') navigateToPreviousPaper();
+      else navigateToNextPaper();
+    }
+  }, { capture: true });
   
   document.querySelector('.paper-modal').addEventListener('click', (event) => {
     const modal = document.querySelector('.paper-modal');
@@ -568,12 +578,12 @@ function initEventListeners() {
     // 左右箭头键导航论文（仅在论文模态框打开时）
     else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       const paperModal = document.getElementById('paperModal');
-      if (paperModal.classList.contains('active')) {
-        event.preventDefault(); // 防止页面滚动
-        
+      if (paperModal.classList.contains('active') && !isInputFocused) {
+        event.preventDefault();
+        event.stopPropagation();
         if (event.key === 'ArrowLeft') {
           navigateToPreviousPaper();
-        } else if (event.key === 'ArrowRight') {
+        } else {
           navigateToNextPaper();
         }
       }
