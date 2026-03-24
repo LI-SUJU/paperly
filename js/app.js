@@ -68,19 +68,15 @@ function loadUserAuthors() {
 // 渲染过滤标签（作者和关键词）
 function renderFilterTags() {
   const filterTagsElement = document.getElementById('filterTags');
-  const filterContainer = document.querySelector('.filter-label-container');
-  
-  // 如果没有作者和关键词，仅隐藏标签区域，保留容器（以显示搜索按钮）
+
   if ((!userAuthors || userAuthors.length === 0) && (!userKeywords || userKeywords.length === 0)) {
-    filterContainer.style.display = 'flex';
     if (filterTagsElement) {
       filterTagsElement.style.display = 'none';
       filterTagsElement.innerHTML = '';
     }
     return;
   }
-  
-  filterContainer.style.display = 'flex';
+
   if (filterTagsElement) {
     filterTagsElement.style.display = 'flex';
   }
