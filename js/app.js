@@ -18,6 +18,9 @@ let userTopics = []; // 用户自定义话题过滤标签
 let currentTopic = null; // 当前激活的话题过滤
 let lunrIndex = null; // lunr search index for topic filtering
 let lunrIdSet = null; // Set of matching paper IDs from last lunr query
+let topicMatchedWords = []; // [{word, count}] surface-form words collected from lunr matches
+let selectedTopicWords = new Set(); // words user has toggled on
+let _topicCacheKey = null; // topic string the word list was built for
 
 
 
@@ -287,8 +290,48 @@ function renderTopicsRow() {
   });
 }
 
+function renderTopicWordPicker() {
+  const row = document.getElementById('topicWordPickerRow');
+  const container = document.getElementById('topicWordPickerTags');
+  if (!row || !container) return;
+
+  if (!currentTopic || topicMatchedWords.length === 0) {
+    row.style.display = 'none';
+    return;
+  }
+
+  row.style.display = 'flex';
+  container.innerHTML = '';
+
+  topicMatchedWords.forEach(({ word, count }) => {
+    const btn = document.createElement('button');
+    const isSelected = selectedTopicWords.has(word);
+    btn.className = `topic-word-btn ${isSelected ? 'active' : ''}`;
+    btn.innerHTML = `${word} <span class="topic-word-count">${count}</span>`;
+    btn.title = isSelected ? 'Click to exclude' : 'Click to include';
+    btn.addEventListener('click', () => {
+      if (selectedTopicWords.has(word)) {
+        selectedTopicWords.delete(word);
+      } else {
+        selectedTopicWords.add(word);
+      }
+      renderTopicWordPicker();
+      renderPapers();
+    });
+    container.appendChild(btn);
+  });
+}
+
 function filterByTopic(topic) {
   currentTopic = currentTopic === topic ? null : topic;
+  // Reset word cache so it rebuilds for the new topic
+  _topicCacheKey = null;
+  topicMatchedWords = [];
+  selectedTopicWords = new Set();
+  if (!currentTopic) {
+    const row = document.getElementById('topicWordPickerRow');
+    if (row) row.style.display = 'none';
+  }
   renderTopicsRow();
   window.scrollTo({ top: 0, behavior: 'smooth' });
   renderPapers();
@@ -948,6 +991,11 @@ function renderCategoryFilter(categories) {
 function filterByCategory(category) {
   currentCategory = category;
   currentTopic = null;
+  _topicCacheKey = null;
+  topicMatchedWords = [];
+  selectedTopicWords = new Set();
+  const row = document.getElementById('topicWordPickerRow');
+  if (row) row.style.display = 'none';
   renderTopicsRow();
 
   document.querySelectorAll('.category-button').forEach(button => {
@@ -1068,32 +1116,70 @@ function renderPapers() {
     papers = paperData[currentCategory];
   }
 
-  // 话题过滤：使用 lunr 进行词干匹配，并记录每篇论文的匹配词干用于高亮
+  // 话题过滤
   if (currentTopic) {
-    if (lunrIndex) {
-      try {
-        const results = lunrIndex.search(currentTopic);
-        const paperMatchData = new Map();
-        results.forEach(result => {
-          paperMatchData.set(result.ref, Object.keys(result.matchData.metadata));
-        });
-        papers = papers.filter(p => paperMatchData.has(p.id));
-        papers.forEach(p => { p._topicStems = paperMatchData.get(p.id) || []; });
-      } catch (e) {
-        // lunr query parse error — fall back to substring
-        const q = currentTopic.toLowerCase();
-        papers = papers.filter(p =>
-          (p.title || '').toLowerCase().includes(q) ||
-          (p.summary || '').toLowerCase().includes(q)
+    // Build word list only when topic changes (not on every re-render)
+    if (_topicCacheKey !== currentTopic) {
+      _topicCacheKey = currentTopic;
+      topicMatchedWords = [];
+      selectedTopicWords = new Set();
+
+      let lunrMatchedPapers = papers;
+      if (lunrIndex) {
+        try {
+          const results = lunrIndex.search(currentTopic);
+          const matchedIds = new Set(results.map(r => r.ref));
+          const allStems = new Set();
+          results.forEach(r => Object.keys(r.matchData.metadata).forEach(s => allStems.add(s)));
+
+          lunrMatchedPapers = papers.filter(p => matchedIds.has(p.id));
+
+          // Collect surface-form words from matched papers using stem prefixes
+          const wordCounts = new Map();
+          lunrMatchedPapers.forEach(p => {
+            const text = [p.title, p.summary, p.details, p.motivation, p.method, p.result, p.conclusion]
+              .filter(Boolean).join(' ');
+            allStems.forEach(stem => {
+              const re = new RegExp(`\\b(${stem}\\w*)`, 'gi');
+              let m;
+              while ((m = re.exec(text)) !== null) {
+                const w = m[1].toLowerCase();
+                wordCounts.set(w, (wordCounts.get(w) || 0) + 1);
+              }
+            });
+          });
+
+          topicMatchedWords = [...wordCounts.entries()]
+            .map(([word, count]) => ({ word, count }))
+            .sort((a, b) => b.count - a.count);
+        } catch (e) {
+          // lunr failed — fall back to substring, no word picker
+          lunrMatchedPapers = papers.filter(p =>
+            [p.title, p.summary, p.details].filter(Boolean).join(' ')
+              .toLowerCase().includes(currentTopic.toLowerCase())
+          );
+        }
+      } else {
+        lunrMatchedPapers = papers.filter(p =>
+          [p.title, p.summary, p.details].filter(Boolean).join(' ')
+            .toLowerCase().includes(currentTopic.toLowerCase())
         );
       }
+
+      // Default: all words selected
+      topicMatchedWords.forEach(({ word }) => selectedTopicWords.add(word));
+      renderTopicWordPicker();
+    }
+
+    // Filter papers by selected words
+    if (selectedTopicWords.size > 0) {
+      papers = papers.filter(p => {
+        const text = [p.title, p.summary, p.details, p.motivation, p.method, p.result, p.conclusion]
+          .filter(Boolean).join(' ').toLowerCase();
+        return [...selectedTopicWords].some(w => text.includes(w));
+      });
     } else {
-      // lunr not ready yet — fall back to substring
-      const q = currentTopic.toLowerCase();
-      papers = papers.filter(p =>
-        (p.title || '').toLowerCase().includes(q) ||
-        (p.summary || '').toLowerCase().includes(q)
-      );
+      papers = []; // all words deselected → no papers
     }
   }
 
@@ -1343,8 +1429,11 @@ function renderPapers() {
       paper.allCategories.map(cat => `<span class="category-tag">${cat}</span>`).join('') : 
       `<span class="category-tag">${paper.category}</span>`;
     
-    // 组合需要高亮的词：关键词 + 文本搜索
+    // 组合需要高亮的词：话题选中词 + 关键词 + 文本搜索
     const titleSummaryTerms = [];
+    if (selectedTopicWords.size > 0) {
+      titleSummaryTerms.push(...selectedTopicWords);
+    }
     if (activeKeywords.length > 0) {
       titleSummaryTerms.push(...activeKeywords);
     }
@@ -1352,17 +1441,12 @@ function renderPapers() {
       titleSummaryTerms.push(textSearchQuery.trim());
     }
 
-    // 高亮标题和摘要：先用词干前缀高亮话题匹配词，再高亮关键词与文本搜索
-    let highlightedTitle = paper._topicStems && paper._topicStems.length > 0
-      ? highlightStemMatches(paper.title, paper._topicStems, 'keyword-highlight')
+    let highlightedTitle = titleSummaryTerms.length > 0
+      ? highlightMatches(paper.title, titleSummaryTerms, 'keyword-highlight')
       : paper.title;
-    let highlightedSummary = paper._topicStems && paper._topicStems.length > 0
-      ? highlightStemMatches(paper.summary, paper._topicStems, 'keyword-highlight')
+    let highlightedSummary = titleSummaryTerms.length > 0
+      ? highlightMatches(paper.summary, titleSummaryTerms, 'keyword-highlight')
       : paper.summary;
-    if (titleSummaryTerms.length > 0) {
-      highlightedTitle = highlightMatches(highlightedTitle, titleSummaryTerms, 'keyword-highlight');
-      highlightedSummary = highlightMatches(highlightedSummary, titleSummaryTerms, 'keyword-highlight');
-    }
 
     // 高亮作者（作者过滤 + 文本搜索）
     const authorTerms = [];
@@ -1435,20 +1519,15 @@ function showPaperDetails(paper, paperIndex) {
   if (activeKeywords.length > 0) modalTitleTerms.push(...activeKeywords);
   if (textSearchQuery && textSearchQuery.trim().length > 0) modalTitleTerms.push(textSearchQuery.trim());
 
-  // Derive stems from the active topic via lunr's pipeline (reliable regardless of paper._topicStems)
-  let stems = paper._topicStems || [];
-  if (stems.length === 0 && currentTopic && lunrIndex) {
-    try {
-      stems = lunrIndex.pipeline.run(lunr.tokenizer(currentTopic)).map(t => t.toString());
-    } catch (e) {
-      stems = currentTopic ? [currentTopic] : [];
-    }
-  }
+  // Combine topic selected words + keyword filters + text search for highlighting
+  const allModalTerms = [
+    ...selectedTopicWords,
+    ...modalTitleTerms,
+  ];
 
   function applyHighlights(text) {
     if (!text) return text;
-    let t = stems.length > 0 ? highlightStemMatches(text, stems, 'keyword-highlight') : text;
-    return modalTitleTerms.length > 0 ? highlightMatches(t, modalTitleTerms, 'keyword-highlight') : t;
+    return allModalTerms.length > 0 ? highlightMatches(text, allModalTerms, 'keyword-highlight') : text;
   }
 
   // 高亮标题
