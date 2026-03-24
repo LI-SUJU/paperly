@@ -277,14 +277,13 @@ function buildTopicData(topic, papers) {
       matchedPapers.forEach(p => {
         const text = [p.title, p.summary, p.details, p.motivation, p.method, p.result, p.conclusion]
           .filter(Boolean).join(' ');
+        const wordsInPaper = new Set();
         allStems.forEach(stem => {
           const re = new RegExp(`\\b(${stem}\\w*)`, 'gi');
           let m;
-          while ((m = re.exec(text)) !== null) {
-            const w = m[1].toLowerCase();
-            wordCounts.set(w, (wordCounts.get(w) || 0) + 1);
-          }
+          while ((m = re.exec(text)) !== null) wordsInPaper.add(m[1].toLowerCase());
         });
+        wordsInPaper.forEach(w => wordCounts.set(w, (wordCounts.get(w) || 0) + 1));
       });
       words = [...wordCounts.entries()]
         .map(([word, count]) => ({ word, count }))
