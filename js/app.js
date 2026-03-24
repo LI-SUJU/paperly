@@ -1611,7 +1611,20 @@ Return valid JSON only, no markdown, no extra text.`;
     showPaperDetails(paper, currentPaperIndex + 1);
 
     // Persist to data file in the background (no-op if no GitHub token)
-    writeAiToDataFile(paper).catch(e => console.warn('writeAiToDataFile:', e));
+    if (localStorage.getItem('githubToken')) {
+      const saveEl = document.getElementById('aiSaveStatus');
+      if (saveEl) { saveEl.textContent = 'Saving to data file…'; saveEl.className = 'ai-save-status saving'; }
+      writeAiToDataFile(paper)
+        .then(() => {
+          const el = document.getElementById('aiSaveStatus');
+          if (el) { el.textContent = '✓ Saved to data file'; el.className = 'ai-save-status saved'; }
+        })
+        .catch(e => {
+          console.warn('writeAiToDataFile:', e);
+          const el = document.getElementById('aiSaveStatus');
+          if (el) { el.textContent = `Save failed: ${e.message}`; el.className = 'ai-save-status save-error'; }
+        });
+    }
   } catch (e) {
     btn.textContent = 'Retry Generate';
     btn.disabled = false;
@@ -1773,6 +1786,7 @@ function showPaperDetails(paper, paperIndex) {
           <button class="button ai-prompt-save-btn" onclick="savePromptSuffix()">Save</button>
         </div>
         <p id="aiGenerateError" class="ai-generate-error"></p>
+        <p id="aiSaveStatus" class="ai-save-status"></p>
       </div>
       
       ${highlightedAbstract ? `<h3>Abstract</h3><p class="original-abstract">${highlightedAbstract}</p>` : ''}
