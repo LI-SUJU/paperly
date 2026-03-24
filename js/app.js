@@ -922,7 +922,7 @@ function parseJsonlData(jsonlText, date) {
         result[primaryCategory] = [];
       }
       
-      const summary = paper.AI && paper.AI.tldr ? paper.AI.tldr : paper.summary;
+      const summary = paper.AI?.tldr || '';
       
       result[primaryCategory].push({
         title: paper.title,
@@ -1453,9 +1453,10 @@ function renderPapers() {
     let highlightedTitle = titleSummaryTerms.length > 0
       ? highlightMatches(paper.title, titleSummaryTerms, 'keyword-highlight')
       : paper.title;
+    const cardSummaryText = paper.summary || paper.details;
     let highlightedSummary = titleSummaryTerms.length > 0
-      ? highlightMatches(paper.summary, titleSummaryTerms, 'keyword-highlight')
-      : paper.summary;
+      ? highlightMatches(cardSummaryText, titleSummaryTerms, 'keyword-highlight')
+      : cardSummaryText;
 
     // 高亮作者（作者过滤 + 文本搜索）
     const authorTerms = [];
@@ -1579,8 +1580,7 @@ function showPaperDetails(paper, paperIndex) {
       <p><strong>Date: </strong>${formatDate(paper.date)}</p>
       
       
-      <h3>TL;DR</h3>
-      <p>${highlightedSummary}</p>
+      ${paper.summary ? `<h3>TL;DR</h3><p>${highlightedSummary}</p>` : ''}
       
       <div class="paper-sections">
         ${paper.motivation ? `<div class="paper-section"><h4>Motivation</h4><p>${highlightedMotivation}</p></div>` : ''}
