@@ -986,6 +986,18 @@ function highlightMatches(text, terms, className = 'highlight-match') {
   return result;
 }
 
+// 帮助函数：使用词干前缀高亮文本（stem → matches stem, stemming, stemmed, etc.）
+function highlightStemMatches(text, stems, className = 'highlight-match') {
+  if (!stems || stems.length === 0 || !text) return text;
+  let result = text;
+  stems.forEach(stem => {
+    const escaped = stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped}\\w*)`, 'gi');
+    result = result.replace(regex, `<span class="${className}">$1</span>`);
+  });
+  return result;
+}
+
 // 帮助函数：格式化作者列表（用于论文卡片显示）
 // 规则：≤4个作者全部显示，>4个作者显示前2+后2，中间用省略号
 function formatAuthorsForCard(authorsString, authorTerms = []) {
@@ -1056,15 +1068,19 @@ function renderPapers() {
     papers = paperData[currentCategory];
   }
 
-  // 话题过滤：使用 lunr 进行词干匹配
+  // 话题过滤：使用 lunr 进行词干匹配，并记录每篇论文的匹配词干用于高亮
   if (currentTopic) {
     if (lunrIndex) {
       try {
         const results = lunrIndex.search(currentTopic);
-        const matchedIds = new Set(results.map(r => r.ref));
-        papers = papers.filter(p => matchedIds.has(p.id));
+        const paperMatchData = new Map();
+        results.forEach(result => {
+          paperMatchData.set(result.ref, Object.keys(result.matchData.metadata));
+        });
+        papers = papers.filter(p => paperMatchData.has(p.id));
+        papers.forEach(p => { p._topicStems = paperMatchData.get(p.id) || []; });
       } catch (e) {
-        // lunr query parse error (e.g. special chars) — fall back to substring
+        // lunr query parse error — fall back to substring
         const q = currentTopic.toLowerCase();
         papers = papers.filter(p =>
           (p.title || '').toLowerCase().includes(q) ||
@@ -1327,11 +1343,8 @@ function renderPapers() {
       paper.allCategories.map(cat => `<span class="category-tag">${cat}</span>`).join('') : 
       `<span class="category-tag">${paper.category}</span>`;
     
-    // 组合需要高亮的词：话题 + 关键词 + 文本搜索
+    // 组合需要高亮的词：关键词 + 文本搜索
     const titleSummaryTerms = [];
-    if (currentTopic) {
-      titleSummaryTerms.push(currentTopic);
-    }
     if (activeKeywords.length > 0) {
       titleSummaryTerms.push(...activeKeywords);
     }
@@ -1339,13 +1352,17 @@ function renderPapers() {
       titleSummaryTerms.push(textSearchQuery.trim());
     }
 
-    // 高亮标题和摘要（关键词与文本搜索）
-    const highlightedTitle = titleSummaryTerms.length > 0 
-      ? highlightMatches(paper.title, titleSummaryTerms, 'keyword-highlight') 
+    // 高亮标题和摘要：先用词干前缀高亮话题匹配词，再高亮关键词与文本搜索
+    let highlightedTitle = paper._topicStems && paper._topicStems.length > 0
+      ? highlightStemMatches(paper.title, paper._topicStems, 'keyword-highlight')
       : paper.title;
-    const highlightedSummary = titleSummaryTerms.length > 0 
-      ? highlightMatches(paper.summary, titleSummaryTerms, 'keyword-highlight') 
+    let highlightedSummary = paper._topicStems && paper._topicStems.length > 0
+      ? highlightStemMatches(paper.summary, paper._topicStems, 'keyword-highlight')
       : paper.summary;
+    if (titleSummaryTerms.length > 0) {
+      highlightedTitle = highlightMatches(highlightedTitle, titleSummaryTerms, 'keyword-highlight');
+      highlightedSummary = highlightMatches(highlightedSummary, titleSummaryTerms, 'keyword-highlight');
+    }
 
     // 高亮作者（作者过滤 + 文本搜索）
     const authorTerms = [];
