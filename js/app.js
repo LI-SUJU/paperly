@@ -14,6 +14,8 @@ let currentFilteredPapers = []; // 当前过滤后的论文列表
 let textSearchQuery = ''; // 实时文本搜索查询
 let previousActiveKeywords = null; // 文本搜索激活时，暂存之前的关键词激活集合
 let previousActiveAuthors = null; // 文本搜索激活时，暂存之前的作者激活集合
+let userTopics = []; // 用户自定义话题过滤标签
+let currentTopic = null; // 当前激活的话题过滤
 
 
 
@@ -209,17 +211,120 @@ function toggleAuthorFilter(author) {
   renderPapers();
 }
 
+// ── Topics row ──────────────────────────────────────────────────────────────
+
+function loadUserTopics() {
+  try {
+    userTopics = JSON.parse(localStorage.getItem('userTopics') || '[]');
+  } catch (e) {
+    userTopics = [];
+  }
+  renderTopicsRow();
+}
+
+function saveUserTopics() {
+  localStorage.setItem('userTopics', JSON.stringify(userTopics));
+}
+
+function renderTopicsRow() {
+  const container = document.getElementById('topicTags');
+  if (!container) return;
+  container.innerHTML = '';
+
+  userTopics.forEach(topic => {
+    const btn = document.createElement('button');
+    btn.className = `topic-button ${currentTopic === topic ? 'active' : ''}`;
+    btn.dataset.topic = topic;
+
+    const label = document.createElement('span');
+    label.textContent = topic;
+
+    const removeBtn = document.createElement('span');
+    removeBtn.className = 'topic-remove';
+    removeBtn.textContent = '×';
+    removeBtn.title = 'Remove topic';
+    removeBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      removeTopic(topic);
+    });
+
+    btn.appendChild(label);
+    btn.appendChild(removeBtn);
+    btn.addEventListener('click', () => filterByTopic(topic));
+    container.appendChild(btn);
+  });
+}
+
+function filterByTopic(topic) {
+  currentTopic = currentTopic === topic ? null : topic;
+  renderTopicsRow();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderPapers();
+}
+
+function addTopic(keyword) {
+  const k = keyword.trim();
+  if (!k || userTopics.includes(k)) return;
+  userTopics.push(k);
+  saveUserTopics();
+  renderTopicsRow();
+}
+
+function removeTopic(keyword) {
+  userTopics = userTopics.filter(t => t !== keyword);
+  if (currentTopic === keyword) currentTopic = null;
+  saveUserTopics();
+  renderTopicsRow();
+  renderPapers();
+}
+
+// ── End Topics row ───────────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', () => {
   initEventListeners();
-  
+
   fetchGitHubStats();
-  
+
   // 加载用户关键词
   loadUserKeywords();
-  
+
   // 加载用户作者
   loadUserAuthors();
-  
+
+  // 加载用户话题
+  loadUserTopics();
+
+  // Wire up add-topic UI
+  const addTopicBtn = document.getElementById('addTopicBtn');
+  const topicInputContainer = document.getElementById('topicInputContainer');
+  const topicInput = document.getElementById('topicInput');
+  const topicConfirm = document.getElementById('topicInputConfirm');
+  const topicCancel = document.getElementById('topicInputCancel');
+
+  addTopicBtn.addEventListener('click', () => {
+    topicInputContainer.style.display = 'flex';
+    addTopicBtn.style.display = 'none';
+    topicInput.focus();
+  });
+
+  function commitTopic() {
+    addTopic(topicInput.value);
+    topicInput.value = '';
+    topicInputContainer.style.display = 'none';
+    addTopicBtn.style.display = '';
+  }
+
+  topicConfirm.addEventListener('click', commitTopic);
+  topicCancel.addEventListener('click', () => {
+    topicInput.value = '';
+    topicInputContainer.style.display = 'none';
+    addTopicBtn.style.display = '';
+  });
+  topicInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') commitTopic();
+    if (e.key === 'Escape') topicCancel.click();
+  });
+
   fetchAvailableDates().then(() => {
     if (availableDates.length > 0) {
       loadPapersByDate(availableDates[0]);
@@ -809,11 +914,13 @@ function renderCategoryFilter(categories) {
 
 function filterByCategory(category) {
   currentCategory = category;
-  
+  currentTopic = null;
+  renderTopicsRow();
+
   document.querySelectorAll('.category-button').forEach(button => {
     button.classList.toggle('active', button.dataset.category === category);
   });
-  
+
   // 保持当前激活的过滤标签
   renderFilterTags();
   
@@ -915,7 +1022,17 @@ function renderPapers() {
   } else if (paperData[currentCategory]) {
     papers = paperData[currentCategory];
   }
-  
+
+  // 话题过滤：只保留标题或摘要中包含当前话题关键词的论文
+  if (currentTopic) {
+    const q = currentTopic.toLowerCase();
+    papers = papers.filter(p =>
+      (p.title || '').toLowerCase().includes(q) ||
+      (p.summary || '').toLowerCase().includes(q) ||
+      (p.details || '').toLowerCase().includes(q)
+    );
+  }
+
   // 创建匹配论文的集合
   let filteredPapers = [...papers];
 
