@@ -1858,18 +1858,13 @@ function showPaperDetails(paper, paperIndex) {
         </div>
       </div>
 
-      <div class="digest-exclude-modal-footer">
-        <button id="digestExcludeModalBtn"
-          class="digest-exclude-modal-btn ${digestExcludedPapers.has(paper.id) ? 'excluded' : ''}"
-          onclick="toggleDigestExcludeFromModal('${paper.id}')">
-          ${digestExcludedPapers.has(paper.id) ? '↩ Include in Digest' : '✕ Exclude from Digest'}
-        </button>
-      </div>
     </div>
   `;
   
   // Update modal content
   document.getElementById('modalBody').innerHTML = modalContent;
+  // Sync footer exclude button
+  syncDigestExcludeFooterBtn(paper.id);
   document.getElementById('paperLink').href = paper.url;
   document.getElementById('pdfLink').href = paper.url.replace('abs', 'pdf');
   document.getElementById('htmlLink').href = paper.url.replace('abs', 'html');
@@ -2446,18 +2441,23 @@ function toggleDigestExclude(paperId, el) {
 }
 
 function toggleDigestExcludeFromModal(paperId) {
+  if (!paperId) return;
   if (digestExcludedPapers.has(paperId)) {
     digestExcludedPapers.delete(paperId);
   } else {
     digestExcludedPapers.add(paperId);
   }
   updateDigestBadges();
-  const btn = document.getElementById('digestExcludeModalBtn');
-  if (btn) {
-    const exc = digestExcludedPapers.has(paperId);
-    btn.textContent = exc ? '↩ Include in Digest' : '✕ Exclude from Digest';
-    btn.classList.toggle('excluded', exc);
-  }
+  syncDigestExcludeFooterBtn(paperId);
+}
+
+function syncDigestExcludeFooterBtn(paperId) {
+  const btn = document.getElementById('digestExcludeFooterBtn');
+  if (!btn) return;
+  const exc = digestExcludedPapers.has(paperId);
+  btn.textContent = exc ? '↩ Include in Digest' : '✕ Exclude from Digest';
+  btn.classList.toggle('excluded', exc);
+  btn.onclick = () => toggleDigestExcludeFromModal(paperId);
 }
 
 function updateDigestBadges() {
