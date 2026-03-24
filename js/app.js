@@ -925,7 +925,7 @@ async function loadPapersByDate(date) {
   
   try {
     const dataUrl = getDataUrlForDate(date);
-    const response = await fetch(dataUrl);
+    const response = await fetch(dataUrl, { cache: 'no-store' });
     // 如果文件不存在（例如返回 404），在论文展示区域提示没有论文
     if (!response.ok) {
       if (response.status === 404) {
@@ -1650,17 +1650,21 @@ async function writeAiToDataFile(paper) {
   };
 
   // Fetch current file to get content + SHA
-  const getRes = await fetch(`${apiUrl}?ref=${dataBranch}`, { headers });
+  const getRes = await fetch(`${apiUrl}?ref=${dataBranch}`, { headers, cache: 'no-store' });
   if (!getRes.ok) throw new Error(`GitHub GET ${getRes.status}: ${await getRes.text()}`);
   const fileData = await getRes.json();
 
   // Decode base64 content, patch the matching line
-  const raw = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+  const raw = new TextDecoder().decode(
+    Uint8Array.from(atob(fileData.content.replace(/\n/g, '')), c => c.charCodeAt(0))
+  );
   const lines = raw.split('\n').filter(l => l.trim());
+  let matched = false;
   const patched = lines.map(line => {
     try {
       const obj = JSON.parse(line);
       if (obj.id === paper.id) {
+        matched = true;
         obj.AI = {
           tldr:       paper.summary,
           motivation: paper.motivation,
@@ -1672,7 +1676,11 @@ async function writeAiToDataFile(paper) {
       return JSON.stringify(obj);
     } catch { return line; }
   });
-  const newContent = btoa(unescape(encodeURIComponent(patched.join('\n') + '\n')));
+  if (!matched) throw new Error(`Paper id "${paper.id}" not found in ${filePath}`);
+  const encoded = new TextEncoder().encode(patched.join('\n') + '\n');
+  let binary = '';
+  for (let i = 0; i < encoded.length; i++) binary += String.fromCharCode(encoded[i]);
+  const newContent = btoa(binary);
 
   // Write back
   const putRes = await fetch(apiUrl, {
