@@ -1527,7 +1527,7 @@ function renderPapers() {
         ${paper.comment ? `<p class="paper-card-comment">${paper.comment}</p>` : ''}
         <div class="paper-card-footer">
           <div class="footer-left">
-            <span class="paper-card-date">${formatDate(paper.date)}</span>
+            <span class="paper-card-date">Crawled: ${formatDate(paper.date)}</span>
           </div>
           <span class="paper-card-link">Details</span>
         </div>
