@@ -40,18 +40,7 @@ if __name__ == "__main__":
         papers = []
         for item in data:
             if item["categories"][0] == cate:
-                # Safely access AI fields with default values
-                ai_data = item.get('AI', {})
-                if not ai_data or not isinstance(ai_data, dict):
-                    print(f"Skipping item '{item.get('title', 'Unknown')}' due to missing or invalid AI data")
-                    continue
-                
-                # Check if all required AI fields are present
-                required_fields = ['tldr', 'motivation', 'method', 'result', 'conclusion']
-                if not all(field in ai_data for field in required_fields):
-                    print(f"Skipping item '{item.get('title', 'Unknown')}' due to incomplete AI fields")
-                    continue
-                
+                ai_data = item.get('AI', {}) or {}
                 papers.append(
                     template.format(
                         title=item["title"],
@@ -68,5 +57,5 @@ if __name__ == "__main__":
                     )
                 )
         markdown += "\n\n".join(papers)
-    with open(args.data.split('_')[0] + '.md', "w") as f:
+    with open(args.data.replace('.jsonl', '.md'), "w") as f:
         f.write(markdown)
