@@ -599,10 +599,43 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// --- Auto-collapse nav on scroll (direction-based) ---
+{
+  let navCollapsed = false;
+  let cooldown = false;
+  let lastScrollY = window.scrollY;
+
+  function applyNavCollapse(collapsed) {
+    if (navCollapsed === collapsed) return;
+    navCollapsed = collapsed;
+    // Ignore scroll events during the CSS transition to avoid layout-shift feedback
+    cooldown = true;
+    setTimeout(() => { cooldown = false; lastScrollY = window.scrollY; }, 350);
+    document.getElementById('categoryNav')?.classList.toggle('nav-collapsed', collapsed);
+  }
+
+  window.addEventListener('scroll', () => {
+    if (cooldown) return;
+    const y = window.scrollY;
+    const delta = y - lastScrollY;
+    lastScrollY = y;
+    if (delta > 4 && !navCollapsed && y > 60) applyNavCollapse(true);
+    else if (delta < -4 && navCollapsed) applyNavCollapse(false);
+  }, { passive: true });
+
+  // Keep manual toggle in sync
+  window._navCollapseState = () => navCollapsed;
+  window._setNavCollapse = applyNavCollapse;
+}
+
 function toggleNavCollapse() {
   const nav = document.getElementById('categoryNav');
   if (!nav) return;
-  nav.classList.toggle('nav-collapsed');
+  if (window._setNavCollapse) {
+    window._setNavCollapse(!window._navCollapseState());
+  } else {
+    nav.classList.toggle('nav-collapsed');
+  }
 }
 
 async function fetchGitHubStats() {
