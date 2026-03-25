@@ -549,6 +549,21 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('categoryNav')?.classList.remove('nav-collapsed');
     }
   });
+
+  // Persist state reliably on every navigation away (covers bfcache and full-unload)
+  window.addEventListener('pagehide', () => {
+    persistDigestState();
+    persistFilterState();
+  });
+
+  // Restore state on bfcache restore (persisted=true) — DOMContentLoaded does NOT fire in that case
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      restoreDigestState();
+      restoreFilterState();
+      updateDigestNavBtn();
+    }
+  });
 });
 
 function toggleNavCollapse() {
