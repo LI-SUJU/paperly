@@ -569,7 +569,9 @@ function updateTitleBadges() {
   const aiEl = document.getElementById('aiEnabledBadge');
   if (aiEl) {
     aiEl.classList.toggle('unconfigured', !hasAI);
-    aiEl.title = hasAI ? '' : 'AI features need configuration — click Settings to add your API key';
+    aiEl.title = hasAI ? '' : 'AI features need configuration — click to learn more';
+    aiEl.onclick = !hasAI ? (e) => { e.preventDefault(); e.stopPropagation(); showConfigRequiredModal('ai'); } : null;
+    aiEl.style.cursor = hasAI ? '' : 'help';
   }
 
   const visitorEl = document.getElementById('visitorBadge');
