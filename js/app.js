@@ -382,7 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initEventListeners();
   updateTitleBadges();
 
-  fetchGitHubStats();
 
   // 加载用户话题
   loadUserTopics();
@@ -485,21 +484,6 @@ function toggleNavCollapse() {
   }
 }
 
-async function fetchGitHubStats() {
-  try {
-    const response = await fetch('https://api.github.com/repos/dw-dengwei/daily-arXiv-ai-enhanced');
-    const data = await response.json();
-    const starCount = data.stargazers_count;
-    const forkCount = data.forks_count;
-    
-    document.getElementById('starCount').textContent = starCount;
-    document.getElementById('forkCount').textContent = forkCount;
-  } catch (error) {
-    console.error('获取GitHub统计数据失败:', error);
-    document.getElementById('starCount').textContent = '?';
-    document.getElementById('forkCount').textContent = '?';
-  }
-}
 
 function initEventListeners() {
   // 日期选择器相关的事件监听
