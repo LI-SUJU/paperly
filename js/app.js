@@ -365,6 +365,18 @@ function buildTopicData(topic, papers) {
       }).sort((a, b) => b.count - a.count);
     } catch (e) { /* fall through to empty words */ }
   }
+  // Fallback for acronyms/terms lunr can't match: use direct substring search
+  if (words.length === 0) {
+    const topicLower = topic.toLowerCase();
+    const matchedPapers = papers.filter(p => {
+      const t = [p.title, p.summary, p.details, p.motivation, p.method, p.result, p.conclusion]
+        .filter(Boolean).join(' ').toLowerCase();
+      return t.includes(topicLower);
+    });
+    if (matchedPapers.length > 0) {
+      words = [{ word: topicLower, count: matchedPapers.length }];
+    }
+  }
   // Restore saved selection if available, otherwise default to exact-match terms
   let selectedWords;
   if (savedTopicSelections.has(topic)) {
