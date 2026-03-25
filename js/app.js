@@ -1219,9 +1219,15 @@ function renderPapers() {
   let papers = [];
   if (currentCategory === 'all') {
     const { sortedCategories } = getAllCategories(paperData);
+    const seen = new Set();
     sortedCategories.forEach(category => {
       if (paperData[category]) {
-        papers = papers.concat(paperData[category]);
+        paperData[category].forEach(p => {
+          if (!seen.has(p.id)) {
+            seen.add(p.id);
+            papers.push(p);
+          }
+        });
       }
     });
   } else if (paperData[currentCategory]) {
