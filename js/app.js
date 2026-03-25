@@ -2561,6 +2561,7 @@ let _manageNewTopicData = null;
 let _manageNewTopicWords = new Set();
 let _manageTopicInputValue = '';
 let _manageInputTimer = null;
+let _manageAddWordsToTopic = null; // null = create subscription, string = add words to this topic
 
 function openDailyDigestModal() {
   const modal = document.getElementById('dailyDigestModal');
@@ -2779,6 +2780,7 @@ function openManageSubModal() {
   _manageNewTopicData = null;
   _manageNewTopicWords = new Set();
   _manageTopicInputValue = '';
+  _manageAddWordsToTopic = null;
   const allPapers = [...new Map(Object.values(paperData).flat().map(p => [p.id, p])).values()];
   _manageSubs.forEach(s => {
     _manageWordData.set(s.topic, _buildSubTopicData(s.topic, allPapers, s.words || null));
@@ -2798,18 +2800,32 @@ function _renderManageSubModal() {
   const content = document.getElementById('manageSubContent');
   if (!content) return;
 
-  // Add topic section — word container is a stable div updated separately
-  const addSection = `
-    <div class="manage-sub-section">
-      <label class="subscribe-label">Add topic</label>
-      <div class="manage-add-row">
-        <input id="manageTopicInput" type="text" class="manage-topic-input" placeholder="e.g. diffusion model"
-          oninput="_onManageTopicInput(this.value)"
-          onkeydown="if(event.key==='Enter')_addManageTopic()">
-        <button class="button primary" onclick="_addManageTopic()">Add</button>
-      </div>
-      <div id="manageNewWordsContainer"></div>
-    </div>`;
+  // Add topic / add words section — word container is a stable div updated separately
+  const isAddWordsMode = !!_manageAddWordsToTopic;
+  const addSection = isAddWordsMode
+    ? `<div class="manage-sub-section">
+        <div class="manage-add-mode-banner">
+          Adding words to <strong>${escapeHtml(_manageAddWordsToTopic)}</strong>
+          <button class="manage-cancel-mode-btn" onclick="_cancelAddWordsMode()">cancel</button>
+        </div>
+        <div class="manage-add-row">
+          <input id="manageTopicInput" type="text" class="manage-topic-input" placeholder="type to search more words…"
+            oninput="_onManageTopicInput(this.value)"
+            onkeydown="if(event.key==='Enter')_addManageTopic()">
+          <button class="button primary" onclick="_addManageTopic()">Add words</button>
+        </div>
+        <div id="manageNewWordsContainer"></div>
+      </div>`
+    : `<div class="manage-sub-section">
+        <label class="subscribe-label">Add topic</label>
+        <div class="manage-add-row">
+          <input id="manageTopicInput" type="text" class="manage-topic-input" placeholder="e.g. diffusion model"
+            oninput="_onManageTopicInput(this.value)"
+            onkeydown="if(event.key==='Enter')_addManageTopic()">
+          <button class="button primary" onclick="_addManageTopic()">Add</button>
+        </div>
+        <div id="manageNewWordsContainer"></div>
+      </div>`;
 
   // Subscribed topics section
   const subsCards = _manageSubs.map((s, i) => _renderTopicCard(s, i, false)).join('');
@@ -2872,11 +2888,13 @@ function _renderTopicCard(s, idx, isPending) {
   }
 
   const topicEsc = s.topic.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  const isAddTarget = _manageAddWordsToTopic === s.topic;
   return `
-    <div class="manage-topic-card ${isActive ? 'active' : ''}">
+    <div class="manage-topic-card ${isActive ? 'active' : ''} ${isAddTarget ? 'add-words-target' : ''}">
       <div class="manage-topic-card-header">
         <button class="manage-topic-card-name" onclick="_selectManageTopicForWords('${topicEsc}')">${escapeHtml(s.topic)}</button>
         <div class="manage-topic-card-words">${wordBadges || '<span class="manage-no-words">no filter words</span>'}</div>
+        <button class="manage-chip-add-words ${isAddTarget ? 'active' : ''}" onclick="_startAddWordsMode('${topicEsc}')" title="Add more words to this topic">+</button>
         <button class="manage-chip-remove" onclick="${isPending ? `_removePendingTopic(${idx})` : `_removeManageSub(${idx})`}" title="Remove">×</button>
       </div>
       ${wordPickerHtml}
@@ -2886,6 +2904,29 @@ function _renderTopicCard(s, idx, isPending) {
 function _selectManageTopicForWords(topic) {
   if (_manageActiveTopicsForWords.has(topic)) _manageActiveTopicsForWords.delete(topic);
   else _manageActiveTopicsForWords.add(topic);
+  _renderManageSubModal();
+}
+
+function _startAddWordsMode(topic) {
+  // Toggle: clicking + again on the same card cancels the mode
+  if (_manageAddWordsToTopic === topic) { _cancelAddWordsMode(); return; }
+  _manageAddWordsToTopic = topic;
+  _manageTopicInputValue = '';
+  _manageNewTopicData = null;
+  _manageNewTopicWords = new Set();
+  if (_manageInputTimer) { clearTimeout(_manageInputTimer); _manageInputTimer = null; }
+  _renderManageSubModal();
+  // Auto-focus the input after render
+  const input = document.getElementById('manageTopicInput');
+  if (input) input.focus();
+}
+
+function _cancelAddWordsMode() {
+  _manageAddWordsToTopic = null;
+  _manageTopicInputValue = '';
+  _manageNewTopicData = null;
+  _manageNewTopicWords = new Set();
+  if (_manageInputTimer) { clearTimeout(_manageInputTimer); _manageInputTimer = null; }
   _renderManageSubModal();
 }
 
@@ -2935,10 +2976,35 @@ function _addManageTopic() {
   if (_manageInputTimer) { clearTimeout(_manageInputTimer); _manageInputTimer = null; }
   // Read from module state first; fall back to DOM value in case oninput was missed
   const inputEl = document.getElementById('manageTopicInput');
-  const topic = (_manageTopicInputValue || inputEl?.value || '').trim();
-  if (!topic) return;
+  const typed = (_manageTopicInputValue || inputEl?.value || '').trim();
+
+  // ── Mode: add words to an existing topic ──────────────────────────────────
+  if (_manageAddWordsToTopic) {
+    const data = _manageWordData.get(_manageAddWordsToTopic);
+    if (data && _manageNewTopicWords.size > 0) {
+      // Merge selected words into the topic's selectedWords
+      _manageNewTopicWords.forEach(w => data.selectedWords.add(w));
+      // Also append them to data.words list if they aren't there yet
+      const existing = new Set(data.words.map(w => w.word));
+      _manageNewTopicWords.forEach(w => { if (!existing.has(w)) data.words.push({ word: w, count: 0 }); });
+    } else if (data && typed) {
+      // No chips selected — add the raw typed word
+      data.selectedWords.add(typed);
+      const existing = new Set(data.words.map(w => w.word));
+      if (!existing.has(typed)) data.words.push({ word: typed, count: 0 });
+    }
+    _manageAddWordsToTopic = null;
+    _manageTopicInputValue = '';
+    _manageNewTopicData = null;
+    _manageNewTopicWords = new Set();
+    _renderManageSubModal();
+    return;
+  }
+
+  // ── Mode: create new subscription ─────────────────────────────────────────
+  if (!typed) return;
   const allTopics = [..._manageSubs, ..._managePendingTopics].map(s => s.topic);
-  if (allTopics.includes(topic)) {
+  if (allTopics.includes(typed)) {
     _manageTopicInputValue = '';
     _manageNewTopicData = null;
     _manageNewTopicWords = new Set();
@@ -2947,10 +3013,10 @@ function _addManageTopic() {
   }
   const words = [..._manageNewTopicWords];
   const allPapers = [...new Map(Object.values(paperData).flat().map(p => [p.id, p])).values()];
-  const topicData = _manageNewTopicData || _buildSubTopicData(topic, allPapers, null);
-  _manageWordData.set(topic, { words: topicData.words, selectedWords: new Set(words) });
-  _managePendingTopics.push({ topic, words });
-  _manageActiveTopicsForWords.add(topic); // auto-expand new topic so word picker is visible
+  const topicData = _manageNewTopicData || _buildSubTopicData(typed, allPapers, null);
+  _manageWordData.set(typed, { words: topicData.words, selectedWords: new Set(words) });
+  _managePendingTopics.push({ topic: typed, words });
+  _manageActiveTopicsForWords.add(typed); // auto-expand new topic
   _manageTopicInputValue = '';
   _manageNewTopicData = null;
   _manageNewTopicWords = new Set();
