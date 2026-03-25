@@ -21,6 +21,8 @@ let lunrIndex = null; // lunr search index for topic filtering
 let lunrIdSet = null;
 let digestExcludedPapers = new Set(); // paper IDs excluded from AI digest
 let lastDigestMarkdown = '';
+let digestView = 'setup'; // 'setup' | 'generating' | 'result'
+let digestState = { markdown: '', title: 'Research Digest', html: '', refHtml: '', selectedPapers: [] };
 
 
 
@@ -2179,15 +2181,19 @@ function togglePdfSize(button) {
 
 // ── AI Digest ─────────────────────────────────────────────────────────────────
 
-const DIGEST_FIXED_PROMPT = `You are a research journalist writing for an AI/ML research community. Given the following papers, write a comprehensive daily digest as a well-structured, engaging article.
+const DIGEST_FIXED_PROMPT = `You are a research journalist writing for an AI/ML research community. Given a list of papers, produce a comprehensive, detailed technical digest.
 
-Structure (markdown format):
-- ## Executive Summary — 2-3 sentences capturing the day's research themes
-- Thematic sections (## Section Title) grouping related papers; cite papers inline as [1], [2], etc.
-- Use **bold** for key terms, methods, and findings
-- ## Key Takeaways — 3-5 bullet points of the most important results
+Output format (strict markdown):
+1. First line: # [Your generated title — a specific, descriptive headline for this digest]
+2. ## Executive Summary — A paragraph of 5–7 sentences covering the day's major research themes, their significance, and the overall landscape.
+3. 4–5 thematic ## sections (choose titles that reflect the actual content). Each section must discuss multiple related papers in depth: explain the problem addressed, the proposed method and key technical details (architecture, algorithm, dataset, metrics), and notable results. Cite papers inline as [1], [2], etc. Use **bold** for key terms, model names, and metrics.
+4. ## Key Takeaways — 5–7 bullet points of the most important results, emerging trends, and implications for the field.
 
-Style: specific, technical, and engaging. Every paper must be cited at least once. Avoid padding. Be precise about methods and results.`;
+Requirements:
+- Walk through EVERY paper — each must be discussed substantively (at least 3–4 sentences) and cited at least once.
+- Be technical and specific: include architectures, loss functions, benchmark names, and numbers when available.
+- Group papers thematically across sections, not in the order listed.
+- Minimum length: thorough coverage of all papers with no padding.`;
 
 function formatAuthorsShort(authors) {
   if (!authors) return '';
@@ -2213,21 +2219,67 @@ function closeDigestModal() {
 function renderDigestModalContent() {
   const content = document.getElementById('digestModalContent');
   if (!content) return;
+
+  const closeSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+
+  if (digestView === 'generating') {
+    content.innerHTML = `
+      <div class="digest-modal-header">
+        <div>
+          <h2 class="digest-modal-title">AI Research Digest</h2>
+          <p class="digest-modal-subtitle">Generating for ${digestState.selectedPapers.length} papers…</p>
+        </div>
+        <button class="digest-close-btn" onclick="closeDigestModal()">${closeSvg}</button>
+      </div>
+      <div class="digest-modal-body digest-generating-body">
+        <div class="digest-loading">
+          <div class="loading-spinner"></div>
+          <p class="digest-loading-label">Generating digest…</p>
+          <p class="digest-loading-hint">This may take a minute for large sets of papers.</p>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (digestView === 'result') {
+    content.innerHTML = `
+      <div class="digest-modal-header">
+        <div class="digest-title-row">
+          <h1 id="digestTitleDisplay" class="digest-title-display">${escapeHtml(digestState.title)}</h1>
+          <button class="digest-rename-btn" onclick="renameDigestTitle()" title="Rename">&#9998;</button>
+        </div>
+        <button class="digest-close-btn" onclick="closeDigestModal()">${closeSvg}</button>
+      </div>
+      <div class="digest-modal-body">
+        <div class="digest-article">${digestState.html}</div>
+        <div class="digest-references">
+          <h3>References</h3>
+          <ol>${digestState.refHtml}</ol>
+        </div>
+      </div>
+      <div class="digest-result-footer">
+        <button class="button digest-edit-btn" onclick="showDigestSetup()">&#8592; Edit Selection</button>
+        <div class="digest-result-footer-right">
+          <button id="digestSaveBtn" class="button primary" onclick="saveCurrentDigest()">Save Digest</button>
+          <button class="button digest-copy-btn" onclick="copyDigest()">Copy</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // setup view
   const selected = currentFilteredPapers.filter(p => !digestExcludedPapers.has(p.id));
   const userPromptVal = localStorage.getItem('digestUserPrompt') || '';
-
+  const hasResult = !!digestState.markdown;
   content.innerHTML = `
     <div class="digest-modal-header">
       <div>
         <h2 class="digest-modal-title">AI Research Digest</h2>
         <p class="digest-modal-subtitle" id="digestSubtitle">${selected.length} of ${currentFilteredPapers.length} papers selected</p>
       </div>
-      <button class="digest-close-btn" onclick="closeDigestModal()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-      </button>
+      <button class="digest-close-btn" onclick="closeDigestModal()">${closeSvg}</button>
     </div>
     <div class="digest-modal-body">
-
       <div class="digest-section">
         <div class="digest-section-head">
           <span class="digest-sec-label">Papers</span>
@@ -2237,7 +2289,6 @@ function renderDigestModalContent() {
           ${renderDigestPaperCards()}
         </div>
       </div>
-
       <div class="digest-section">
         <div class="digest-sec-label">Base Prompt <span class="digest-prompt-note">(fixed)</span></div>
         <pre class="digest-prompt-fixed">${DIGEST_FIXED_PROMPT}</pre>
@@ -2246,28 +2297,63 @@ function renderDigestModalContent() {
           placeholder="e.g. Focus on practical applications. Keep it concise."
           oninput="localStorage.setItem('digestUserPrompt', this.value)">${userPromptVal}</textarea>
       </div>
-
       <div class="digest-actions">
-        <button id="digestGenerateBtn" class="button primary digest-generate-btn" onclick="generateDigest()">
-          ✦ Generate Digest
-        </button>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button id="digestGenerateBtn" class="button primary digest-generate-btn" onclick="generateDigest()">
+            ✦ ${hasResult ? 'Regenerate Digest' : 'Generate Digest'}
+          </button>
+          ${hasResult ? `<button class="button" onclick="showDigestResult()">View Last Digest</button>` : ''}
+        </div>
         <p id="digestError" class="digest-error"></p>
       </div>
+    </div>`;
+}
 
-      <div id="digestResultSection" class="digest-result-section" style="display:none;">
-        <div class="digest-result-toolbar">
-          <span class="digest-sec-label">Digest</span>
-          <button class="button digest-copy-btn" onclick="copyDigest()">Copy</button>
-        </div>
-        <div id="digestArticle" class="digest-article"></div>
-        <div class="digest-references">
-          <h3>References</h3>
-          <ol id="digestRefList"></ol>
-        </div>
-      </div>
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-    </div>
-  `;
+function showDigestSetup() {
+  digestView = 'setup';
+  renderDigestModalContent();
+}
+
+function showDigestResult() {
+  digestView = 'result';
+  renderDigestModalContent();
+}
+
+function renameDigestTitle() {
+  const el = document.getElementById('digestTitleDisplay');
+  if (!el) return;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'digest-title-input';
+  input.value = digestState.title;
+  el.replaceWith(input);
+  input.focus();
+  input.select();
+  const commit = () => {
+    const val = input.value.trim();
+    if (val) digestState.title = val;
+    const newEl = document.createElement('h1');
+    newEl.id = 'digestTitleDisplay';
+    newEl.className = 'digest-title-display';
+    newEl.textContent = digestState.title;
+    input.replaceWith(newEl);
+  };
+  input.addEventListener('blur', commit);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+    if (e.key === 'Escape') { input.value = digestState.title; input.blur(); }
+  });
+}
+
+function saveCurrentDigest() {
+  if (!digestState.markdown) return;
+  saveDigest(digestState.markdown, digestState.selectedPapers, digestState.title);
+  const btn = document.getElementById('digestSaveBtn');
+  if (btn) { btn.textContent = 'Saved ✓'; btn.disabled = true; }
 }
 
 const DIGEST_INITIAL_SHOW = 12;
@@ -2344,55 +2430,58 @@ async function generateDigest() {
   const apiKey = localStorage.getItem('aiApiKey');
   const baseUrl = (localStorage.getItem('aiBaseUrl') || 'https://api.openai.com/v1').replace(/\/$/, '');
   const modelName = localStorage.getItem('aiModelName') || 'gpt-4o-mini';
-  const errEl = document.getElementById('digestError');
-  const btn = document.getElementById('digestGenerateBtn');
 
-  errEl.textContent = '';
-  if (!apiKey) { errEl.textContent = 'No API key — add one in Settings.'; return; }
+  const errEl = document.getElementById('digestError');
+  if (!apiKey) { if (errEl) errEl.textContent = 'No API key — add one in Settings.'; return; }
 
   const selected = currentFilteredPapers.filter(p => !digestExcludedPapers.has(p.id));
-  if (selected.length === 0) { errEl.textContent = 'No papers selected.'; return; }
-
-  btn.textContent = 'Generating…';
-  btn.disabled = true;
+  if (selected.length === 0) { if (errEl) errEl.textContent = 'No papers selected.'; return; }
 
   const userAddition = (document.getElementById('digestUserPrompt')?.value || '').trim();
   const papersList = selected.map((p, i) =>
-    `[${i + 1}] Title: "${p.title}"\nAuthors: ${p.authors}\n${p.summary ? `TL;DR: ${p.summary}` : `Abstract: ${(p.details || '').slice(0, 400)}`}`
+    `[${i + 1}] Title: "${p.title}"\nAuthors: ${p.authors}\n${p.summary ? `Abstract: ${p.summary}` : `Abstract: ${(p.details || '').slice(0, 600)}`}`
   ).join('\n\n');
-
   const fullPrompt = `${DIGEST_FIXED_PROMPT}${userAddition ? `\n\nAdditional instructions: ${userAddition}` : ''}\n\n---\n\nPapers:\n\n${papersList}`;
+
+  // Switch to generating view
+  digestState.selectedPapers = selected;
+  digestView = 'generating';
+  renderDigestModalContent();
 
   try {
     const res = await fetch(`${baseUrl}/chat/completions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-      body: JSON.stringify({ model: modelName, messages: [{ role: 'user', content: fullPrompt }], max_tokens: 4000 })
+      body: JSON.stringify({ model: modelName, messages: [{ role: 'user', content: fullPrompt }], max_tokens: 8000 })
     });
     if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
     const data = await res.json();
     const mdText = data.choices[0].message.content;
     lastDigestMarkdown = mdText;
 
-    // Render article
-    const resultSection = document.getElementById('digestResultSection');
-    resultSection.style.display = 'block';
-    document.getElementById('digestArticle').innerHTML = digestMarkdownToHtml(mdText);
-
-    // Render references
-    document.getElementById('digestRefList').innerHTML = selected.map((p, i) =>
-      `<li><a href="${p.url}" target="_blank" rel="noopener">${p.title}</a><br>
+    // Extract title from first # line
+    const titleMatch = mdText.match(/^#\s+(.+)/m);
+    digestState.title = titleMatch ? titleMatch[1].trim() : 'Research Digest';
+    // Strip title line from body
+    const bodyMd = mdText.replace(/^#\s+.+\n?\n?/, '');
+    digestState.markdown = mdText;
+    digestState.html = digestMarkdownToHtml(bodyMd);
+    digestState.refHtml = selected.map((p, i) =>
+      `<li id="ref-${i+1}"><a href="${p.url}" target="_blank" rel="noopener">${p.title}</a><br>
        <span class="digest-ref-meta">${formatAuthorsShort(p.authors)} · Crawled ${formatDate(p.date)}</span></li>`
     ).join('');
 
-    saveDigest(mdText, selected);
-    btn.textContent = '✦ Regenerate';
-    btn.disabled = false;
-    resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    digestView = 'result';
+    const modal = document.getElementById('digestModal');
+    if (modal && modal.style.display !== 'none') renderDigestModalContent();
   } catch (e) {
-    btn.textContent = '✦ Generate Digest';
-    btn.disabled = false;
-    errEl.textContent = `Error: ${e.message}`;
+    digestView = 'setup';
+    const modal = document.getElementById('digestModal');
+    if (modal && modal.style.display !== 'none') {
+      renderDigestModalContent();
+      const errElAfter = document.getElementById('digestError');
+      if (errElAfter) errElAfter.textContent = `Error: ${e.message}`;
+    }
   }
 }
 
@@ -2424,10 +2513,11 @@ function digestMarkdownToHtml(md) {
   return html.join('\n');
 }
 
-function saveDigest(text, papers) {
+function saveDigest(text, papers, title) {
   const saved = JSON.parse(localStorage.getItem('savedDigests') || '[]');
   saved.unshift({
     id: Date.now(),
+    title: title || 'Research Digest',
     timestamp: new Date().toISOString(),
     digest: text,
     papers: papers.map(p => ({ title: p.title, url: p.url, authors: p.authors, date: p.date, id: p.id }))
