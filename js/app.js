@@ -2776,7 +2776,6 @@ function openManageSubModal() {
   _manageSubs = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('topicSubscriptions') || '[]')));
   _managePendingTopics = [];
   _manageWordData = new Map();
-  _manageActiveTopicsForWords = new Set();
   _manageNewTopicData = null;
   _manageNewTopicWords = new Set();
   _manageTopicInputValue = '';
@@ -2784,6 +2783,8 @@ function openManageSubModal() {
   _manageSubs.forEach(s => {
     _manageWordData.set(s.topic, _buildSubTopicData(s.topic, allPapers, s.words || null));
   });
+  // Pre-expand all existing subscriptions so word pickers are immediately visible
+  _manageActiveTopicsForWords = new Set(_manageSubs.map(s => s.topic));
   _renderManageSubModal();
   modal.style.display = 'flex';
 }
@@ -2918,7 +2919,7 @@ function _onManageTopicInput(value) {
   _manageInputTimer = setTimeout(() => {
     const allPapers = [...new Map(Object.values(paperData).flat().map(p => [p.id, p])).values()];
     _manageNewTopicData = _buildSubTopicData(value.trim(), allPapers, null);
-    _manageNewTopicWords = new Set();
+    // Don't reset _manageNewTopicWords — keep the chips the user already selected
     _updateNewWordsContainer();
   }, 400);
 }
@@ -2930,7 +2931,11 @@ function _toggleNewTopicWord(word) {
 }
 
 function _addManageTopic() {
-  const topic = _manageTopicInputValue.trim();
+  // Clear any pending debounce so it can't overwrite state after we clear the input
+  if (_manageInputTimer) { clearTimeout(_manageInputTimer); _manageInputTimer = null; }
+  // Read from module state first; fall back to DOM value in case oninput was missed
+  const inputEl = document.getElementById('manageTopicInput');
+  const topic = (_manageTopicInputValue || inputEl?.value || '').trim();
   if (!topic) return;
   const allTopics = [..._manageSubs, ..._managePendingTopics].map(s => s.topic);
   if (allTopics.includes(topic)) {
@@ -2945,6 +2950,7 @@ function _addManageTopic() {
   const topicData = _manageNewTopicData || _buildSubTopicData(topic, allPapers, null);
   _manageWordData.set(topic, { words: topicData.words, selectedWords: new Set(words) });
   _managePendingTopics.push({ topic, words });
+  _manageActiveTopicsForWords.add(topic); // auto-expand new topic so word picker is visible
   _manageTopicInputValue = '';
   _manageNewTopicData = null;
   _manageNewTopicWords = new Set();
