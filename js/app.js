@@ -13,6 +13,8 @@ let activeTopics = new Set(); // currently active topic strings (multi-select)
 let topicWordData = new Map(); // topic -> {words:[{word,count}], selectedWords:Set}
 let topicWordLogic = 'OR'; // 'OR' | 'AND' — logic between selected words across active topics
 let savedTopicSelections = new Map(); // topic -> Set of words, used to restore selections after buildTopicData
+let selectedPaperPromptIds = new Set();  // selected preset IDs for paper modal
+let selectedDigestPromptIds = new Set(); // selected preset IDs for digest modal
 
 function persistFilterState() {
   try {
@@ -1366,7 +1368,7 @@ async function generateAiContent() {
   btn.textContent = 'Generating...';
   btn.disabled = true;
 
-  const promptSuffix = localStorage.getItem('aiPromptSuffix') || '';
+  const promptSuffix = getActivePaperPromptSuffix();
   const prompt = `Analyze the following research paper abstract. Respond with a JSON object containing exactly these fields:
 "tldr": one concise sentence summarizing the paper
 "motivation": why this research was needed / what problem it solves
@@ -1506,13 +1508,102 @@ async function writeAiToDataFile(paper) {
 
 function togglePromptSuffix() {
   const area = document.getElementById('promptSuffixArea');
-  if (area) area.style.display = area.style.display === 'none' ? 'block' : 'none';
+  if (!area) return;
+  const showing = area.style.display !== 'none';
+  area.style.display = showing ? 'none' : 'block';
+  if (!showing) renderPaperPromptPresets();
 }
 
 function savePromptSuffix() {
-  const val = document.getElementById('promptSuffixInput')?.value || '';
-  localStorage.setItem('aiPromptSuffix', val);
-  togglePromptSuffix();
+  const val = (document.getElementById('promptSuffixInput')?.value || '').trim();
+  if (!val) return;
+  const presets = JSON.parse(localStorage.getItem('aiPromptPresets') || '[]');
+  const id = Date.now().toString();
+  presets.push({ id, text: val });
+  localStorage.setItem('aiPromptPresets', JSON.stringify(presets));
+  selectedPaperPromptIds.add(id);
+  document.getElementById('promptSuffixInput').value = '';
+  renderPaperPromptPresets();
+}
+
+function deletePaperPromptPreset(id) {
+  const presets = JSON.parse(localStorage.getItem('aiPromptPresets') || '[]');
+  localStorage.setItem('aiPromptPresets', JSON.stringify(presets.filter(p => p.id !== id)));
+  selectedPaperPromptIds.delete(id);
+  renderPaperPromptPresets();
+}
+
+function togglePaperPromptPreset(id) {
+  if (selectedPaperPromptIds.has(id)) selectedPaperPromptIds.delete(id);
+  else selectedPaperPromptIds.add(id);
+  renderPaperPromptPresets();
+}
+
+function renderPaperPromptPresets() {
+  const container = document.getElementById('paperPromptPresets');
+  if (!container) return;
+  const presets = JSON.parse(localStorage.getItem('aiPromptPresets') || '[]');
+  if (presets.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = presets.map(p => `
+    <span class="prompt-preset-chip${selectedPaperPromptIds.has(p.id) ? ' selected' : ''}" onclick="togglePaperPromptPreset('${p.id}')">
+      <span class="prompt-preset-text" title="${escapeHtml(p.text)}">${escapeHtml(p.text.length > 50 ? p.text.slice(0, 50) + '…' : p.text)}</span>
+      <button class="prompt-preset-delete" onclick="event.stopPropagation();deletePaperPromptPreset('${p.id}')" title="Delete">×</button>
+    </span>
+  `).join('');
+}
+
+function getActivePaperPromptSuffix() {
+  const presets = JSON.parse(localStorage.getItem('aiPromptPresets') || '[]');
+  const parts = presets.filter(p => selectedPaperPromptIds.has(p.id)).map(p => p.text);
+  const freeform = (document.getElementById('promptSuffixInput')?.value || '').trim();
+  if (freeform) parts.push(freeform);
+  return parts.join('\n');
+}
+
+function saveDigestPromptPreset() {
+  const val = (document.getElementById('digestUserPrompt')?.value || '').trim();
+  if (!val) return;
+  const presets = JSON.parse(localStorage.getItem('digestPromptPresets') || '[]');
+  const id = Date.now().toString();
+  presets.push({ id, text: val });
+  localStorage.setItem('digestPromptPresets', JSON.stringify(presets));
+  selectedDigestPromptIds.add(id);
+  document.getElementById('digestUserPrompt').value = '';
+  renderDigestPromptPresets();
+}
+
+function deleteDigestPromptPreset(id) {
+  const presets = JSON.parse(localStorage.getItem('digestPromptPresets') || '[]');
+  localStorage.setItem('digestPromptPresets', JSON.stringify(presets.filter(p => p.id !== id)));
+  selectedDigestPromptIds.delete(id);
+  renderDigestPromptPresets();
+}
+
+function toggleDigestPromptPreset(id) {
+  if (selectedDigestPromptIds.has(id)) selectedDigestPromptIds.delete(id);
+  else selectedDigestPromptIds.add(id);
+  renderDigestPromptPresets();
+}
+
+function renderDigestPromptPresets() {
+  const container = document.getElementById('digestPromptPresets');
+  if (!container) return;
+  const presets = JSON.parse(localStorage.getItem('digestPromptPresets') || '[]');
+  if (presets.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = presets.map(p => `
+    <span class="prompt-preset-chip${selectedDigestPromptIds.has(p.id) ? ' selected' : ''}" onclick="toggleDigestPromptPreset('${p.id}')">
+      <span class="prompt-preset-text" title="${escapeHtml(p.text)}">${escapeHtml(p.text.length > 50 ? p.text.slice(0, 50) + '…' : p.text)}</span>
+      <button class="prompt-preset-delete" onclick="event.stopPropagation();deleteDigestPromptPreset('${p.id}')" title="Delete">×</button>
+    </span>
+  `).join('');
+}
+
+function getActiveDigestUserPrompt() {
+  const presets = JSON.parse(localStorage.getItem('digestPromptPresets') || '[]');
+  const parts = presets.filter(p => selectedDigestPromptIds.has(p.id)).map(p => p.text);
+  const freeform = (document.getElementById('digestUserPrompt')?.value || '').trim();
+  if (freeform) parts.push(freeform);
+  return parts.join('\n');
 }
 
 function showPaperDetails(paper, paperIndex) {
@@ -1590,9 +1681,11 @@ function showPaperDetails(paper, paperIndex) {
           <button class="button ai-prompt-edit-btn" onclick="togglePromptSuffix()" title="Customize prompt">Edit prompt</button>
         </div>
         <div id="promptSuffixArea" class="prompt-suffix-area" style="display:none;">
-          <p class="prompt-suffix-hint">Base prompt is fixed. Add extra instructions below (e.g. "Explain the method in 300 words"):</p>
-          <textarea id="promptSuffixInput" class="prompt-suffix-input" rows="3" placeholder="e.g. Use simple language suitable for a non-expert.">${localStorage.getItem('aiPromptSuffix') || ''}</textarea>
-          <button class="button ai-prompt-save-btn" onclick="savePromptSuffix()">Save</button>
+          <p class="prompt-suffix-hint">Saved presets (click to select/deselect, multi-select supported):</p>
+          <div id="paperPromptPresets" class="prompt-presets-container"></div>
+          <p class="prompt-suffix-hint" style="margin-top:8px;">New instruction (type and save as preset, or use once):</p>
+          <textarea id="promptSuffixInput" class="prompt-suffix-input" rows="3" placeholder="e.g. Use simple language suitable for a non-expert."></textarea>
+          <button class="button ai-prompt-save-btn" onclick="savePromptSuffix()">Save as preset</button>
         </div>
         <p id="aiGenerateError" class="ai-generate-error"></p>
         <p id="aiSaveStatus" class="ai-save-status"></p>
@@ -2019,7 +2112,6 @@ function renderDigestModalContent() {
 
   // setup view
   const selected = currentFilteredPapers.filter(p => !digestExcludedPapers.has(p.id));
-  const userPromptVal = localStorage.getItem('digestUserPrompt') || '';
   const hasResult = !!digestState.markdown;
   content.innerHTML = `
     <div class="digest-modal-header">
@@ -2042,10 +2134,11 @@ function renderDigestModalContent() {
       <div class="digest-section">
         <div class="digest-sec-label">Base Prompt <span class="digest-prompt-note">(fixed)</span></div>
         <pre class="digest-prompt-fixed">${DIGEST_FIXED_PROMPT}</pre>
-        <div class="digest-sec-label" style="margin-top:12px;">Additional Instructions <span class="digest-prompt-note">(optional)</span></div>
+        <div class="digest-sec-label" style="margin-top:12px;">Additional Instructions <span class="digest-prompt-note">(optional, multi-select)</span></div>
+        <div id="digestPromptPresets" class="prompt-presets-container"></div>
         <textarea id="digestUserPrompt" class="digest-user-prompt" rows="3"
-          placeholder="e.g. Focus on practical applications. Keep it concise."
-          oninput="localStorage.setItem('digestUserPrompt', this.value)">${userPromptVal}</textarea>
+          placeholder="e.g. Focus on practical applications. Keep it concise." style="margin-top:8px;"></textarea>
+        <button class="button ai-prompt-save-btn" onclick="saveDigestPromptPreset()">Save as preset</button>
       </div>
       <div class="digest-actions">
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
@@ -2057,6 +2150,7 @@ function renderDigestModalContent() {
         <p id="digestError" class="digest-error"></p>
       </div>
     </div>`;
+  renderDigestPromptPresets();
 }
 
 function escapeHtml(str) {
@@ -2367,7 +2461,7 @@ async function generateDigest() {
   const selected = currentFilteredPapers.filter(p => !digestExcludedPapers.has(p.id));
   if (selected.length === 0) { if (errEl) errEl.textContent = 'No papers selected.'; return; }
 
-  const userAddition = (document.getElementById('digestUserPrompt')?.value || '').trim();
+  const userAddition = getActiveDigestUserPrompt();
   const papersList = selected.map((p, i) =>
     `[${i + 1}] Title: "${p.title}"\nAuthors: ${p.authors}\n${p.summary ? `Abstract: ${p.summary}` : `Abstract: ${(p.details || '').slice(0, 600)}`}`
   ).join('\n\n');
