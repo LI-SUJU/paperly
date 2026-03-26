@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Only auto-init on settings.html (standalone page)
   if (document.querySelector('.settings-page')) {
     initSettings();
-    initEventListeners();
+    initSettingsEventListeners();
     fetchGitHubStats();
   } else {
     // On index.html — init lazily when panel opens, just attach listeners now
-    initEventListeners();
+    initSettingsEventListeners();
   }
 });
 
@@ -79,7 +79,7 @@ function unlockGithubField() {
 }
 
 // 初始化事件监听器
-function initEventListeners() {
+function initSettingsEventListeners() {
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('resetSettings').addEventListener('click', resetSettings);
 }
