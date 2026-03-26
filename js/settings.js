@@ -1,8 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-  initSettings();
-  initEventListeners();
-  fetchGitHubStats();
+  // Only auto-init on settings.html (standalone page)
+  if (document.querySelector('.settings-page')) {
+    initSettings();
+    initEventListeners();
+    fetchGitHubStats();
+  } else {
+    // On index.html — init lazily when panel opens, just attach listeners now
+    initEventListeners();
+  }
 });
+
+function openSettingsPanel() {
+  const panel = document.getElementById('settingsPanel');
+  if (!panel) return;
+  initSettings();
+  panel.style.display = 'flex';
+}
+
+function closeSettingsPanel() {
+  const panel = document.getElementById('settingsPanel');
+  if (panel) panel.style.display = 'none';
+}
 
 // 初始化设置，从localStorage加载已保存的设置
 function initSettings() {
