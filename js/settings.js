@@ -247,19 +247,19 @@ function applyTheme(theme, dark) {
   const root = document.documentElement;
   // Remove all theme attrs first
   THEMES.forEach(t => root.removeAttribute('data-theme-' + t));
-  if (theme && theme !== 'purple') root.setAttribute('data-theme', theme);
+  if (theme && theme !== 'forest') root.setAttribute('data-theme', theme);
   else root.removeAttribute('data-theme');
   root.setAttribute('data-dark', dark ? 'true' : 'false');
 }
 
 function loadTheme() {
-  const theme = localStorage.getItem('colorTheme') || 'purple';
+  const theme = localStorage.getItem('colorTheme') || 'forest';
   const dark  = localStorage.getItem('darkMode') === 'true';
   applyTheme(theme, dark);
 }
 
 function initThemeUI() {
-  const theme = localStorage.getItem('colorTheme') || 'purple';
+  const theme = localStorage.getItem('colorTheme') || 'forest';
   const dark  = localStorage.getItem('darkMode') === 'true';
 
   // Highlight active swatch
@@ -284,7 +284,7 @@ function initThemeUI() {
 function toggleDarkMode() {
   const dark = localStorage.getItem('darkMode') !== 'true';
   localStorage.setItem('darkMode', dark);
-  applyTheme(localStorage.getItem('colorTheme') || 'purple', dark);
+  applyTheme(localStorage.getItem('colorTheme') || 'forest', dark);
   const toggle = document.getElementById('darkModeToggle');
   const label  = document.getElementById('darkModeLabel');
   if (toggle) toggle.classList.toggle('on', dark);
