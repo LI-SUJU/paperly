@@ -1646,8 +1646,10 @@ function showPaperDetails(paper, paperIndex) {
   
   // 更新论文位置信息
   const paperPosition = document.getElementById('paperPosition');
-  if (paperPosition && currentFilteredPapers.length > 0) {
-    paperPosition.textContent = `${currentPaperIndex + 1} / ${currentFilteredPapers.length}`;
+  if (paperPosition) {
+    paperPosition.textContent = (paperIndex && currentFilteredPapers.length > 0)
+      ? `${currentPaperIndex + 1} / ${currentFilteredPapers.length}`
+      : '';
   }
   
   modal.classList.add('active');
@@ -2419,15 +2421,26 @@ async function generateDigest() {
 
 // Open a paper from a digest reference click
 function openDigestPaper(paper) {
+  // Raise z-index first so modal appears above digest overlays from the start
+  document.getElementById('paperModal').style.zIndex = '10500';
+
+  // Try currentFilteredPapers first (preserves navigation state)
   const idx = currentFilteredPapers.findIndex(p => p.id === paper.id || (p.url && p.url === paper.url));
   if (idx !== -1) {
     currentPaperIndex = idx;
     showPaperDetails(currentFilteredPapers[idx], idx + 1);
-  } else {
-    showPaperDetails(paper, null);
+    return;
   }
-  // Raise above digest modals (z-index 9999+)
-  document.getElementById('paperModal').style.zIndex = '10500';
+
+  // Fall back to all loaded paperData (paper may be filtered out or from a different date)
+  let fullPaper = paper;
+  if (typeof paperData !== 'undefined' && paperData) {
+    for (const cat of Object.values(paperData)) {
+      const found = cat.find(p => p.id === paper.id || (p.url && p.url === paper.url));
+      if (found) { fullPaper = found; break; }
+    }
+  }
+  showPaperDetails(fullPaper, null);
 }
 
 // Wire up citation and reference clicks in a rendered digest container
