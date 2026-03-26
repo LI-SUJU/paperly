@@ -147,23 +147,6 @@ Set `ACCESS_PASSWORD` in your repository Secrets. The workflow hashes it with SH
 
 ---
 
-## What's Different From the Upstream Fork
-
-| Feature | Upstream (dw-dengwei) | This Fork |
-|---|---|---|
-| Paper summarization | TL;DR, Method, Result, etc. | Same |
-| Server-side digest workflow | Not present | `generate-digests.yml` — daily per-topic digests written to data branch |
-| Browser digest generation | Not present | On-demand from filtered papers with custom prompts |
-| Custom prompt presets | One saved additional prompt | Multi-select preset library, persistent across sessions |
-| Clickable citations | Not present | Opens full paper modal; fetches from data branch if needed |
-| Settings UI | Separate settings page | Slide-in side panel |
-| Paper modal navigation | Basic | Keyboard arrow navigation; disabled when modal opened from digest |
-| Topic word refinement | Not present | Per-topic keyword drill-down with AND/OR logic |
-| Dual-branch push | Not present | Explicit separation of `main` (code) and `data` (papers) with retry logic |
-| Config auto-injection | Not present | Repo owner/name and password hash injected at workflow runtime |
-
----
-
 ## Quick Start
 
 ### 1. Fork and enable Actions
