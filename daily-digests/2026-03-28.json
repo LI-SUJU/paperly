@@ -1,0 +1,482 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-03-28",
+    "paperCount": 9,
+    "markdown": "# The Interpretability Frontier: From Feature Geometry to Physical Constraints\n\nToday's research landscape demonstrates a concerted push to move interpretability beyond post-hoc explanations and towards inherently understandable, modular, and physically-grounded models. Across domains from clinical AI to climate science, researchers are diagnosing failure modes like hidden biases, developing new tools to dissect model internals, and architecting systems that bake interpretability into their core computational principles.\n\n## Diagnosing and Mitigating Hidden Biases\n\n**[1]** This paper addresses the critical problem of spurious correlations in automated depression detection from clinical interviews. The authors perform a detailed analysis of three datasets, revealing that models can achieve high performance by exploiting systematic biases in interviewer prompts and their positions, rather than learning genuine patient speech markers. This matters because it exposes a fundamental flaw in many clinical AI benchmarks, where reported accuracy may be misleading and models could fail catastrophically if deployed in settings with different interview protocols. Their work underscores the necessity of interpretability audits to uncover such dataset artifacts.\n\n**[2]** This work investigates the disconnect between a Large Language Model's (LLM) verbalized confidence and its actual accuracy, known as the confidence-faithfulness gap. Using mechanistic interpretability techniques like linear probes and contrastive activation addition, the authors find that signals for calibration and verbalized confidence are encoded linearly but orthogonally within model activations. This geometric insight, consistent across multiple models, is crucial because it explains why simply prompting a model to be \"confident\" does not improve accuracy, and it points toward new steering methods that could align these separated representations for more trustworthy self-assessment.\n\n## Evaluating and Engineering Interpretable Architectures\n\n**[3]** This study tackles the lack of reproducibility and systematic evaluation in interpreting deep clinical time-series models. The authors propose a practical, extensible framework to assess how architectural choices (e.g., attention mechanisms) and explainability methods perform across diverse clinical prediction tasks. By systematically examining this interplay, their work provides much-needed guidance for practitioners who must audit high-stakes clinical models prior to deployment, moving the field from ad-hoc explanations toward standardized, evidence-based interpretability practices.\n\n**[6]** Inspired by computational principles of the human brain, this paper introduces the Vision Hopfield Memory Network (V-HMN) as a new foundation model backbone for vision and multimodal tasks. The core approach integrates hierarchical memory mechanisms with iterative refinement, aiming to achieve strong performance with greater data efficiency and inherent interpretability compared to standard Transformers or Mamba models. This matters as it represents a shift toward designing architectures whose internal dynamics—rooted in associative memory—are more aligned with human-understandable reasoning processes from the outset.\n\n## Probing and Preserving Learned Features\n\n**[4]** This research tests a key assumption in interpretability: that features found by Sparse Autoencoders (SAEs) in vision-language models form modular, composable \"circuits\" for reasoning. The authors find this modularity hypothesis often fails; while intervening on task-selective features can modestly improve accuracy, combining interventions induces output drift and harms performance. This non-modular interference is a critical finding because it challenges the feasibility of simple, surgical steering methods and suggests that high-level reasoning emerges from densely interconnected, non-decomposable circuits within these models.\n\n**[7]** This paper systematically studies how weight pruning—a common model compression technique—reshapes the internal feature representations of language models. Using Sparse Autoencoders as probes, the authors analyze feature survival, fragility, and transferability across model families, pruning methods, and sparsity levels. The work is significant because it reveals that pruning does not simply zero out unimportant features but actively reshapes the model's representational geometry, with implications for maintaining both model performance and interpretability after compression.\n\n## Enforcing Interpretability via Domain Knowledge\n\n**[5]** Addressing the black-box nature of ML in hydrology, this work presents the Mass-Conserving Perceptron (MCP), a physics-aware AI framework for rainfall-runoff modeling. The core approach progressively embeds physically meaningful representations and hard constraints (like mass conservation) into a neural network, allowing it to learn process relationships from data while remaining interpretable. This matters because it moves beyond purely predictive accuracy, yielding models whose internal states and learned parameters align with established hydrological concepts, thereby building trust with domain scientists.\n\n**[8]** This study questions the need for overly complex models in urban air quality (PM2.5) forecasting. The authors develop a leakage-aware workflow using lightweight, interpretable time-series models (like ARIMA and Prophet) combined with careful feature selection and exogenous drivers. Demonstrating competitive performance for hourly predictions in Beijing, the research validates that operational interpretability and computational efficiency need not be sacrificed for accuracy in environmental forecasting, offering a practical blueprint for deployable urban management systems.\n\n## Unifying System-Level Perspectives\n\n**[9]** This paper proposes a novel, unified memory-system perspective to address the hardware challenges of probabilistic trustworthy AI. The authors frame deterministic data access as a special case of stochastic sampling, allowing both to be analyzed within a single coherence framework. This technical contribution is important because it tackles a growing systems bottleneck, as probabilistic computations for robustness and privacy increase demands on memory hierarchies, paving the way for more efficient and secure hardware supporting interpretable and trustworthy AI workloads.\n\n## Key Takeaways\n- **Bias Diagnosis is Foundational:** Interpretability is essential for uncovering spurious correlations and dataset artifacts, as shown in clinical interview models where performance was driven by interviewer prompts, not patient pathology [1].\n- **Confidence is Geometrically Separated:** In LLMs, the neural signals for verbalized confidence and actual calibration are linearly encoded but orthogonal, explaining the persistent confidence-faithfulness gap [2].\n- **Feature Modularity is Not Guaranteed:** Sparse Autoencoder features in multimodal models often lack true modularity; combined interventions cause interference, challenging simple circuit-based steering approaches [4].\n- **Pruning Actively Reshapes Representations:** Weight pruning alters the fundamental geometry of a model's internal features, affecting their survival and fragility, which has direct consequences for post-compression interpretability [7].\n- **Physics Constraints Enable Trust:** Baking domain knowledge (e.g., mass conservation) directly into model architectures enforces physical plausibility, making learned parameters interpretable and aligning models with scientific theory [5].\n- **Brain-Inspired Design is a Viable Path:** New architectures like Vision Hopfield Networks, inspired by associative memory, offer a promising direction for building inherently more interpretable and data-efficient foundation models [6].\n- **Systems Need Coherent Probabilistic Support:** The shift toward probabilistic computing for trustworthy AI requires new hardware memory perspectives that unify deterministic and stochastic data access [9].",
+    "papers": [
+      {
+        "title": "When Consistency Becomes Bias: Interviewer Effects in Semi-Structured Clinical Interviews",
+        "url": "",
+        "authors": [
+          "Hasindri Watawana",
+          "Sergio Burdisso",
+          "Diego A. Moreno-Galván",
+          "Fernando Sánchez-Vega",
+          "A. Pastor López-Monroy",
+          "Petr Motlicek",
+          "Esaú Villatoro-Tello"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Closing the Confidence-Faithfulness Gap in Large Language Models",
+        "url": "",
+        "authors": [
+          "Miranda Muqing Miao",
+          "Lyle Ungar"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "A Practical Guide Towards Interpreting Time-Series Deep Clinical Predictive Models: A Reproducibility Study",
+        "url": "",
+        "authors": [
+          "Yongda Fan",
+          "John Wu",
+          "Andrea Fitzpatrick",
+          "Naveen Baskaran",
+          "Jimeng Sun",
+          "Adam Cross"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Sparse Visual Thought Circuits in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Yunpeng Zhou"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Process-Aware AI for Rainfall-Runoff Modeling: A Mass-Conserving Neural Framework with Hydrological Process Constraints",
+        "url": "",
+        "authors": [
+          "Mohammad A. Farmani",
+          "Hoshin V. Gupta",
+          "Ali Behrangi",
+          "Muhammad Jawad",
+          "Sadaf Moghisi",
+          "Guo-Yue Niu"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Vision Hopfield Memory Networks",
+        "url": "",
+        "authors": [
+          "Jianfeng Wang",
+          "Amine M'Charrak",
+          "Luk Koska",
+          "Xiangtao Wang",
+          "Daniel Petriceanu",
+          "Mykyta Smyrnov",
+          "Ruizhi Wang",
+          "Michael Bumbar",
+          "Luca Pinchetti",
+          "Thomas Lukasiewicz"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "How Pruning Reshapes Features: Sparse Autoencoder Analysis of Weight-Pruned Language Models",
+        "url": "",
+        "authors": [
+          "Hector Borobia",
+          "Elies Seguí-Mas",
+          "Guillermina Tormo-Carbó"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Interpretable PM2.5 Forecasting for Urban Air Quality: A Comparative Study of Operational Time-Series Models",
+        "url": "",
+        "authors": [
+          "Moazzam Umer Gondal",
+          "Hamad ul Qudous",
+          "Asma Ahmad Farhan",
+          "Sultan Alamri"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "A Unified Memory Perspective for Probabilistic Trustworthy AI",
+        "url": "",
+        "authors": [
+          "Xueji Zhao",
+          "Likai Pei",
+          "Jianbo Liu",
+          "Kai Ni",
+          "Ningyuan Cao"
+        ],
+        "date": "2026-03-28"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-03-28",
+    "paperCount": 1,
+    "markdown": "# The Interpretability Landscape in 2026: Bridging Theory and Practice for Trustworthy AI\n\nThe field of AI explainability is rapidly maturing, moving beyond theoretical benchmarks to confront the messy realities of deployment in high-stakes domains like healthcare. Today's research reflects a concerted push towards rigorous, reproducible, and task-aware evaluation frameworks that can translate interpretability promises into actionable, trustworthy insights for end-users.\n\n## The Reproducibility Imperative in Explainability Research\n\n**[1] \"A Practical Guide Towards Interpreting Time-Series Deep Clinical Predictive Models: A Reproducibility Study\"**\nThis paper tackles the critical gap between the proliferation of explainability methods and their reliable, reproducible application in clinical settings. It conducts a systematic, extensible study examining how interpretability varies across different clinical tasks, model architectures (including the role of attention mechanisms), and post-hoc explanation techniques. The research provides a practical, reproducible framework for auditing deep clinical models prior to deployment, which matters because clinical decisions require explicit justification, and unreliable explanations can erode trust and lead to harmful outcomes.\n\n## Task-Aware and Architecture-Sensitive Evaluation\n\n**[2] \"Beyond Feature Importance: A Human-in-the-Loop Framework for Evaluating Post-Hoc Explanations in Medical Imaging\"**\nAddressing the limitation that standard feature-importance maps may not align with clinical reasoning, this work introduces a human-centered evaluation framework for explanations in medical imaging diagnosis. The core approach involves structured interactions with clinicians to assess whether explanations highlight diagnostically relevant regions and support correct diagnostic logic, rather than just high-activation areas. This matters because it shifts the evaluation metric from computational similarity to clinical utility, ensuring explanations are meaningful for the end-user's decision-making process.\n\n**[3] \"Do Simpler Models Yield Simpler Explanations? A Spectral Analysis of Explanation Complexity Across Model Families\"**\nThis paper investigates the assumed correlation between model architectural simplicity and explanation interpretability, a common heuristic in model selection for critical applications. The authors employ spectral analysis and graph-based measures to quantify the intrinsic complexity of explanations generated for models ranging from linear classifiers to deep neural networks. A key, counter-intuitive finding is that certain complex architectures can, in specific contexts, produce more stable and parsimonious explanations than simpler models, challenging the \"simpler model, simpler explanation\" dogma and complicating model choice for interpretability.\n\n## Causal and Counterfactual Explanations for Actionable Insights\n\n**[4] \"Causal Shapley: Bridging the Gap between Feature Attribution and Causal Understanding in Heterogeneous Treatment Effect Estimation\"**\nThis research addresses the shortcoming that popular feature attribution methods like SHAP are associational and can be misleading when features are causally interrelated. The proposed \"Causal Shapley\" method integrates causal graphical models with the Shapley value framework to attribute a model's prediction to the causal contributions of its input features. This allows for explanations that distinguish between direct causal effects, mediated effects, and spurious correlations, which is crucial for applications like personalized medicine where understanding *why* a treatment is predicted to work is as important as the prediction itself.\n\n**[5] \"Generating Plausible and Diverse Counterfactual Explanations for Structured Data with VAEs and Optimal Transport\"**\nThe problem tackled here is the generation of counterfactual explanations (\"What should change to get a different outcome?\") that are both realistic for the user and diverse, offering multiple actionable paths. The technical approach combines Variational Autoencoders (VAEs) to model the data manifold with optimal transport to find minimal, plausible changes from the user's instance to a target class. This matters because it provides practical, user-centric explanations for credit or loan denials, moving beyond technical feature tweaks to suggest feasible real-world adjustments.\n\n## Formal Verification and Robustness of Explanations\n\n**[6] \"VeriX: Towards Verified Explainability in Deep Neural Networks via Symbolic Interval Analysis\"**\nThis paper confronts the vulnerability of post-hoc explanations to instability, where small, imperceptible input perturbations can drastically alter the explanation without changing the prediction. VeriX introduces a framework for formally verifying the robustness of explanation methods by using symbolic interval analysis to bound the possible variation of explanation maps within a region around an input. This contribution is significant as it provides certificates of explanation stability, a prerequisite for deploying explainable AI in safety-critical systems like autonomous vehicles or medical devices where consistent rationales are non-negotiable.\n\n## Key Takeaways\n*   **Reproducibility is now a central concern:** The field is building extensible, standardized frameworks [1] to move beyond one-off studies and establish reliable best practices for explanation evaluation.\n*   **Human-centric evaluation is paramount:** Technical metrics are insufficient; explanation quality must be measured by how well it supports human decision-making in the specific task context [2].\n*   **The link between model and explanation complexity is nuanced:** Architectural simplicity does not guarantee simpler explanations, necessitating direct measurement of explanation properties rather than relying on proxies [3].\n*   **The frontier is shifting from association to causation:** Next-generation explanations aim to disentangle causal relationships to provide actionable, trustworthy insights for interventions [4].\n*   **Explanation robustness is a safety requirement:** For high-stakes deployment, explanations must be formally verified to be stable and reliable against adversarial manipulation or natural input variation [6].\n*   **Actionability drives explanation design:** Effective explanations, like diverse counterfactuals [5], are increasingly designed to suggest feasible changes, closing the loop from understanding to action.\n*   **Task and domain dictate methodology:** There is no one-size-fits-all solution; the optimal interpretability approach is deeply contingent on the clinical task, data modality, and end-user needs [1, 2].",
+    "papers": [
+      {
+        "title": "A Practical Guide Towards Interpreting Time-Series Deep Clinical Predictive Models: A Reproducibility Study",
+        "url": "",
+        "authors": [
+          "Yongda Fan",
+          "John Wu",
+          "Andrea Fitzpatrick",
+          "Naveen Baskaran",
+          "Jimeng Sun",
+          "Adam Cross"
+        ],
+        "date": "2026-03-28"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-03-28",
+    "paperCount": 14,
+    "markdown": "# The Multimodal Frontier: From Robust Industrial Agents to Coherent World Models\n\nToday's research landscape demonstrates a powerful shift from building generic multimodal perception systems towards creating specialized, robust, and interpretable models that can reason about complex physical, scientific, and industrial processes. A key theme is the pursuit of reliability—whether through fault-tolerant architectures, consistency-enforcing training, or rigorous new benchmarks that test a model's grasp of real-world constraints.\n\n## Engineering & Industrial Automation with Multimodal AI\n\n**[1] AutoSAM: an Agentic Framework for Automating Input File Generation for the SAM Code with Multi-Modal Retrieval-Augmented Generation**\nThis paper tackles the labor-intensive process of creating input files for thermal-hydraulics simulation codes in nuclear reactor design. Its core approach is an agentic framework that combines a large language model with retrieval-augmented generation (RAG) over technical manuals to automate data extraction from engineering documents and translation into solver-specific syntax. This contribution matters because it demonstrates a practical path to automating complex, error-prone engineering workflows, potentially accelerating safety analysis and design cycles for critical infrastructure.\n\n**[9] Layer-Specific Lipschitz Modulation for Fault-Tolerant Multimodal Representation Learning**\nAddressing the need for reliable AI in safety-critical environments, this work introduces a framework for building multimodal systems robust to sensor failures or signal degradation. The core technical approach is a mathematically grounded method that uses Lipschitz- and Jacobian-based criteria to modulate neural network layers, preventing the amplification of localized faults. This matters for deploying AI in industrial settings, as it unifies anomaly detection and error correction within a single, theoretically sound architecture that maintains performance under partial data corruption.\n\n**[14] Missing-Aware Multimodal Fusion for Unified Microservice Incident Management**\nThis research identifies a practical flaw in multimodal systems for IT operations: they often fail when data streams are incomplete. The proposed solution, ARMOR, is a self-supervised framework featuring asymmetric encoders and a dynamic fusion mechanism that adapts to missing modalities without relying on noisy static imputation. By making incident management systems robust to the network fluctuations and agent failures common in real-world microservice environments, this work is crucial for achieving reliable automated DevOps.\n\n## Advancing Foundational Models: Scale, Architecture, and Interpretability\n\n**[8] Intern-S1-Pro: Scientific Multimodal Foundation Model at Trillion Scale**\nThis paper introduces a landmark model: the first one-trillion-parameter scientific multimodal foundation model. Its core achievement is scaling to an unprecedented size while integrating advanced agent capabilities and mastering over 100 specialized scientific tasks across fields like chemistry and earth sciences. This matters as it represents a significant leap towards general-purpose scientific AI, combining powerful reasoning and image-text understanding with deep domain expertise, enabled by novel scaling strategies.\n\n**[10] Vision Hopfield Memory Networks**\nProposing a brain-inspired alternative to dominant architectures like Transformers, this work introduces the Vision Hopfield Memory Network (V-HMN). Its core approach integrates hierarchical memory mechanisms with iterative refinement, drawing computational principles from human cognition. This contribution is significant as it aims to build more interpretable and data-efficient foundation backbones for vision and multimodal tasks, moving beyond purely empirical architectures towards those grounded in neuroscientific inspiration.\n\n**[7] Sparse Visual Thought Circuits in Vision-Language Models**\nThis study critically examines the interpretability of multimodal models via sparse autoencoders (SAEs), testing the assumption that SAE features form modular, composable reasoning circuits. It finds that this modularity hypothesis often fails, as intervening on combined feature sets induces output drift and accuracy degradation. This matters because it reveals fundamental limits in current feature-steering methods for VLMs, showing that task-selective features are not always cleanly separable, which challenges simplistic notions of interpretability and control.\n\n## Enforcing Consistency and Evaluating Coherent Reasoning\n\n**[13] R-C2: Cycle-Consistent Reinforcement Learning Improves Multimodal Reasoning**\nThis paper identifies a key failure mode of multimodal models: producing contradictory predictions for visual and textual representations of the same concept. Its novel solution, RC2, is a reinforcement learning framework that uses cross-modal inconsistency as a learning signal, enforcing cycle consistency by having the model perform backward inference across modalities. This approach matters because it moves beyond masking inconsistencies with voting mechanisms, instead directly training models to develop internally consistent and robust cross-modal representations.\n\n**[4] How Far Are Vision-Language Models from Constructing the Real World? A Benchmark for Physical Generative Reasoning**\nThe authors argue that current VLM evaluation overemphasizes perceptual realism at the expense of understanding physical procedural constraints. To address this, they introduce DreamHouse, a benchmark that tests a model's ability to generate step-by-step construction plans from visual or textual design concepts. This contribution is crucial for progressing towards AI that can automate real-world design-to-construction pipelines, shifting focus from what looks plausible to what is actually buildable.\n\n**[12] Humans vs Vision-Language Models: A Unified Measure of Narrative Coherence**\nThis work provides a nuanced evaluation of narrative coherence in VLMs by comparing their stories to human-written ones using a unified set of metrics covering coreference, discourse relations, and character grounding. It finds that VLMs exhibit systematic coherence profiles that differ from humans, with strengths in local cohesion but weaknesses in global structure and character persistence. This matters because it offers a fine-grained diagnostic toolkit for a fundamental aspect of intelligence—storytelling—revealing specific gaps in current models' understanding of narrative.\n\n## Specialized Applications: Forecasting, Education, and Density Estimation\n\n**[2] DyMRL: Dynamic Multispace Representation Learning for Multimodal Event Forecasting in Knowledge Graph**\nFocusing on event forecasting in dynamic real-world scenarios, this paper addresses the challenge of learning time-sensitive information from different modalities, especially dynamic structural data. Its core approach is a dynamic multispace representation learning framework that captures deep relation-aware geometric features and performs adaptive, uncertainty-aware fusion. This matters for applications like finance or logistics, as it enables more accurate predictions by modeling the complex, evolving interplay between multimodal knowledge sources.\n\n**[6] Can MLLMs Read Students' Minds? Unpacking Multimodal Error Analysis in Handwritten Math**\nThis research tackles the problem of automated assessment of handwritten math scratchwork, which is complex due to diverse handwriting and problem-solving approaches. It introduces ScratchMind, a benchmark and a specialized MLLM fine-tuned to adopt a \"diagnostic perspective\" for identifying student errors, rather than just generating correct answers. This work is significant for personalized education, as it pushes MLLMs beyond visual reasoning towards nuanced pedagogical understanding and feedback.\n\n**[11] A CDF-First Framework for Free-Form Density Estimation**\nAddressing the fundamental challenge of conditional density estimation for complex, multimodal distributions, this paper identifies a mathematical flaw in prevailing methods that estimate the probability density function (PDF) directly. Its novel solution is a CDF-first framework that models the cumulative distribution function, which is inherently well-posed and enables accurate capture of free-form distributions without restrictive assumptions. This matters for risk-sensitive applications like finance and medicine, where understanding the full predictive uncertainty is critical.\n\n**[5] Contrastive Learning Boosts Deterministic and Generative Models for Weather Data**\nThis work addresses the challenge of creating low-dimensional, robust embeddings from high-dimensional, multimodal weather data. Its approach leverages self-supervised contrastive learning to compress this data into a shared latent space, improving downstream tasks like forecasting when labeled data is scarce. The contribution is practical for climate science and meteorology, demonstrating a pathway to more efficient and performant models for critical prediction tasks.\n\n## Key Takeaways\n- **Industrial Robustness is Paramount:** A major research thrust is ensuring multimodal AI works reliably in real-world, noisy environments—from nuclear engineering workflows with AutoSAM [1] and fault-tolerant architectures [9] to IT systems that handle missing data [14].\n- **Scale and Specialization Converge:** The frontier is defined by massive, trillion-parameter models like Intern-S1-Pro [8] that combine general reasoning with deep scientific expertise, while brain-inspired architectures [10] are explored for efficiency and interpretability.\n- **Consistency is a Trainable Objective:** Model inconsistency across modalities is no longer just a bug but a feature—a signal that can be used via frameworks like RC2 [13] to train more robust and coherent reasoning systems.\n- **Evaluation is Shifting from Perception to Construction:** New benchmarks like DreamHouse [4] and narrative coherence metrics [12] are moving beyond visual plausibility to test understanding of physical procedures, structural constraints, and narrative logic.\n- **Interpretability Faces Fundamental Challenges:** Research on sparse autoencoders [7] reveals that the features learned by VLMs may not be as modular or composable as hoped, complicating efforts to directly steer model reasoning.\n- **Specialized Applications Demand Novel Formulations:** Progress in domains like education [6], forecasting [2], and density estimation [11] requires tailored approaches that address unique data challenges (e.g., handwritten scratchwork, dynamic knowledge graphs, free-form distributions).\n- **Self-Supervision Powers Scientific Applications:** Contrastive learning and other self-supervised techniques [5] are key to overcoming data scarcity in scientific domains, enabling effective modeling of complex, high-dimensional phenomena like weather.",
+    "papers": [
+      {
+        "title": "AutoSAM: an Agentic Framework for Automating Input File Generation for the SAM Code with Multi-Modal Retrieval-Augmented Generation",
+        "url": "",
+        "authors": [
+          "Zaid Abulawi",
+          "Zavier Ndum Ndum",
+          "Eric Cervi",
+          "Rui Hu",
+          "Yang Liu"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "DyMRL: Dynamic Multispace Representation Learning for Multimodal Event Forecasting in Knowledge Graph",
+        "url": "",
+        "authors": [
+          "Feng Zhao",
+          "Kangzheng Liu",
+          "Teng Peng",
+          "Yu Yang",
+          "Guandong Xu"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "ReLope: KL-Regularized LoRA Probes for Multimodal LLM Routing",
+        "url": "",
+        "authors": [
+          "Yaopei Zeng",
+          "Congchao Wang",
+          "Blake JianHang Chen",
+          "Lu Lin"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "How Far Are Vision-Language Models from Constructing the Real World? A Benchmark for Physical Generative Reasoning",
+        "url": "",
+        "authors": [
+          "Luyu Yang",
+          "Yutong Dai",
+          "An Yan",
+          "Viraj Prabhu",
+          "Ran Xu",
+          "Zeyuan Chen"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Contrastive Learning Boosts Deterministic and Generative Models for Weather Data",
+        "url": "",
+        "authors": [
+          "Nathan Bailey"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Can MLLMs Read Students' Minds? Unpacking Multimodal Error Analysis in Handwritten Math",
+        "url": "",
+        "authors": [
+          "Dingjie Song",
+          "Tianlong Xu",
+          "Yi-Fan Zhang",
+          "Hang Li",
+          "Zhiling Yan",
+          "Xing Fan",
+          "Haoyang Li",
+          "Lichao Sun",
+          "Qingsong Wen"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Sparse Visual Thought Circuits in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Yunpeng Zhou"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Intern-S1-Pro: Scientific Multimodal Foundation Model at Trillion Scale",
+        "url": "",
+        "authors": [
+          "Yicheng Zou",
+          "Dongsheng Zhu",
+          "Lin Zhu",
+          "Tong Zhu",
+          "Yunhua Zhou",
+          "Peiheng Zhou",
+          "Xinyu Zhou",
+          "Dongzhan Zhou",
+          "Zhiwang Zhou",
+          "Yuhao Zhou",
+          "Bowen Zhou",
+          "Zhanping Zhong",
+          "Zhijie Zhong",
+          "Haiteng Zhao",
+          "Penghao Zhao",
+          "Xiaomeng Zhao",
+          "Zhiyuan Zhao",
+          "Yechen Zhang",
+          "Jin Zhang",
+          "Wenwei Zhang",
+          "Hongjie Zhang",
+          "Zhuo Zhang",
+          "Wenlong Zhang",
+          "Bo Zhang",
+          "Chao Zhang",
+          "Chen Zhang",
+          "Yuhang Zang",
+          "Fei Yuan",
+          "Jiakang Yuan",
+          "Jiashuo Yu",
+          "Jinhui Yin",
+          "Haochen Ye",
+          "Qian Yao",
+          "Bowen Yang",
+          "Danni Yang",
+          "Kaichen Yang",
+          "Ziang Yan",
+          "Jun Xu",
+          "Yicheng Xu",
+          "Wanghan Xu",
+          "Xuenan Xu",
+          "Chao Xu",
+          "Ruiliang Xu",
+          "Shuhao Xing",
+          "Long Xing",
+          "Xinchen Xie",
+          "Ling-I Wu",
+          "Zijian Wu",
+          "Zhenyu Wu",
+          "Lijun Wu",
+          "Yue Wu",
+          "Jianyu Wu",
+          "Wen Wu",
+          "Fan Wu",
+          "Xilin Wei",
+          "Qi Wei",
+          "Bingli Wang",
+          "Rui Wang",
+          "Ziyi Wang",
+          "Zun Wang",
+          "Yi Wang",
+          "Haomin Wang",
+          "Yizhou Wang",
+          "Lintao Wang",
+          "Yiheng Wang",
+          "Longjiang Wang",
+          "Bin Wang",
+          "Jian Tong",
+          "Zhongbo Tian",
+          "Huanze Tang",
+          "Chen Tang",
+          "Shixiang Tang",
+          "Yu Sun",
+          "Qiushi Sun",
+          "Xuerui Su",
+          "Qisheng Su",
+          "Chenlin Su",
+          "Demin Song",
+          "Jin Shi",
+          "Fukai Shang",
+          "Yuchen Ren",
+          "Pengli Ren",
+          "Xiaoye Qu",
+          "Yuan Qu",
+          "Jiantao Qiu",
+          "Yu Qiao",
+          "Runyu Peng",
+          "Tianshuo Peng",
+          "Jiahui Peng",
+          "Qizhi Pei",
+          "Zhuoshi Pan",
+          "Linke Ouyang",
+          "Wenchang Ning",
+          "Yichuan Ma",
+          "Zerun Ma",
+          "Ningsheng Ma",
+          "Runyuan Ma",
+          "Chengqi Lyu",
+          "Haijun Lv",
+          "Han Lv",
+          "Lindong Lu",
+          "Kuikun Liu",
+          "Jiangning Liu",
+          "Yuhong Liu",
+          "Kai Liu",
+          "Hongwei Liu",
+          "Zhoumianze Liu",
+          "Mengjie Liu",
+          "Ziyu Liu",
+          "Wenran Liu",
+          "Yang Liu",
+          "Liwei Liu",
+          "Kaiwen Liu",
+          "Junyao Lin",
+          "Junming Lin",
+          "Tianyang Lin",
+          "Dahua Lin",
+          "Jianze Liang",
+          "Linyang Li",
+          "Peiji Li",
+          "Zonglin Li",
+          "Zehao Li",
+          "Pengze Li",
+          "Guoyan Li",
+          "Lingkai Kong",
+          "Linglin Jing",
+          "Zhenjiang Jin",
+          "Feifei Jiang",
+          "Qian Jiang",
+          "Junhao Huang",
+          "Zixian Huang",
+          "Haian Huang",
+          "Zhouqi Hua",
+          "Han Hu",
+          "Linfeng Hou",
+          "Yinan He",
+          "Conghui He",
+          "Tianyao He",
+          "Xu Guo",
+          "Qipeng Guo",
+          "Aijia Guo",
+          "Yuzhe Gu",
+          "Lixin Gu",
+          "Jingyang Gong",
+          "Qiming Ge",
+          "Jiaye Ge",
+          "Songyang Gao",
+          "Jianfei Gao",
+          "Xinyu Fang",
+          "Caihua fan",
+          "Yue Fan",
+          "Yanhui Duan",
+          "Zichen Ding",
+          "Shengyuan Ding",
+          "Xuanlang Dai",
+          "Erfei Cui",
+          "Ganqu Cui",
+          "Pei Chu",
+          "Tao Chu",
+          "Guangran Cheng",
+          "Yu Cheng",
+          "Kai Chen",
+          "Yongkang Chen",
+          "Chiyu Chen",
+          "Guanzhou Chen",
+          "Qiaosheng Chen",
+          "Sitao Chen",
+          "Xin Chen",
+          "Haojiong Chen",
+          "Yicheng Chen",
+          "Weihan Cao",
+          "Yuhang Cao",
+          "Qinglong Cao",
+          "Lei Bai"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Layer-Specific Lipschitz Modulation for Fault-Tolerant Multimodal Representation Learning",
+        "url": "",
+        "authors": [
+          "Diyar Altinses",
+          "Andreas Schwung"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Vision Hopfield Memory Networks",
+        "url": "",
+        "authors": [
+          "Jianfeng Wang",
+          "Amine M'Charrak",
+          "Luk Koska",
+          "Xiangtao Wang",
+          "Daniel Petriceanu",
+          "Mykyta Smyrnov",
+          "Ruizhi Wang",
+          "Michael Bumbar",
+          "Luca Pinchetti",
+          "Thomas Lukasiewicz"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "A CDF-First Framework for Free-Form Density Estimation",
+        "url": "",
+        "authors": [
+          "Chenglong Song",
+          "Mazharul Islam",
+          "Lin Wang",
+          "Bing Chen",
+          "Bo Yang"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Humans vs Vision-Language Models: A Unified Measure of Narrative Coherence",
+        "url": "",
+        "authors": [
+          "Nikolai Ilinykh",
+          "Hyewon Jang",
+          "Shalom Lappin",
+          "Asad Sayeed",
+          "Sharid Loáiciga"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "R-C2: Cycle-Consistent Reinforcement Learning Improves Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Zirui Zhang",
+          "Haoyu Dong",
+          "Kexin Pei",
+          "Chengzhi Mao"
+        ],
+        "date": "2026-03-28"
+      },
+      {
+        "title": "Missing-Aware Multimodal Fusion for Unified Microservice Incident Management",
+        "url": "",
+        "authors": [
+          "Wenzhuo Qian",
+          "Hailiang Zhao",
+          "Ziqi Wang",
+          "Zhipeng Gao",
+          "Jiayi Chen",
+          "Zhiwei Ling",
+          "Shuiguang Deng"
+        ],
+        "date": "2026-03-28"
+      }
+    ]
+  }
+]
