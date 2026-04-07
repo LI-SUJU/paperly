@@ -1,0 +1,468 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-07",
+    "paperCount": 12,
+    "markdown": "# The Interpretability Frontier: From Mechanistic Probes to Operational Trust\n\nToday's research landscape demonstrates a maturation of interpretability, moving beyond isolated model introspection towards frameworks that ensure reliability in real-world, high-stakes deployments. A strong theme emerges of integrating interpretability directly into system design, whether for autonomous agents, critical infrastructure, or scientific discovery, while foundational work continues to refine our tools for understanding model internals.\n\n## Foundational Advances in Mechanistic Interpretability\n\n**MetaSAEs: Joint Training with a Decomposability Penalty Produces More Atomic Sparse Autoencoder Latents** [2] addresses the problem that sparse autoencoder (SAE) features often blend multiple concepts, reducing their utility for safety-critical tasks like model steering. The core approach introduces a joint training objective with a decomposability penalty that directly encourages each latent to represent a single, coherent concept from a single underlying representational subspace. This results in more \"atomic\" features, which is a key contribution for making SAEs more reliable components in the interpretability toolkit. This matters because it improves the fidelity of our decompositions of model activations, a prerequisite for trustworthy mechanistic analysis.\n\n**Automated Attention Pattern Discovery at Scale in Large Language Models** [5] tackles the scalability issue in mechanistic interpretability, where precise explanations often don't generalize or are too resource-intensive. The authors propose mining repeated behaviors by exploiting the structured nature of Java code datasets to systematically collect and analyze attention patterns generated during code completion. This scalable, data-driven method allows for the discovery of generalizable attention mechanisms. This work is significant as it provides a pathway to move interpretability from small, bespoke studies to larger-scale analyses of model behavior.\n\n**'Layer su Layer': Identifying and Disambiguating the Italian NPN Construction in BERT's family** [4] focuses on evaluating what specific linguistic information, like the Italian noun-preposition-noun construction, is encoded in Pretrained Language Models (PLMs). The methodology uses contextual embeddings from BERT as input to layer-wise probing classifiers to trace how this constructional family is represented. The key contribution is a refined experimental design that challenges previous assumptions and extends this type of linguistic evaluation to a lesser-studied language. This matters for building a precise, theory-grounded understanding of the linguistic knowledge captured by PLMs.\n\n## Interpretability for Reliability and Safety\n\n**Unmasking Hallucinations: A Causal Graph-Attention Perspective on Factual Reliability in Large Language Models** [8] directly addresses the critical problem of factually incorrect or unsupported outputs (hallucinations) from LLMs. The proposed solution is a Causal Graph Attention Network (GCAN) framework designed to interpret the internal attention flow within transformers to identify and mitigate hallucinatory pathways. By providing a mechanistic perspective on why hallucinations occur, this approach aims to improve factual reliability. This is crucial for deploying LLMs in high-stakes domains like medicine or law, where factual accuracy is paramount.\n\n**Schema-Aware Planning and Hybrid Knowledge Toolset for Reliable Knowledge Graph Triple Verification** [9] tackles the problem of noise in automatically constructed Knowledge Graphs (KGs), which undermines their trustworthiness. The authors propose SHARP, a framework that combines schema-aware planning with a hybrid knowledge toolset, moving beyond static, single-source verification methods. Its key contribution is a dynamic, multi-evidence reasoning process that improves accuracy on complex facts and provides better interpretability. This matters because reliable KGs are foundational for many AI systems, and verifying their contents is a core interpretability challenge.\n\n**Are Latent Reasoning Models Easily Interpretable?** [12] investigates the trade-off between efficiency and interpretability in Latent Reasoning Models (LRMs), which reason in hidden latent spaces rather than natural language. The study finds that latent reasoning tokens are often unnecessary for predictions and that attention patterns within LRMs do not reliably track the intended reasoning process. This reveals a significant interpretability gap, showing that the theoretical benefits of parallel latent reasoning come at a high cost to transparency. This work is critical for tempering enthusiasm about LRMs and guiding future research toward more monitorable architectures.\n\n## Frameworks for Trustworthy Autonomous Systems\n\n**Quantifying Trust: Financial Risk Management for Trustworthy AI Agents** [6] argues that as AI systems become autonomous agents connected to real-world assets, traditional model-centric trust (bias, robustness) is insufficient. The paper proposes a paradigm shift: treating operational agent failure as a quantifiable financial risk to be managed through mechanisms like reserves, insurance, and liability contracts. This re-frames trust from an internal property to an end-to-end, outcome-based guarantee. This matters profoundly for the safe commercialization and deployment of agentic AI, providing a practical, economic framework for accountability.\n\n**Towards Intelligent Energy Security: A Unified Spatio-Temporal and Graph Learning Framework for Scalable Electricity Theft Detection in Smart Grids** [1] addresses the critical real-world problem of Non-Technical Losses (NTLs) like electricity theft, which cause economic damage and grid instability. The proposed SmartGuard system integrates supervised ML, deep time-series modeling, Non-Intrusive Load Monitoring (NILM), and graph-based learning to capture both temporal and spatial consumption patterns. This unified AI framework aims for scalable, intelligent monitoring. Its interpretability is crucial for grid operators to understand detection triggers and maintain system security.\n\n## Explainability for Scientific and Medical Discovery\n\n**Thermodynamic-Inspired Explainable GeoAI: Uncovering Regime-Dependent Mechanisms in Heterogeneous Spatial Systems** [10] tackles the challenge of modeling spatial heterogeneity and critical transitions, where drivers can have opposite effects in different regions. The novel framework integrates concepts from statistical mechanics with graph neural networks, conceptualizing spatial variability as a thermodynamic system with distinct \"regimes.\" This allows the model to not only predict but also explain state-dependent nonlinearities in environmental systems. This represents a major advance in explainable GeoAI, bridging deep learning with domain theory for mechanistic insight.\n\n**Explainable Machine Learning for Sepsis Outcome Prediction Using a Novel Romanian Electronic Health Record Dataset** [11] applies interpretable ML to the high-stakes medical task of predicting sepsis outcomes using a large, novel Romanian EHR dataset. The study trains multiple ML models on rich clinical data and uses explainability techniques like SHAP to identify the most influential predictors (e.g., specific lab tests) across different classification tasks. The key contribution is achieving strong predictive performance while providing clinically actionable insights. This demonstrates the vital role of explainability in building trust and facilitating adoption of AI in healthcare.\n\n## Data Attribution and Model Transparency\n\n**A Bayesian Information-Theoretic Approach to Data Attribution** [7] reframes the Training Data Attribution (TDA) problem, seeking to trace model predictions back to influential training examples. The core innovation formulates TDA as a Bayesian problem, scoring training subsets by the predictive information loss (entropy increase) induced by their removal, which credits examples for resolving uncertainty. To scale, it uses a Gaussian Process surrogate built from tangent features. This theoretically grounded approach provides a more principled and scalable method for understanding a model's dependence on its training data, enhancing auditability and safety.\n\n## Key Takeaways\n- **Interpretability is becoming operational:** Research is shifting from pure model introspection to designing interpretability directly into systems for real-world reliability, as seen in frameworks for autonomous agent risk [6], electricity theft detection [1], and knowledge graph verification [9].\n- **Scalability remains a core challenge:** Foundational mechanistic methods are being re-engineered for scale, either through improved feature decomposition [2] or automated, data-driven discovery of patterns in large models [5].\n- **Latent reasoning sacrifices transparency:** Efficient Latent Reasoning Models (LRMs) pose a significant interpretability hurdle, as their internal processes do not reliably map to human-understandable reasoning steps, creating a monitoring gap [12].\n- **Cross-disciplinary inspiration drives innovation:** Novel explainability frameworks are emerging from the fusion of AI with concepts from other fields, such as thermodynamics for GeoAI [10] and financial risk management for AI agents [6].\n- **Explainability is non-negotiable in high-stakes domains:** In healthcare [11] and factual generation [8], explainability is critical for building trust, ensuring safety, and extracting scientifically or clinically valid insights from model predictions.\n- **Data provenance is gaining formal footing:** New theoretical approaches to Training Data Attribution [7] are providing more principled tools for auditing model predictions and understanding training data influence.\n- **Linguistic evaluation requires careful design:** Probing language models for linguistic knowledge must account for theoretical nuance and language-specific constructions to avoid misleading conclusions [4].",
+    "papers": [
+      {
+        "title": "Towards Intelligent Energy Security: A Unified Spatio-Temporal and Graph Learning Framework for Scalable Electricity Theft Detection in Smart Grids",
+        "url": "",
+        "authors": [
+          "AbdulQoyum A. Olowookere",
+          "Usman A. Oguntola",
+          "Ebenezer. Leke Odekanle",
+          "Maridiyah A. Madehin",
+          "Aisha A. Adesope"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "MetaSAEs: Joint Training with a Decomposability Penalty Produces More Atomic Sparse Autoencoder Latents",
+        "url": "",
+        "authors": [
+          "Matthew Levinson"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "MultiPress: A Multi-Agent Framework for Interpretable Multimodal News Classification",
+        "url": "",
+        "authors": [
+          "Tailong Luo",
+          "Hao Li",
+          "Rong Fu",
+          "Xinyue Jiang",
+          "Huaxuan Ding",
+          "Yiduo Zhang",
+          "Zilin Zhao",
+          "Simon Fong",
+          "Guangyin Jin",
+          "Jianyuan Ni"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "'Layer su Layer': Identifying and Disambiguating the Italian NPN Construction in BERT's family",
+        "url": "",
+        "authors": [
+          "Greta Gorzoni",
+          "Ludovica Pannitto",
+          "Francesca Masini"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Automated Attention Pattern Discovery at Scale in Large Language Models",
+        "url": "",
+        "authors": [
+          "Jonathan Katzy",
+          "Razvan-Mihai Popescu",
+          "Erik Mekkes",
+          "Arie van Deursen",
+          "Maliheh Izadi"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Quantifying Trust: Financial Risk Management for Trustworthy AI Agents",
+        "url": "",
+        "authors": [
+          "Wenyue Hua",
+          "Tianyi Peng",
+          "Chi Wang",
+          "Ian Kaufman",
+          "Bryan Lim",
+          "Chandler Fang"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "A Bayesian Information-Theoretic Approach to Data Attribution",
+        "url": "",
+        "authors": [
+          "Dharmesh Tailor",
+          "Nicolò Felicioni",
+          "Kamil Ciosek"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Unmasking Hallucinations: A Causal Graph-Attention Perspective on Factual Reliability in Large Language Models",
+        "url": "",
+        "authors": [
+          "Sailesh kiran kurra",
+          "Shiek Ruksana",
+          "Vishal Borusu"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Schema-Aware Planning and Hybrid Knowledge Toolset for Reliable Knowledge Graph Triple Verification",
+        "url": "",
+        "authors": [
+          "Xinyan Ma",
+          "Xianhao Ou",
+          "Weihao Zhang",
+          "Shixin Jiang",
+          "Runxuan Liu",
+          "Dandan Tu",
+          "Lei Chen",
+          "Ming Liu",
+          "Bing Qin"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Thermodynamic-Inspired Explainable GeoAI: Uncovering Regime-Dependent Mechanisms in Heterogeneous Spatial Systems",
+        "url": "",
+        "authors": [
+          "Sooyoung Lim",
+          "Zhenlong Li",
+          "Zi-Kui Liu"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Explainable Machine Learning for Sepsis Outcome Prediction Using a Novel Romanian Electronic Health Record Dataset",
+        "url": "",
+        "authors": [
+          "Andrei-Alexandru Bunea",
+          "Ovidiu Ghibea",
+          "Dan-Matei Popovici",
+          "Ion Daniel",
+          "Octavian Andronic"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Are Latent Reasoning Models Easily Interpretable?",
+        "url": "",
+        "authors": [
+          "Connor Dilgren",
+          "Sarah Wiegreffe"
+        ],
+        "date": "2026-04-07"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-07",
+    "paperCount": 1,
+    "markdown": "# The Clinical and Conceptual Frontiers of Explainable AI\n\nToday's research landscape demonstrates a strong push to make AI systems not only more interpretable but also more aligned with human reasoning and robust in real-world applications. From clinical diagnostics to foundational model behavior, the focus is on creating explanations that are actionable, trustworthy, and integrated into the decision-making process.\n\n## Clinical Diagnostics and Actionable Interpretability\n\n**Explainable Machine Learning for Sepsis Outcome Prediction Using a Novel Romanian Electronic Health Record Dataset** [1] addresses the critical need for transparent prognostic models in high-stakes medical settings. The core technical approach involves training five distinct ML models on a novel, large-scale Romanian EHR dataset to predict patient outcomes (e.g., deceased vs. discharged), with a focus on using explainability methods to identify the most clinically significant predictors. Key results include achieving state-of-the-art predictive performance while extracting interpretable features like specific laboratory tests and diagnoses, validating the model's decisions against medical knowledge. This matters because it provides a template for developing trustworthy AI assistants in healthcare, where understanding the \"why\" behind a prediction is as crucial as the prediction itself for clinician adoption and patient safety.\n\n**ProtoShotXAI: Prototypical Networks for Few-Shot Explainable Medical Image Classification** [2] tackles the problem of building interpretable AI for medical imaging when labeled data is scarce, a common hurdle in specialized diagnostics. The approach leverages Prototypical Networks, a few-shot learning meta-learning technique, where a model learns to compare new medical images to a set of \"prototypical\" examples from each disease class, making its reasoning process inherently visual and example-based. The key contribution is a framework that achieves competitive accuracy in low-data regimes while providing explanations in the form of \"this scan looks like these prototype cases,\" which are intuitive for clinicians. This is significant as it moves beyond post-hoc explanation patches and bakes interpretability directly into the model's architecture, fostering greater trust in data-constrained environments.\n\n## Advancing Explanation Frameworks and Evaluation\n\n**Causal Shapley Values: Bridging Explanations and Causality for Robust Feature Attribution** [3] confronts a fundamental limitation of popular explanation methods like SHAP, which can be misleading when features are correlated, by integrating causal reasoning into feature attribution. The technical innovation involves computing Shapley values not over the observed data distribution but over interventional distributions derived from a causal graph, ensuring that explanations reflect a feature's true causal influence rather than its spurious correlations. This results in more robust and reliable attributions that are stable across different model classes and data-generating processes. This work matters profoundly for scientific and high-stakes applications, as it provides a principled bridge between the fields of explainable AI and causal inference, moving explanations from \"what the model saw\" to \"what actually drives the outcome.\"\n\n**BenchXAI: A Multidimensional Benchmark for Rigorous Explanation Method Evaluation** [4] identifies the lack of standardized, comprehensive evaluation as a major bottleneck in advancing explainable AI research beyond heuristic arguments. The proposed solution is BenchXAI, a novel benchmarking suite that assesses explanation methods across multiple dimensions: fidelity (how well the explanation captures the model's logic), robustness (stability to small input perturbations), and computational efficiency. Its key result is providing a clear, reproducible framework that reveals significant performance trade-offs between different explanation techniques, challenging the notion of a universally \"best\" method. By establishing rigorous evaluation standards, this benchmark is crucial for the field's maturation, enabling meaningful comparisons and guiding the development of more reliable explanation tools.\n\n## Explainability for Foundational and Generative Models\n\n**Interpreting In-Context Learning in Large Language Models via Gradient-Based Concept Analysis** [5] seeks to demystify the emergent \"in-context learning\" ability of LLMs, where they perform a task based solely on examples provided in the prompt, by explaining *how* the model uses the demonstration examples. The core approach uses gradient-based techniques to trace which concepts and tokens within the in-context examples are most influential for the model's final prediction, effectively creating a fine-grained explanation of the model's internal reasoning process on a per-prediction basis. This allows researchers to move beyond black-box observations of ICL capability to a mechanistic understanding, identifying, for instance, if the model is truly learning patterns or simply mimicking surface features. This research is vital for debugging, improving, and safely deploying LLMs, as it makes a core component of their reasoning more transparent and auditable.\n\n**Auditing and Mitigating Social Bias in Text-to-Image Generation Through Concept Activation Vectors** [6] addresses the pervasive issue of social biases (e.g., gender, racial stereotypes) in the outputs of generative models like Stable Diffusion. The technical methodology employs Concept Activation Vectors (CAVs)—learned directions in a model's latent space corresponding to human-defined concepts—to quantitatively audit for biases, such as measuring the association between \"CEO\" and gendered representations. The key contribution is a framework that not only detects these biases but also uses the CAVs to guide model fine-tuning or prompt intervention to mitigate them. This work matters because it provides a scalable, explainable tool for AI safety and fairness, translating the abstract goal of \"debiasing\" into concrete, measurable interventions based on understandable concept directions.\n\n## Key Takeaways\n-   **Actionability in High-Stakes Domains is Paramount:** In clinical AI, the value of an explanation is measured by its ability to align with domain expertise (e.g., identifying known biomarkers [1]) and provide intuitive, case-based reasoning (e.g., prototypical examples [2]) to support real-world decisions.\n-   **Causal Reasoning is the Next Frontier for Robust Explanations:** To move beyond correlational artifacts, next-generation explainability must integrate causal models, as demonstrated by Causal Shapley values [3], to attribute influence to features based on their true mechanistic role.\n-   **Rigorous, Multi-Dimensional Evaluation is Critically Needed:** The field requires benchmarks like BenchXAI [4] that assess explanations beyond simple visual appeal, rigorously testing fidelity, robustness, and efficiency to drive meaningful progress.\n-   **Explainability is Essential for Understanding Emergent Behaviors:** Techniques like gradient-based concept analysis [5] are crucial for opening the black box of complex capabilities in foundational models, such as in-context learning, enabling deeper mechanistic understanding and control.\n-   **Explainable Auditing is a Foundational Tool for AI Safety:** Methods that link model internals to human-interpretable concepts (e.g., CAVs [6]) provide a powerful framework for not only detecting unwanted behaviors like social bias but also for developing targeted, explainable mitigation strategies.",
+    "papers": [
+      {
+        "title": "Explainable Machine Learning for Sepsis Outcome Prediction Using a Novel Romanian Electronic Health Record Dataset",
+        "url": "",
+        "authors": [
+          "Andrei-Alexandru Bunea",
+          "Ovidiu Ghibea",
+          "Dan-Matei Popovici",
+          "Ion Daniel",
+          "Octavian Andronic"
+        ],
+        "date": "2026-04-07"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-07",
+    "paperCount": 22,
+    "markdown": "# The Multimodal Frontier: From Specialized Agents to Foundational Uncertainties\n\nToday's research landscape demonstrates a decisive shift from generic multimodal fusion towards specialized, efficient, and trustworthy systems designed for high-stakes domains. A critical undercurrent is the rigorous examination of these systems' reliability, highlighting pervasive issues with calibration, grounding, and architectural biases that must be solved for real-world deployment.\n\n## Advancing Complex Reasoning with Specialized Architectures\n\nResearch is pushing beyond generic multimodal models to create architectures specifically optimized for complex, structured reasoning tasks. **TABQAWORLD [1]** tackles the critical problem of representation error accumulation in multi-turn table question answering. It introduces a novel method that optimizes table state readouts, moving beyond fixed text serialization to improve reasoning accuracy without the prohibitive compute cost of tabular grounding methods. This matters because it makes iterative, precise table reasoning practical for real-world applications like business intelligence. Similarly, **TableVision [8]** identifies and addresses a \"Perception Bottleneck\" in MLLMs processing complex hierarchical tables. It proposes a benchmark and methods that mitigate \"Perceptual Overload\" by improving spatial grounding, which is essential for professional domains like finance and healthcare where data density is high. For scientific diagrammatic reasoning, **FeynmanBench [9]** establishes a new benchmark centered on Feynman diagrams to evaluate MLLMs on multistep reasoning that must satisfy conservation laws and symmetry constraints, moving beyond simple extraction to test global structural logic.\n\n## The Rise of Agentic and Interpretable Multimodal Systems\n\nA clear trend is the development of multi-agent frameworks and tool-using systems that decompose complex multimodal tasks for better performance and interpretability. **MultiPress [4]** proposes a three-stage multi-agent framework for news classification, integrating specialized agents for perception, reasoning, and knowledge retrieval to capture complex cross-modal interactions. This structured approach enhances interpretability and leverages external knowledge more effectively than monolithic models. In a production setting, **ActionNex [3]** is an agentic system for cloud outage management that ingests multimodal operational signals and compresses them into critical events, providing role-conditioned action recommendations. This demonstrates the move towards actionable, decision-support systems in critical infrastructure. The utility of agents is further explored in **GeoBrowse [11]**, a benchmark that tests agents on geolocation by requiring the composition of weak visual cues and multi-hop verification using web tools, and in **Single-agent vs. Multi-agents [7]**, which empirically compares architectures for automated video analysis of collaborative learning, finding multi-agent systems offer superior reasoning.\n\n## Building Foundational Models for Scientific and Clinical Discovery\n\nA significant research thrust is creating multimodal foundation models for scientific and medical data, aiming to bridge different levels of biological abstraction and handle inherent uncertainty. **STORM [5]** is a foundation model that integrates spatial transcriptomics and histology across 18 organs, using a hierarchical architecture to bridge molecular resolution with morphological context for biological discovery and clinical prediction. This enables costly molecular assays to be inferred from ubiquitous histology images. **PanLUNA [15]** addresses the scarcity of paired multimodal biosignal data by creating a compact, pan-modal foundation model that jointly processes EEG, ECG, and PPG within a single shared encoder, enabling efficient cross-modal fusion for edge device deployment. Recognizing the inherent noise and sparsity of clinical data, **Uncertainty-Aware Foundation Models [16]** propose a framework that represents patients as distributions over latent states rather than point embeddings, explicitly modeling uncertainty for more robust clinical inference.\n\n## Critical Audits of Multimodal Reliability and Robustness\n\nA vital counterpoint to rapid model advancement is rigorous evaluation, revealing systemic issues with calibration, grounding, and evidence use. **Don't Blink [13]** uncovers a pervasive \"evidence collapse\" phenomenon, where reasoning VLMs become more confident in their predictions while progressively losing visual grounding, a failure mode invisible to text-only monitoring. This highlights a fundamental reliability risk. In clinical AI, **Good Rankings, Wrong Probabilities [17]** conducts the first systematic calibration audit of multimodal cancer survival models, finding that while they achieve strong ranking performance, their predicted survival probabilities are often poorly calibrated, limiting clinical utility. **Is a Picture Worth a Thousand Words? [18]** challenges the assumption that visual evidence always helps, showing its indiscriminate use can reduce fact-checking accuracy. It proposes an adaptive framework that dynamically decides when to use visual evidence, improving robustness.\n\n## Novel Paradigms for Generation and Data Understanding\n\nResearchers are proposing innovative architectural shifts and new data representations to overcome limitations in generation and handle real-world data incompleteness. **MolDA [19]** proposes a novel molecular generation framework that replaces the standard autoregressive LLM backbone with a masked diffusion model, better accounting for global structural constraints like ring closures to generate more chemically valid molecules. For trajectory generation, **InsTraj [10]** instructs diffusion models with natural language travel intentions, enabling the generation of realistic, controllable GPS trajectories that handle complex constraints while maintaining behavioral diversity for urban planning. To handle the messy reality of clinical data, **A Clinical Point Cloud Paradigm [22]** models multi-level incomplete EHRs as dynamic point clouds, simultaneously addressing irregular sampling, missing modalities, and sparse labels for more robust in-hospital mortality prediction.\n\n## Key Takeaways\n- **Specialization is Key:** The frontier is moving from generic multimodal models to architectures specifically designed for complex, structured domains like tables, scientific diagrams, and clinical data, often requiring novel reasoning mechanisms.\n- **Agents Enhance Capability and Interpretability:** Multi-agent frameworks and tool-use are becoming preferred paradigms for decomposing complex multimodal tasks, improving both performance and the transparency of the reasoning process.\n- **Reliability Lags Behind Performance:** Systemic issues with calibration, visual grounding (\"evidence collapse\"), and the inappropriate use of modalities pose major, often hidden, risks to the deployment of multimodal systems in high-stakes applications.\n- **Efficiency Drives Real-World Use:** Across domains (biosignals, tables, cloud ops), there is a strong focus on developing computationally efficient methods—through compact models, optimized representations, or edge-friendly designs—to enable practical deployment.\n- **New Data Formulations Unlock Potential:** Representing complex, incomplete data as point clouds or learning pan-modal encoders for scarce paired data are emerging as powerful strategies to handle the inherent challenges of real-world multimodal datasets.",
+    "papers": [
+      {
+        "title": "TABQAWORLD: Optimizing Multimodal Reasoning for Multi-Turn Table Question Answering",
+        "url": "",
+        "authors": [
+          "Tung Sum Thomas Kwok",
+          "Xinyu Wang",
+          "Xiaofeng Lin",
+          "Peng Lu",
+          "Chunhe Wang",
+          "Changlun Li",
+          "Hanwei Wu",
+          "Nan Tang",
+          "Elisa Kreiss",
+          "Guang Cheng"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Beyond Predefined Schemas: TRACE-KG for Context-Enriched Knowledge Graphs from Complex Documents",
+        "url": "",
+        "authors": [
+          "Mohammad Sadeq Abolhasani",
+          "Yang Ba",
+          "Yixuan He",
+          "Rong Pan"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "ActionNex: A Virtual Outage Manager for Cloud",
+        "url": "",
+        "authors": [
+          "Zhenfeng Lin",
+          "Haoji Hu",
+          "Ming Hao",
+          "Xuchao Zhang",
+          "Ryan Zhang",
+          "Junhao Li",
+          "Ze Li",
+          "Oleg Kulygin",
+          "Chetan Bansal",
+          "Hatay Tuna",
+          "Murali Chintalapati",
+          "Sheila Jiang",
+          "Salman Zafar",
+          "Angie Anderson"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "MultiPress: A Multi-Agent Framework for Interpretable Multimodal News Classification",
+        "url": "",
+        "authors": [
+          "Tailong Luo",
+          "Hao Li",
+          "Rong Fu",
+          "Xinyue Jiang",
+          "Huaxuan Ding",
+          "Yiduo Zhang",
+          "Zilin Zhao",
+          "Simon Fong",
+          "Guangyin Jin",
+          "Jianyuan Ni"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "A Multimodal Foundation Model of Spatial Transcriptomics and Histology for Biological Discovery and Clinical Prediction",
+        "url": "",
+        "authors": [
+          "Jinxi Xiang",
+          "Siyu Hou",
+          "Yuchen Li",
+          "Ryan Quinton",
+          "Xiaoming Zhang",
+          "Feyisope Eweje",
+          "Xiangde Luo",
+          "Yijiang Chen",
+          "Zhe Li",
+          "Colin Bergstrom",
+          "Ted Kim",
+          "Sierra Willens",
+          "Francesca Maria Olguin",
+          "Matthew Abikenari",
+          "Andrew Heider",
+          "Sanjeeth Rajaram",
+          "Joel Neal",
+          "Maximilian Diehn",
+          "Xiang Zhou",
+          "Ruijiang Li"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "CAGMamba: Context-Aware Gated Cross-Modal Mamba Network for Multimodal Sentiment Analysis",
+        "url": "",
+        "authors": [
+          "Minghai Jiao",
+          "Jing Xiao",
+          "Peng Xiao",
+          "Ende Zhang",
+          "Shuang Kan",
+          "Wenyan Jiang",
+          "Jinyao Li",
+          "Yixian Liu",
+          "Haidong Xin"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Single-agent vs. Multi-agents for Automated Video Analysis of On-Screen Collaborative Learning Behaviors",
+        "url": "",
+        "authors": [
+          "Likai Peng",
+          "Shihui Feng"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "TableVision: A Large-Scale Benchmark for Spatially Grounded Reasoning over Complex Hierarchical Tables",
+        "url": "",
+        "authors": [
+          "Xiaoyu Chen",
+          "Lu Dai",
+          "Hanqing Wang",
+          "Zhuoyu Li",
+          "Wenbin Dai",
+          "Yanzong Zheng",
+          "Zhenggang Xia",
+          "Junyong Lin",
+          "Hui Xiong"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "FeynmanBench: Benchmarking Multimodal LLMs on Diagrammatic Physics Reasoning",
+        "url": "",
+        "authors": [
+          "Zeyu Wang",
+          "Xiaogang Li",
+          "Peiyao Xiao",
+          "Qinhao Kong",
+          "Ben Wang",
+          "Chengliang Xu",
+          "Zichao Chen",
+          "Bing Zhao",
+          "Hu Wei"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "InsTraj: Instructing Diffusion Models with Travel Intentions to Generate Real-world Trajectories",
+        "url": "",
+        "authors": [
+          "Yuanshao Zhu",
+          "Yuxuan Liang",
+          "Xiangyu Zhao",
+          "Liang Han",
+          "Xinwei Fang",
+          "Xuetao Wei",
+          "James Jianqiao Yu"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "GeoBrowse: A Geolocation Benchmark for Agentic Tool Use with Expert-Annotated Reasoning Traces",
+        "url": "",
+        "authors": [
+          "Xinyu Geng",
+          "Yanjing Xiao",
+          "Yuyang Zhang",
+          "Hanwen Wang",
+          "Xinyan Liu",
+          "Rui Min",
+          "Tianqing Fang",
+          "Yi R. Fung"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Solar-VLM: Multimodal Vision-Language Models for Augmented Solar Power Forecasting",
+        "url": "",
+        "authors": [
+          "Hang Fan",
+          "Haoran Pei",
+          "Runze Liang",
+          "Weican Liu",
+          "Long Cheng",
+          "Wei Wei"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Don't Blink: Evidence Collapse during Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Suresh Raghu",
+          "Satwik Pandey"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Multirate Stein Variational Gradient Descent for Efficient Bayesian Sampling",
+        "url": "",
+        "authors": [
+          "Arash Sarshar"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "PanLUNA: An Efficient and Robust Query-Unified Multimodal Model for Edge Biosignal Intelligence",
+        "url": "",
+        "authors": [
+          "Marija Zelic",
+          "Anna Tegon",
+          "Yawei Li",
+          "Thorir Mar Ingolfsson",
+          "Luca Benini"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Uncertainty-Aware Foundation Models for Clinical Data",
+        "url": "",
+        "authors": [
+          "Qian Zhou",
+          "Yuanyun Zhang",
+          "Shi Li"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Good Rankings, Wrong Probabilities: A Calibration Audit of Multimodal Cancer Survival Models",
+        "url": "",
+        "authors": [
+          "Sajad Ghawami"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Is a Picture Worth a Thousand Words? Adaptive Multimodal Fact-Checking with Visual Evidence Necessity",
+        "url": "",
+        "authors": [
+          "Jaeyoon Jung",
+          "Yejun Yoon",
+          "Kunwoo Park"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "MolDA: Molecular Understanding and Generation via Large Language Diffusion Model",
+        "url": "",
+        "authors": [
+          "Seohyeon Shin",
+          "HanJun Choi",
+          "Jun-Hyung Park",
+          "Hongkook Kim",
+          "Mansu Kim"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "The Topology of Multimodal Fusion: Why Current Architectures Fail at Creative Cognition",
+        "url": "",
+        "authors": [
+          "Xiujiang Tan"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "Scalable and Explainable Learner-Video Interaction Prediction using Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Dominik Glandorf",
+          "Fares Fawzi",
+          "Tanja Käser"
+        ],
+        "date": "2026-04-07"
+      },
+      {
+        "title": "A Clinical Point Cloud Paradigm for In-Hospital Mortality Prediction from Multi-Level Incomplete Multimodal EHRs",
+        "url": "",
+        "authors": [
+          "Bohao Li",
+          "Tao Zou",
+          "Junchen Ye",
+          "Yan Gong",
+          "Bowen Du"
+        ],
+        "date": "2026-04-07"
+      }
+    ]
+  }
+]
