@@ -1,0 +1,754 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-14",
+    "paperCount": 18,
+    "markdown": "# Interpretability Beyond Attribution: From Mechanistic Probes to Actionable Interventions\n\nToday's research landscape demonstrates a maturation of interpretability, moving beyond post-hoc feature attribution towards frameworks that causally intervene on model internals, integrate interpretability into model architecture, and demand rigorous evaluation of explanation faithfulness. The field is increasingly focused on making interpretability tools directly useful for debugging, auditing, and improving model reliability in high-stakes domains.\n\n## Mechanistic Interpretability and Model Auditing\n\n**[6] Tracing the Thought of a Grandmaster-level Chess-Playing Transformer** addresses the opacity of high-performance reasoning models. The authors introduce a sparse decomposition framework to interpret Leela Chess Zero's internal computation by replacing its MLP and attention modules with sparse layers that capture primary pathways. This method exposes interpretable tactical considerations, verified empirically, and introduces quantitative metrics for pathway analysis. This matters because it provides a concrete, verifiable method for understanding the \"reasoning\" steps of a complex transformer in a constrained domain like chess, serving as a testbed for broader mechanistic interpretability.\n\n**[3] Steered LLM Activations are Non-Surjective** investigates a fundamental limitation of activation steering, a core white-box control technique. The paper frames the question of whether steered activation states are realizable by any textual prompt as a surjectivity problem. The core finding is that steered activations are often *non-surjective*, meaning they do not correspond to any natural input. This matters because it reveals a critical gap between our ability to manipulate model internals and our understanding of what those manipulated states represent, challenging the validity of using steering for interpretability probes like truthfulness.\n\n**[11] Pando: Do Interpretability Methods Work When Models Won't Explain Themselves?** confronts a major evaluation confounder in mechanistic interpretability. The authors create a benchmark where models are trained to produce faithful, absent, or unfaithful explanations, allowing them to test if white-box tools recover internal signals beyond what black-box prompting can elicit. This directly addresses the \"elicitation confounder,\" where apparent gains from interpretability methods may just reflect better elicitation. It matters because it establishes a rigorous standard for evaluating whether interpretability tools truly reveal internal mechanisms versus just extracting what the model was already primed to say.\n\n## Causal Frameworks for Robust Explanation\n\n**[12] CausalGaze: Unveiling Hallucinations via Counterfactual Graph Intervention in Large Language Models** shifts hallucination detection from passive observation to active causal intervention. The framework constructs a Structural Causal Model (SCM) over an LLM's internal states and performs counterfactual graph interventions to isolate causal drivers of hallucinations. By simulating \"what-if\" scenarios on the computational graph, it distinguishes genuine causal mechanisms from spurious correlations. This matters because it provides a principled, model-intrinsic method for diagnosing hallucinations, which is crucial for deploying LLMs in high-stakes applications where reliability is paramount.\n\n**[8] Structural Gating and Effect-aligned Lag-resolved Temporal Causal Discovery Framework with Application to Heat-Pollution Extremes** proposes a novel causal discovery framework for complex multivariate time series. SGED-TCD combines structural gating, stability-oriented learning, and perturbation-effect alignment to infer interpretable and robust lag-resolved causal graphs. The method is validated on teleconnection-driven compound heatwave-air-pollution extremes. This matters because it delivers interpretable causal insights in critical, high-dimensional domains like climate science, where understanding drivers of extreme events is essential for mitigation and policy.\n\n**[16] Layerwise Dynamics for In-Context Classification in Transformers** seeks to identify the explicit inference-time algorithm transformers use for in-context learning. By enforcing strict permutation equivariance, the authors extract an interpretable, depth-indexed recursion—an emergent update rule—from the model's weights. This provides a closed-form description of how linear classification is performed in-context layer-by-layer. This matters because it demystifies a core, emergent capability of transformers, moving description from observed behavior to an identified internal algorithm, a significant step for mechanistic understanding.\n\n## Integrating Interpretability into Model Design\n\n**[15] CLSGen: A Dual-Head Fine-Tuning Framework for Joint Probabilistic Classification and Verbalized Explanation** tackles the deployment hurdle of LLMs lacking reliable probability estimates. The framework fine-tunes an LLM with two heads: one for discriminative probability estimation and another for generating verbalized explanations. This jointly produces calibrated uncertainty metrics and natural language rationales. This matters because it bridges the gap between the flexible generation of LLMs and the reliable, quantifiable decision-making required in fields like healthcare, making model outputs both actionable and interpretable.\n\n**[5] NOSE: Neural Olfactory-Semantic Embedding with Tri-Modal Orthogonal Contrastive Learning** designs a representation learning framework for interpretability by construction. NOSE aligns embeddings across three modalities—molecular structure, neural receptor activity, and linguistic description—using orthogonal contrastive learning. This forces the model to learn a disentangled, biologically grounded representation of olfaction. This matters because it moves beyond post-hoc explanation, building interpretability directly into the learned latent space by respecting the known structure of the biological and perceptual pathway.\n\n**[10] Hypergraph Neural Diffusion: A PDE-Inspired Framework for Hypergraph Message Passing** introduces a novel architecture that inherently offers better interpretability for high-order relationships. By grounding hypergraph neural networks in a continuous-time diffusion equation formulated with hypergraph gradient/divergence operators, HND provides a principled mathematical framework. The derived discrete message-passing scheme is adaptive and mitigates oversmoothing. This matters because it offers both performance gains and a clearer, theory-grounded interpretation of how information propagates in complex relational data, compared to ad-hoc HGNN designs.\n\n## Domain-Specific Applications and Evaluation\n\n**[1] Explainable Human Activity Recognition: A Unified Review of Concepts and Mechanisms** provides a comprehensive survey of XAI methods tailored for HAR systems. It synthesizes techniques for making opaque deep learning models on sensor data transparent, covering concepts, mechanisms, and evaluation metrics specific to activity recognition. This matters because it consolidates a fragmented literature, offering a roadmap for building trustworthy HAR systems in critical domains like healthcare and assistive living, where understanding model decisions is necessary for user trust and clinical adoption.\n\n**[17] Dynamic Summary Generation for Interpretable Multimodal Depression Detection** builds interpretability directly into a clinical AI pipeline. The framework uses an LLM to generate progressively detailed clinical summaries from multimodal input, which then guide a fusion module to produce predictions with transparent rationales. This creates a coarse-to-fine detection system with inherent explainability. This matters because it addresses a core barrier in mental health—stigma and subjective assessment—by providing auditable, evidence-based rationales for its screenings, potentially increasing clinician trust and adoption.\n\n**[2] General-purpose LLMs as Models of Human Driver Behavior: The Case of Simplified Merging** probes the interpretability-flexibility trade-off in behavioral modeling by using LLMs as black-box simulators of human driving. The study embeds LLMs like GPT-4o and Gemini as standalone drivers to assess what aspects of human merging behavior they can capture without task-specific fitting. This matters because it explores whether the internal \"reasoning\" of LLMs can serve as an interpretable proxy for human decision-making in complex, safety-critical scenarios, challenging traditional model-based approaches.\n\n**[14] Diffusion-CAM: Faithful Visual Explanations for dMLLMs** develops a new interpretability tool for a nascent but powerful class of models. Recognizing that standard Class Activation Mapping fails for diffusion-based MLLMs due to their parallel denoising process, Diffusion-CAM provides faithful visual explanations by analyzing attention and activation patterns across the diffusion denoising steps. This matters because as dMLLMs advance in multimodal generation, tools like this are essential for debugging, auditing, and building trust in their outputs, ensuring the field of interpretability keeps pace with architectural innovation.\n\n**[13] Towards Situation-aware State Modeling for Air Traffic Flow Prediction** proposes an interpretable paradigm shift for a safety-critical forecasting task. Instead of a black-box time-series model, AeroSense directly maps rich, real-time aircraft state vectors (kinematics, proximity to boundaries) to traffic flow, making the model's reliance on situational context explicit. This matters because it prioritizes interpretability and operational relevance in air traffic management, where understanding *why* a prediction was made is as important as accuracy for controller trust and proactive planning.\n\n**[7] Integrating SAINT with Tree-Based Models: A Case Study in Employee Attrition Prediction** explores a hybrid approach for interpretable modeling on tabular data. It integrates SAINT (a self-attention based tabular transformer) with tree-based models like XGBoost, using SAINT's embeddings to capture semantic relationships between categorical features before classification. This matters because it seeks to combine the high performance of trees with the richer, more interpretable representations learned by transformers, addressing a key challenge in business analytics where understanding feature interactions is crucial for actionable insights.\n\n**[9] CHAIRO: Contextual Hierarchical Analogical Induction and Reasoning Optimization for LLMs** embeds interpretability into the moderation process via analogical reasoning. The framework uses analogical examples to help an LLM induce general rules and reason about new cases, making the moderation decision process more transparent and adaptable. This matters because it moves content moderation beyond opaque classifiers or brittle fine-tuned LLMs towards a system whose decisions can be explained and debated by reference to analogous cases, improving fairness and adaptability.\n\n**[4] Attention Sink in Transformers: A Survey on Utilization, Interpretation, and Mitigation** provides a comprehensive review of a specific, pervasive interpretability challenge. It synthesizes research on the Attention Sink phenomenon—where models disproportionately focus on uninformative tokens—covering its impact on training, inference, and hallucinations, and reviewing mitigation strategies. This matters because it consolidates knowledge on a fundamental quirk of transformer mechanics, providing researchers and practitioners with a unified understanding of its causes, consequences, and solutions, which is essential for building more robust and interpretable models.\n\n**[18] From Attribution to Action: A Human-Centered Application of Activation Steering** bridges the gap between explanation and practical intervention. The work introduces an interactive tool that combines Sparse Autoencoder-based attribution with activation steering, allowing users to visualize concept use in vision models and then steer those concepts to debug model behavior. Expert interviews validate its utility for practical debugging tasks. This matters because it transitions XAI from a diagnostic tool to an interactive, corrective one, demonstrating a workflow where interpretability directly enables model improvement.\n\n## Key Takeaways\n-   **Evaluation Rigor is Paramount:** New benchmarks like Pando [11] are essential to distinguish true mechanistic insight from simple output elicitation, challenging the field to prove interpretability methods work even when models are trained to be deceptive or uncooperative.\n-   **Causal Intervention is a Powerful Paradigm:** Moving from observing correlations to performing active interventions on model internals, as seen in CausalGaze [12] and SGED-TCD [8], provides a more principled and robust foundation for explaining model behavior and diagnosing failures like hallucinations.\n-   **Interpretability is Being Built-In:** Research is shifting from post-hoc analysis to designing models with inherent interpretability, through frameworks like CLSGen [15] for joint prediction/explanation, NOSE [5] for structured embeddings, and AeroSense [13] for state-aware architectures.\n-   **Tools Must Enable Action:** The ultimate goal of interpretability is to improve models; new workflows [18] demonstrate how attribution can be combined with activation steering for actionable debugging, transitioning XAI from a passive analysis to an active engineering tool.\n-   **Understanding Emergent Algorithms is Key:** Work on in-context learning [16] and game-playing transformers [6] aims to reverse-engineer the identifiable internal algorithms that transformers implement, moving beyond describing *what* they do to explaining *how* they compute.\n-   **Domain-Specific Needs Drive Innovation:** Interpretability is not one-size-fits-all; specialized approaches are required for domains like healthcare [17], climate science [8], air traffic control [13], and content moderation [9], where the stakes and required forms of explanation differ.\n-   **Architectural Evolution Demands New Tools:** As models evolve (e.g., diffusion-based MLLMs [14]), interpretability techniques must co-evolve; methods designed for autoregressive transformers may fail, necessitating novel approaches like Diffusion-CAM.",
+    "papers": [
+      {
+        "title": "Explainable Human Activity Recognition: A Unified Review of Concepts and Mechanisms",
+        "url": "",
+        "authors": [
+          "Mainak Kundu",
+          "Catherine Chen",
+          "Rifatul Islam",
+          "Ismail Uysal",
+          "Ria Kanjilal"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "General-purpose LLMs as Models of Human Driver Behavior: The Case of Simplified Merging",
+        "url": "",
+        "authors": [
+          "Samir H. A. Mohammad",
+          "Wouter Mooi",
+          "Arkady Zgonnikov"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Steered LLM Activations are Non-Surjective",
+        "url": "",
+        "authors": [
+          "Aayush Mishra",
+          "Daniel Khashabi",
+          "Anqi Liu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Attention Sink in Transformers: A Survey on Utilization, Interpretation, and Mitigation",
+        "url": "",
+        "authors": [
+          "Zunhai Su",
+          "Hengyuan Zhang",
+          "Wei Wu",
+          "Yifan Zhang",
+          "Yaxiu Liu",
+          "He Xiao",
+          "Qingyao Yang",
+          "Yuxuan Sun",
+          "Rui Yang",
+          "Chao Zhang",
+          "Keyu Fan",
+          "Weihao Ye",
+          "Jing Xiong",
+          "Hui Shen",
+          "Chaofan Tao",
+          "Taiqiang Wu",
+          "Zhongwei Wan",
+          "Yulei Qian",
+          "Yuchen Xie",
+          "Ngai Wong"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "NOSE: Neural Olfactory-Semantic Embedding with Tri-Modal Orthogonal Contrastive Learning",
+        "url": "",
+        "authors": [
+          "Yanyi Su",
+          "Hongshuai Wang",
+          "Zhifeng Gao",
+          "Jun Cheng"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Tracing the Thought of a Grandmaster-level Chess-Playing Transformer",
+        "url": "",
+        "authors": [
+          "Rui Lin",
+          "Zhenyu Jin",
+          "Guancheng Zhou",
+          "Xuyang Ge",
+          "Wentao Shu",
+          "Jiaxing Wu",
+          "Junxuan Wang",
+          "Zhengfu He",
+          "Junping Zhang",
+          "Xipeng Qiu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Integrating SAINT with Tree-Based Models: A Case Study in Employee Attrition Prediction",
+        "url": "",
+        "authors": [
+          "Adil Derrazi",
+          "Javad Pourmostafa Roshan Sharami"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Structural Gating and Effect-aligned Lag-resolved Temporal Causal Discovery Framework with Application to Heat-Pollution Extremes",
+        "url": "",
+        "authors": [
+          "Rui Chen",
+          "Jinsong Wu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "CHAIRO: Contextual Hierarchical Analogical Induction and Reasoning Optimization for LLMs",
+        "url": "",
+        "authors": [
+          "Haotian Lu",
+          "Yuchen Mou",
+          "Bingzhe Wu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Hypergraph Neural Diffusion: A PDE-Inspired Framework for Hypergraph Message Passing",
+        "url": "",
+        "authors": [
+          "Zhiheng Zhou",
+          "Mengyao Zhou",
+          "Xixun Lin",
+          "Xingqin Qi",
+          "Guiying Yan"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Pando: Do Interpretability Methods Work When Models Won't Explain Themselves?",
+        "url": "",
+        "authors": [
+          "Ziqian Zhong",
+          "Aashiq Muhamed",
+          "Mona T. Diab",
+          "Virginia Smith",
+          "Aditi Raghunathan"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "CausalGaze: Unveiling Hallucinations via Counterfactual Graph Intervention in Large Language Models",
+        "url": "",
+        "authors": [
+          "Linggang Kong",
+          "Lei Wu",
+          "Yunlong Zhang",
+          "Xiaofeng Zhong",
+          "Zhen Wang",
+          "Yongjie Wang",
+          "Yao Pan"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Towards Situation-aware State Modeling for Air Traffic Flow Prediction",
+        "url": "",
+        "authors": [
+          "Anqi Liu",
+          "Bin Wang",
+          "Jiangtao Zhao",
+          "Dechuan Ma",
+          "Guiyuan Jiang",
+          "Feng Hong",
+          "Yanwei Yu",
+          "Tianrui Li"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Diffusion-CAM: Faithful Visual Explanations for dMLLMs",
+        "url": "",
+        "authors": [
+          "Haomin Zuo",
+          "Yidi Li",
+          "Luoxiao Yang",
+          "Xiaofeng Zhang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "CLSGen: A Dual-Head Fine-Tuning Framework for Joint Probabilistic Classification and Verbalized Explanation",
+        "url": "",
+        "authors": [
+          "WonJin Yoon",
+          "Kangyu Zhu",
+          "Ian Bulovic",
+          "Autumn Sehy",
+          "Yanjun Gao",
+          "Dmitriy Dligach",
+          "Majid Afshar",
+          "Timothy A. Miller"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Layerwise Dynamics for In-Context Classification in Transformers",
+        "url": "",
+        "authors": [
+          "Patrick Lutz",
+          "Themistoklis Haris",
+          "Arjun Chandra",
+          "Aditya Gangrade",
+          "Venkatesh Saligrama"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Dynamic Summary Generation for Interpretable Multimodal Depression Detection",
+        "url": "",
+        "authors": [
+          "Shiyu Teng",
+          "Jiaqing Liu",
+          "Hao Sun",
+          "Yu Li",
+          "Shurong Chai",
+          "Ruibo Hou",
+          "Tomoko Tateyama",
+          "Lanfen Lin",
+          "Yen-Wei Chen"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "From Attribution to Action: A Human-Centered Application of Activation Steering",
+        "url": "",
+        "authors": [
+          "Tobias Labarta",
+          "Maximilian Dreyer",
+          "Katharina Weitz",
+          "Wojciech Samek",
+          "Sebastian Lapuschkin"
+        ],
+        "date": "2026-04-14"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-14",
+    "paperCount": 3,
+    "markdown": "# The Expanding Frontier of Explainability: From Model Audits to Public Comprehension\n\nToday's research landscape demonstrates a maturation of explainable AI (XAI) beyond post-hoc interpretation of single models, evolving towards systematic lifecycle management and the translation of technical findings into publicly accessible insights. The focus is shifting from merely opening the \"black box\" to building transparent, auditable, and socially legible AI systems across diverse applications.\n\n## Foundational Reviews and Frameworks\n\n**[1] \"Explainable Human Activity Recognition: A Unified Review of Concepts and Mechanisms\"** provides a comprehensive synthesis of XAI methods specifically for Human Activity Recognition (HAR), a domain critical to healthcare and smart environments. The paper systematically categorizes techniques for interpreting deep learning models that process multivariate sensor data, aiming to bridge the gap between high performance and operational opacity. Its contribution lies in creating a unified conceptual framework that can guide developers in selecting appropriate explanation mechanisms to enhance trust and reliability for real-world deployment. This matters because it moves HAR explainability from an ad-hoc practice to a structured engineering discipline, which is essential for clinical and assistive technology adoption.\n\n## Democratizing Bias Audits for Public Understanding\n\n**[2] \"GLEaN: A Text-to-image Bias Detection Approach for Public Comprehension\"** addresses the critical gap between technical bias audits of generative models and public understanding of their societal impact. Its core approach is a three-stage pipeline that generates portraits from identity prompts, analyzes them with facial landmark detection, and visualizes aggregate biases in an accessible, portrait-likeness format. The key result is a method that translates complex statistical disparities into visually intuitive outputs, making systemic biases in text-to-image models legible to non-experts. This work is significant as it reorients explainability toward public accountability, empowering broader societal discourse on the biases embedded in widely used generative AI.\n\n## Systematizing Explainability through Lifecycle Management\n\n**[3] \"Gypscie: A Cross-Platform AI Artifact Management System\"** tackles the operational complexity of managing the end-to-end AI lifecycle, which is a prerequisite for sustainable and auditable explainability. The proposed system coordinates diverse services and artifacts—like datasets, dataflows, and models—across their entire lifespan, from creation to deployment and monitoring. By providing a unified platform for artifact orchestration, Gypscie ensures that the provenance, versions, and dependencies required for generating and validating explanations are systematically tracked and reproducible. This matters fundamentally because robust XAI is not just an analytical tool but a feature enabled by rigorous data and model governance throughout the ML pipeline.\n\n## Key Takeaways\n- Explainability is evolving from model-specific techniques to integrated, system-level concerns, encompassing the entire AI artifact lifecycle for reproducibility and audit trails [3].\n- There is a growing emphasis on translating technical XAI findings into formats accessible to the public, shifting the goal from developer insight to societal accountability and comprehension [2].\n- Domain-specific review and framework papers are crucial for consolidating best practices and guiding the application of general XAI principles to specialized fields like Human Activity Recognition [1].\n- The management of AI artifacts (datasets, models, pipelines) is foundational to enabling trustworthy explanations, as provenance and version control are prerequisites for meaningful interpretability [3].\n- Visual explanation and aggregation methods are powerful tools for communicating complex model behaviors, such as demographic biases in generative AI, to a broad audience [2].\n- Real-world deployment of AI in sensitive areas like healthcare is contingent on moving beyond performance metrics to building transparent, human-centered systems that users can understand and trust [1].\n- The field is converging on a holistic view where technical explainability, systematic MLOps, and public communication are interconnected pillars of responsible AI.",
+    "papers": [
+      {
+        "title": "Explainable Human Activity Recognition: A Unified Review of Concepts and Mechanisms",
+        "url": "",
+        "authors": [
+          "Mainak Kundu",
+          "Catherine Chen",
+          "Rifatul Islam",
+          "Ismail Uysal",
+          "Ria Kanjilal"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "GLEaN: A Text-to-image Bias Detection Approach for Public Comprehension",
+        "url": "",
+        "authors": [
+          "Bochu Ding",
+          "Brinnae Bent",
+          "Augustus Wendell"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Gypscie: A Cross-Platform AI Artifact Management System",
+        "url": "",
+        "authors": [
+          "Fabio Porto",
+          "Eduardo Ogasawara",
+          "Gabriela Moraes Botaro",
+          "Julia Neumann Bastos",
+          "Augusto Fonseca",
+          "Esther Pacitti",
+          "Patrick Valduriez"
+        ],
+        "date": "2026-04-14"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-14",
+    "paperCount": 30,
+    "markdown": "# The Multimodal Frontier: From Robust Reasoning to Real-World Deployment\n\nToday's research landscape is intensely focused on enhancing the reliability, efficiency, and fairness of multimodal AI systems, moving beyond raw capability to address critical challenges in reasoning, deployment, and human alignment. A strong thematic undercurrent involves developing self-correcting mechanisms, specialized architectures, and scalable training frameworks to bridge the gap between impressive benchmarks and trustworthy, practical application.\n\n## Advancing Robustness and Hallucination Mitigation\n\nA significant cluster of papers tackles the pervasive issue of unreliable reasoning and hallucinations in complex multimodal tasks. [10] identifies a core vulnerability termed the Reasoning Vision Truth Disconnect (RVTD), where hallucinations correlate with high-entropy \"cognitive pivot points\" in a model's reasoning chain, caused by a failure to properly anchor to visual semantics. To combat this, [11] proposes the SVSR framework, which explicitly integrates self-verification and self-rectification steps into the reasoning pipeline, training models to critique and correct their own outputs for improved reliability. Similarly, [16] introduces Dialectic-Med, a multi-agent debate framework for medical diagnosis where specialized agents (proponent, opponent, moderator) engage in counterfactual adversarial debate to mitigate confirmation bias and diagnostic hallucinations, enforcing diagnostic rigor through structured conflict.\n\n## Specialized Architectures for Domain-Specific Challenges\n\nResearchers are designing novel model architectures and training paradigms tailored to the unique demands of specific modalities and applications. [5] addresses modality collapse in clinical triage models by proposing a late-fusion architecture with modality dropout, forcing the model to rely on both structured vitals and unstructured clinical notes to improve generalizability for pediatric patients. For efficient multimodal retrieval, [19] introduces \"Bottleneck Tokens,\" a dedicated architectural component that provides explicit token-level guidance for compressing multimodal sequences into unified embeddings, overcoming the limitations of implicit pooling in decoder-only MLLMs. In structural engineering, [29] leverages a Mamba-based multimodal network to fuse remote sensing imagery and blast parameters for rapid, multiscale damage assessment, offering a scalable alternative to labor-intensive field inspections.\n\n## Scaling and Personalizing Multimodal Agent Systems\n\nA key trend is the development of frameworks to scale the training of complex, omni-modal agents and to personalize their behavior for individual user needs. [20] presents Relax, an asynchronous reinforcement learning engine designed for the heterogeneous data flows and robustness challenges of post-training omni-modal agents at scale, using a three-layer architecture to manage staleness and throughput trade-offs. Focusing on personalization, [26] studies privacy preferences in mobile GUI agents, using Trajectory-Induced Preference Optimization (TPO) to align agent behavior with user-specific privacy stances, which manifest as systematic differences in execution trajectories. For automated UX evaluation, [1] introduces OpeFlo, an agent that simulates human web interaction via GUI grounding, enabling automated, end-to-end usability testing without relying on brittle DOM parsing.\n\n## Evaluation, Benchmarking, and Bias Auditing\n\nAs capabilities grow, so does the need for rigorous evaluation, especially for measuring reasoning, scientific understanding, and social bias. [8] launches COMPOSITE-STEM, a frontier benchmark of 70 expert-written tasks in STEM fields that combines exact-match grading with LLM-as-a-jury rubrics to measure open-ended scientific reasoning beyond constrained outputs. To audit social bias in educational contexts, [9] proposes Edu-MMBias, a three-tier multimodal benchmark grounded in social psychology (cognitive, affective, behavioral) to systematically evaluate latent biases in VLMs that text-centric audits miss. For model interpretability, [24] introduces Diffusion-CAM, a novel visualization method tailored for diffusion-based MLLMs, providing faithful visual explanations by aggregating cross-attention maps across diffusion timesteps to overcome the challenges of parallel denoising architectures.\n\n## Enhancing Cross-Modal Alignment and Transfer\n\nSeveral works focus on improving the alignment between different modalities, especially in data-sparse or culturally nuanced scenarios. [25] addresses the \"sparse-pairing regime\" in unified embedding models by proposing EmergentBridge, which uses a bridge token strategy and consistency regularization to strengthen connections between weakly supervised or unpaired modality pairs (e.g., audio-depth), enhancing zero-shot cross-modal transfer. For cultural and linguistic nuance, [14] creates the \"Mediom\" corpus to tackle idiomatic reasoning, a blind spot for models that latch on literal imagery, by providing multilingual, multimodal examples to ground figurative meaning. In a historical context, [17] enhances MLLMs for ancient Chinese character analysis via glyph-driven fine-tuning on a comprehensive benchmark, improving the model's ability to understand cultural transformation through visual script evolution.\n\n## Key Takeaways\n- **Hallucination mitigation is moving beyond prompting to architectural solutions**, with frameworks like SVSR [11] and Dialectic-Med [16] embedding self-correction and adversarial debate directly into the model's reasoning process.\n- **Efficient cross-modal alignment is critical for scaling**, requiring novel techniques like Bottleneck Tokens [19] for retrieval and EmergentBridge [25] for zero-shot transfer in data-sparse environments.\n- **Specialized, domain-specific architectures**—such as late-fusion with dropout for clinical triage [5] and Mamba-based networks for damage assessment [29]—are essential for overcoming the limitations of generalist models in real-world applications.\n- **The next generation of benchmarks must measure open-ended reasoning and multimodal bias**, as exemplified by COMPOSITE-STEM's focus on scientific tasks [8] and Edu-MMBias's hierarchical audit of social attitudes [9].\n- **Scalable RL frameworks and personalized alignment** are foundational for deploying capable multimodal agents, addressing challenges from omni-modal post-training [20] to user-specific privacy preferences [26].",
+    "papers": [
+      {
+        "title": "OpeFlo: Automated UX Evaluation via Simulated Human Web Interaction with GUI Grounding",
+        "url": "",
+        "authors": [
+          "Wee Joe Tan",
+          "Zi Rui Lucas Lim",
+          "Shashank Durgad",
+          "Karim Obegi",
+          "Aiden Yiliu Li"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Explainable Human Activity Recognition: A Unified Review of Concepts and Mechanisms",
+        "url": "",
+        "authors": [
+          "Mainak Kundu",
+          "Catherine Chen",
+          "Rifatul Islam",
+          "Ismail Uysal",
+          "Ria Kanjilal"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "DERM-3R: A Resource-Efficient Multimodal Agents Framework for Dermatologic Diagnosis and Treatment in Real-World Clinical Settings",
+        "url": "",
+        "authors": [
+          "Ziwen Chen",
+          "Zhendong Wang",
+          "Chongjing Wang",
+          "Yurui Dong",
+          "Luozhijie Jin",
+          "Jihao Gu",
+          "Kui Chen",
+          "Jiaxi Yang",
+          "Bingjie Lu",
+          "Zhou Zhang",
+          "Jirui Dai",
+          "Changyong Luo",
+          "Xiameng Gai",
+          "Haibing Lan",
+          "Zhi Liu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Efficient Personalization of Generative User Interfaces",
+        "url": "",
+        "authors": [
+          "Yi-Hao Peng",
+          "Samarth Das",
+          "Jeffrey P. Bigham",
+          "Jason Wu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Improving Pediatric Emergency Department Triage with Modality Dropout in Late Fusion Multimodal EHR Models",
+        "url": "",
+        "authors": [
+          "Tyler Yang",
+          "Romal Mitr"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Belief-Aware VLM Model for Human-like Reasoning",
+        "url": "",
+        "authors": [
+          "Anshul Nayak",
+          "Shahil Shaik",
+          "Yue Wang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Towards Multi-Source Domain Generalization for Sleep Staging with Noisy Labels",
+        "url": "",
+        "authors": [
+          "Kening Wang",
+          "Di Wen",
+          "Yufan Chen",
+          "Ruiping Liu",
+          "Junwei Zheng",
+          "Jiale Wei",
+          "Kailun Yang",
+          "Rainer Stiefelhagen",
+          "Kunyu Peng"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "COMPOSITE-Stem",
+        "url": "",
+        "authors": [
+          "Kyle Waters",
+          "Lucas Nuzzi",
+          "Tadhg Looram",
+          "Alessandro Tomasiello",
+          "Ariel Ghislain Kemogne Kamdoum",
+          "Bikun Li",
+          "Damien Sileo",
+          "Egor Kretov",
+          "Francesco Fournier-Facio",
+          "Georgios Soloupis",
+          "Haile Kassahun",
+          "Hew Wolff",
+          "Jiaqi Cai",
+          "Lianghui Li",
+          "Marc Roth",
+          "Mohinder Naiya",
+          "Naixu Guo",
+          "Qicheng Tang",
+          "Richard Wheeler",
+          "Samuele Sala",
+          "Serguei Popov",
+          "Steven Dillman",
+          "Yuqi Li"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Edu-MMBias: A Three-Tier Multimodal Benchmark for Auditing Social Bias in Vision-Language Models under Educational Contexts",
+        "url": "",
+        "authors": [
+          "Ruijia Li",
+          "Mingzi Zhang",
+          "Zengyi Yu",
+          "Yuang Wei",
+          "Bo Jiang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Cognitive Pivot Points and Visual Anchoring: Unveiling and Rectifying Hallucinations in Multimodal Reasoning Models",
+        "url": "",
+        "authors": [
+          "Zhe Qian",
+          "Yanbiao Ma",
+          "Zhuohan Ouyang",
+          "Zhonghua Wang",
+          "Zhongxing Xu",
+          "Fei Luo",
+          "Xinyu Liu",
+          "Zongyuan Ge",
+          "Yike Guo",
+          "Jungong Han"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "SVSR: A Self-Verification and Self-Rectification Paradigm for Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Zhe Qian",
+          "Nianbing Su",
+          "Zhonghua Wang",
+          "Hebei Li",
+          "Zhongxing Xu",
+          "Yueying Li",
+          "Fei Luo",
+          "Zhuohan Ouyang",
+          "Yanbiao Ma"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Deep-Reporter: Deep Research for Grounded Multimodal Long-Form Generation",
+        "url": "",
+        "authors": [
+          "Fangda Ye",
+          "Zhifei Xie",
+          "Yuxin Hu",
+          "Yihang Yin",
+          "Shurui Huang",
+          "Shikai Dong",
+          "Jianzhu Bao",
+          "Shuicheng Yan"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "From GPT-3 to GPT-5: Mapping their capabilities, scope, limitations, and consequences",
+        "url": "",
+        "authors": [
+          "Hina Afridi",
+          "Habib Ullah",
+          "Sultan Daud Khan",
+          "Mohib Ullah"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "When Meaning Isn't Literal: Exploring Idiomatic Meaning Across Languages and Modalities",
+        "url": "",
+        "authors": [
+          "Sarmistha Das",
+          "Shreyas Guha",
+          "Suvrayan Bandyopadhyay",
+          "Salisa Phosit",
+          "Kitsuchart Pasupa",
+          "Sriparna Saha"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Slithering Through Gaps: Capturing Discrete Isolated Modes via Logistic Bridging",
+        "url": "",
+        "authors": [
+          "Pinaki Mohanty",
+          "Ruqi Zhang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Dialectic-Med: Mitigating Diagnostic Hallucinations via Counterfactual Adversarial Multi-Agent Debate",
+        "url": "",
+        "authors": [
+          "Zhixiang Lu",
+          "Jionglong Su"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Enhancing Multimodal Large Language Models for Ancient Chinese Character Evolution Analysis via Glyph-Driven Fine-Tuning",
+        "url": "",
+        "authors": [
+          "Rui Song",
+          "Lida Shi",
+          "Ruihua Qi",
+          "Yingji Li",
+          "Hao Xu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "TorchUMM: A Unified Multimodal Model Codebase for Evaluation, Analysis, and Post-training",
+        "url": "",
+        "authors": [
+          "Yinyi Luo",
+          "Wenwen Wang",
+          "Hayes Bai",
+          "Hongyu Zhu",
+          "Hao Chen",
+          "Pan He",
+          "Marios Savvides",
+          "Sharon Li",
+          "Jindong Wang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Bottleneck Tokens for Unified Multimodal Retrieval",
+        "url": "",
+        "authors": [
+          "Siyu Sun",
+          "Jing Ren",
+          "Zhaohe Liao",
+          "Dongxiao Mao",
+          "Xiangyuan Ren",
+          "Yiyi Zhang",
+          "Haohua Zhao",
+          "Weixiong Lin",
+          "Jiang Shaohua",
+          "Liqing Zhang",
+          "Yuchao Zheng"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Relax: An Asynchronous Reinforcement Learning Engine for Omni-Modal Post-Training at Scale",
+        "url": "",
+        "authors": [
+          "Liujie Zhang",
+          "Benzhe Ning",
+          "Rui Yang",
+          "Xiaoyan Yu",
+          "Jiaxing Li",
+          "Lumeng Wu",
+          "Jia Liu",
+          "Minghao Li",
+          "Weihang Chen",
+          "Weiqi Hu",
+          "Lei Zhang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "CSPO: Alleviating Reward Ambiguity for Structured Table-to-LaTeX Generation",
+        "url": "",
+        "authors": [
+          "Yunfan Yang",
+          "Cuiling Lan",
+          "Jitao Sang",
+          "Yan Lu"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "CFMS: A Coarse-to-Fine Multimodal Synthesis Framework for Enhanced Tabular Reasoning",
+        "url": "",
+        "authors": [
+          "Qixian Huang",
+          "Hongqiang Lin",
+          "Tong Fu",
+          "Yingsen Wang",
+          "Zhenghui Fu",
+          "Qirui Wang",
+          "Yiding Sun",
+          "Dongxu Zhang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Back to the Barn with LLAMAs: Evolving Pretrained LLM Backbones in Finetuning Vision Language Models",
+        "url": "",
+        "authors": [
+          "Sameera Horawalavithana",
+          "Lauren Phillips",
+          "Ian Stewart",
+          "Sai Munikoti",
+          "Karl Pazdernik"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Diffusion-CAM: Faithful Visual Explanations for dMLLMs",
+        "url": "",
+        "authors": [
+          "Haomin Zuo",
+          "Yidi Li",
+          "Luoxiao Yang",
+          "Xiaofeng Zhang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "EmergentBridge: Improving Zero-Shot Cross-Modal Transfer in Unified Multimodal Embedding Models",
+        "url": "",
+        "authors": [
+          "Jincheng Xie",
+          "Xingchen Xiao",
+          "Runheng Liu",
+          "Zhongyi Huang",
+          "Yu Zheng",
+          "Heyan Huang"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Mobile GUI Agent Privacy Personalization with Trajectory Induced Preference Optimization",
+        "url": "",
+        "authors": [
+          "Zhixin Lin",
+          "Jungang Li",
+          "Dongliang Xu",
+          "Shidong Pan",
+          "Yibo Shi",
+          "Yuchi Liu",
+          "Yuecong Min",
+          "Yue Yao"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Dynamic Summary Generation for Interpretable Multimodal Depression Detection",
+        "url": "",
+        "authors": [
+          "Shiyu Teng",
+          "Jiaqing Liu",
+          "Hao Sun",
+          "Yu Li",
+          "Shurong Chai",
+          "Ruibo Hou",
+          "Tomoko Tateyama",
+          "Lanfen Lin",
+          "Yen-Wei Chen"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Anthropogenic Regional Adaptation in Multimodal Vision-Language Model",
+        "url": "",
+        "authors": [
+          "Samuel Cahyawijaya",
+          "Peerat Limkonchotiwat",
+          "Tack Hwa Wong",
+          "Hitesh Laxmichand Patel",
+          "Amit Agarwal",
+          "Manuel Antonio Rufino",
+          "Carlos Rafael Catalan",
+          "Muhammad Reza Qorib",
+          "Vicky Feliren",
+          "Holy Lovenia",
+          "Aye Hninn Khine",
+          "Frederikus Hudi",
+          "David Anugraha",
+          "Alham Fikri Aji",
+          "Romrawin Chumpu",
+          "Viet-Thanh Pham",
+          "Minghan Wang",
+          "Mohamed Fazli Imam",
+          "Ruochen Zhang",
+          "Joseph Marvin Imperial",
+          "Do Xuan Long",
+          "Musa Izzanardi Wijanarko",
+          "Joel Ruben Antony Moniz",
+          "Patrick Amadeus Irawan",
+          "Hanif Muhammad Zhafran",
+          "Isaiah Flores",
+          "Ira Salsabila",
+          "Jun Kevin",
+          "Jostin Jerico Rosal",
+          "Patricia Nicole Monderin",
+          "Kun Kerdthaisong",
+          "Ahmad Mustafid",
+          "My Chiffon Nguyen",
+          "Natchapon Jongwiriyanurak",
+          "Siva Worajitwannakul",
+          "Haochen Li",
+          "Adrian Xuan Wei Lim",
+          "Bin Wang",
+          "Muhammad Ravi Shulthan Habibi",
+          "Lynnette Hui Xian Ng",
+          "Mithil Bangera",
+          "Yeshil Bangera",
+          "Priyaranjan Pattnayak",
+          "Dun Li Chan",
+          "Sherissa Caren Djuniwar",
+          "Hee Ming Shan"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "A Mamba-Based Multimodal Network for Multiscale Blast-Induced Rapid Structural Damage Assessment",
+        "url": "",
+        "authors": [
+          "Wanli Ma",
+          "Sivasakthy Selvakumaran",
+          "Dain G. Farrimond",
+          "Adam A. Dennis",
+          "Samuel E. Rigby"
+        ],
+        "date": "2026-04-14"
+      },
+      {
+        "title": "Collaborative Multi-Agent Scripts Generation for Enhancing Imperfect-Information Reasoning in Murder Mystery Games",
+        "url": "",
+        "authors": [
+          "Keyang Zhong",
+          "Junlin Xie",
+          "Hefeng Wu",
+          "Haofeng Li",
+          "Guanbin Li"
+        ],
+        "date": "2026-04-14"
+      }
+    ]
+  }
+]
