@@ -1,0 +1,338 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-20",
+    "paperCount": 7,
+    "markdown": "# The Interpretability Frontier: From Faithful Reasoning to Grounded Concepts\n\nToday's research landscape is intensely focused on moving beyond post-hoc explanations to build interpretability directly into model architectures and reasoning processes. A central tension emerges between viewing reasoning as a latent, internal state trajectory versus a manipulable, surface-level chain of thought, with significant implications for trust and verification.\n\n## Re-conceptualizing Reasoning: Latent States vs. Surface Traces\n\n**[1] \"LLM Reasoning Is Latent, Not the Chain of Thought\"** argues that the field's focus on the surface-level chain-of-thought (CoT) as the primary object of reasoning is misguided. The paper posits that reasoning is fundamentally mediated by latent-state trajectories within the model, which the generated CoT may only partially and imperfectly reflect. This matters because core claims about faithfulness, interpretability benchmarks, and intervention techniques depend on which hypothesis (latent vs. surface) is accepted, urging a foundational shift in how we study and evaluate model reasoning.\n\n**[5] \"AtManRL: Towards Faithful Reasoning via Differentiable Attention Saliency\"** directly tackles the faithfulness problem highlighted in [1] by developing a method to better align surface reasoning traces with internal processes. AtManRL uses reinforcement learning to train an additive attention mask that identifies which tokens in a CoT are crucial for producing the correct answer, generating a saliency reward. This reward is then used to fine-tune the LLM to produce reasoning traces where the stated \"thoughts\" are more integral to the model's actual computational path, thereby improving trace faithfulness.\n\n## Architecting Intrinsically Interpretable Models\n\n**[4] \"Towards Intrinsic Interpretability of Large Language Models: A Survey of Design Principles and Architectures\"** provides a systematic review of the shift from post-hoc explanation methods to intrinsic interpretability built directly into LLM architectures. The survey categorizes existing approaches, such as modular networks, concept-based models, and mechanistic interpretability designs, that bake transparency into the model's computations. This work frames the pursuit of inherently transparent models as a critical alternative to explaining black boxes after the fact, setting the stage for the architectural innovations seen in other papers.\n\n**[6] \"Prototype-Grounded Concept Models for Verifiable Concept Alignment\"** introduces an architectural advance for intrinsic interpretability in vision models by grounding human-understandable concepts in visual prototypes. PGCMs improve upon Concept Bottleneck Models (CBMs) by linking each concept to learned image parts (prototypes) that serve as explicit, inspectable evidence. This grounding allows users to directly verify whether a learned concept (e.g., \"stripes\") aligns with human meaning by examining the prototypes, and enables targeted intervention at the prototype level to correct misalignments, enhancing trust.\n\n## Enhancing Robustness and Adaptability of Interpretable Systems\n\n**[2] \"ProtoTTA: Prototype-Guided Test-Time Adaptation\"** addresses a key weakness of interpretable prototype-based models: their fragility to distribution shifts at test time. The method leverages the model's own interpretable prototypes to guide parameter updates during test-time adaptation (TTA), rather than relying solely on output entropy minimization. By using prototypes—which represent core, semantically meaningful features—as a stable guide, ProtoTTA improves model robustness to domain shifts while preserving the interpretability that makes such models valuable in critical domains like healthcare.\n\n**[3] \"Using Large Language Models and Knowledge Graphs to Improve the Interpretability of Machine Learning Models in Manufacturing\"** proposes a system to make ML model outputs more accessible and robust within a specific domain. The method stores domain data, ML results, and explanations in a Knowledge Graph (KG), creating structured connections between domain knowledge and model insights. An LLM then acts as an interface, selectively retrieving and verbalizing relevant information from the KG to generate user-friendly, context-aware explanations, thereby bridging the gap between technical ML outputs and practical, actionable understanding for domain experts.\n\n## Neuro-Symbolic Discovery for Interpretable Formulations\n\n**[7] \"Neuro-Symbolic ODE Discovery with Latent Grammar Flow\"** focuses on discovering interpretable, symbolic equations (like ODEs) from data, offering transparency and transferability absent in black-box models. The Latent Grammar Flow (LGF) framework embeds candidate equations as grammar-based representations into a discrete latent space, using a behavioural loss to cluster semantically similar equations together. A discrete flow model then recursively generates and refines equation candidates within this structured space, guiding the search towards both accurate and interpretable symbolic formulations of system dynamics.\n\n## Key Takeaways\n- **Reasoning Faithfulness is Foundational:** A core debate centers on whether reasoning is a latent internal process [1] or a surface-level chain; ensuring surface traces faithfully reflect internal computations is a major technical challenge [5].\n- **Intrinsic Design is Paramount:** The field is moving beyond post-hoc explanations toward designing inherently interpretable architectures, such as concept-based [6] or modular models [4], which bake transparency directly into the forward pass.\n- **Verification Enables Trust:** Interpretability requires verification; new methods enable direct inspection and alignment of model-internal concepts with human understanding via grounded prototypes [6] or structured knowledge graphs [3].\n- **Interpretability Must Be Robust:** Interpretable models must maintain their accuracy and transparency under distribution shifts, necessitating techniques like prototype-guided test-time adaptation [2].\n- **Symbolic Priors Enhance Understanding:** Integrating symbolic, grammar-based priors with neural methods [7] can yield discoverable models that are both accurate and inherently interpretable, bridging the gap between data-driven performance and human-comprehensible formulation.",
+    "papers": [
+      {
+        "title": "LLM Reasoning Is Latent, Not the Chain of Thought",
+        "url": "",
+        "authors": [
+          "Wenshuo Wang"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "ProtoTTA: Prototype-Guided Test-Time Adaptation",
+        "url": "",
+        "authors": [
+          "Mohammad Mahdi Abootorabi",
+          "Parvin Mousavi",
+          "Purang Abolmaesumi",
+          "Evan Shelhamer"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Using Large Language Models and Knowledge Graphs to Improve the Interpretability of Machine Learning Models in Manufacturing",
+        "url": "",
+        "authors": [
+          "Thomas Bayer",
+          "Alexander Lohr",
+          "Sarah Weiß",
+          "Bernd Michelberger",
+          "Wolfram Höpken"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Towards Intrinsic Interpretability of Large Language Models:A Survey of Design Principles and Architectures",
+        "url": "",
+        "authors": [
+          "Yutong Gao",
+          "Qinglin Meng",
+          "Yuan Zhou",
+          "Liangming Pan"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "AtManRL: Towards Faithful Reasoning via Differentiable Attention Saliency",
+        "url": "",
+        "authors": [
+          "Max Henning Höth",
+          "Kristian Kersting",
+          "Björn Deiseroth",
+          "Letitia Parcalabescu"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Prototype-Grounded Concept Models for Verifiable Concept Alignment",
+        "url": "",
+        "authors": [
+          "Stefano Colamonaco",
+          "David Debot",
+          "Pietro Barbiero",
+          "Giuseppe Marra"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Neuro-Symbolic ODE Discovery with Latent Grammar Flow",
+        "url": "",
+        "authors": [
+          "Karin Yu",
+          "Eleni Chatzi",
+          "Georgios Kissas"
+        ],
+        "date": "2026-04-20"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-20",
+    "paperCount": 4,
+    "markdown": "# The Rigor and Application of Explainability: From Theory to Industrial Practice\n\nToday's research landscape demonstrates a clear maturation of explainable AI (XAI), moving beyond simple feature attribution to address rigor, scalability, and practical integration. The focus is shifting from proving *that* a model works to rigorously understanding *how* it works, especially in complex domains like code generation and manufacturing.\n\n## Evaluating Practical Explainability for NLP Models\n\n**[1] \"Applied Explainability for Large Language Models: A Comparative Study\"** provides a pragmatic, head-to-head evaluation of established explainability techniques—Integrated Gradients, Attention Rollout, and SHAP—on a fine-tuned DistilBERT model for sentiment analysis. Rather than introducing a new method, the study systematically assesses the practical behavior and outputs of these tools under a consistent experimental framework. This work matters because it offers applied guidance for practitioners needing to choose an appropriate interpretation method for a specific NLP task, highlighting the comparative strengths and operational characteristics of each approach in a controlled setting.\n\n## Analyzing How Training Shapes Model Interpretability\n\n**[2] \"LLM attribution analysis across different fine-tuning strategies and model scales for automated code compliance\"** investigates how fine-tuning decisions and model size affect the *interpretive behavior* of LLMs used for automated code compliance, moving beyond mere performance metrics. Using perturbation-based attribution analysis, the authors compare how full fine-tuning (FFT), LoRA, and quantized LoRA alter which parts of the input code the model deems important. A key finding is that FFT produces more human-aligned and stable attribution maps compared to parameter-efficient methods. This research is crucial as it links training methodology to explainability, suggesting that the choice of how to adapt a model fundamentally changes its reasoning process, which has direct implications for trust in high-stakes software engineering applications.\n\n## The Pursuit of Provably Rigorous Explanations\n\n**[3] \"Towards Rigorous Explainability by Feature Attribution\"** critiques the widespread adoption of non-symbolic, heuristic explanation methods like SHAP, arguing their lack of formal guarantees can mislead users, especially in high-stakes scenarios. The paper advocates for a shift towards rigorous, symbolic methods for explainable AI (XAI) that can provide provable explanations for model predictions. By focusing on feature attribution, the authors outline a pathway to replace statistically approximated explanations with logically sound alternatives. This work is foundational, challenging the XAI community to prioritize mathematical rigor and correctness over computational convenience to build truly trustworthy AI systems.\n\n## Integrating Knowledge for Human-Centric Explanations\n\n**[4] \"Using Large Language Models and Knowledge Graphs to Improve the Interpretability of Machine Learning Models in Manufacturing\"** addresses the challenge of making ML explanations transparent and accessible to domain experts by combining Knowledge Graphs (KGs) and LLMs. The method structures domain knowledge, ML results, and their explanations within a KG, then uses a selective retrieval process to feed relevant information to an LLM, which generates natural language, context-aware explanations. This creates a structured bridge between raw model attributions and human-understandable insights grounded in domain terminology. This approach matters for industrial adoption, as it moves explanations from technical feature importance scores to actionable, domain-relevant narratives that support decision-making.\n\n## Key Takeaways\n-   **Explainability is context-dependent:** The utility of an explanation method (e.g., SHAP vs. Integrated Gradients) depends on the model, task, and desired interpretation, as shown in comparative studies [1].\n-   **Training affects reasoning:** How a model is fine-tuned (e.g., Full Fine-Tuning vs. LoRA) not only changes its performance but also fundamentally alters its attribution patterns and interpretive behavior [2].\n-   **Rigor is a critical frontier:** Widely used explanation tools lack formal guarantees, creating a pressing need for symbolically rigorous methods that can provide provably correct attributions [3].\n-   **Explanation delivery is key:** For real-world use, explanations must be translated into a human-centric format, a process effectively enabled by combining structured knowledge (KGs) with the generative power of LLMs [4].\n-   **The field is expanding in scope:** Research is successfully applying and evaluating XAI beyond classic image/text classification into complex, structured domains like source code analysis [2] and industrial manufacturing [4].",
+    "papers": [
+      {
+        "title": "Applied Explainability for Large Language Models: A Comparative Study",
+        "url": "",
+        "authors": [
+          "Venkata Abhinandan Kancharla"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "LLM attribution analysis across different fine-tuning strategies and model scales for automated code compliance",
+        "url": "",
+        "authors": [
+          "Jack Wei Lun Shi",
+          "Minghao Dang",
+          "Wawan Solihin",
+          "Justin K. W. Yeoh"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Towards Rigorous Explainability by Feature Attribution",
+        "url": "",
+        "authors": [
+          "Olivier Létoffé",
+          "Xuanxiang Huang",
+          "Joao Marques-Silva"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Using Large Language Models and Knowledge Graphs to Improve the Interpretability of Machine Learning Models in Manufacturing",
+        "url": "",
+        "authors": [
+          "Thomas Bayer",
+          "Alexander Lohr",
+          "Sarah Weiß",
+          "Bernd Michelberger",
+          "Wolfram Höpken"
+        ],
+        "date": "2026-04-20"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-20",
+    "paperCount": 9,
+    "markdown": "# The Multimodal Frontier: From Spatial Grounding to Structural Reasoning\n\nToday's research landscape demonstrates a powerful convergence of multimodal AI, where models are moving beyond simple recognition to achieve sophisticated spatial, temporal, and structural understanding for real-world deployment. The focus is shifting from building isolated capabilities to creating integrated, steerable systems that can reason over complex, heterogeneous data and execute open-ended tasks.\n\n## Embodied AI and Spatial Grounding\n\n**GIST: Multimodal Knowledge Extraction and Spatial Grounding via Intelligent Semantic Topology** addresses the challenge of spatial grounding for embodied AI in complex, quasi-static environments like warehouses and retail stores, where dense visual features become stale and semantic distributions are long-tailed [1]. Its core approach constructs a \"Grounded Intelligent Semantic Topology\" that extracts and organizes multimodal knowledge, likely combining visual, linguistic, and spatial data to create a persistent, semantically-rich map. This matters because it provides a pathway for assistive systems and robots to maintain robust, long-term situational awareness in human-centric environments, moving beyond the limitations of standard Vision-Language Models in cluttered spaces.\n\n**$π_{0.7}$: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities** tackles the problem of creating a single, general-purpose model capable of executing diverse, unseen robotic tasks from language instructions [5]. The model's technical approach, while not detailed in the snippet, results in strong out-of-the-box performance on multi-stage tasks (like using kitchen appliances), zero-shot cross-embodiment generalization (e.g., folding laundry), and operating complex devices like an espresso machine. This is a significant leap toward general-purpose embodied AI, demonstrating that a single foundation model can match the performance of specialized, fine-tuned models across a broad spectrum of real-world manipulation challenges.\n\n## Benchmarking Complex Reasoning and Tool Use\n\n**GTA-2: Benchmarking General Tool Agents from Atomic Tool-Use to Open-Ended Workflows** identifies a misalignment between current tool-use benchmarks—which often use AI-generated queries and dummy tools—and the requirements for real-world, productivity-focused AI agents [6]. The proposed GTA-2 benchmark is built on real user queries and deployed tools, creating a hierarchical evaluation spanning from atomic tool use to complex, open-ended workflows. This contribution is crucial for rigorously measuring progress toward general-purpose agents that can orchestrate multi-step tasks in authentic digital environments.\n\n**ReactBench: A Benchmark for Topological Reasoning in MLLMs on Chemical Reaction Diagrams** reveals a critical weakness in Multimodal Large Language Models: their poor reasoning over complex topological structures like branching paths and cycles, even for basic tasks like counting endpoints in diagrams [8]. ReactBench uses chemical reaction diagrams to probe this structural reasoning gap, moving beyond semantic comprehension to test fundamental graph-like understanding. This benchmark matters because it highlights a key limitation for MLLMs in scientific, engineering, and logical domains where diagrammatic reasoning is essential.\n\n## Advanced Multimodal Fusion and Alignment\n\n**M3R: Localized Rainfall Nowcasting with Meteorology-Informed MultiModal Attention** addresses the challenge of accurate, short-term precipitation prediction by effectively fusing heterogeneous data sources—specifically visual NEXRAD radar imagery and numerical Personal Weather Station measurements [2]. The core innovation is a meteorology-informed multimodal attention architecture within a pipeline that temporally aligns these disparate data streams. This work is significant for disaster mitigation, as it demonstrates how tailored multimodal fusion can improve predictions for a high-impact, complex physical phenomenon.\n\n**Joint-Centric Dual Contrastive Alignment with Structure-Preserving and Information-Balanced Regularization** (the framework named HILBERT) focuses on learning robust document-level representations from long, segmented audio-text sequences, particularly in low-resource settings [9]. It employs frozen pre-trained encoders and uses cross-modal attention with self-attentive pooling to create joint embeddings, while a novel regularization strategy aims to align modalities without losing their unique structural information. This approach is important for applications like long-form video understanding or podcast analysis, where preserving the nuanced structure of each modality during alignment is critical.\n\n## Steering, Optimization, and Architectural Integration\n\n**FineSteer: A Unified Framework for Fine-Grained Inference-Time Steering in Large Language Models** seeks to overcome the limitations of existing inference-time steering methods, which often trade off between effectiveness, utility preservation, and training efficiency [7]. Its technical approach decomposes steering into two stages—conditional steering and fine-grained vector synthesis—allowing for more precise and adaptable control over model behavior. This framework provides a cost-effective and flexible method to mitigate issues like safety violations and hallucinations without retraining model parameters.\n\n**Stein Variational Black-Box Combinatorial Optimization** tackles the problem of premature convergence in Estimation-of-Distribution Algorithms (EDAs) when faced with complex, multimodal objective landscapes in high-dimensional combinatorial search spaces [3]. The method incorporates a Stein operator to introduce a repulsive force between particles (solution candidates), encouraging exploration and enabling the discovery of multiple optima. This advances black-box optimization for problems like neural architecture search or circuit design, where maintaining population diversity is key.\n\n**Integrating Graphs, Large Language Models, and Agents: Reasoning and Retrieval** provides a structured survey to bring clarity to the rapidly growing field of integrating graph-based representations (like knowledge graphs) with LLMs and agents [4]. It categorizes methods based on their purpose (e.g., reasoning, retrieval) and graph modality, offering a framework to understand when and why specific integrations are most appropriate. This work is vital for guiding the systematic development of more structured, reliable, and knowledgeable AI systems.\n\n## Key Takeaways\n- **Spatial and Embodied Intelligence is Advancing:** New methods are creating persistent, semantically-grounded world models for robots ($π_{0.7}$, GIST), enabling strong generalization to unseen tasks and environments.\n- **Benchmarks are Evolving Toward Real-World Complexity:** Next-generation benchmarks (GTA-2, ReactBench) are exposing critical gaps in tool orchestration and structural/topological reasoning, pushing the field beyond simple Q&A.\n- **Multimodal Fusion Requires Careful Design:** Effective integration of heterogeneous data (e.g., radar images and sensor data for weather) depends on domain-informed architectures and alignment techniques that preserve modality-specific structure (M3R, HILBERT).\n- **Control and Optimization Techniques are Becoming More Nuanced:** Inference-time model steering (FineSteer) and population-based optimization (Stein Variational) are adopting finer-grained, more adaptive mechanisms for precise control and exploration.\n- **System Integration is a Key Research Theme:** There is a concerted effort to formally understand and architect the integration of complementary AI paradigms, such as graphs, LLMs, and agents, for enhanced reasoning and decision-making.",
+    "papers": [
+      {
+        "title": "GIST: Multimodal Knowledge Extraction and Spatial Grounding via Intelligent Semantic Topology",
+        "url": "",
+        "authors": [
+          "Shivendra Agrawal",
+          "Bradley Hayes"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "M3R: Localized Rainfall Nowcasting with Meteorology-Informed MultiModal Attention",
+        "url": "",
+        "authors": [
+          "Sanjeev Panta",
+          "Rhett M Morvant",
+          "Xu Yuan",
+          "Li Chen",
+          "Nian-Feng Tzeng"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Stein Variational Black-Box Combinatorial Optimization",
+        "url": "",
+        "authors": [
+          "Thomas Landais",
+          "Olivier Goudet",
+          "Adrien Goëffon",
+          "Frédéric Saubion",
+          "Sylvain Lamprier"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Integrating Graphs, Large Language Models, and Agents: Reasoning and Retrieval",
+        "url": "",
+        "authors": [
+          "Hamed Jelodar",
+          "Samita Bai",
+          "Mohammad Meymani",
+          "Parisa Hamedi",
+          "Roozbeh Razavi-Far",
+          "Ali Ghorbani"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "$π_{0.7}$: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities",
+        "url": "",
+        "authors": [
+          "Physical Intelligence",
+          "Bo Ai",
+          "Ali Amin",
+          "Raichelle Aniceto",
+          "Ashwin Balakrishna",
+          "Greg Balke",
+          "Kevin Black",
+          "George Bokinsky",
+          "Shihao Cao",
+          "Thomas Charbonnier",
+          "Vedant Choudhary",
+          "Foster Collins",
+          "Ken Conley",
+          "Grace Connors",
+          "James Darpinian",
+          "Karan Dhabalia",
+          "Maitrayee Dhaka",
+          "Jared DiCarlo",
+          "Danny Driess",
+          "Michael Equi",
+          "Adnan Esmail",
+          "Yunhao Fang",
+          "Chelsea Finn",
+          "Catherine Glossop",
+          "Thomas Godden",
+          "Ivan Goryachev",
+          "Lachlan Groom",
+          "Haroun Habeeb",
+          "Hunter Hancock",
+          "Karol Hausman",
+          "Gashon Hussein",
+          "Victor Hwang",
+          "Brian Ichter",
+          "Connor Jacobsen",
+          "Szymon Jakubczak",
+          "Rowan Jen",
+          "Tim Jones",
+          "Gregg Kammerer",
+          "Ben Katz",
+          "Liyiming Ke",
+          "Mairbek Khadikov",
+          "Chandra Kuchi",
+          "Marinda Lamb",
+          "Devin LeBlanc",
+          "Brendon LeCount",
+          "Sergey Levine",
+          "Xinyu Li",
+          "Adrian Li-Bell",
+          "Vladislav Lialin",
+          "Zhonglin Liang",
+          "Wallace Lim",
+          "Yao Lu",
+          "Enyu Luo",
+          "Vishnu Mano",
+          "Nandan Marwaha",
+          "Aikys Mongush",
+          "Liam Murphy",
+          "Suraj Nair",
+          "Tyler Patterson",
+          "Karl Pertsch",
+          "Allen Z. Ren",
+          "Gavin Schelske",
+          "Charvi Sharma",
+          "Baifeng Shi",
+          "Lucy Xiaoyang Shi",
+          "Laura Smith",
+          "Jost Tobias Springenberg",
+          "Kyle Stachowicz",
+          "Will Stoeckle",
+          "Jiaming Tang",
+          "Jimmy Tanner",
+          "Shalom Tekeste",
+          "Marcel Torne",
+          "Kyle Vedder",
+          "Quan Vuong",
+          "Anna Walling",
+          "Haohuan Wang",
+          "Jason Wang",
+          "XuDong Wang",
+          "Chris Whalen",
+          "Samuel Whitmore",
+          "Blake Williams",
+          "Charles Xu",
+          "Sukwon Yoo",
+          "Lili Yu",
+          "Wuming Zhang",
+          "Zhuoyang Zhang",
+          "Ury Zhilinsky"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "GTA-2: Benchmarking General Tool Agents from Atomic Tool-Use to Open-Ended Workflows",
+        "url": "",
+        "authors": [
+          "Jize Wang",
+          "Xuanxuan Liu",
+          "Yining Li",
+          "Songyang Zhang",
+          "Yijun Wang",
+          "Zifei Shan",
+          "Xinyi Le",
+          "Cailian Chen",
+          "Xinping Guan",
+          "Dacheng Tao"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "FineSteer: A Unified Framework for Fine-Grained Inference-Time Steering in Large Language Models",
+        "url": "",
+        "authors": [
+          "Zixuan Weng",
+          "Jinghuai Zhang",
+          "Kunlin Cai",
+          "Ying Li",
+          "Peiran Wang",
+          "Yuan Tian"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "ReactBench: A Benchmark for Topological Reasoning in MLLMs on Chemical Reaction Diagrams",
+        "url": "",
+        "authors": [
+          "Qiang Xu",
+          "Shengyuan Bai",
+          "Yu Wang",
+          "He Cao",
+          "Leqing Chen",
+          "Yuanyuan Liu",
+          "Bin Feng",
+          "Zijing Liu",
+          "Yu Li"
+        ],
+        "date": "2026-04-20"
+      },
+      {
+        "title": "Joint-Centric Dual Contrastive Alignment with Structure-Preserving and Information-Balanced Regularization",
+        "url": "",
+        "authors": [
+          "Habibeh Naderi",
+          "Behrouz Haji Soleimani",
+          "Stan Matwin"
+        ],
+        "date": "2026-04-20"
+      }
+    ]
+  }
+]
