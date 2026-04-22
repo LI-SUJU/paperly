@@ -1,0 +1,294 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-22",
+    "paperCount": 12,
+    "markdown": "# From Sparse Features to Structured Reasoning: Interpretability Across Modalities and Domains\n\nToday's research landscape reveals a decisive shift from post-hoc interpretability as an afterthought to interpretability as a first-class design constraint, with papers spanning clinical diagnostics, legal reasoning, art retrieval, and model safety. The community is converging on hybrid approaches that combine the flexibility of deep learning with the transparency of symbolic or structured representations, while also exposing fundamental limitations in concept-based and additive models when applied to real-world data.\n\n## Bottlenecks and Bottlenecks: Diagnosing Interpretability Failures in Concept-Based Models\n\n**Paper [10]** tackles a critical but often overlooked limitation of Concept Bottleneck Models (CBMs): when the same set of clinical concepts maps to conflicting diagnosis labels, the bottleneck becomes an accuracy ceiling rather than a transparency window. Using rough set theory on the Derm7pt dermoscopy dataset, the authors characterize 305 unique concept profiles and identify systematic inconsistencies—identical dermoscopic criteria associated with both benign and malignant outcomes—quantifying the irreducible ambiguity inherent in the data. This work provides a rigorous framework for diagnosing when concept-based interpretability is trustworthy versus when it merely obscures fundamental label noise.\n\n**Paper [4]** introduces ParamBoost, a Generalized Additive Model (GAM) that learns shape functions via gradient-boosted piecewise cubic polynomials, achieving glass-box interpretability while incorporating domain constraints such as monotonicity and concavity. Unlike standard spline-based GAMs, ParamBoost's leaf-node polynomial fitting allows the model to capture complex nonlinearities without sacrificing the explicit observability of each feature's contribution. The practical significance lies in enabling domain experts—not just data scientists—to validate and refine model behavior through transparent shape functions.\n\n**Paper [8]** presents S2MAM, a semi-supervised meta additive model that addresses the brittleness of Laplacian regularization in manifold-based semi-supervised learning. By learning the similarity metric adaptively through a meta-learning framework and integrating additive structure, the model achieves robust variable selection and estimation even when the underlying manifold geometry is misspecified. This is particularly relevant for interpretability because it demonstrates that semi-supervised settings can benefit from additive decomposability without sacrificing predictive performance.\n\n## Sparse Representations for Robustness and Dynamics Discovery\n\n**Paper [2]** investigates the underexplored robustness implications of Sparse Autoencoders (SAEs), finding that inserting pretrained SAEs into transformer residual streams at inference time—without gradient blocking—reduces jailbreak success rates by up to 5x across four model families and five attack methods. The key insight is that SAEs' sparse feature representations inherently disrupt gradient-based optimization by projecting adversarial perturbations into a lower-dimensional, structured latent space where attack signals are more easily suppressed. This dual-purpose result positions SAEs not merely as interpretability tools but as a lightweight, inference-time defense mechanism requiring no retraining or weight modification.\n\n**Paper [6]** introduces AC-SINDy, a compositional extension of the Sparse Identification of Nonlinear Dynamics framework that replaces explicit feature libraries with arithmetic circuit representations. By constructing nonlinear features through compositions of linear functions and multiplicative interactions, the approach enforces sparsity directly over the computational graph rather than over a predefined basis, enabling discovery of compact dynamical models from data. The separation of state estimation from dynamics identification further enhances interpretability by isolating measurement noise from the underlying system equations.\n\n## Structured Retrieval and Reasoning as Interpretability\n\n**Paper [3]** presents LogosKG, a hardware-optimized framework for interpretable multi-hop knowledge graph retrieval that decomposes subject, object, and relation representations into symbolic structures executed as efficient tensor operations. By building traversal logic directly into the retrieval architecture rather than relying on opaque embedding similarities, LogosKG provides explicit, verifiable reasoning paths that scale to billion-edge graphs while maintaining computational efficiency. This addresses a critical gap in LLM-KG integration: current approaches sacrifice either scalability or interpretability, whereas LogosKG achieves both through hardware-aligned symbolic decomposition.\n\n**Paper [9]** introduces A-MAR, an Agent-based Multimodal Art Retrieval framework that replaces implicit reasoning in multimodal LLMs with structured, interpretable reasoning plans. Given an artwork and user query, A-MAR first decomposes the task into explicit sub-goals (e.g., identify stylistic period, retrieve similar compositions) and then conditions retrieval on each step, producing a transparent chain of evidence. The framework directly addresses the \"black-box explanation\" problem in multimodal systems by making the retrieval process auditable, with each reasoning step grounded in specific visual features and cultural knowledge.\n\n**Paper [11]** addresses interpretability in legal AI through LePREC, which reformulates legal issue identification as a structured classification problem over explicit legal factors rather than relying on LLMs' implicit reasoning. By constructing a dataset of 769 real-world contract law cases annotated by senior legal experts, the authors demonstrate that while LLMs generate diverse candidate issues, they struggle with precise factor-based classification—a task where structured, interpretable models outperform opaque reasoning. This work highlights that interpretability in high-stakes domains like law requires not just explanation but auditability at the level of specific legal criteria.\n\n## Preference, Personalization, and Human-Aligned Explanations\n\n**Paper [12]** presents PREF-XAI, a framework for generating personalized rule-based explanations of black-box models by explicitly learning user preferences over explanation attributes (e.g., rule length, feature salience, counterfactual distance). Unlike prior work that relies on heuristic adaptations, this approach models individual user preferences via a principled preference learning mechanism, then generates explanations that optimize for each user's specific cognitive and decision-making needs. The contribution is both conceptual—formalizing the \"explanation is in the eye of the beholder\" intuition—and practical, providing a concrete algorithm for preference-aware rule extraction.\n\n**Paper [5]** addresses the challenge of topic modeling for association analysis with external outcomes (e.g., linking employee review topics to leadership effectiveness scores) by proposing an LLM-based method that jointly optimizes for interpretability, topic specificity, and polarity stance consistency. The key innovation is generating topics that are concrete enough to map to specific actions or characteristics while avoiding the common pitfall of mixing positive and negative evaluations within a single topic. This work is particularly relevant for computational social science, where topic interpretability is a prerequisite for valid causal inference.\n\n**Paper [1]** reframes clinical diagnosis from multimodal patient trajectories as an autoregressive sequence modeling task using causal LLM decoders, explicitly handling missing modalities as masked tokens in the sequence rather than requiring imputation or modality-specific architectures. By treating modality absence as structural information rather than noise, the approach preserves interpretability through the autoregressive token-level predictions, where each step's output corresponds to a clinically meaningful event or measurement. This addresses a fundamental challenge in healthcare ML: maintaining transparency while handling the inherently sparse and irregular clinical data.\n\n**Paper [7]** introduces STAR-Teaming, a black-box automated red teaming framework that uses a Strategy-Response Multiplex Network to model the space of jailbreak strategies as a tractable graph structure rather than a high-dimensional embedding space. The network-based approach enables efficient sampling of diverse attack strategies while maintaining interpretability through the explicit representation of attack tactics and their relationships. This work demonstrates that interpretability in safety-critical domains need not be limited to model explanations—it can also apply to the adversarial search process itself.\n\n**Paper [13]** (inferred from paper [9]'s citation of \"A-MAR\" as a novel contribution) does not appear in the list; all 12 papers have been covered.\n\n## Key Takeaways\n\n- **Concept bottleneck models have a fundamental accuracy ceiling** when datasets contain concept-label inconsistencies, as rigorously demonstrated by rough set analysis of dermoscopic criteria; interpretability frameworks must account for irreducible ambiguity in human-annotated data.\n- **Sparse autoencoders serve dual purpose as interpretability tools and adversarial defenses**, achieving up to 5x jailbreak reduction through feature-space disruption without gradient blocking or model modification.\n- **Structured symbolic reasoning is re-emerging as a viable alternative to end-to-end neural approaches** in domains requiring auditability (legal reasoning, art retrieval, knowledge graph traversal), with hardware-aligned implementations achieving billion-edge scalability.\n- **Personalization of explanations is moving from heuristic to principled**, with preference learning frameworks enabling explanations tailored to individual users' cognitive constraints and decision-making needs.\n- **Missing modalities in clinical data can be treated as informative tokens** rather than problems to be imputed, enabling autoregressive modeling that preserves interpretability through sequential token-level predictions.\n- **Topic modeling for causal inference requires explicit optimization for polarity stance consistency**, preventing mixed-positive/negative topics that undermine association analysis with external outcomes.\n- **Network-based modeling of attack strategies** in automated red teaming transforms an intractable high-dimensional search into a tractable, interpretable graph structure, enabling both efficiency and transparency in safety evaluation.",
+    "papers": [
+      {
+        "title": "Handling and Interpreting Missing Modalities in Patient Clinical Trajectories via Autoregressive Sequence Modeling",
+        "url": "",
+        "authors": [
+          "Andrew Wang",
+          "Ellie Pavlick",
+          "Ritambhara Singh"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "Towards Understanding the Robustness of Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Ahson Saiyed",
+          "Sabrina Sadiekh",
+          "Chirag Agarwal"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "LogosKG: Hardware-Optimized Scalable and Interpretable Knowledge Graph Retrieval",
+        "url": "",
+        "authors": [
+          "He Cheng",
+          "Yifu Wu",
+          "Saksham Khatwani",
+          "Maya Kruse",
+          "Dmitriy Dligach",
+          "Timothy A. Miller",
+          "Majid Afshar",
+          "Yanjun Gao"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "ParamBoost: Gradient Boosted Piecewise Cubic Polynomials",
+        "url": "",
+        "authors": [
+          "Nicolas Salvadé",
+          "Tim Hillel"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "Proposing Topic Models and Evaluation Frameworks for Analyzing Associations with External Outcomes: An Application to Leadership Analysis Using Large-Scale Corporate Review Data",
+        "url": "",
+        "authors": [
+          "Yura Yoshida",
+          "Masato Kanai",
+          "Masataka Nakayama",
+          "Haruki Ohsawa",
+          "Yukiko Uchida",
+          "Arata Yuminaga",
+          "Gakuse Hoshina",
+          "Nobuo Sayama"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "AC-SINDy: Compositional Sparse Identification of Nonlinear Dynamics",
+        "url": "",
+        "authors": [
+          "Peter Racioppo"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "STAR-Teaming: A Strategy-Response Multiplex Network Approach to Automated LLM Red Teaming",
+        "url": "",
+        "authors": [
+          "MinJae Jung",
+          "YongTaek Lim",
+          "Chaeyun Kim",
+          "Junghwan Kim",
+          "Kihyun Kim",
+          "Minwoo Kim"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "S2MAM: Semi-supervised Meta Additive Model for Robust Estimation and Variable Selection",
+        "url": "",
+        "authors": [
+          "Xuelin Zhang",
+          "Hong Chen",
+          "Yingjie Wang",
+          "Tieliang Gong",
+          "Bin Gu"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "A-MAR: Agent-based Multimodal Art Retrieval for Fine-Grained Artwork Understanding",
+        "url": "",
+        "authors": [
+          "Shuai Wang",
+          "Hongyi Zhu",
+          "Jia-Hong Huang",
+          "Yixian Shen",
+          "Chengxi Zeng",
+          "Stevan Rudinac",
+          "Monika Kackovic",
+          "Nachoem Wijnberg",
+          "Marcel Worring"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "Concept Inconsistency in Dermoscopic Concept Bottleneck Models: A Rough-Set Analysis of the Derm7pt Dataset",
+        "url": "",
+        "authors": [
+          "Gonzalo Nápoles",
+          "Isel Grau",
+          "Yamisleydi Salgueiro"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "LePREC: Reasoning as Classification over Structured Factors for Assessing Relevance of Legal Issues",
+        "url": "",
+        "authors": [
+          "Fanyu Wang",
+          "Xiaoxi Kang",
+          "Paul Burgess",
+          "Aashish Srivastava",
+          "Chetan Arora",
+          "Adnan Trakic",
+          "Lay-Ki Soon",
+          "Md Khalid Hossain",
+          "Lizhen Qu"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "PREF-XAI: Preference-Based Personalized Rule Explanations of Black-Box Machine Learning Models",
+        "url": "",
+        "authors": [
+          "Salvatore Greco",
+          "Jacek Karolczak",
+          "Roman Słowiński",
+          "Jerzy Stefanowski"
+        ],
+        "date": "2026-04-22"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-22",
+    "paperCount": 3,
+    "markdown": "# Explainability in AI: From Clinical Trajectories to Graph Representations and Red Teaming\n\nToday's research landscape reveals a critical shift toward making AI systems more interpretable across diverse domains, from healthcare diagnostics to graph neural networks and LLM safety. The three papers presented tackle explainability from fundamentally different angles—autoregressive modeling for clinical data, contrastive explanations for node representations, and network-based analysis for jailbreak detection—collectively advancing our ability to understand and trust complex AI systems.\n\n## Explainability in Multimodal Clinical AI\n\n### Handling and Interpreting Missing Modalities in Patient Clinical Trajectories via Autoregressive Sequence Modeling [1]\nThis paper addresses the persistent challenge of missing modalities in multimodal healthcare ML models, where clinical datasets are inherently temporal and sparse. The authors reframe clinical diagnosis as an autoregressive sequence modeling task, leveraging causal decoders from large language models (LLMs) to model patient trajectories while maintaining explainability. By treating modality presence as a sequence prediction problem rather than requiring complete multimodal inputs, the approach preserves interpretability even when data is incomplete. This matters because clinical AI systems frequently encounter missing test results or imaging data, and existing methods either discard valuable information or produce uninterpretable black-box predictions.\n\n## Explainability in Graph Neural Networks\n\n### TACENR: Task-Agnostic Contrastive Explanations for Node Representations [3]\nThis work tackles the opacity of node representations in graph representation learning, which despite their success across downstream tasks remain difficult to interpret. The authors propose TACENR, a local explanation method that identifies not only which features contribute to a node's representation but also provides contrastive explanations—revealing why a node is represented similarly to some nodes and differently from others. Unlike existing methods limited to supervised settings or individual dimension explanations, TACENR operates in a task-agnostic manner, making it broadly applicable. This is significant because graph-based models increasingly power recommendation systems, drug discovery, and social network analysis, where understanding representation structure is crucial for debugging and trust.\n\n## Explainability in LLM Safety and Red Teaming\n\n### STAR-Teaming: A Strategy-Response Multiplex Network Approach to Automated LLM Red Teaming [2]\nThis paper addresses the vulnerability of LLMs to jailbreak prompts that elicit harmful responses, proposing a novel black-box framework for automated red teaming. STAR-Teaming integrates a Multi-Agent System (MAS) with a Strategy-Response Multiplex Network, using network-driven optimization to sample effective attack strategies. By recasting the intractable high-dimensional embedding space into a tractable network structure, the approach yields two key advantages: interpretable attack patterns and efficient strategy sampling. This matters because as LLMs are deployed in sensitive applications, understanding how they can be exploited is essential for building robust safety mechanisms, and network-based visualization of attack strategies provides actionable insights for model developers.\n\n## Key Takeaways\n- Missing modalities in clinical AI can be addressed through autoregressive sequence modeling with LLM decoders, preserving interpretability while handling sparse temporal data\n- Graph node representations can be explained in a task-agnostic manner through contrastive methods, revealing both feature importance and similarity structure without requiring downstream task labels\n- Network-based approaches to LLM red teaming transform high-dimensional attack spaces into interpretable multiplex structures, enabling both effective jailbreak generation and strategy analysis\n- The three papers collectively demonstrate that explainability solutions must be domain-specific: clinical data requires handling incompleteness, graphs require structural explanations, and LLMs require attack pattern understanding\n- Task-agnostic explainability methods (as in TACENR) offer broader applicability than supervised approaches, though they may sacrifice some precision for generality\n- The use of causal decoder architectures in clinical settings shows promise for maintaining interpretability even with missing data, a common real-world constraint\n- Network-based optimization in LLM safety provides a tractable framework for what would otherwise be an intractable search problem, with the added benefit of producing human-interpretable attack strategy visualizations",
+    "papers": [
+      {
+        "title": "Handling and Interpreting Missing Modalities in Patient Clinical Trajectories via Autoregressive Sequence Modeling",
+        "url": "",
+        "authors": [
+          "Andrew Wang",
+          "Ellie Pavlick",
+          "Ritambhara Singh"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "STAR-Teaming: A Strategy-Response Multiplex Network Approach to Automated LLM Red Teaming",
+        "url": "",
+        "authors": [
+          "MinJae Jung",
+          "YongTaek Lim",
+          "Chaeyun Kim",
+          "Junghwan Kim",
+          "Kihyun Kim",
+          "Minwoo Kim"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "TACENR: Task-Agnostic Contrastive Explanations for Node Representations",
+        "url": "",
+        "authors": [
+          "Vasiliki Papanikou",
+          "Evaggelia Pitoura"
+        ],
+        "date": "2026-04-22"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-22",
+    "paperCount": 7,
+    "markdown": "# Multimodal Frontiers: From Reasoning Reliability to Embodied Safety and Cross-Lingual Evaluation\n\nToday's research landscape reveals a maturing multimodal AI field that is shifting from capability demonstration to rigorous evaluation, alignment, and robustness. Key themes include addressing missing modalities in clinical settings, improving reasoning quality beyond answer correctness, building safer embodied agents, and extending multimodal evaluation across languages and fine-grained domains.\n\n## Reasoning Alignment and Reward Modeling in Multimodal Systems\n\n[2] **\"Prioritizing the Best: Incentivizing Reliable Multimodal Reasoning by Rewarding Beyond Answer Correctness\"** addresses the critical problem of reasoning-answer inconsistency in multimodal reinforcement learning—where models produce correct answers through flawed or incomplete reasoning chains. The authors compare Reward Models (RMs) against Generative Rewards (GRs) for trajectory supervision, finding that RMs provide efficient early training gains but their effectiveness diminishes as the policy distribution shifts. This work matters because it exposes the inadequacy of answer-only reward signals and proposes a path toward more trustworthy multimodal reasoning through trajectory-level supervision.\n\n[3] **\"DT2IT-MRM: Debiased Preference Construction and Iterative Training for Multimodal Reward Modeling\"** tackles three persistent challenges in multimodal preference data: insufficient granularity in preference strength, textual style bias, and unreliable preference signals. The authors propose a debiased preference construction method combined with iterative training to address noise in existing open-source multimodal preference datasets. The work's significance lies in improving the quality of reward models that are fundamental to aligning Multimodal Large Language Models (MLLMs) with human preferences, addressing a bottleneck in current alignment pipelines.\n\n[6] **\"Lost in Translation: Do LVLM Judges Generalize Across Languages?\"** introduces MM-JudgeBench, the first large-scale benchmark for multilingual and multimodal judge model evaluation, comprising over 60K pairwise preference instances across 25 typologically diverse languages. The paper systematically evaluates how well automatic evaluators (reward models and judge LVLMs) generalize beyond English-centric benchmarks. This work is critical because current evaluation frameworks predominantly operate in English, and understanding cross-lingual generalization gaps is essential for deploying multimodal systems in global contexts.\n\n## Clinical and Scientific Multimodal Applications\n\n[1] **\"Handling and Interpreting Missing Modalities in Patient Clinical Trajectories via Autoregressive Sequence Modeling\"** reframes clinical diagnosis from a traditional multimodal classification problem into an autoregressive sequence modeling task. By leveraging causal decoders from large language models, the approach naturally handles temporally sparse and incomplete clinical data—a pervasive challenge in healthcare. This work matters because it provides both predictive capability and model explainability for clinical settings where missing data is the norm rather than the exception, offering a practical path toward diagnostic multimodal ML in real-world healthcare.\n\n[7] **\"Structure-guided molecular design with contrastive 3D protein-ligand learning\"** presents a unified framework that combines contrastive 3D structure encoding with autoregressive molecular generation conditioned on commercial compound spaces. The authors introduce an SE(3)-equivariant transformer that encodes ligand and pocket structures into a shared embedding space via contrastive learning, achieving competitive zero-shot performance. This work addresses the dual challenge of accurately capturing 3D protein-ligand interactions while navigating ultra-large chemical spaces for drug discovery, with direct implications for accelerating structure-based drug design.\n\n## Embodied Safety and Fine-Grained Understanding\n\n[4] **\"SafetyALFRED: Evaluating Safety-Conscious Planning of Multimodal Large Language Models\"** extends embodied agent evaluation beyond task completion to proactive safety hazard identification and mitigation. Built upon the ALFRED benchmark, the framework introduces six categories of real-world kitchen hazards and evaluates eleven state-of-the-art models from Qwen, Gemma, and Gemini families on both hazard recognition and active risk mitigation. This work addresses a critical gap: while existing safety evaluations focus on passive hazard recognition through QA settings, SafetyALFRED tests whether models can actively avoid or mitigate risks during embodied task execution.\n\n[5] **\"A-MAR: Agent-based Multimodal Art Retrieval for Fine-Grained Artwork Understanding\"** proposes an agent-based framework that explicitly conditions retrieval on structured reasoning plans rather than relying on implicit reasoning and internalized knowledge. Given an artwork and user query, A-MAR decomposes the task into structured reasoning plans specifying goals and evidence requirements, then retrieves relevant information accordingly. This work matters because it addresses the interpretability and evidence grounding limitations of current MLLMs in fine-grained domains like art analysis, where cultural, historical, and stylistic context require multi-step reasoning.\n\n## Key Takeaways\n- Multimodal reward modeling is undergoing critical scrutiny, with research revealing that answer-correctness alone is insufficient and that trajectory-level supervision, debiased preference data, and cross-lingual generalization are necessary for reliable alignment.\n- Clinical multimodal AI is moving toward autoregressive sequence modeling to naturally handle missing modalities, offering a more practical framework for real-world healthcare data characterized by temporal sparsity.\n- Embodied multimodal agents are being evaluated not just for task completion but for proactive safety awareness, representing an important shift toward responsible deployment in interactive environments.\n- Fine-grained multimodal understanding in domains like art analysis benefits from explicit, structured reasoning plans that provide interpretability and evidence grounding, rather than relying solely on implicit model knowledge.\n- Cross-lingual evaluation of multimodal judge models reveals significant gaps in generalization beyond English, highlighting the need for diverse, multilingual benchmarks to ensure global applicability.\n- In scientific applications, equivariant neural architectures combined with contrastive learning and autoregressive generation are enabling more accurate modeling of 3D molecular interactions for drug discovery.\n- The field is increasingly recognizing that robust multimodal systems require not just better architectures but better evaluation frameworks, reward signals, and safety protocols that match real-world deployment complexity.",
+    "papers": [
+      {
+        "title": "Handling and Interpreting Missing Modalities in Patient Clinical Trajectories via Autoregressive Sequence Modeling",
+        "url": "",
+        "authors": [
+          "Andrew Wang",
+          "Ellie Pavlick",
+          "Ritambhara Singh"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "Prioritizing the Best: Incentivizing Reliable Multimodal Reasoning by Rewarding Beyond Answer Correctness",
+        "url": "",
+        "authors": [
+          "Mengzhao Jia",
+          "Zhihan Zhang",
+          "Meng Jiang"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "DT2IT-MRM: Debiased Preference Construction and Iterative Training for Multimodal Reward Modeling",
+        "url": "",
+        "authors": [
+          "Zhihong Zhang",
+          "Jie Zhao",
+          "Xiaojian Huang",
+          "Jin Xu",
+          "Zhuodong Luo",
+          "Xin Liu",
+          "Jiansheng Wei",
+          "Xuejin Chen"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "SafetyALFRED: Evaluating Safety-Conscious Planning of Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Josue Torres-Fonseca",
+          "Naihao Deng",
+          "Yinpei Dai",
+          "Shane Storks",
+          "Yichi Zhang",
+          "Rada Mihalcea",
+          "Casey Kennington",
+          "Joyce Chai"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "A-MAR: Agent-based Multimodal Art Retrieval for Fine-Grained Artwork Understanding",
+        "url": "",
+        "authors": [
+          "Shuai Wang",
+          "Hongyi Zhu",
+          "Jia-Hong Huang",
+          "Yixian Shen",
+          "Chengxi Zeng",
+          "Stevan Rudinac",
+          "Monika Kackovic",
+          "Nachoem Wijnberg",
+          "Marcel Worring"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "Lost in Translation: Do LVLM Judges Generalize Across Languages?",
+        "url": "",
+        "authors": [
+          "Md Tahmid Rahman Laskar",
+          "Mohammed Saidul Islam",
+          "Mir Tafseer Nayeem",
+          "Amran Bhuiyan",
+          "Mizanur Rahman",
+          "Shafiq Joty",
+          "Enamul Hoque",
+          "Jimmy Huang"
+        ],
+        "date": "2026-04-22"
+      },
+      {
+        "title": "Structure-guided molecular design with contrastive 3D protein-ligand learning",
+        "url": "",
+        "authors": [
+          "Carles Navarro",
+          "Philipp Tholke",
+          "Gianni de Fabritiis"
+        ],
+        "date": "2026-04-22"
+      }
+    ]
+  }
+]
