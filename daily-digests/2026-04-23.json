@@ -1,0 +1,335 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-23",
+    "paperCount": 14,
+    "markdown": "# Interpretability in AI Systems: From Neural Mechanisms to Clinical Applications\n\nToday's research landscape reveals a maturing focus on interpretability that spans multiple scales—from mechanistic dissections of individual model features to practical frameworks for building inherently interpretable architectures. The field is increasingly bridging the gap between theoretical understanding and real-world deployment, with particular emphasis on time-series models, LLM agents, and clinical applications where transparency is not merely desirable but essential for trust and safety.\n\n## Mechanistic Interpretability and Feature Decomposition\n\nRecent work has made significant progress in understanding how internal representations encode distinct aspects of model behavior. [4] addresses a fundamental question in LLM interpretability: whether uncertainty and correctness are driven by the same internal features. The authors introduce a 2x2 framework partitioning predictions along correctness and confidence axes, using sparse autoencoders on Llama-3.1-8B and Gemma-2-9B to identify three functionally distinct feature populations: pure uncertainty features, pure correctness features, and mixed features. This functional dissociation is crucial because it reveals that models can be uncertain yet correct, or confident yet wrong, due to different underlying mechanisms rather than a single confidence-calibration axis. [13] takes a complementary architecture-agnostic approach with LayerTracer, which performs layer-by-layer hidden state extraction to map task knowledge formation positions and identify network robustness bottlenecks across diverse LLM architectures including Transformer, GateDeltaNet, and Mamba. By enabling direct comparison of hierarchical representation evolution across architectures, this framework addresses the critical challenge of understanding where and how different model designs encode and organize knowledge.\n\n[6] reimagines graph neural network interpretability by moving concept-level explanations from post-hoc analysis to the core architecture itself. The authors propose Concept Graph Convolution, the first graph convolution designed to operate on node-level concepts rather than raw features, performing message passing on a combination of raw and concept representations. This represents a paradigm shift from explaining opaque models to building inherently interpretable graph networks, where the reasoning process during message passing becomes transparent by design.\n\n## Interpretable Frameworks for Sequential and Temporal Prediction\n\nSeveral papers address the unique interpretability challenges posed by temporal and sequential models. [5] tackles the opacity of multi-step LLM agent behavior through a conformal interpretability framework that combines step-wise reward modeling with conformal prediction to provide statistical guarantees on the temporal evolution of concepts. This approach is particularly valuable for autonomous agents where understanding *when* and *why* decisions change over time is as important as understanding individual predictions. [10] addresses interpretability in clinical time-series prediction with CT-Former, which integrates continuous-time modeling with a Causal-Transformer for early Acute Kidney Injury prediction. The model uses a continuous-time state evolution mechanism to handle irregularly sampled data without biased imputation, and incorporates causal attention with temporally-aware mutation-locking to provide interpretable risk factor identification. This dual approach to handling both data irregularity and model transparency directly addresses the \"black-box\" barrier limiting clinical trust in sequential deep learning models.\n\n[8] proposes a post-hoc adaptive conformal anomaly detection method for time series that achieves interpretability through a different mechanism: its anomaly scores are directly interpretable as p-values (false alarm rates). The method leverages pre-trained time series foundation models without fine-tuning, using weighted quantile conformal prediction bounds that adaptively learn optimal weighting parameters under distribution shifts. This provides transparent, statistically grounded decision-making for monitoring applications while maintaining stable false alarm control.\n\n## Surrogate Modeling and Hybrid Approaches for Model Understanding\n\nSurrogate modeling emerges as a powerful strategy for interpreting complex systems. [12] proposes a framework that quantitatively explains LLM-encoded knowledge by approximating the latent knowledge space using observable input-output pairs and source domain knowledge. For a specific hypothesis derived from domain expertise, this framework creates simplified models that reveal what and how knowledge is encoded, addressing the fundamental opacity of LLMs in high-stakes medical predictions. This approach is particularly compelling because it bridges domain expertise with mechanistic understanding without requiring access to model internals.\n\n[9] demonstrates a physics-enhanced approach to model interpretability in battery thermal runaway forecasting. The Physics-Informed Neural Network (PINN) framework integrates thermodynamic principles as soft constraints during training, ensuring predictions remain physically consistent while maintaining the temporal pattern-capturing capabilities of LSTM networks. This hybrid approach addresses a critical limitation of purely data-driven methods—their tendency to produce physically implausible predictions—while avoiding the computational expense of purely physics-based models, achieving interpretability through physical consistency rather than architectural transparency.\n\n## Inherently Interpretable Models and Learning Paradigms\n\nSeveral papers advance the frontier of models designed for interpretability from the ground up. [7] addresses limitations of sparse additive models under complex noise conditions through a Meta Additive Model that learns sample weights automatically during training rather than requiring prespecified weighting functions. This adaptive reweighting strategy maintains the inherent interpretability of additive models (where each feature's contribution is explicitly modeled) while significantly improving robustness to non-Gaussian noise, outliers, and class imbalance—common challenges in real-world high-dimensional data.\n\n[2] evaluates graph-theoretic models for molecular property prediction, specifically testing a model based on external activity D(G) and internal activity ζ(G) indices on five MoleculeNet benchmark datasets. This work demonstrates that simple, interpretable graph-theoretic descriptors can achieve competitive performance on tasks like biological activity and lipophilicity prediction while offering complete transparency in how predictions are derived from molecular structure. The significance lies in showing that interpretability need not come at the cost of predictive power for well-structured chemical prediction problems.\n\n[11] introduces R2IF, a reasoning-aware reinforcement learning framework for interpretable function calling in LLMs. The framework employs a composite reward integrating format/correctness constraints, Chain-of-Thought Effectiveness Reward, and Specification-Modification-Value reward, optimized via GRPO to ensure alignment between reasoning processes and tool-call decisions. By explicitly rewarding coherent reasoning chains rather than just correct outcomes, R2IF enables models to generate interpretable decision processes that improve both transparency and performance.\n\n## Workflow Generation and Automated Model Discovery\n\n[1] addresses the practical challenge of high reasoning overhead in LLM agents through WorkflowGen, an adaptive trajectory experience-driven framework for automatic workflow generation. By capturing and reusing full execution trajectories rather than generating workflows from scratch for every query, this approach reduces token usage while improving success rates and robustness. The interpretability contribution lies in making agent decision processes more transparent through structured, reusable workflows rather than ad-hoc reasoning chains.\n\n[3] proposes EvoForest, a fundamentally different machine learning paradigm that uses open-ended evolution of computational graphs rather than optimizing weights within a fixed architecture. This approach is designed specifically for structured prediction problems where the main challenge is discovering what transformations and computations to perform rather than parameter fitting. By evolving interpretable computational graphs through mutation and selection, EvoForest inherently produces models where the decision process is transparent—each node in the evolved graph represents a specific, meaningful transformation rather than an opaque weight matrix.\n\n## Key Takeaways\n\n- **Mechanistic interpretability is converging on functional dissociation**: Recent work reveals that distinct neural populations encode different aspects of model behavior (uncertainty vs. correctness, different task knowledge), enabling targeted interventions and deeper understanding of model failure modes [4][13].\n\n- **Time-series and sequential models are receiving dedicated interpretability frameworks**: From conformal prediction for agent trajectories to continuous-time causal transformers for clinical data, the field is developing specialized tools for temporal transparency that handle irregular sampling and distribution shifts [5][8][10].\n\n- **Inherently interpretable architectures are advancing beyond post-hoc explanation**: Concept Graph Convolutions, evolved computational graphs, and meta-additive models demonstrate that interpretability can be designed into the architecture rather than added after training, achieving competitive performance while maintaining transparency [3][6][7].\n\n- **Domain-informed priors improve both performance and interpretability**: Physics-informed neural networks and graph-theoretic molecular models show that incorporating domain knowledge as architectural constraints or loss terms naturally produces more interpretable and reliable models in scientific applications [2][9].\n\n- **Surrogate modeling provides a practical path for black-box LLM interpretation**: When model internals are inaccessible, carefully constructed surrogate models can quantitatively approximate and explain encoded knowledge, particularly valuable for medical and clinical applications where regulatory requirements demand understanding [12].\n\n- **Interpretable function calling and reasoning alignment is achievable through composite rewards**: RL-based approaches with carefully designed reward structures can produce LLM agents that not only perform well but generate transparent reasoning processes aligned with their decisions [11].\n\n- **Reusable workflows and evolutionary computation offer interpretability through structure**: Rather than relying on post-hoc analysis of opaque models, adaptive workflow generation and evolved computational graphs produce interpretable artifacts (trajectories, graph structures) that can be directly inspected and understood [1][3].",
+    "papers": [
+      {
+        "title": "WorkflowGen:an adaptive workflow generation mechanism driven by trajectory experience",
+        "url": "",
+        "authors": [
+          "Ruocan Wei",
+          "Shufeng Wang",
+          "Ziwei Shi"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Graph-Theoretic Models for the Prediction of Molecular Measurements",
+        "url": "",
+        "authors": [
+          "Anna Niane",
+          "Prudence Djagba"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "EvoForest: A Novel Machine-Learning Paradigm via Open-Ended Evolution of Computational Graphs",
+        "url": "",
+        "authors": [
+          "Kamer Ali Yuksel",
+          "Hassan Sawaf"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Are LLM Uncertainty and Correctness Encoded by the Same Features? A Functional Dissociation via Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Het Patel",
+          "Tiejin Chen",
+          "Hua Wei",
+          "Evangelos E. Papalexakis",
+          "Jia Chen"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "From Actions to Understanding: Conformal Interpretability of Temporal Concepts in LLM Agents",
+        "url": "",
+        "authors": [
+          "Trilok Padhi",
+          "Ramneet Kaur",
+          "Krishiv Agarwal",
+          "Adam D. Cobb",
+          "Daniel Elenius",
+          "Manoj Acharya",
+          "Colin Samplawski",
+          "Alexander M. Berenbeim",
+          "Nathaniel D. Bastian",
+          "Susmit Jha",
+          "Anirban Roy"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Concept Graph Convolutions: Message Passing in the Concept Space",
+        "url": "",
+        "authors": [
+          "Lucie Charlotte Magister",
+          "Pietro Lio"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Meta Additive Model: Interpretable Sparse Learning With Auto Weighting",
+        "url": "",
+        "authors": [
+          "Xuelin Zhang",
+          "Xinyue Liu",
+          "Lingjuan Wu",
+          "Hong Chen"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Adaptive Conformal Anomaly Detection with Time Series Foundation Models for Signal Monitoring",
+        "url": "",
+        "authors": [
+          "Natalia Martinez Gil",
+          "Fearghal O'Donncha",
+          "Wesley M. Gifford",
+          "Nianjun Zhou",
+          "Dhaval C. Patel",
+          "Roman Vaculin"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Physics-Enhanced Deep Learning for Proactive Thermal Runaway Forecasting in Li-Ion Batteries",
+        "url": "",
+        "authors": [
+          "Salman Khan",
+          "Muhammad Zunair Zamir",
+          "Syed Sajid Ullah",
+          "Jie Li"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Causal-Transformer with Adaptive Mutation-Locking for Early Prediction of Acute Kidney Injury",
+        "url": "",
+        "authors": [
+          "Weizhi Nie",
+          "Haolin Chen"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "R2IF: Aligning Reasoning with Decisions via Composite Rewards for Interpretable LLM Function Calling",
+        "url": "",
+        "authors": [
+          "Aijia Cheng",
+          "Kailong Wang",
+          "Ling Shi",
+          "Yongxin Zhao"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Surrogate modeling for interpreting black-box LLMs in medical predictions",
+        "url": "",
+        "authors": [
+          "Changho Han",
+          "Songsoo Kim",
+          "Dong Won Kim",
+          "Leo Anthony Celi",
+          "Jaewoong Kim",
+          "SungA Bae",
+          "Dukyong Yoon"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "LayerTracer: A Joint Task-Particle and Vulnerable-Layer Analysis framework for Arbitrary Large Language Model Architectures",
+        "url": "",
+        "authors": [
+          "Yuhang Wu",
+          "Qinyuan Liu",
+          "Qiuyang Zhao",
+          "Qingwei Chong"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Improving clinical interpretability of linear neuroimaging models through feature whitening",
+        "url": "",
+        "authors": [
+          "Sara Petiton",
+          "Antoine Grigis",
+          "Raphaël Vock",
+          "Edouard Duchesnay"
+        ],
+        "date": "2026-04-23"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-23",
+    "paperCount": 5,
+    "markdown": "# From Black Box to Blueprint: Explainability as a Structural, Stakeholder-Aware, and Fidelity-Centric Paradigm\n\nToday's research landscape reveals a decisive shift from post-hoc explanation of single model outputs toward embedding explainability as a structural component of system design—spanning multi-agent reasoning, regulated workflows, mental health contexts, and participatory democracy. Across five papers, the community is grappling with a core tension: explanations must be technically faithful *and* meaningful to diverse human stakeholders, from AML investigators to therapy clients to citizen participants.\n\n## Explainability Under Regulatory and Audit Constraints\n\n**Paper [1]** tackles the high-stakes problem of anti-money laundering (AML) triage, where LLM-generated explanations risk hallucinations and weak provenance under strict audit requirements. The authors propose a framework that treats triage as an evidence-constrained decision process, combining retrieval-augmented evidence from transaction histories with counterfactual checks that verify whether the explanation remains faithful when key evidence is altered. This work matters because it demonstrates a concrete architecture for deploying LLMs in regulated financial workflows without sacrificing explainability—a critical requirement given that AML investigators must justify every alert disposition to regulators. The counterfactual mechanism directly addresses the \"why this decision and not that one\" question that auditors demand, moving beyond free-form rationales to verifiable, evidence-grounded explanations.\n\n**Paper [5]** addresses the fragility of LLM-based reasoning by constructing a hybrid architecture where an external ontological memory layer (RDF/OWL knowledge graphs) replaces reliance on parametric memory or vector retrieval alone. The system automatically builds and maintains structured ontologies from heterogeneous data sources (documents, APIs, dialogue logs), enabling persistent, verifiable reasoning that can be inspected, updated, and audited independently of the LLM's weights. This matters because it provides a path toward \"explainability by design\"—the ontology itself serves as an interpretable, formal substrate for reasoning, allowing domain experts to verify claims against a structured knowledge base rather than trusting black-box generation. The approach directly mitigates the hallucination and provenance problems that plague purely parametric systems, offering a blueprint for hybrid intelligent systems where the explanation layer is as transparent as the knowledge layer.\n\n## Multi-Agent and Multi-Stakeholder Explainability\n\n**Paper [2]** confronts the uniquely challenging problem of explaining the internal reasoning of multi-agent LLM systems in interactive, partially observable environments. The TriEx framework instruments sequential decision-making with three aligned explanatory artifacts: first-person self-reasoning bound to each action, second-person belief states about opponent agents updated over time, and third-person oracle audits grounded in environment-derived reference signals. This tri-view design transforms explanations from free-form narratives into structured, inspectable records that capture how agents perceive their own choices, model others' beliefs, and align with ground-truth environment dynamics. The contribution is significant because multi-agent LLM systems are proliferating in gaming, negotiation, and collaborative task settings, yet existing explainability methods treat agents as isolated units—TriEx provides the first principled framework for explaining *interaction* itself, revealing how beliefs propagate and decisions co-evolve.\n\n**Paper [3]** broadens the explainability lens from technical fidelity to multi-stakeholder trust in the sensitive domain of mental health AI. The authors survey fragmented definitions of \"trustworthy AI\" across computer science and therapeutic practice, finding that AI researchers emphasize robustness and explainability while practitioners prioritize therapeutic fidelity (empathy, appropriateness, long-term outcomes). They propose a three-layer trust framework covering human-oriented trust (user vulnerability, rapport), AI-oriented trust (technical explainability, safety), and interaction-oriented trust (dialogue quality, turn-taking). This matters because mental health AI is a domain where explanation failure has direct human cost—an opaque suicide risk assessment tool cannot be deployed regardless of accuracy. The framework provides a structured vocabulary for aligning explainability goals across developers, clinicians, and patients, ensuring that \"explanation\" means something different (and equally valid) to each stakeholder group.\n\n**Paper [4]** extends the notion of explainability beyond output quality to *input fidelity* in AI-mediated public consultation. The author introduces \"participatory provenance,\" a measurement framework grounded in optimal transport theory, causal inference, and semantic analysis that tracks how well AI-generated summaries of public input represent the source population. This addresses a critical accountability gap: existing explainability methods focus on why a model produced a given output (faithfulness, attribution), but cannot answer whether that output fairly represents the diversity of human voices it claims to synthesize. The framework enables representational auditing by measuring distributional divergence between input populations and output summaries, combined with causal analysis of which subgroups' contributions are systematically lost or distorted. This matters because governments and organizations increasingly use AI to process public consultation at scale—without provenance-based explainability, there is no mechanism to detect when minority voices are being algorithmically silenced under the guise of \"summary.\"\n\n## Key Takeaways\n\n- **Explainability is becoming a structural design property** rather than a post-hoc add-on, as evidenced by papers embedding evidence constraints [1], ontological memory [5], and multi-view instrumentation [2] directly into system architecture.\n- **Regulated and high-stakes domains demand verifiable provenance**, not just plausible explanations—counterfactual checks [1] and formal knowledge graphs [5] provide audit trails that free-form LLM rationales cannot.\n- **Multi-agent explainability requires modeling social cognition**—the TriEx framework [2] shows that explanations must capture self-reasoning, other-belief modeling, and ground-truth alignment to be meaningful in interactive settings.\n- **Trust is not a single technical metric but a multi-stakeholder alignment problem**, as the mental health domain [3] makes starkly clear: technical explainability and therapeutic fidelity are complementary but not interchangeable.\n- **Representational fidelity is a new frontier for explainability**—participatory provenance [4] extends the scope from \"is the output correct?\" to \"does the output fairly represent the input population?\"—a question that existing methods cannot answer.\n- **Hybrid architectures (LLMs + structured external memory)** offer a promising path to persistent, inspectable reasoning that preserves LLM flexibility while addressing hallucination and provenance [5].\n- **The field is moving from explaining individual decisions to explaining entire decision processes**, including how evidence is retrieved [1], beliefs evolve [2], stakeholders interact [3], and populations are represented [4]—a shift that demands new formalisms beyond attribution and saliency.",
+    "papers": [
+      {
+        "title": "Explainable AML Triage with LLMs: Evidence Retrieval and Counterfactual Checks",
+        "url": "",
+        "authors": [
+          "Dorothy Torres",
+          "Wei Cheng",
+          "Ke Hu"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "TriEx: A Game-based Tri-View Framework for Explaining Internal Reasoning in Multi-Agent LLMs",
+        "url": "",
+        "authors": [
+          "Ziyi Wang",
+          "Chen Zhang",
+          "Wenjun Peng",
+          "Qi Wu",
+          "Xinyu Wang"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Aligning Human-AI-Interaction Trust for Mental Health Support: Survey and Position for Multi-Stakeholders",
+        "url": "",
+        "authors": [
+          "Xin Sun",
+          "Yue Su",
+          "Yifan Mo",
+          "Qingyu Meng",
+          "Yuxuan Li",
+          "Saku Sugawara",
+          "Mengyuan Zhang",
+          "Charlotte Gerritsen",
+          "Sander L. Koole",
+          "Koen Hindriks",
+          "Jiahuan Pei"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Participatory provenance as representational auditing for AI-mediated public consultation",
+        "url": "",
+        "authors": [
+          "Sachit Mahajan"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Automatic Ontology Construction Using LLMs as an External Layer of Memory, Verification, and Planning for Hybrid Intelligent Systems",
+        "url": "",
+        "authors": [
+          "Pavel Salovskii",
+          "Iuliia Gorshkova"
+        ],
+        "date": "2026-04-23"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-23",
+    "paperCount": 7,
+    "markdown": "# Reinforcement Learning and Reasoning in Multimodal AI: From Theory to Application\n\nToday's research landscape is characterized by a convergence of reinforcement learning (RL) and multimodal large language models (MLLMs), with a strong emphasis on verifiable reward mechanisms, process supervision, and fine-grained reasoning across visual and textual domains. Several papers demonstrate how RL-based fine-tuning can unlock agentic capabilities, while others address critical gaps in multimodal understanding for e-commerce, entity linking, and social media moderation.\n\n## Theoretical Foundations and Reinforcement Learning for Multimodal Reasoning\n\n[1] \"Rethinking Reinforcement Fine-Tuning in LVLM: Convergence, Reward Decomposition, and Generalization\" by Adams et al. addresses the lack of theoretical understanding behind reinforcement fine-tuning with verifiable rewards (RLVR) in large vision-language models (LVLMs). The authors develop a rigorous theoretical framework analyzing how the composite structure of verifiable rewards—encompassing format compliance, answer accuracy, and tool executability—affects the convergence properties of group-based policy optimization methods. They demonstrate that reward decomposition strategies significantly impact both convergence speed and generalization capabilities across unseen agentic tasks. This work is crucial for the community as it provides the theoretical scaffolding needed to design more reliable and sample-efficient RL-based training pipelines for multimodal agent systems.\n\n[6] \"V-tableR1: Process-Supervised Multimodal Table Reasoning with Critic-Guided Policy Optimization\" by Jiang et al. tackles the problem of MLLMs relying on superficial pattern matching rather than rigorous multi-step inference when performing visual reasoning on table-based data. The framework introduces process-supervised reinforcement learning that enforces transparent reasoning trajectories by addressing the fundamental challenge of grounding abstract logical operations into continuous pixel space through a critic-guided policy optimization mechanism. Key results demonstrate significant improvements in reasoning accuracy and transparency on multimodal table reasoning benchmarks. This matters because it provides a principled approach to making visual reasoning verifiable and interpretable, which is essential for high-stakes applications like financial document analysis and scientific data interpretation.\n\n## Fine-Grained Multimodal Representation and Entity Linking\n\n[2] \"AFMRL: Attribute-Enhanced Fine-Grained Multi-Modal Representation Learning in E-commerce\" by Zhang et al. addresses the inability of large multimodal representation models like VLM2Vec to capture fine-grained semantic distinctions necessary for differentiating highly similar e-commerce products. The authors propose reframing product fine-grained understanding as an attribute generation task, leveraging the generative capabilities of MLLMs to extract key attributes and enhance representation learning. The approach achieves superior performance on identical product retrieval tasks while maintaining computational efficiency. This is important for e-commerce platforms handling millions of near-identical products, where accurate representation directly impacts search quality and customer experience.\n\n[3] \"Multi-Perspective Evidence Synthesis and Reasoning for Unsupervised Multimodal Entity Linking\" by Zhou et al. tackles the limitation of existing Multimodal Entity Linking (MEL) approaches that focus primarily on instance-centric features while neglecting broader forms of evidence and their interdependencies. The proposed MSR-MEL framework mimics human expert decision-making by synthesizing evidence from multiple perspectives and modeling intricate interdependencies between visual and textual modalities using large language models. The framework operates in an unsupervised setting, eliminating the need for expensive labeled training data. This contribution is significant for data management and knowledge base construction, where accurately linking ambiguous multimodal mentions to knowledge base entities is fundamental to information integration.\n\n## Website Generation and Conversational Recommendation\n\n[4] \"WebGen-R1: Incentivizing Large Language Models to Generate Functional and Aesthetic Websites with Reinforcement Learning\" by Jiang et al. addresses the challenge of generating multi-page websites that are both functional and visually appealing, a task at which existing approaches fail due to limitations of single-page static generation or costly multi-turn agentic frameworks. The authors develop a reinforcement learning framework that trains a small LLM end-to-end with carefully designed reward functions that balance code correctness, visual aesthetics, and page navigation structure. Key results show the small model achieves comparable or superior website generation quality to proprietary models while reducing token costs and latency by orders of magnitude. This work democratizes automated website generation by proving that compact, RL-trained models can match or exceed the performance of much larger systems.\n\n[5] \"Where and What: Reasoning Dynamic and Implicit Preferences in Situated Conversational Recommendation\" by Lin et al. addresses the challenge of understanding how visual scenes and conversational context jointly influence user preferences that evolve dynamically across interactions. The authors propose a framework that jointly models spatial grounding (\"where\" users are looking) and semantic preference extraction (\"what\" users want) through iterative reasoning over multimodal dialogue history. The system demonstrates superior performance in making contextually appropriate recommendations at the right conversational timing. This research is important for developing next-generation recommendation systems that can operate in physical environments, such as smart retail or AR-assisted shopping.\n\n## Social Media Moderation and Covert Advertisement Detection\n\n[7] \"CHASM: Unveiling Covert Advertisements on Chinese Social Media\" by Zheng et al. addresses a critical blind spot in existing LLM evaluation benchmarks for social media moderation: the complete absence of covert advertisement detection. The authors construct the first-of-its-kind high-quality, anonymized, manually curated dataset of 4,992 instances containing covert advertisements disguised as regular social media posts. The paper evaluates multiple MLLMs on this benchmark, revealing significant performance gaps in detecting deceptive commercial content. This is vitally important for platform safety and consumer protection, as covert advertisements pose serious ethical and legal concerns that current moderation systems are ill-equipped to handle.\n\n## Key Takeaways\n- Reinforcement learning with verifiable rewards is emerging as a dominant paradigm for training multimodal models, with new theoretical frameworks [1] and process-supervised approaches [6] providing both rigor and interpretability for complex reasoning tasks.\n- Fine-grained multimodal understanding remains a critical bottleneck, with novel solutions emerging that reframe core problems as attribute generation [2] or multi-perspective evidence synthesis [3] to achieve superior discrimination between highly similar items.\n- RL-based training can dramatically reduce the computational cost of complex multimodal generation tasks, as demonstrated by a small model matching proprietary systems for website generation [4] through carefully designed reward functions.\n- Dynamic and implicit preference reasoning in multimodal conversational systems [5] requires joint spatial and semantic modeling, moving beyond static recommendation paradigms toward contextually-aware, temporally-grounded interactions.\n- Critical safety and ethical gaps exist in multimodal social media moderation, particularly for detecting covert advertisements [7], highlighting the urgent need for specialized benchmarks and models that can identify deceptive content.\n- The integration of reinforcement learning with multimodal models is being applied across diverse domains including e-commerce, knowledge base construction, web development, and recommendation systems, suggesting a broadly applicable paradigm shift.\n- Process supervision and verifiable reward mechanisms are increasingly seen as essential for ensuring that multimodal models perform genuine reasoning rather than surface-level pattern matching, particularly in visual domains with continuous inputs.",
+    "papers": [
+      {
+        "title": "Rethinking Reinforcement Fine-Tuning in LVLM: Convergence, Reward Decomposition, and Generalization",
+        "url": "",
+        "authors": [
+          "Carter Adams",
+          "Rafael Oliveira",
+          "Gabriel Almeida",
+          "Sofia Torres"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "AFMRL: Attribute-Enhanced Fine-Grained Multi-Modal Representation Learning in E-commerce",
+        "url": "",
+        "authors": [
+          "Biao Zhang",
+          "Lixin Chen",
+          "Bin Zhang",
+          "Zongwei Wang",
+          "Tong Liu",
+          "Bo Zheng"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Multi-Perspective Evidence Synthesis and Reasoning for Unsupervised Multimodal Entity Linking",
+        "url": "",
+        "authors": [
+          "Mo Zhou",
+          "Jianwei Wang",
+          "Kai Wang",
+          "Helen Paik",
+          "Ying Zhang",
+          "Wenjie Zhang"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "WebGen-R1: Incentivizing Large Language Models to Generate Functional and Aesthetic Websites with Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Juyong Jiang",
+          "Chenglin Cai",
+          "Chansung Park",
+          "Jiasi Shen",
+          "Sunghun Kim",
+          "Jianguo Li",
+          "Yue Wang"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "Where and What: Reasoning Dynamic and Implicit Preferences in Situated Conversational Recommendation",
+        "url": "",
+        "authors": [
+          "Dongding Lin",
+          "Jian Wang",
+          "Yongqi Li",
+          "Wenjie Li"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "V-tableR1: Process-Supervised Multimodal Table Reasoning with Critic-Guided Policy Optimization",
+        "url": "",
+        "authors": [
+          "Yubo Jiang",
+          "Yitong An",
+          "Xin Yang",
+          "Abudukelimu Wuerkaixi",
+          "Xuxin Cheng",
+          "Fengying Xie",
+          "Zhiguo Jiang",
+          "Cao Liu",
+          "Ke Zeng",
+          "Haopeng Zhang"
+        ],
+        "date": "2026-04-23"
+      },
+      {
+        "title": "CHASM: Unveiling Covert Advertisements on Chinese Social Media",
+        "url": "",
+        "authors": [
+          "Jingyi Zheng",
+          "Tianyi Hu",
+          "Yule Liu",
+          "Zhen Sun",
+          "Zongmin Zhang",
+          "Zifan Peng",
+          "Wenhan Dong",
+          "Xinlei He"
+        ],
+        "date": "2026-04-23"
+      }
+    ]
+  }
+]
