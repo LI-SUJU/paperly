@@ -1,0 +1,227 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-25",
+    "paperCount": 7,
+    "markdown": "# Interpreting the Black Box: Advances in Explainable Attribution, Disentanglement, and Model Transparency\n\nToday's research landscape reveals a growing emphasis on making AI systems not just more accurate, but more transparent and verifiable. The field is advancing along two complementary fronts: developing frameworks that explicitly attribute model outputs to internal components or training dynamics, and creating new training paradigms that build interpretability directly into model architectures from the ground up.\n\n## Attribution and Verification Frameworks for Language Models\n\n**DAVinCI** [1] addresses the critical challenge of LLM hallucinations and factual unreliability by introducing a dual-stage framework that both attributes generated claims to internal model components and verifies their factual basis. The framework operates by first mapping each claim to specific attention patterns or neuron activations within the model, then cross-referencing these attributions against an external knowledge base for verification. This dual approach provides interpretability at two levels—showing *why* a model produced a claim and *whether* that claim is factually grounded—making it particularly valuable for high-stakes domains like healthcare and legal analysis where unverified outputs carry significant risk.\n\n**TabSHAP** [4] tackles the interpretability gap that emerges when LLMs are fine-tuned on serialized tabular data for high-stakes decision-making. While such models can outperform traditional tree-based approaches on heterogeneous datasets, their probabilistic uncertainty remains opaque to existing explanation methods that rely on linear proxies or scalar probability shifts. TabSHAP introduces a model-agnostic attribution framework specifically designed to capture local query decision logic in LLM-based tabular models, providing faithful feature importance scores that reflect the full distribution of model outputs. This contribution directly addresses the deployability barrier for LLMs in regulated industries such as finance and healthcare.\n\n## Disentangled Representation Learning for Style and Content\n\n**Explainable Authorship Variational Autoencoder (EAVAE)** [3] addresses the content-style entanglement problem in authorship attribution, where models learn spurious correlations between authors' writing styles and topical content, causing poor generalization to unseen domains. The framework achieves separation-by-design through architectural decoupling: a style encoder trained via supervised contrastive learning operates independently from a content encoder, ensuring that style representations capture only authorial signatures rather than topic-specific patterns. This disentanglement not only improves cross-domain generalization for both human authorship attribution and AI-generated text detection but also provides inherent explainability by allowing researchers to visualize which stylistic features drive attribution decisions.\n\n## Training Dynamics and Interpretable Feature Selection\n\n**GFlowState** [7] illuminates the otherwise opaque training dynamics of Generative Flow Networks (GFlowNets), which are powerful for molecular and material discovery but notoriously difficult to interpret during training. Standard metrics like reward curves fail to reveal how models explore sample spaces, construct trajectories, or shift sampling probabilities over time. GFlowState provides a visual analytics system that tracks these latent dynamics, enabling researchers to identify when and why training diverges, how exploration-exploitation balance evolves, and which trajectory patterns correlate with successful generation. This transparency is crucial for debugging GFlowNet training and accelerating their deployment in scientific discovery pipelines.\n\n**Modified LCEN for Classification** [5] extends the previously regression-only LASSO-Clip-EN (LCEN) algorithm to classification tasks while preserving its core property of interpretable feature selection. The approach modifies LCEN's formulation to optimize a weighted focal differentiable Matthews Correlation Coefficient (MCC) loss, which handles class imbalance more effectively than standard cross-entropy while maintaining differentiability for gradient-based optimization. Results across four benchmark datasets show that LCEN achieves competitive macro F1 scores against ten other model types while providing explicit feature selection that reveals exactly which input dimensions drive classification decisions—a critical advantage for domains requiring model transparency.\n\n## Graph-Based Interpretability in Drug Synergy Prediction\n\n**Residual Graph Isomorphism Networks with Attention** [6] addresses the computational and interpretability challenges in predicting synergistic drug combinations for complex diseases. While deep learning and GNN-based approaches have improved prediction accuracy, they suffer from structural bias and lack of interpretability in their predictions. The proposed architecture combines residual connections in graph isomorphism networks with attention mechanisms to reduce bias from graph topology while providing attention weights that indicate which molecular features and interaction patterns most strongly predict synergy. This dual contribution—improved accuracy through bias reduction and interpretability through attention visualization—makes the model more trustworthy for guiding experimental validation of drug combinations in precision medicine.\n\n## Key Takeaways\n- **Dual verification frameworks** like DAVinCI [1] represent a promising paradigm for building trust in LLM outputs by combining internal attribution with external fact-checking, addressing both interpretability and reliability simultaneously.\n- **Architectural separation-by-design**, as demonstrated in EAVAE [3], achieves more robust disentanglement than post-hoc attribution methods, suggesting that interpretability is best built into models from the start rather than added after training.\n- **Model-agnostic attribution tools** like TabSHAP [4] are critical for extending interpretability to emerging LLM-based tabular models, which are gaining traction but lack faithful explanation methods compared to traditional tree-based approaches.\n- **Visual analytics for training dynamics** (GFlowState [7]) addresses an underserved need: interpreting not just model outputs but the learning process itself, which is essential for debugging and building scientific intuition about generative models.\n- **Interpretable feature selection** methods [5] demonstrate that transparency need not come at the cost of performance, achieving competitive accuracy while maintaining full explainability through explicit input-output mappings.\n- **Attention mechanisms** in graph neural networks [6] provide a natural path to interpretability in structured prediction tasks, though care must be taken to address structural biases that can distort attention-based explanations.\n- The field is converging on a consensus that **interpretability frameworks must be domain-aware**, with different solutions emerging for text, tabular, graph, and generative settings rather than a one-size-fits-all approach.",
+    "papers": [
+      {
+        "title": "Trust but Verify: Introducing DAVinCI -- A Framework for Dual Attribution and Verification in Claim Inference for Language Models",
+        "url": "",
+        "authors": [
+          "Vipula Rawte",
+          "Ryan Rossi",
+          "Franck Dernoncourt",
+          "Nedim Lipka"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "LAF-Based Evaluation and UTTL-Based Learning Strategies with MIATTs",
+        "url": "",
+        "authors": [
+          "Yongquan Yang"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Explainable Disentangled Representation Learning for Generalizable Authorship Attribution in the Era of Generative AI",
+        "url": "",
+        "authors": [
+          "Hieu Man",
+          "Van-Cuong Pham",
+          "Nghia Trung Ngo",
+          "Franck Dernoncourt",
+          "Thien Huu Nguyen"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "TabSHAP",
+        "url": "",
+        "authors": [
+          "Aryan Chaudhary",
+          "Prateek Agarwal",
+          "Tejasvi Alladi"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Improving Performance in Classification Tasks with LCEN and the Weighted Focal Differentiable MCC Loss",
+        "url": "",
+        "authors": [
+          "Pedro Seber",
+          "Richard D. Braatz"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Drug Synergy Prediction via Residual Graph Isomorphism Networks and Attention Mechanisms",
+        "url": "",
+        "authors": [
+          "Jiyan Song",
+          "Wenyang Wang",
+          "Chengcheng Yan",
+          "Zhiquan Han",
+          "Feifei Zhao"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "GFlowState: Visualizing the Training of Generative Flow Networks Beyond the Reward",
+        "url": "",
+        "authors": [
+          "Florian Holeczek",
+          "Andreas Hinterreiter",
+          "Alex Hernandez-Garcia",
+          "Marc Streit",
+          "Christina Humer"
+        ],
+        "date": "2026-04-25"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-25",
+    "paperCount": 1,
+    "markdown": "# Explainability in the Age of Transformers: Bridging Genomic Black Boxes and Human Understanding\n\nToday's research landscape in explainability is marked by a critical tension: as AI models grow more powerful and complex—particularly in domains like genomics—the tools for understanding their inner workings must evolve in tandem. A growing body of work is extending classic interpretability methods (e.g., Layer-wise Relevance Propagation) to modern architectures (Transformers) and challenging the assumption that explanations from simpler models transfer to their more expressive successors.\n\n## Extending Explainability to Transformer-Based Genomic Models\n\n[1] **\"Evaluating Post-hoc Explanations of the Transformer-based Genome Language Model DNABERT-2\"**  \nKurth et al. tackle a pressing question in computational biology: can post-hoc explanation methods that worked for convolutional neural networks (CNNs) on genomic sequences also reliably explain Transformer-based genome language models (gLMs)? The authors adapt AttnLRP—an extension of Layer-wise Relevance Propagation (LRP) specifically designed for attention mechanisms—and apply it to DNABERT-2, a state-of-the-art genome language model. Their key contribution is proposing a systematic evaluation framework (indicated by \"s\" in the abstract) to assess whether these explanations capture biologically meaningful patterns. This matters because biologists increasingly rely on gLM explanations for hypothesis generation, and incorrect explanations could lead to false scientific conclusions, undermining trust in AI-driven genomics research.\n\n*(Note: The provided abstract for [1] appears truncated. I will base the analysis on the available content.)*\n\n## Key Takeaways\n- **Classic explainability methods need architectural adaptation**: Applying LRP to Transformer-based genome models requires explicit handling of attention mechanisms (e.g., AttnLRP), indicating that one-size-fits-all explanation approaches are insufficient for modern architectures.\n- **Genomic explainability is a high-stakes domain**: In biology, explanations serve as hypotheses for wet-lab validation; flawed explanations can misdirect research funding and scientific inquiry for years.\n- **The transferability assumption is being tested**: The authors question whether insights from CNN-based genomic models automatically transfer to Transformers, challenging a common implicit assumption in the explainability community.\n- **Evaluation frameworks for explanations remain an open problem**: The work highlights the need for domain-specific benchmarks (e.g., known regulatory motifs in genomics) to validate post-hoc explanations, rather than relying solely on feature-importance metrics.\n- **Explanations must be faithful, not just plausible**: In high-risk scientific domains, an explanation that \"looks right\" to a human but misaligns with the model's actual decision process is worse than no explanation at all.\n- **Transformer language models introduce new explanation challenges**: The combination of tokenization, long-range dependencies, and stacked attention heads in gLMs creates attribution patterns that are fundamentally different from CNNs, demanding novel methodological contributions.\n- **Explainability research must keep pace with model evolution**: As the AI community rapidly adopts Transformers across domains (genomics, vision, NLP), explanation techniques risk becoming obsolete if they do not adapt to new architectural primitives like attention and positional encodings.",
+    "papers": [
+      {
+        "title": "Evaluating Post-hoc Explanations of the Transformer-based Genome Language Model DNABERT-2",
+        "url": "",
+        "authors": [
+          "Isabel Kurth",
+          "Paulo Yanez Sarmiento",
+          "Bernhard Y. Renard"
+        ],
+        "date": "2026-04-25"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-25",
+    "paperCount": 11,
+    "markdown": "# Multimodal Frontiers: Reasoning, Representation, and Real-World Understanding\n\nToday's research landscape reveals a significant shift from simple multimodal perception toward deeper causal reasoning, symbolic grounding, and domain-specific applications. Across healthcare, autonomous driving, software engineering, and visual reasoning, researchers are pushing multimodal systems beyond pattern matching to tackle complex inference, missing information recovery, and cascading failure mitigation.\n\n## Reasoning Under Uncertainty: From Visual Inference to Causal Attribution\n\n[1] AITP addresses a critical gap in Traffic Accident Understanding by moving beyond description to causal responsibility allocation. The authors introduce a multimodal LLM architecture that performs multi-step reasoning grounded in traffic regulations, requiring the model to integrate video evidence with legal knowledge. Key results demonstrate that AITP can attribute fault by reasoning about temporal sequences of actions against codified rules, which matters for both autonomous driving safety analysis and legal automation.\n\n[5] The MMTR-Bench introduces a fundamentally different evaluation paradigm for MLLMs: reconstructing masked text purely from visual context without explicit prompts. By isolating layout understanding, visual grounding, and knowledge integration from instruction-following ability, the benchmark reveals that models struggle with genuine visual reading when prompts are removed. This work is important because it exposes an over-reliance on textual scaffolding that masks weaknesses in multimodal perception.\n\n[10] Tempered Sequential Monte Carlo (TSMC) tackles trajectory and policy optimization for differentiable dynamics by reformulating controller design as probabilistic inference. The method minimizes KL-regularized expected trajectory costs, producing a Boltzmann distribution over controller parameters that concentrates on low-cost solutions as temperature anneals. TSMC's adaptive resampling along a tempering path enables efficient sampling from sharp, multimodal targets, which is critical for robust control in high-dimensional continuous spaces where gradient-based methods fail.\n\n## Representation and Symbolic Grounding in Multimodal Systems\n\n[3] Representational blur is identified as a critical failure mode in situated dialogue, where similar but distinct entities collapse into interchangeable textual descriptions due to limited context windows. The authors propose using machine mental imagery—visual representations of shared context—to preserve fine-grained distinctions between entities beyond immediate context. This approach maintains spatial and visual relationships in a separate representation space, preventing the semantic flattening that plagues purely textual common ground.\n\n[6] Symbolic grounding reveals that the bottleneck in abstract visual reasoning (Bongard problems) lies in representation rather than reasoning. By comparing end-to-end VLMs on raw images with LLMs given symbolic inputs derived from those same images, the Componential-Grammatical paradigm shows that LLMs with symbolic inputs dramatically outperform VLMs. This finding has profound implications: current multimodal representations lose critical structural information needed for abstract concept learning, suggesting architectures must better preserve formal structure.\n\n[11] A multimodal text- and graph-based approach for open-domain event extraction overcomes the limitations of closed-domain algorithms by leveraging LLMs for unconstrained event types. The method explicitly models document-level context by constructing a graph representation that captures relationships between events across a document. This approach matters for emergency response and document summarization, where unseen event types are common and context-dependent understanding is essential.\n\n## Domain-Specific Applications: Embryology, Clinical Care, and Software Monitoring\n\n[2] InVitroVision demonstrates that foundational vision-language models can be fine-tuned with remarkably few examples for automated description of embryo development in IVF. Using only 1,000 images and corresponding captions, the authors fine-tune PaliGemma-2 to predict natural language descriptions of embryo morphology and cell cycle timing. This work matters because it addresses the annotation bottleneck in medical AI while leveraging the inherent multimodal nature of IVF data, potentially improving consistency in fertility treatment decisions.\n\n[9] A novel approach for learning dynamic representations from multimodal clinical time-series explicitly models the information carried by observation patterns themselves. The method addresses the challenge that structured measurements and clinical notes arise under distinct recording processes, where missingness reflects the patient's latent condition. By extracting signal from both observed values and their recording patterns, this work enables more robust clinical predictions in settings where data sparsity and informative missingness are the norm rather than the exception.\n\n[8] ARFBench provides a carefully constructed benchmark for time series question-answering on software incident data from 63 production incidents at Datadog. With 750 questions across 142 time series and 5.38M data points, the benchmark evaluates multimodal foundation models on their ability to infer and reason about properties of anomalous time series. The findings reveal critical gaps in current models' ability to handle real-world time series anomalies, which is essential for automated software incident response and root cause analysis.\n\n## Benchmarking Multimodal Understanding at Scale\n\n[7] PolyChartQA introduces a mid-scale dataset specifically designed for question answering over multi-chart images, comprising 534 multi-chart images with 2,297 sub-charts and 2,694 QA pairs from peer-reviewed computer science publications. The evaluation of nine state-of-the-art MLLMs reveals that multi-chart reasoning remains a significant challenge, as models struggle to integrate information across multiple related visualizations. This benchmark is crucial because real-world data analysis almost never involves single charts in isolation.\n\n[4] ReCAPA (Predictive Alignment and Planning Architecture) addresses cascading failures in Vision-Language-Action systems by using prediction and contrast to adjust deviations across three hierarchical levels: actions, subgoals, and high-level plans. Instead of relying on post-hoc correction, the framework anticipates future states and corrects alignment before errors propagate. This hierarchical predictive correction is vital for deploying VLAs in safety-critical robotics where a single mis-specified step can compound into catastrophic failure.\n\n## Key Takeaways\n- Multimodal reasoning is moving beyond perception toward causal attribution and legal grounding, as exemplified by AITP's responsibility allocation framework for traffic accidents.\n- Representational bottlenecks remain the primary limitation in abstract visual reasoning, with symbolic inputs dramatically outperforming end-to-end vision-language models (VLMs) on Bongard problems.\n- Benchmarks like MMTR-Bench and PolyChartQA reveal that current MLLMs over-rely on textual scaffolding and struggle with genuine multimodal integration across multiple visual inputs.\n- Clinical and biological applications (InVitroVision, clinical time-series) demonstrate that effective multimodal learning requires handling sparse, irregular, and informatively missing data—not just dense aligned modalities.\n- Cascading failures in VLA systems can be mitigated through hierarchical predictive correction (ReCAPA) rather than reactive post-hoc fixes, representing a shift toward proactive multimodal error management.\n- Domain-specific benchmarks like ARFBench highlight that testing on synthetic or curated data can mask fundamental weaknesses exposed by real-world production telemetry with heterogeneous anomaly patterns.\n- The common ground representation problem in situated dialogue points to a broader need for persistent visual-spatial memory beyond textual context windows in conversational AI.",
+    "papers": [
+      {
+        "title": "AITP: Traffic Accident Responsibility Allocation via Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Zijin Zhou",
+          "Songan Zhang"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "InVitroVision: a Multi-Modal AI Model for Automated Description of Embryo Development using Natural Language",
+        "url": "",
+        "authors": [
+          "Nicklas Neu",
+          "Thomas Ebner",
+          "Jasmin Primus",
+          "Raphael Zefferer",
+          "Bernhard Schenkenfelder",
+          "Mathias Brunbauer",
+          "Florian Kromp"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Using Machine Mental Imagery for Representing Common Ground in Situated Dialogue",
+        "url": "",
+        "authors": [
+          "Biswesh Mohapatra",
+          "Giovanni Duca",
+          "Laurent Romary",
+          "Justine Cassell"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "ReCAPA: Hierarchical Predictive Correction to Mitigate Cascading Failures",
+        "url": "",
+        "authors": [
+          "Xiyin Zeng",
+          "Yuyu Sun",
+          "Haoyang Li",
+          "Shouqiang Liu",
+          "Hao Wang"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Can MLLMs \"Read\" What is Missing?",
+        "url": "",
+        "authors": [
+          "Jindi Guo",
+          "Xi Fang",
+          "Chaozheng Huang"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Symbolic Grounding Reveals Representational Bottlenecks in Abstract Visual Reasoning",
+        "url": "",
+        "authors": [
+          "Mohit Vaishnav",
+          "Tanel Tammet"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Beyond Single Plots: A Benchmark for Question Answering on Multi-Charts",
+        "url": "",
+        "authors": [
+          "Azher Ahmed Efat",
+          "Seok Hwan Song",
+          "Wallapak Tavanapong"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "ARFBench: Benchmarking Time Series Question Answering Ability for Software Incident Response",
+        "url": "",
+        "authors": [
+          "Stephan Xie",
+          "Ben Cohen",
+          "Mononito Goswami",
+          "Junhong Shen",
+          "Emaad Khwaja",
+          "Chenghao Liu",
+          "David Asker",
+          "Othmane Abou-Amal",
+          "Ameet Talwalkar"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Learning Dynamic Representations and Policies from Multimodal Clinical Time-Series with Informative Missingness",
+        "url": "",
+        "authors": [
+          "Zihan Liang",
+          "Ziwen Pan",
+          "Ruoxuan Xiong"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "Tempered Sequential Monte Carlo for Trajectory and Policy Optimization with Differentiable Dynamics",
+        "url": "",
+        "authors": [
+          "Heng Yang"
+        ],
+        "date": "2026-04-25"
+      },
+      {
+        "title": "A Multimodal Text- and Graph-Based Approach for Open-Domain Event Extraction from Documents",
+        "url": "",
+        "authors": [
+          "Praval Sharma"
+        ],
+        "date": "2026-04-25"
+      }
+    ]
+  }
+]
