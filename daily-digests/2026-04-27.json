@@ -1,0 +1,209 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-27",
+    "paperCount": 2,
+    "markdown": "# Mechanistic Interpretability: Uncovering Shared Syntax and Personalization Circuits in Language Models\n\nToday's research landscape reveals a growing convergence between causal interpretability methods and practical model steering, with two papers demonstrating how fine-grained neural analyses can expose both shared linguistic mechanisms and user-specific preference circuits in LLMs. By moving beyond behavioral observation to pinpoint specific attention heads and MLP blocks, these works offer actionable frameworks for understanding syntactic generalization and enabling training-free personalization.\n\n## Syntactic Mechanism Sharing Across Constructions\n\n[1] **Ryoma Kumon and Hitomi Yanaka** tackle the fundamental question of whether language models employ shared neural mechanisms across different syntactic constructions, or if they handle phenomena like filler-gap dependencies and negative polarity item (NPI) licensing through entirely separate circuits. Their approach leverages activation patching—a causal intervention method—to systematically test whether disrupting specific attention heads or MLP blocks for one construction affects model performance on another. The study reveals a high degree of functional overlap, with particular attention heads contributing to both filler-gap dependency resolution and NPI licensing, suggesting that LLMs may converge on linguistic principles similar to those studied in theoretical syntax. This finding is significant because it provides evidence that models' syntactic capabilities are not merely superficial pattern matching but reflect deeper, cross-constructional organizational principles, informing both interpretability research and potential improvements in model architecture design.\n\n## Identifying and Steering Personalization Preferences\n\n[2] **Weixu Zhang, Ye Yuan, Changjiang Han, and colleagues** address the critical gap between LLMs' demonstrated ability to personalize outputs and the black-box nature of this behavior, which currently relies on opaque prompt engineering or costly fine-tuning. They hypothesize the existence of \"Preference Heads\"—a sparse subset of attention heads that causally encode user-specific stylistic and topical preferences—and propose the Differential Preference Steering (DPS) framework. DPS operates without additional training by first identifying these preference heads through causal masking analysis, then selectively steering their activation during generation to produce personalized outputs. The key contribution is a mechanistic framework that makes personalization interpretable and controllable, achieving style and topic alignment without the computational overhead of fine-tuning or the fragility of prompt engineering. This matters for practical deployment because it offers a lightweight, transparent method for adapting LLMs to individual users while maintaining model integrity and enabling debugging of unwanted biases in personalized responses.\n\n## Key Takeaways\n- Causal interpretability methods like activation patching can reveal shared syntactic mechanisms across different linguistic constructions, providing evidence that LLMs organize syntax in linguistically principled ways.\n- A sparse set of \"Preference Heads\" in LLMs causally encode user-specific stylistic and topical preferences, enabling training-free personalization through targeted activation steering.\n- The Differential Preference Steering (DPS) framework offers a practical, interpretable alternative to prompt engineering and fine-tuning for personalization tasks.\n- Both papers demonstrate that mechanistic interpretability is maturing from post-hoc analysis to actionable model intervention, with concrete applications in syntax research and user adaptation.\n- The discovery of shared circuits for filler-gap dependencies and NPI licensing suggests that current LLMs may implicitly learn principles analogous to those in theoretical linguistics, opening avenues for architecture improvements informed by linguistic theory.\n- Preference identification through causal masking is computationally efficient and provides transparency into which specific attention heads drive personalization behavior, enabling debugging and bias detection.\n- These works collectively highlight a trajectory where interpretability research produces not just understanding but also practical tools for model steering without retraining or data collection.",
+    "papers": [
+      {
+        "title": "Fine-Grained Analysis of Shared Syntactic Mechanisms in Language Models",
+        "url": "",
+        "authors": [
+          "Ryoma Kumon",
+          "Hitomi Yanaka"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "Preference Heads in Large Language Models: A Mechanistic Framework for Interpretable Personalization",
+        "url": "",
+        "authors": [
+          "Weixu Zhang",
+          "Ye Yuan",
+          "Changjiang Han",
+          "Yuxing Tian",
+          "Zipeng Sun",
+          "Linfeng Du",
+          "Jikun Kang",
+          "Hong Kang",
+          "Xue Liu",
+          "Haolun Wu"
+        ],
+        "date": "2026-04-27"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-27",
+    "paperCount": 4,
+    "markdown": "# Explainability in AI: From Causal Data Generation to Transparent Clinical and Educational Systems\n\nToday's research landscape reveals a maturing focus on making AI systems not just interpretable, but genuinely explainable across diverse domains—from accelerating neural network architectures to building trustworthy clinical decision support and educational dialogue systems. The work spans fundamental algorithmic innovations for efficient interpretable models (KANs), practical frameworks for causally grounded synthetic data generation, and applied systems that operationalize explainability for high-stakes healthcare and education applications.\n\n## Architectural Innovations for Efficient and Interpretable Models\n\n**LTBs-KAN: Linear-Time B-splines Kolmogorov-Arnold Networks** [1] addresses the critical performance bottleneck of Kolmogorov-Arnold Networks (KANs)—their significantly slower training speed compared to MLPs due to recursive B-spline computations. The authors propose a novel base-spline formulation that achieves linear-time complexity by replacing the computationally intensive Boor-Mansfield-Cox recursive algorithm with a direct, parallelizable computation scheme. Key results demonstrate that LTBs-KAN maintains the superior explainability and expressibility advantages of KANs while achieving orders of magnitude speedup, making them practical alternatives to MLPs. This contribution matters because it removes a major barrier to adopting inherently interpretable architectures in large-scale applications where both transparency and computational efficiency are required.\n\n## Explainable AI for High-Stakes Decision Support\n\n**TabSCM: A Practical Framework for Generating Realistic Tabular Data** [3] tackles the problem that most tabular data generators ignore causal structure, causing downstream models to learn spurious correlations and unfair patterns. The framework begins with a Completed Partially Directed Acyclic Graph (CPDAG) from any causal discovery algorithm, then orients edges to a DAG, fits root-node marginals nonparametrically, and learns topologically ordered structural assignments using conditional diffusion models for continuous variables. TabSCM generates synthetic data that preserves causal dependencies, thereby enabling more explainable and fair downstream modeling by ensuring that learned relationships reflect true causal mechanisms rather than spurious associations. This matters because causal fidelity in synthetic data is foundational for building explainable systems that generalize and do not perpetuate biases.\n\n**An Integrated Framework for Explainable, Fair, and Observable Hospital Readmission Prediction: Development and Validation on MIMIC-IV** [4] addresses three critical barriers to clinical translation of readmission prediction models: lack of explainability, absence of deployment reliability infrastructure, and inadequate demographic fairness evaluation. Using a cohort of 415,231 adult admissions from MIMIC-IV, the author trains logistic regression, XGBoost, and LightGBM models on 26 features, employing SHAP for per-patient explanations and evaluating fairness across 16 demographic subgroups. The framework integrates explainability, fairness auditing, and observability into a single pipeline, demonstrating that transparent, equitable, and operationally deployable models can coexist. This contribution matters because it provides a blueprint for translating predictive models into clinical practice while addressing the trust and equity concerns that have historically prevented adoption.\n\n**Tell Me Why: Designing an Explainable LLM-based Dialogue System for Student Problem Behavior Diagnosis** [2] addresses the critical gap that fine-tuned large language models can support teacher decision-making through dialogue but rarely explain why specific intervention strategies are recommended, limiting transparency and trust. The authors present a dialogue system built on a fine-tuned LLM that uses a hierarchical attribution method based on explainable AI (xAI) to identify dialogue evidence for each recommendation and generate natural language explanations. The system enables teachers to understand the reasoning behind behavioral diagnoses and intervention suggestions, enhancing their ability to critically evaluate and trust AI-generated advice. This matters because it demonstrates how principled xAI methods can be integrated into LLM-based educational tools to support rather than replace professional judgment.\n\n## Key Takeaways\n- **KANs become practical**: The LTBs-KAN architecture eliminates the computational overhead of B-spline computations, making inherently interpretable KANs competitive with MLPs in speed while preserving their explainability advantages.\n- **Causal fidelity enables downstream explainability**: TabSCM shows that generating synthetic data with preserved causal structure is foundational for building downstream models that learn true mechanisms rather than spurious correlations, directly supporting explainability.\n- **Integrated frameworks unify multiple desiderata**: The hospital readmission work demonstrates that explainability, fairness, and operational observability can be achieved together in a single pipeline, rather than as competing objectives.\n- **Domain-specific xAI for LLMs matters**: The educational dialogue system proves that hierarchical attribution methods can make LLM reasoning transparent in high-stakes domains, moving beyond generic explainability to domain-appropriate evidence identification.\n- **Explainability is being operationalized across domains**: From clinical prediction (readmission) to education (student behavior diagnosis) to data generation (causal synthetic data), explainability research is shifting from theoretical methods to practical, deployable systems.\n- **Linear-time B-splines unlock new architecture families**: The LTBs-KAN breakthrough suggests that further architectural innovations in interpretable models may emerge as computational barriers are systematically addressed.\n- **Trade-offs between model complexity and explainability persist**: The readmission study's comparison of logistic regression, XGBoost, and LightGBM highlights that simpler models may offer inherent explainability but complex models require post-hoc methods like SHAP, each with different trade-offs for clinical deployment.",
+    "papers": [
+      {
+        "title": "LTBs-KAN: Linear-Time B-splines Kolmogorov-Arnold Networks",
+        "url": "",
+        "authors": [
+          "Eduardo Said Merin-Martinez",
+          "Andres Mendez-Vazquez",
+          "Eduardo Rodriguez-Tello"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "Tell Me Why: Designing an Explainable LLM-based Dialogue System for Student Problem Behavior Diagnosis",
+        "url": "",
+        "authors": [
+          "Zhilin Fan",
+          "Deliang Wang",
+          "Penghe Chen",
+          "Yu Lu"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "TabSCM: A practical Framework for Generating Realistic Tabular Data",
+        "url": "",
+        "authors": [
+          "Sven Jacob",
+          "Bardh Prenkaj",
+          "Weijia Shao",
+          "Gjergji Kasneci"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "An Integrated Framework for Explainable, Fair, and Observable Hospital Readmission Prediction: Development and Validation on MIMIC-IV",
+        "url": "",
+        "authors": [
+          "Isaac Tosin Adisa"
+        ],
+        "date": "2026-04-27"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-27",
+    "paperCount": 8,
+    "markdown": "# Multimodal Foundation Models: From Efficient Acceleration to Binding, Retrieval, and Embodied Reasoning\n\nToday's multimodal research landscape spans critical challenges: enabling computationally efficient deployment of large vision-language models, probing their cognitive capabilities like source-modality binding, extending their reach to specialized domains including sign language and legal documents, and advancing them toward embodied reasoning in GUI agent tasks. A unifying theme is the tension between model scale and practical utility—researchers are simultaneously developing compression techniques, retrieval-augmented architectures, and novel training paradigms to bridge this gap.\n\n## Hardware-Software Co-Design and Efficient Inference for Multimodal Models\n\nThis section covers architectural innovations and optimization pipelines aimed at reducing the computational and memory footprint of multimodal foundation models (MFMs) while maintaining performance, including brain-inspired spiking approaches for long-context scenarios.\n\n**Focus Session: Hardware and Software Techniques for Accelerating Multimodal Foundation Models** [1] addresses the prohibitive computational and memory requirements of deploying large MFMs by proposing a multi-layered methodology combining hardware-software co-design of transformer blocks with an optimization pipeline. The approach incorporates hierarchy-aware mixed-precision quantization and structural pruning to compress transformer blocks, alongside fine-tuning strategies for domain-specific adaptation. This methodology is significant because it provides a systematic pathway for deploying large multimodal models on resource-constrained hardware without catastrophic performance loss, directly addressing the critical deployment bottleneck facing the field.\n\n**SpikingBrain2.0: Brain-Inspired Foundation Models for Efficient Long-Context and Cross-Platform Inference** [8] tackles the prohibitive computation and inference bottlenecks of full-attention Transformers when processing long sequences by introducing Dual-Space Sparse Attention (DSSA), an inter-layer hybrid of Sparse Softmax Attention (MoBA) within a 5B parameter brain-inspired spiking architecture. The model advances both architectural design and training efficiency over its predecessor, maintaining performance while drastically reducing computational costs for long-context multimodal tasks. This work matters because it demonstrates that biologically-plausible spiking neural mechanisms can be scaled to foundation model sizes, offering a potential alternative path to the quadratic complexity that plagues standard attention mechanisms in multimodal long-context scenarios.\n\n## Binding, Attribution, and Source-Modality Understanding in Vision-Language Models\n\nThis section focuses on the cognitive and technical challenges of how multimodal models track information provenance across modalities and how retrieval-augmented generation can improve attribution and mitigate context-length scaling issues.\n\n**Source-Modality Monitoring in Vision-Language Models** [2] defines and investigates the novel problem of source-modality monitoring—whether VLMs can track which input modality (text vs. image) a piece of information originated from—framing this as an instance of the broader binding problem. Through experiments spanning 11 VLMs performing target-modality information retrieval tasks, the authors evaluate models' ability to exploit syntactic versus semantic signals to bind linguistic references (e.g., \"the image\") to their corresponding sensory inputs. This work is critical because it reveals a fundamental cognitive limitation in current VLMs: models may fail to properly attribute information to its source modality, undermining trust and interpretability in multimodal systems that must integrate heterogeneous evidence.\n\n**BERAG: Bayesian Ensemble Retrieval-Augmented Generation for Knowledge-based Visual Question Answering** [6] addresses two key limitations of standard RAG approaches—the \"lost-in-the-middle\" effect where relevant information is overlooked in long contexts, and the quadratic computational cost of concatenating visual documents—by proposing a Bayesian ensemble framework. Instead of concatenating documents, BERAG treats each retrieved document as an independent evidence source, performing probabilistic reasoning over individual document contributions to generate answers with improved attribution. This innovation is significant for visual question answering because it provides a principled, computationally efficient mechanism for scaling RAG to multimodal settings where visual context is expensive, while simultaneously improving answer interpretability and reducing the impact of irrelevant retrieved documents.\n\n## Domain-Specific Multimodal Applications: Sign Language, Legal Classification, and Clinical Trial Matching\n\nThis section covers specialized adaptations of multimodal models to domain-specific tasks, highlighting benchmarks and lightweight architectures tailored for sign language understanding, legal document classification, and patient-trial matching.\n\n**CNSL-bench: Benchmarking the Sign Language Understanding Capabilities of MLLMs on Chinese National Sign Language** [5] addresses the underexplored question of how multimodal large language models (MLLMs) understand sign language by introducing the first comprehensive benchmark for Chinese National Sign Language. The benchmark is characterized by authoritative grounding in officially standardized sign language, providing a rigorous evaluation framework for assessing MLLMs' multimodal capabilities in this specialized domain. This work matters because it fills a critical gap in multimodal evaluation—sign language understanding requires integrating visual-spatial and linguistic reasoning, making it a uniquely challenging testbed for MLLMs that has been largely neglected compared to text-and-image benchmarks.\n\n**ReLeVAnT: Relevance Lexical Vectors for Accurate Legal Text Classification** [4] tackles the problem of classifying legal documents from unstructured corpora—crucial for drafting motions, docket summarization, and retrieval systems—by leveraging discriminative lexical features extracted from document content rather than relying on structured metadata or computationally expensive multimodal methods. The approach uses relevance lexical vectors to capture the distinguishing vocabulary patterns in legal texts without requiring extensive computational power or pre-structured data. This contribution is important because it demonstrates that carefully engineered lexical representations can rival or surpass computationally intensive multimodal approaches in domain-specific classification tasks, offering a lightweight, interpretable, and scalable alternative for legal NLP.\n\n**Lightweight Retrieval-Augmented Generation and Large Language Model-Based Modeling for Scalable Patient-Trial Matching** [3] addresses the challenge of reasoning over long, heterogeneous electronic health records (EHRs) and complex eligibility criteria for patient-trial matching—a task that currently requires either computationally expensive full-document LLM processing or traditional ML methods that fail on unstructured clinical narratives. The proposed framework combines retrieval-augmented generation with LLM-based modeling in a lightweight architecture that avoids full-document processing while capturing the nuanced clinical semantics in unstructured text. This work is significant because it provides a practical, scalable solution for a high-impact clinical application, demonstrating that RAG-based approaches can bridge the gap between computational efficiency and the nuanced reasoning required for healthcare multimodal data.\n\n## Embodied Multimodal Reasoning: Reinforcement Learning for GUI Agents\n\nThis section covers novel training paradigms for deploying multimodal LLMs in interactive, dynamic environments, specifically focusing on GUI agent navigation and task completion.\n\n**SOLAR-RL: Semi-Online Long-horizon Assignment Reinforcement Learning** [7] addresses the dilemma in training MLLM-based GUI agents, where standard offline RL neglects trajectory-level semantics (task completion, execution quality) while online RL suffers from high interaction costs and environmental instability. The proposed semi-online framework bridges this gap by capturing long-horizon dynamics without the prohibitive costs of full online RL, enabling MLLM agents to learn from both static step-level data and trajectory-level feedback. This work is crucial for advancing multimodal AI toward embodied reasoning, as it provides a practical training paradigm that balances the data efficiency of offline methods with the semantic richness of online learning, directly impacting the next generation of interactive multimodal agents.\n\n## Key Takeaways\n\n1. **Hardware-software co-design with compression is essential for practical deployment**: Hierarchy-aware mixed-precision quantization and structural pruning [1] combined with brain-inspired sparse attention mechanisms [8] offer complementary paths to making large multimodal models deployable on resource-constrained hardware, addressing the critical bottleneck between model scale and real-world utility.\n\n2. **Source-modality monitoring reveals fundamental limitations in current VLMs**: Even state-of-the-art VLMs struggle to properly bind information to its input modality of origin [2], raising important questions about the reliability and interpretability of multimodal models in high-stakes applications requiring traceable evidence.\n\n3. **Bayesian ensemble RAG provides a principled solution to the \"lost-in-the-middle\" effect**: By treating retrieved documents as independent evidence sources rather than concatenating them, BERAG [6] offers both improved attribution and quadratic-to-linear computational scaling for multimodal contexts, a crucial advance for knowledge-intensive visual QA.\n\n4. **Domain-specific benchmarks like CNSL-bench [5] reveal underexplored multimodal capabilities**: Sign language understanding, which demands tight integration of visual-spatial and linguistic reasoning, represents a uniquely challenging and neglected dimension of multimodal evaluation that can drive fundamental architectural improvements.\n\n5. **Lightweight, lexical approaches can compete with multimodal methods in specialized domains**: ReLeVAnT [4] demonstrates that well-engineered lexical features can match or exceed computationally intensive multimodal approaches for legal text classification, highlighting that domain-specific efficiency gains are available through careful feature engineering.\n\n6. **RAG-based frameworks enable scalable clinical reasoning without full-document processing**: The patient-trial matching framework [3] shows that retrieval-augmented generation can bridge the gap between computational efficiency and the nuanced clinical reasoning required for healthcare, offering a template for similar challenges in other document-heavy multimodal domains.\n\n7. **Semi-online reinforcement learning unlocks MLLM-based GUI agent training**: SOLAR-RL [7] provides a practical compromise between offline and online RL, enabling MLLM agents to learn trajectory-level semantics (task completion, execution quality) without the prohibitive costs of full online interaction, directly enabling more capable embodied multimodal systems.",
+    "papers": [
+      {
+        "title": "Focus Session: Hardware and Software Techniques for Accelerating Multimodal Foundation Models",
+        "url": "",
+        "authors": [
+          "Muhammad Shafique",
+          "Abdul Basit",
+          "Muhammad Abdullah Hanif",
+          "Alberto Marchisio",
+          "Rachmad Vidya Wicaksana Putra",
+          "Minghao Shao"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "Source-Modality Monitoring in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Etha Tianze Hua",
+          "Tian Yun",
+          "Ellie Pavlick"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "Lightweight Retrieval-Augmented Generation and Large Language Model-Based Modeling for Scalable Patient-Trial Matching",
+        "url": "",
+        "authors": [
+          "Xiaodi Li",
+          "Yang Xiao",
+          "Munhwan Lee",
+          "Konstantinos Leventakos",
+          "Young J. Juhn",
+          "David Jones",
+          "Terence T. Sio",
+          "Wei Liu",
+          "Maria Vassilaki",
+          "Nansu Zong"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "ReLeVAnT: Relevance Lexical Vectors for Accurate Legal Text Classification",
+        "url": "",
+        "authors": [
+          "Ishaan Gakhar",
+          "Harsh Nandwani"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "CNSL-bench: Benchmarking the Sign Language Understanding Capabilities of MLLMs on Chinese National Sign Language",
+        "url": "",
+        "authors": [
+          "Rui Zhao",
+          "Xuewen Zhong",
+          "Xiaoyun Zheng",
+          "Jinsong Su",
+          "Yidong Chen"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "BERAG: Bayesian Ensemble Retrieval-Augmented Generation for Knowledge-based Visual Question Answering",
+        "url": "",
+        "authors": [
+          "Jinghong Chen",
+          "Jingbiao Mei",
+          "Guangyu Yang",
+          "Bill Byrne"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "SOLAR-RL: Semi-Online Long-horizon Assignment Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Jichao Wang",
+          "Liuyang Bian",
+          "Yufeng Zhou",
+          "Han Xiao",
+          "Yue Pan",
+          "Guozhi Wang",
+          "Hao Wang",
+          "Zhaoxiong Wang",
+          "Yafei Wen",
+          "Xiaoxin Chen",
+          "Shuai Ren",
+          "Lingfang Zeng"
+        ],
+        "date": "2026-04-27"
+      },
+      {
+        "title": "SpikingBrain2.0: Brain-Inspired Foundation Models for Efficient Long-Context and Cross-Platform Inference",
+        "url": "",
+        "authors": [
+          "Yuqi Pan",
+          "Jinghao Zhuang",
+          "Yupeng Feng",
+          "Fangzhi Zhong",
+          "Siyu Ding",
+          "Xuerui Qiu",
+          "Shaowei Gu",
+          "Bohan Sun",
+          "Zhiyong Qin",
+          "Yibo Zhong",
+          "Lingtao Ouyang",
+          "Kun Yang",
+          "Zehao Liu",
+          "Yuhong Chou",
+          "Shurong Wang",
+          "Anjie Hu",
+          "Han Xu",
+          "Bo Xu",
+          "Guoqi Li"
+        ],
+        "date": "2026-04-27"
+      }
+    ]
+  }
+]
