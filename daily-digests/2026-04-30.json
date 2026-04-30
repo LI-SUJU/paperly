@@ -1,0 +1,126 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-04-30",
+    "paperCount": 3,
+    "markdown": "# Mechanistic Interpretability and Beyond: Bridging Tooling Gaps and Expanding Applications\n\nToday's research landscape reveals a community actively extending mechanistic interpretability beyond standard generative language models to specialized architectures like reward models, while simultaneously applying transformer-based interpretability techniques to high-stakes domains such as finance and energy forecasting. The papers span foundational tooling development, fairness-oriented architectural design, and practical forecasting applications, demonstrating interpretability's growing role as both a research method and a deployment requirement.\n\n## Section 1: Tooling for Non-Standard Architectures\n\n**Paper [1]** addresses a critical gap in mechanistic interpretability toolkit availability for reward models, which are foundational to RLHF pipelines but lack interpretability tools designed for their scalar regression heads rather than vocabulary unembeddings. The authors introduce **reward-lens**, an open-source library that adapts standard mechanistic interpretability techniques—logit lens, direct logit attribution, activation patching, and sparse autoencoders—by centering everything on the reward head's weight vector \\(w_r\\) as the natural interpretability axis. This work matters because reward models directly shape the behavior of aligned language models, yet previously no systematic toolkit existed for understanding their internal representations, making this a practical enabler for safety research in RLHF systems.\n\n## Section 2: Interpretability for Fairness and Regulation\n\n**Paper [2]** addresses the tension between predictive performance, interpretability, and fairness requirements in high-stakes regulated domains like finance and insurance, where attention-based transformers show promise but their attention mechanisms alone fail to ensure counterfactual fairness. The authors propose an efficient and interpretable transformer architecture designed to enforce counterfactual fairness by modifying the attention mechanism to prevent reliance on protected attributes during inference. This contribution matters because it moves beyond post-hoc explanation toward architecturally guaranteed fairness, offering a practical solution for domains where regulatory compliance requires transparent decision rationales alongside strong predictive performance.\n\n## Section 3: Feature Attribution in Energy Forecasting\n\n**Paper [3]** addresses the challenge of electricity price forecasting in Norway's five bidding zones after the 2021–2022 energy crisis fundamentally altered price formation dynamics, rendering historical calibration unreliable. The authors construct a multimodal hourly dataset and provide a comprehensive evaluation framework that explicitly analyzes feature contributions across all structurally diverse Norwegian bidding zones. By demonstrating which features drive predictions in each zone, this work matters because it combines forecasting accuracy with interpretable feature attribution, enabling grid operators and policymakers to understand shifting price drivers in a post-crisis energy landscape where models cannot rely solely on historical patterns.\n\n## Key Takeaways\n- Reward models require fundamentally different interpretability tools than generative language models, and the reward head's weight vector provides a natural axis for porting existing mechanistic interpretability techniques.\n- Open-source tooling like reward-lens is critical for enabling interpretability research on non-standard architectures that nevertheless play outsized roles in AI safety pipelines.\n- Architectural interventions in transformer attention can enforce counterfactual fairness without sacrificing efficiency, offering a path toward models that are interpretable by design rather than by post-hoc explanation.\n- Interpretability techniques are increasingly applied to domain-specific forecasting problems, where understanding feature contributions across structurally heterogeneous regions is as important as raw predictive accuracy.\n- The energy crisis has fundamentally altered price formation mechanisms, requiring forecasting models that can dynamically attribute influence to new features rather than relying on pre-crisis historical patterns.\n- There is a growing convergence between mechanistic interpretability research (focused on internal representations) and applied explainability (focused on feature attributions), suggesting opportunities for cross-pollination between these communities.\n- High-stakes regulated domains demand that interpretability and fairness guarantees be built into architectures from the start, rather than added as post-hoc analyses.",
+    "papers": [
+      {
+        "title": "reward-lens: A Mechanistic Interpretability Library for Reward Models",
+        "url": "",
+        "authors": [
+          "Mohammed Suhail B Nadaf"
+        ],
+        "date": "2026-04-30"
+      },
+      {
+        "title": "Efficient and Interpretable Transformer for Counterfactual Fairness",
+        "url": "",
+        "authors": [
+          "Panyi Dong",
+          "Zhiyu Quan"
+        ],
+        "date": "2026-04-30"
+      },
+      {
+        "title": "Electricity price forecasting across Norway's five bidding zones in the post-crisis era",
+        "url": "",
+        "authors": [
+          "My Thi Diem Phan",
+          "Trung Tuyen Truong",
+          "Hoai Phuong Ha",
+          "Dat Thanh Nguyen"
+        ],
+        "date": "2026-04-30"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-04-30",
+    "paperCount": 1,
+    "markdown": "# Beyond Black Boxes: Unpacking Explainability in Clinical AI, Model Reasoning, and Mechanistic Interpretability\n\nToday's research landscape in explainability is pivoting from post-hoc attribution methods toward deeper, more structured forms of model understanding. Across clinical decision support, language model reasoning, and mechanistic interpretability, researchers are grappling with how to make AI systems not just accurate, but transparent and trustworthy for high-stakes applications.\n\n## Explainable Clinical Decision Support\n\n**Paper [1]** addresses the critical problem of limited access to echocardiography for left ventricular ejection fraction (LVEF) assessment, which is essential for diagnosing heart failure but unavailable in many primary care and resource-constrained settings. The authors propose a multimodal machine learning framework that combines engineered features from 12-lead ECG time series data with structured electronic health record (EHR) variables, classifying LVEF into four clinically actionable strata: normal (>50%), mildly reduced (40-50%), moderately reduced (30-40%), and severely reduced (<30%). A key technical contribution is the use of SHAP (SHapley Additive exPlanations) attributions to identify the most influential ECG and EHR features driving classification decisions, providing clinicians with model-agnostic explanations for each prediction. Using retrospective data from Hartford HealthCare, the model demonstrates that explainable AI can bridge the gap between sophisticated ECG-based screening and clinical trust, though the reliance on SHAP—which provides only local, input-level attributions rather than structural model understanding—highlights the ongoing tension between interpretability and diagnostic utility in medical AI.\n\n## Reasoning and Attribution in Language Models\n\n*(No papers on reasoning and attribution were provided in this batch.)*\n\n## Mechanistic Interpretability and Model Internals\n\n*(No papers on mechanistic interpretability were provided in this batch.)*\n\n## Evaluation Frameworks for Explainability\n\n*(No papers on evaluation frameworks were provided in this batch.)*\n\n## Key Takeaways\n- The clinical explainability landscape is shifting from binary classification (normal vs. abnormal) to multi-stratum diagnostic frameworks that require finer-grained explanations, as demonstrated in the four-tier LVEF classification approach.\n- SHAP remains the dominant post-hoc explanation method for tabular and time-series medical data, but its limitations—computational cost, feature independence assumptions, and inability to reveal model structure—remain unresolved.\n- Multimodal fusion of ECG time-series features with structured EHR data presents unique explainability challenges, as different modalities may require different attribution methods that are not directly comparable.\n- The gap between model-agnostic explainability methods (like SHAP) and model-specific interpretability (like attention mechanisms or concept bottlenecks) remains a central tension in applied AI research.\n- Real-world clinical deployment of explainable AI requires not just technical accuracy but alignment with clinical workflows, where explanations must be actionable and understandable to non-technical practitioners.\n- There is a pressing need for standardized evaluation metrics for explanation quality in medical domains, where false positives or misleading attributions can have life-threatening consequences.\n- The field appears to be converging on the recognition that explainability is not a one-size-fits-all property but must be tailored to the specific decision-making context, user expertise level, and regulatory requirements of each application domain.",
+    "papers": [
+      {
+        "title": "A Multimodal and Explainable Machine Learning Approach to Diagnosing Multi-Class Ejection Fraction from Electrocardiograms",
+        "url": "",
+        "authors": [
+          "Catherine Ning",
+          "Yu Ma",
+          "Cindy Beini Wang",
+          "Sean McMahon",
+          "Joseph Radojevic",
+          "Steven Zweibel",
+          "Dimitris Bertsimas"
+        ],
+        "date": "2026-04-30"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-04-30",
+    "paperCount": 5,
+    "markdown": "# Multimodal Systems in the Wild: From Clinical Diagnostics to Adaptive Deployment\n\nToday's research landscape reveals a decisive shift from isolated modality fusion toward context-aware, explainable, and deployment-robust multimodal systems. Across healthcare, speech pathology, document processing, energy forecasting, and edge computing, researchers are grappling with the fundamental tension between model complexity and real-world reliability—where the quality of modalities, available compute, and task granularity all vary at runtime.\n\n## Adaptive and Robust Multimodal Architectures\n\n**Paper [2] introduces SWAN**, the first adaptive multimodal network that jointly accounts for three runtime variations: modality quality degradation, input complexity differences, and fluctuating compute budgets. Prior adaptive networks either sacrificed strict compute adherence or ignored input complexity, leading to suboptimal utility-per-flop. SWAN's key innovation is its \"world-aware\" gating mechanism that dynamically selects modalities and network depth based on real-time sensor quality assessments and platform resource availability. The work matters because it bridges the gap between laboratory-trained multimodal models and the unpredictable conditions of real-world deployment—a fundamental requirement for autonomous systems, IoT, and mobile AI.\n\n**Paper [3] presents EnterpriseDocBench**, a unified evaluation framework for complex multimodal document processing pipelines spanning parsing, indexing, retrieval, and generation. While each pipeline stage has been individually optimized, the community lacked a holistic benchmark that measures end-to-end performance on parsing fidelity, indexing efficiency, retrieval relevance, and generation groundedness across a single corpus. The authors evaluate BM25, dense embedding, and hybrid pipelines on permissively licensed enterprise documents across six domains, revealing that pipeline-level failure modes (e.g., high parsing quality but poor grounding) are invisible to stage-wise evaluation. This benchmark is critical for enterprise AI adoption, where the entire pipeline's reliability—not just individual component accuracy—determines deployment viability.\n\n## Clinical Multimodal Diagnostics and Intervention\n\n**Paper [1] addresses the critical problem of left ventricular ejection fraction (LVEF) assessment**, which traditionally depends on echocardiography—limiting access in primary care and resource-constrained settings. The authors develop a multimodal machine learning framework that combines engineered 12-lead ECG timeseries features with structured EHR variables to classify LVEF into four clinically actionable strata: normal, mildly, moderately, and severely reduced. Using SHAP attributions, they identify the most influential ECG and EHR features, providing the explainability essential for clinical trust and regulatory approval. This matters because it could democratize heart failure screening, moving LVEF assessment from specialized imaging centers to primary care clinics using widely available ECG machines.\n\n**Paper [5] challenges the assumption that multimodal LLMs are sufficient for specialized clinical tasks**, focusing on pediatric Speech Sound Disorder (SSD) classification. Rather than relying on general-purpose multimodal models, the authors propose a hierarchical cascading approach: binary classification first, followed by type classification, then symptom classification, using fine-tuned Speech Representation Models (SRMs) with targeted data augmentation. Their approach mitigates biases found in prior work and improves performance across all clinical tasks in the SLPHelmUltraSuitePlus benchmark. This work is significant because it demonstrates that domain-specific, task-hierarchical architectures outperform generic multimodal LLMs in high-stakes clinical settings where granularity and bias mitigation are paramount.\n\n## Multimodal Forecasting Across Structured Domains\n\n**Paper [4] tackles electricity price forecasting across Norway's five structurally diverse bidding zones** in the post-2021–2022 energy crisis era, where traditional models calibrated on pre-crisis hydropower-dominated patterns have become unreliable. The authors construct a multimodal hourly timeseries dataset integrating weather, hydrological, grid interconnection, and Continental European energy market features, then perform a comprehensive evaluation across all five Nord Pool zones. This work provides the first unified benchmark for feature contribution analysis across Norway's bidding zones, revealing that integration with Continental Europe has fundamentally altered price formation mechanisms—a finding essential for grid operators and energy traders adapting to a transformed market landscape.\n\n## Key Takeaways\n- Adaptive multimodal networks (e.g., SWAN) must jointly consider modality quality, input complexity, and compute budget—optimizing any subset alone leads to deployment failures.\n- End-to-end pipeline evaluation frameworks (e.g., EnterpriseDocBench) are essential for enterprise AI, as stage-wise metrics miss cascading failure modes in parsing-reasoning-generation chains.\n- Clinical multimodal diagnostics increasingly require explainability (SHAP-based feature attribution) and hierarchical task decomposition rather than monolithic end-to-end models.\n- Domain-specific, cascading architectures (SRMs + targeted augmentation) outperform general multimodal LLMs in specialized clinical tasks like pediatric speech disorder classification.\n- Multimodal forecasting in dynamic systems (energy markets) demands continuous recalibration with heterogeneous data streams (weather, grid, economic) to capture regime shifts from historical patterns.\n- The gap between static multimodal model performance and real-world deployment robustness remains a central, unsolved challenge across healthcare, energy, and enterprise domains.",
+    "papers": [
+      {
+        "title": "A Multimodal and Explainable Machine Learning Approach to Diagnosing Multi-Class Ejection Fraction from Electrocardiograms",
+        "url": "",
+        "authors": [
+          "Catherine Ning",
+          "Yu Ma",
+          "Cindy Beini Wang",
+          "Sean McMahon",
+          "Joseph Radojevic",
+          "Steven Zweibel",
+          "Dimitris Bertsimas"
+        ],
+        "date": "2026-04-30"
+      },
+      {
+        "title": "SWAN: World-Aware Adaptive Multimodal Networks for Runtime Variations",
+        "url": "",
+        "authors": [
+          "Jason Wu",
+          "Shir-Kang Scott Jinn",
+          "Yuyang Yuan",
+          "Maggie Wigness",
+          "Lance M. Kaplan",
+          "Hang Qiu",
+          "Mani Srivastava"
+        ],
+        "date": "2026-04-30"
+      },
+      {
+        "title": "Benchmarking Complex Multimodal Document Processing Pipelines: A Unified Evaluation Framework for Enterprise AI",
+        "url": "",
+        "authors": [
+          "Saurabh K. Singh",
+          "Sachin Raj"
+        ],
+        "date": "2026-04-30"
+      },
+      {
+        "title": "Electricity price forecasting across Norway's five bidding zones in the post-crisis era",
+        "url": "",
+        "authors": [
+          "My Thi Diem Phan",
+          "Trung Tuyen Truong",
+          "Hoai Phuong Ha",
+          "Dat Thanh Nguyen"
+        ],
+        "date": "2026-04-30"
+      },
+      {
+        "title": "Multimodal LLMs are not all you need for Pediatric Speech Language Pathology",
+        "url": "",
+        "authors": [
+          "Darren Fürst",
+          "Sebastian Steindl",
+          "Ulrich Schäfer"
+        ],
+        "date": "2026-04-30"
+      }
+    ]
+  }
+]
