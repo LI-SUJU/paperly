@@ -1,0 +1,315 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-03",
+    "paperCount": 4,
+    "markdown": "# Uncertainty, Structure, and Representation: Advances in Interpretability for AI Systems\n\nToday's research landscape reveals a concerted push to enhance interpretability across three critical dimensions: decomposing uncertainty into actionable components, discovering latent causal structures in complex temporal data, and critically evaluating the geometric assumptions underlying popular feature extraction methods. These papers collectively challenge simplistic notions of interpretability, moving toward frameworks that can explain what a model knows, how it reasons over time, and whether its internal representations faithfully capture the true structure of concepts.\n\n## Decomposing and Exploiting Uncertainty for Interpretability\n\n[1] **ConformaDecompose: Explaining Uncertainty via Calibration Localization** — This paper addresses the fundamental limitation of conformal prediction, which provides global coverage guarantees but conflates different sources of uncertainty into a single interval width. The authors introduce an uncertainty-aware explainability framework that decomposes prediction intervals into reducible and irreducible components, specifically isolating calibration-induced epistemic uncertainty from aleatoric noise. By localizing where calibration mismatches occur at the instance level, ConformaDecompose enables practitioners to identify which predictions could be tightened with better model calibration or additional training data. This work bridges a critical gap between uncertainty quantification and interpretability, offering a principled way to not just know *that* a model is uncertain, but *why* and *what can be done about it*.\n\n[2] **Differentiable latent structure discovery for interpretable forecasting in clinical time series** — The authors tackle the challenge of forecasting from irregular electronic health records without sacrificing either uncertainty quantification or interpretability. They introduce StructGP, a continuous-time multi-task Gaussian process that couples process convolutions with differentiable structure learning to uncover sparse, ordered directed acyclic graphs of inter-variable dependencies while maintaining principled uncertainty estimates. A key extension, LP-StructGP, augments this with latent pathways—shared, temporally shifted trajectories that capture common underlying disease dynamics across patients. This approach produces interpretable, clinically meaningful structures (e.g., causal diagrams of how lab values influence each other) while providing calibrated probabilistic forecasts from sparse, irregularly sampled data.\n\n[3] **PROMISE-AD: Progression-aware Multi-horizon Survival Estimation for Alzheimer's Disease Progression and Dynamic Tracking** — This work addresses the challenge of predicting Alzheimer's disease progression from irregular clinical visits while avoiding diagnostic leakage—a common pitfall where models inadvertently use future information. PROMISE-AD converts pre-index clinical visits into tokens with standardized measurements and missingness masks, then uses a leakage-safe survival framework to predict conversion from cognitively normal to mild cognitive impairment and from MCI to AD dementia. The model provides calibrated hazard risks across multiple horizons and dynamically updates predictions as new clinical data becomes available, offering clinicians interpretable, uncertainty-aware progression trajectories rather than point predictions.\n\n## Rethinking Feature Extraction and Representation Geometry\n\n[4] **Do Sparse Autoencoders Capture Concept Manifolds?** — This paper challenges the prevailing assumption that sparse autoencoders (SAEs) extract features corresponding to independent, linear concept directions, questioning the geometric foundations of a widely used interpretability tool. The authors develop a theoretical framework to define what it means for an SAE to capture a concept manifold—a low-dimensional continuous structure—and demonstrate conditions under which current SAE architectures succeed or fail at this task. Their analysis reveals that while SAEs can capture manifolds under specific architectural constraints, standard training procedures often prioritize representing concepts as discrete, independent directions even when the underlying structure is continuous. This work has profound implications for mechanistic interpretability: if the features we extract are artifacts of our extraction tools rather than faithful representations of model internals, we may be systematically misled about how neural networks actually organize knowledge.\n\n## Key Takeaways\n- Uncertainty decomposition frameworks like ConformaDecompose represent a paradigm shift from \"how uncertain is my model?\" to \"what type of uncertainty dominates and can it be reduced?\", enabling targeted model improvement rather than blind retraining.\n- Differentiable structure discovery in clinical time series demonstrates that interpretability and state-of-the-art forecasting performance are not mutually exclusive, particularly when grounded in domain-specific structural priors like directed acyclic graphs.\n- Survival-based approaches for disease progression (PROMISE-AD) show that proper handling of censoring, irregular visits, and diagnostic leakage is essential for producing clinically trustworthy and interpretable predictions.\n- Sparse autoencoders may systematically misrepresent concept geometry, suggesting that the interpretability community needs to critically re-evaluate whether extracted features reflect model internals or artifacts of the extraction method itself.\n- Across all papers, there is a clear trend toward interpretability methods that provide *actionable* insights—whether identifying reducible uncertainty, revealing causal structures, or flagging diagnostic leakage—rather than merely visualizable features.\n- The tension between discrete linear features (favored by current SAE architectures) and continuous manifold structures (observed in many real concepts) highlights a fundamental open problem in representation interpretability.\n- Clinical applications are driving the most rigorous requirements for interpretability, demanding methods that are not just explainable but also uncertainty-aware, temporally coherent, and resistant to data leakage.",
+    "papers": [
+      {
+        "title": "ConformaDecompose: Explaining Uncertainty via Calibration Localization",
+        "url": "",
+        "authors": [
+          "Fatima Rabia Yapicioglu",
+          "Meltem Aksoy",
+          "Alberto Rigenti",
+          "Tuwe Löfström-Cavallin",
+          "Helena Löfström-Cavallin",
+          "Seyda Yoncaci",
+          "Luca Longo"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Differentiable latent structure discovery for interpretable forecasting in clinical time series",
+        "url": "",
+        "authors": [
+          "Ivan Lerner",
+          "Jean Feydy",
+          "Alexandre Kalimouttou",
+          "Anita Burgun",
+          "Francis Bach"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "PROMISE-AD: Progression-aware Multi-horizon Survival Estimation for Alzheimer's Disease Progression and Dynamic Tracking",
+        "url": "",
+        "authors": [
+          "Qing Lyu",
+          "Jeremy Hudson",
+          "Mohammad Kawas",
+          "Yuming Jiang",
+          "Chenyu You",
+          "Christopher T Whitlow"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Do Sparse Autoencoders Capture Concept Manifolds?",
+        "url": "",
+        "authors": [
+          "Usha Bhalla",
+          "Thomas Fel",
+          "Can Rager",
+          "Sheridan Feucht",
+          "Tal Haklay",
+          "Daniel Wurgaft",
+          "Siddharth Boppana",
+          "Matthew Kowal",
+          "Vasudev Shyam",
+          "Jack Merullo",
+          "Atticus Geiger",
+          "Ekdeep Singh Lubana"
+        ],
+        "date": "2026-05-03"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-03",
+    "paperCount": 3,
+    "markdown": "# From Black Box to Transparent Pipeline: Advances in Explainability Across Model Training and Inference\n\nToday's research landscape reveals a growing convergence between automated machine learning systems and rigorous uncertainty quantification, with explainability serving as the connective tissue linking technical performance to human understanding. Three papers demonstrate distinct approaches to making AI systems more interpretable—ranging from multi-agent pipeline transparency to localized uncertainty decomposition and compositional rule generation for large language models.\n\n## Explainability Through Architectural Transparency in Automated ML Pipelines\n\n**Paper [1]** tackles the opacity of automated machine learning pipelines by proposing a unified multi-agent architecture that generates end-to-end ML workflows from natural-language goals and datasets. The system employs five specialized agents—handling data profiling, intent parsing, microservice recommendation, DAG construction, and execution—with explainability embedded through code-grounded Retrieval-Augmented Generation (RAG) and a hybrid recommender system that surfaces its multi-criteria decision rationale. A self-healing mechanism using Large Language Models enables the system to diagnose and correct failures while logging the reasoning behind each recovery action. This work matters because it shifts explainability from a post-hoc analysis add-on to a first-class architectural property, making automated ML pipelines auditable and trustworthy for enterprise deployment.\n\n## Localizing Uncertainty: Calibration-Aware Explanations for Conformal Prediction\n\n**Paper [2]** addresses a critical blind spot in conformal prediction: while this framework provides statistically guaranteed prediction intervals, its single global calibration threshold conflates epistemic and aleatoric uncertainty sources at the instance level. The authors introduce ConformaDecompose, an uncertainty-aware explainability framework that analyzes calibration-induced epistemic uncertainty reducibility by localizing which regions of the input space contribute most to interval width. By decomposing conformal intervals into components attributable to model limitations versus irreducible noise, the method provides actionable insights for practitioners wondering whether additional data or model improvements could tighten predictions. This contribution is significant because it bridges the gap between formally rigorous uncertainty quantification and the practical need for interpretable, instance-level explanations in high-stakes applications like medical diagnosis or autonomous systems.\n\n## Rethinking Compositionality: Rule-Generation as an Explainable Alternative to Partition-Based Tests\n\n**Paper [3]** identifies two fundamental limitations in existing compositional generalization tests for LLMs: they evaluate only output results without probing the model's internal understanding of compositionality, and they rely on dataset partitioning that suffers from combination leakage. The authors propose a novel rule-generation perspective that shifts evaluation from passive testing to active demonstration, requiring LLMs to generate explicit programs or rules that describe how they compose learned primitives to handle unseen combinations. This approach reveals whether the model has genuinely internalized compositional structure or is merely exploiting statistical regularities in the training data. The work is important because it transforms compositionality assessment from an opaque accuracy-based metric into an explainable, human-interpretable audit of the model's reasoning process, directly addressing concerns about LLMs' superficial pattern matching.\n\n## Key Takeaways\n- Explainability is increasingly being embedded as an architectural requirement in automated systems rather than treated as a post-hoc analysis step, as demonstrated by the multi-agent pipeline architecture [1].\n- The decomposition of uncertainty sources (epistemic vs. aleatoric) at the instance level, rather than globally, represents a significant advance for making conformal prediction practically interpretable [2].\n- Rule-generation approaches offer a fundamentally more transparent alternative to black-box evaluation for assessing whether large language models truly understand compositional structure [3].\n- Self-healing mechanisms with logged reasoning traces provide a novel path toward maintaining explainability even when automated systems encounter and recover from failures [1].\n- The tension between statistical rigor (conformal prediction) and practical interpretability is being resolved through localization techniques that map global guarantees to local explanations [2].\n- Moving from partition-based to generative evaluation protocols for compositionality represents a paradigm shift that prioritizes understanding over predictive accuracy [3].\n- Across all three papers, there is a clear trend toward explainability solutions that provide actionable, diagnostic insights rather than simple saliency maps or feature importance scores.",
+    "papers": [
+      {
+        "title": "Think it, Run it: Autonomous ML pipeline generation via self-healing multi-agent AI",
+        "url": "",
+        "authors": [
+          "Adela Bara",
+          "Gabriela Dobrita",
+          "Simona-Vasilica Oprea"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "ConformaDecompose: Explaining Uncertainty via Calibration Localization",
+        "url": "",
+        "authors": [
+          "Fatima Rabia Yapicioglu",
+          "Meltem Aksoy",
+          "Alberto Rigenti",
+          "Tuwe Löfström-Cavallin",
+          "Helena Löfström-Cavallin",
+          "Seyda Yoncaci",
+          "Luca Longo"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Investigating More Explainable and Partition-Free Compositionality Estimation for LLMs: A Rule-Generation Perspective",
+        "url": "",
+        "authors": [
+          "Ziyao Xu",
+          "Cong Wang",
+          "Houfeng Wang"
+        ],
+        "date": "2026-05-03"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-03",
+    "paperCount": 13,
+    "markdown": "# Multimodal Frontiers: From Personalized Medicine to Real-Time Omni-Modal Interaction\n\nToday's research landscape reveals a sharp dual focus: on one side, multimodal AI is being harnessed for high-stakes biomedical applications—predicting disease progression, modeling personalized health trajectories, and reasoning over scientific documents—while on the other, the field is rapidly advancing toward real-time, interactive, and physically-embodied agents that can browse the web, generate websites, and engage in full-duplex conversation. A unifying theme is the move from static, single-pass inference toward iterative, uncertainty-aware, and computationally-efficient frameworks that respect the heterogeneity of real-world multimodal data.\n\n## Efficient and Interactive Multimodal Agents\n\n**Step-level Optimization for Efficient Computer-use Agents** [1] addresses the problem that current computer-use agents invoke large multimodal models at nearly every interaction step, making them prohibitively expensive and slow for long-horizon GUI tasks. The authors argue that GUI trajectories are highly heterogeneous—many steps are routine and computationally cheap, while only a subset requires intensive reasoning—and propose a step-level compute allocation scheme that dynamically budgets model capacity based on step difficulty. This work matters because it directly tackles the practical deployment bottleneck for software automation, potentially reducing inference costs by an order of magnitude without sacrificing task completion rates.\n\n**AutoSurfer -- Teaching Web Agents through Comprehensive Surfing, Learning, and Modeling** [5] tackles the scarcity of high-quality web trajectory training data, a key bottleneck limiting multimodal LLM-based web agents. Existing automatic trajectory generation methods suffer from incomplete website coverage due to homepage-based task proposals or random-walk exploration, often producing hallucinated or ambiguous task synthesis. AutoSurfer introduces a comprehensive web trajectory generator that systematically surfs websites to propose grounded, diverse tasks and generates reliable trajectories through multi-stage modeling. This contribution is significant because it directly addresses the data scarcity problem that has constrained the generalization of web agents to real-world, long-tail tasks.\n\n**InteractWeb-Bench: Can Multimodal Agent Escape Blind Execution in Interactive Website Generation?** [7] identifies a critical failure mode in agent-based code synthesis: the semantic misalignment between ambiguous, low-quality instructions from non-expert users and model understanding, leading to \"blind execution\" where agents produce plausible but functionally incorrect outputs. The authors propose a benchmark that moves beyond idealized static settings to evaluate interactive website generation under realistic, information-constrained conditions. This benchmark is important because it exposes the gap between current evaluation practices and the messy reality of real-world software development, pushing the community toward more robust interaction paradigms.\n\n**A Pattern Language for Resilient Visual Agents** [12] addresses the fundamental software architecture challenge of integrating multimodal foundation models into enterprise ecosystems, where the high latency and non-determinism of vision-language-action models conflict with strict real-time and determinism requirements. The authors propose an architectural pattern language consisting of four design patterns—Hybrid Affordance Integration, Adapter-Based Sensor Abstraction, Reactive-Reflective Control Loop, and Probabilistic Supervisory Control—that separate fast, deterministic reflexes from slow, probabilistic supervision. This work matters because it provides a principled engineering framework for deploying multimodal agents in safety-critical industrial settings, bridging the gap between research prototypes and production systems.\n\n## Biomedical Multimodal Models and Knowledge Graphs\n\n**Evaluating TabPFN for Mild Cognitive Impairment to Alzheimer's Disease Conversion in Data Limited Settings** [2] addresses the challenge of predicting 3-year MCI-to-AD conversion from multimodal biomarker features (demographics, APOE4, MRI volumes, CSF markers, PET imaging) in data-limited scenarios using the TADPOLE dataset. The authors evaluate TabPFN (Tabular Pre-Trained Foundation Network) against traditional machine learning methods, demonstrating that pre-trained foundation models for tabular data can outperform conventional approaches when longitudinal data is scarce. This contribution matters because early and accurate prediction of MCI-to-AD conversion is critical for clinical trial enrollment and early intervention planning, and TabPFN offers a practical solution where large-scale multimodal datasets are unavailable.\n\n**Toward Personalized Digital Twins for Cognitive Decline Assessment: A Multimodal, Uncertainty-Aware Framework** [3] tackles the high heterogeneity of cognitive decline across individuals, which complicates prognosis, trial design, and treatment planning. The authors present the Personalized Cognitive Decline Assessment Digital Twin (PCD-DT), combining latent state-space models for individualized temporal dynamics, multimodal fusion for clinical, biomarker, and imaging features, and uncertainty-aware validation given sparse, noisy, and irregular longitudinal data. This framework is significant because it moves beyond one-size-fits-all prognostic models to personalized disease trajectory simulation, enabling more precise clinical decision-making and adaptive trial designs.\n\n**Simulating clinical interventions with a generative multimodal model of human physiology** [11] addresses the central challenge of understanding how human health changes over time and why responses to interventions vary between individuals. The authors present HealthFormer, a decoder-only transformer that models physiological trajectories generatively by training on data from the Human Phenotype Project—a multi-visit cohort of over 15,000 deeply phenotyped individuals—across 667 measurements spanning seven domains including blood biomarkers, body composition, sleep physiology, and continuous glucose monitoring. The model can simulate the effects of clinical interventions in silico, which matters for personalized medicine, clinical trial simulation, and hypothesis generation about disease mechanisms.\n\n**OptimusKG: Unifying biomedical knowledge in a modern multimodal graph** [6] addresses the fragmentation of biomedical knowledge graphs, where unstructured document-derived graphs lack schema-level constraints and structured-resource graphs are difficult to harmonize. The authors build OptimusKG, a multimodal biomedical labeled property graph from structured and semi-structured resources, containing 190,531 nodes across 10 entity types and 21,813,816 edges across 26 relationship types, spanning molecular, anatomical, clinical, and environmental domains. This resource matters because it provides a unified, schema-rich, and type-preserving representation of biomedical knowledge that can power multimodal reasoning, drug discovery, and clinical decision support systems.\n\n## Multimodal Stance Detection and Retrieval-Augmented Generation\n\n**MM-StanceDet: Retrieval-Augmented Multi-modal Multi-agent Stance Detection** [10] addresses the challenge of multimodal stance detection, where effectively fusing text and image—especially when signals conflict—remains difficult due to issues with contextual grounding, cross-modal interpretation ambiguity, and single-pass reasoning fragility. The authors propose a multi-agent framework integrating retrieval augmentation for contextual grounding, specialized multimodal analysis agents for nuanced interpretation, and a reasoning-enhanced adjudication module. This work matters because understanding public discourse in social media increasingly requires reconciling textual and visual signals, and the multi-agent retrieval-augmented approach provides a more robust and interpretable alternative to monolithic classification.\n\n**Iterative Multimodal Retrieval-Augmented Generation for Medical Question Answering** [9] addresses the limitation of medical RAG systems that operate on text chunks extracted from biomedical literature, discarding rich visual content like tables, figures, and structured layouts. The authors propose MED-VRAG, an iterative multimodal RAG framework that retrieves and reasons over PMC document page images instead of OCR'd text, using ColQwen2.5 patch-level page embeddings with a sharded MapReduce LLM filter that scales to ~350K pages while keeping Stage-1 retrieval under 30 ms via an offline coarse-to-fine index. This contribution is significant because it preserves the multimodal structure of scientific documents, enabling more accurate and context-aware medical question answering that leverages both textual and visual information.\n\n## Multimodal Benchmarking and Evaluation\n\n**SpecVQA: A Benchmark for Spectral Understanding and Visual Question Answering in Scientific Images** [13] introduces a professional scientific-image benchmark for evaluating multimodal models on spectral understanding, covering 7 representative spectrum types with expert-annotated question-answer pairs. The benchmark contains 620 figures and 3100 QA pairs, designed to assess both spectra scientific QA and corresponding underlying task evaluation. This work matters because spectra are a prevalent yet highly information-dense form of scientific imagery that current MLLMs struggle to interpret, and SpecVQA provides a rigorous evaluation framework to drive progress in scientific image understanding.\n\n**Stable Behavior, Limited Variation: Persona Validity in LLM Agents for Urban Sentiment Perception** [8] investigates whether persona prompting in multimodal LLMs produces meaningful and reproducible behavioral diversity for urban sentiment perception. Using a factorial set of personas spanning gender, economic status, political orientation, and personality, the authors instantiate multiple agents per persona to evaluate urban scene images from the PerceptSent dataset, finding that within-persona consistency is high but cross-persona variation is limited. This finding matters because it questions the validity of using persona prompting as a reliable method for simulating diverse human perspectives in urban analysis, with implications for how multimodal LLMs are deployed as human proxies in social science research.\n\n**MiniCPM-o 4.5: Towards Real-Time Full-Duplex Omni-Modal Interaction** [4] addresses the key bottlenecks in multimodal large language models for human-level interaction: perception and response are still separated into alternating phases, and most models remain reactive rather than proactive. The authors propose a model and architecture that supports real-time full-duplex interaction—simultaneously perceiving and generating across modalities—without the traditional turn-taking constraint. This work matters because it moves beyond the limitations of current chat-based interaction paradigms toward more natural, continuous, and bidirectional human-AI communication that can interrupt, adjust, and anticipate in real time.\n\n## Key Takeaways\n- **Compute-efficient multimodal agents are emerging**: Step-level optimization and architectural patterns that separate fast reflexes from slow reasoning are making multimodal agents practical for real-world deployment, addressing the prohibitive inference costs of uniform large model invocation.\n- **Biomedical multimodal AI is advancing personalized medicine**: From digital twins for cognitive decline (PCD-DT) to generative physiological models (HealthFormer), the field is moving toward patient-specific trajectory modeling that can simulate interventions and predict outcomes from sparse, multimodal clinical data.\n- **Data scarcity remains a critical bottleneck, but new solutions are appearing**: Foundation models for tabular data (TabPFN) and automated trajectory generation (AutoSurfer) are providing practical workarounds for domains where large-scale annotated multimodal datasets are unavailable.\n- **Retrieval-augmented generation is going multimodal and iterative**: Systems like MED-VRAG and MM-StanceDet demonstrate that retrieval over multimodal document representations—rather than text-only chunks—coupled with multi-agent reasoning, significantly improves performance on medical QA and stance detection.\n- **Real-time, full-duplex omni-modal interaction is on the horizon**: Models like MiniCPM-o 4.5 are breaking the turn-taking paradigm, enabling simultaneous perception and generation for more natural human-AI interaction that can proactively adjust based on ongoing input.\n- **Benchmarking must evolve to capture real-world complexity**: New benchmarks (InteractWeb-Bench, SpecVQA) are moving beyond idealized static settings to evaluate multimodal agents under realistic conditions involving ambiguous instructions, domain-specific scientific imagery, and interactive feedback loops.\n- **Persona prompting shows limited diversity in multimodal LLMs**: Systematic evaluation reveals that while persona-based agents exhibit stable behavior, they produce limited cross-persona variation, challenging their validity as proxies for diverse human perspectives in applications like urban sentiment analysis.",
+    "papers": [
+      {
+        "title": "Step-level Optimization for Efficient Computer-use Agents",
+        "url": "",
+        "authors": [
+          "Jinbiao Wei",
+          "Kangqi Ni",
+          "Yilun Zhao",
+          "Guo Gan",
+          "Arman Cohan"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Evaluating TabPFN for Mild Cognitive Impairment to Alzheimer's Disease Conversion in Data Limited Settings",
+        "url": "",
+        "authors": [
+          "Brad Ye",
+          "Bulent Soykan",
+          "Gulsah Hancerliogullari Koksalmis",
+          "Hsin-Hsiung Huang",
+          "Laura J. Brattain"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Toward Personalized Digital Twins for Cognitive Decline Assessment: A Multimodal, Uncertainty-Aware Framework",
+        "url": "",
+        "authors": [
+          "Bulent Soykan",
+          "Gulsah Hancerliogullari Koksalmis",
+          "Hsin-Hsiung Huang",
+          "Laura J. Brattain"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "MiniCPM-o 4.5: Towards Real-Time Full-Duplex Omni-Modal Interaction",
+        "url": "",
+        "authors": [
+          "Junbo Cui",
+          "Bokai Xu",
+          "Chongyi Wang",
+          "Tianyu Yu",
+          "Weiyue Sun",
+          "Yingjing Xu",
+          "Tianran Wang",
+          "Zhihui He",
+          "Wenshuo Ma",
+          "Tianchi Cai",
+          "Jiancheng Gui",
+          "Luoyuan Zhang",
+          "Xian Sun",
+          "Fuwei Huang",
+          "Moye Chen",
+          "Zhuo Lin",
+          "Hanyu Liu",
+          "Qingxin Gui",
+          "Qingzhe Han",
+          "Yuyang Wen",
+          "Huiping Liu",
+          "Rongkang Wang",
+          "Yaqi Zhang",
+          "Hongliang Wei",
+          "Chi Chen",
+          "You Li",
+          "Kechen Fang",
+          "Jie Zhou",
+          "Yuxuan Li",
+          "Guoyang Zeng",
+          "Chaojun Xiao",
+          "Yankai Lin",
+          "Xu Han",
+          "Maosong Sun",
+          "Zhiyuan Liu",
+          "Yuan Yao"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "AutoSurfer -- Teaching Web Agents through Comprehensive Surfing, Learning, and Modeling",
+        "url": "",
+        "authors": [
+          "Fazle Elahi Faisal",
+          "Qianhui Wu",
+          "Baolin Peng",
+          "Jianfeng Gao"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "OptimusKG: Unifying biomedical knowledge in a modern multimodal graph",
+        "url": "",
+        "authors": [
+          "Lucas Vittor",
+          "Ayush Noori",
+          "Iñaki Arango",
+          "Joaquín Polonuer",
+          "Sam Rodriques",
+          "Andrew White",
+          "David A. Clifton",
+          "Marinka Zitnik"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "InteractWeb-Bench: Can Multimodal Agent Escape Blind Execution in Interactive Website Generation?",
+        "url": "",
+        "authors": [
+          "Qiyao Wang",
+          "Haoran Hu",
+          "Longze Chen",
+          "Hongbo Wang",
+          "Hamid Alinejad-Rokny",
+          "Yuan Lin",
+          "Min Yang"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Stable Behavior, Limited Variation: Persona Validity in LLM Agents for Urban Sentiment Perception",
+        "url": "",
+        "authors": [
+          "Neemias B da Silva",
+          "Rodrigo Minetto",
+          "Daniel Silver",
+          "Thiago H Silva"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Iterative Multimodal Retrieval-Augmented Generation for Medical Question Answering",
+        "url": "",
+        "authors": [
+          "Xupeng Chen",
+          "Binbin Shi",
+          "Chenqian Le",
+          "Jiaqi Zhang",
+          "Kewen Wang",
+          "Ran Gong",
+          "Jinhan Zhang",
+          "Chihang Wang"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "MM-StanceDet: Retrieval-Augmented Multi-modal Multi-agent Stance Detection",
+        "url": "",
+        "authors": [
+          "Weihai Lu",
+          "Zhejun Zhao",
+          "Yanshu Li",
+          "Huan He"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "Simulating clinical interventions with a generative multimodal model of human physiology",
+        "url": "",
+        "authors": [
+          "Guy Lutsker",
+          "Gal Sapir",
+          "Jordi Merino",
+          "Smadar Shilo",
+          "Anastasia Godneva",
+          "Eli Meirom",
+          "Shie Mannor",
+          "Hagai Rossman",
+          "Gal Chechik",
+          "Eran Segal"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "A Pattern Language for Resilient Visual Agents",
+        "url": "",
+        "authors": [
+          "Habtom Kahsay Gidey",
+          "Alexander Lenz",
+          "Alois Knoll"
+        ],
+        "date": "2026-05-03"
+      },
+      {
+        "title": "SpecVQA: A Benchmark for Spectral Understanding and Visual Question Answering in Scientific Images",
+        "url": "",
+        "authors": [
+          "Jialu Shen",
+          "Han Lyu",
+          "Suyang Zhong",
+          "Hanzheng Li",
+          "Haoyi Tao",
+          "Nan Wang",
+          "Changhong Chen",
+          "Xi Fang"
+        ],
+        "date": "2026-05-03"
+      }
+    ]
+  }
+]
