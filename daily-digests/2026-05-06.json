@@ -1,0 +1,425 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-06",
+    "paperCount": 12,
+    "markdown": "# Beyond Black Boxes: Mechanistic Interpretability and Symbolic Grounding in Large Language Models\n\nToday's research landscape reveals a decisive shift from merely observing model behaviors to precisely mapping the internal circuits, neurons, and representations that drive those behaviors. The community is increasingly demanding interpretability that is both *mechanistically grounded*—linking outputs to specific neurons, attention heads, or task vectors—and *actionable*, enabling direct interventions to improve model performance, robustness, and controllability across diverse domains from protein design to ethical reasoning.\n\n## Mechanistic Dissection of Internal Representations\n\n[1] **\"How Language Models Process Negation\"** tackles the puzzling disconnect between LLMs possessing correct internal knowledge and producing wrong answers. The authors establish that models encode negation-correct processing components internally but that late-layer attention heads promote simple shortcut behaviors that override this knowledge. By ablating those specific attention modules, they dramatically improve accuracy on negation questions. This work matters because it provides a clear, actionable circuit-level fix for a longstanding failure mode, demonstrating that poor performance is not always a knowledge deficit but a routing problem in the model's processing hierarchy.\n\n[7] **\"Neuron-Anchored Rule Extraction for Large Language Models via Contrastive Hierarchical Ablation\"** introduces MechaRule, a pipeline that bridges the gap between global rule-extraction and mechanistic interpretability. Rather than learning symbolic surrogates disconnected from model circuitry, MechaRule localizes sparse \"agonist\" neurons whose activation neutralization disrupts specific behaviors, then extracts grounded symbolic rules from these neuron sets. The key contribution is a contrastive hierarchical ablation strategy that efficiently identifies these causal neurons without expensive brute-force interventions. This work is critical because it produces truly grounded explanations—rules that are both human-readable and directly linked to the model's internal decision logic.\n\n[9] **\"Pairwise matrices for sparse autoencoders: single-feature inspection mislabels causal axes\"** exposes a fundamental flaw in standard SAE interpretability protocols. By introducing a pairwise matrix protocol that co-varies steering coefficients with joint conditions, the authors demonstrate that features labeled from top-activating contexts (e.g., \"AI self-disclaimer\") exhibit non-monotonic, inverted-U behaviors under coefficient sweeps—at high steering strengths, the model substitutes a completely different behavior (contemplative-philosopher voice) for the intended one. This reveals that single-feature inspections systematically mislabel causal axes and can miss compound, conditional, or saturating effects entirely. The finding is foundational: it shows that current SAE-based interpretability may be producing systematically misleading feature attributions.\n\n[10] **\"Moral Sensitivity in LLMs: A Tiered Evaluation of Contextual Bias via Behavioral Profiling and Mechanistic Interpretability\"** moves beyond binary \"biased/unbiased\" labels to a granular, tiered analysis of moral bias. The authors propose the Moral Sensitivity Index (MSI), a seven-tier stress test quantifying bias probability across contexts from abstract numerical problems to historically grounded scenarios. They then validate these behavioral profiles with mechanistic analysis, identifying the specific internal circuits and attention patterns that correlate with biased outputs at each tier. This work is important because it provides both a sensitive measurement tool and a mechanistic understanding of how contextual factors modulate ethical reasoning in LLMs.\n\n[11] **\"Task Vector Geometry Underlies Dual Modes of Task Inference in Transformers\"** provides rigorous mathematical foundations for understanding how transformers infer tasks from context. The authors analyze task vectors—task-specific directions in middle-layer representations—and characterize how their geometric properties are shaped by the training distribution. Crucially, they explain what geometric configurations enable out-of-distribution (OOD) generalization versus merely recognizing trained tasks. This work fills a critical gap by connecting internal representation geometry to external behavior, showing that the *structure* of the task-vector space (not just its existence) determines inference capabilities.\n\n## Interpretability-Driven Interventions and Robustness\n\n[3] **\"Revisiting the Travel Planning Capabilities of Large Language Models\"** addresses the lack of interpretability in evaluating long-horizon reasoning. Rather than assessing final plans end-to-end, the authors decompose travel planning into five atomic sub-capabilities: Constraint Extraction, Tool Use, Plan Generation, Error Identification, and Error Correction. Their decoupled evaluation protocol with oracle interventions reveals precisely which sub-capabilities cause failures. This matters because it transforms travel planning from a opaque benchmark into a diagnostic framework, enabling targeted improvements and providing fine-grained interpretability of multi-step reasoning processes.\n\n[8] **\"Attribution-Guided Masking for Robust Cross-Domain Sentiment Classification\"** identifies that performance degradation in cross-domain transfer is driven by reliance on domain-specific spurious tokens. After showing that post-hoc token-level attribution drift fails to predict this gap, the authors propose Attribution-Guided Masking (AGM), a training-time intervention that dynamically detects and penalizes highly-attributed spurious tokens during fine-tuning using gradient-based attribution. This is significant because it demonstrates that interpretability tools (attribution methods) can be repurposed from diagnostic to interventional use, directly improving model robustness while making the decision process more transparent.\n\n[5] **\"Kernel Affine Hull Machines for Compute-Efficient Query-Side Semantic Encoding\"** tackles the problem of expensive online query encoding in semantic retrieval. Rather than running full neural inference for each query, KAHMs map inexpensive lexical features into a frozen semantic embedding space by estimating prototype-mixture weights in a rigorously specified RKHS. The method produces analytically explicit estimators that are interpretable by construction—the prototypes and mixture weights directly reveal which semantic concepts drive the encoding. This work matters because it shows that interpretability and computational efficiency can be jointly optimized, replacing opaque neural inference with transparent, analytically grounded models.\n\n## Interpretability Across Domains and Data Modalities\n\n[2] **\"LLM-XTM: Enhancing Cross-Lingual Topic Models with Large Language Models\"** addresses the challenge of interpretability in cross-lingual topic modeling. Existing models suffer from incoherent or weakly aligned topics due to dependence on sparse bilingual resources. LLM-XTM integrates LLM-guided topic refinement with self-consistency uncertainty quantification, enabling black-box, stable enhancement without requiring inaccessible token probabilities. The framework scales across languages while maintaining interpretability through its self-consistency mechanism, which flags unreliable refinements. This is important because it demonstrates how LLMs can serve as interpretability tools for other models, even when operating in a black-box setting.\n\n[4] **\"Proteo-R1: Reasoning Foundation Models for De Novo Protein Design\"** introduces a reasoning-guided framework that explicitly decouples molecular understanding from geometric generation. Unlike existing models that directly synthesize molecular geometries without explicit reasoning about which residues or interactions are functionally essential, Proteo-R1 produces interpretable design decisions: it first identifies functionally critical residues and interactions through explicit reasoning steps, then generates geometries conditioned on these reasoned constraints. This matters because it transforms protein design from a black-box sampling process into a transparent, controllable pipeline where biochemical knowledge can be systematically reused and validated.\n\n[12] **\"GRAFT: Auditing Graph Neural Networks via Global Feature Attribution\"** fills a gap in GNN interpretability by explaining model behavior at the level of input node attributes rather than structural subgraph motifs. GRAFT combines diversity-guided exemplar selection, Integrated Gradients-based attribution, and aggregation to produce class-level feature importance profiles. This is significant because it provides the first global explanation method for GNNs operating at the feature level, enabling practitioners to audit which input dimensions drive predictions across entire classes of nodes, not just individual predictions.\n\n[6] **\"Agentic-imodels: Evolving agentic interpretability tools via autoresearch\"** takes a meta-interpretability approach, recognizing that as AI agents increasingly perform data science work, interpretability tools must be designed for *agent* consumption, not just human consumption. The system autonomously evolves a library of scikit-learn-compatible regressors that are optimized to be interpretable by downstream agents—transparent in their decision logic while maintaining competitive predictive performance. This work is forward-looking: it prepares for a future where interpretability must serve both human and machine stakeholders, and where the tools themselves can be improved through automated research.\n\n## Key Takeaways\n- **Mechanistic interpretability is transitioning from descriptive to prescriptive**: several papers demonstrate that understanding internal circuits directly enables targeted interventions (ablating negation shortcut heads, penalizing spurious attributions) that improve performance, moving beyond mere explanation to model improvement.\n- **Standard interpretability protocols can be systematically misleading**: pairwise matrix analysis reveals that single-feature inspection in SAEs produces mislabeled causal axes, while decoupled evaluation exposes that apparent reasoning failures may be failures of specific sub-capabilities rather than holistic deficits.\n- **Interpretability is increasingly cross-modal and cross-domain**: frameworks are emerging for interpretable protein design (Proteo-R1), graph neural networks (GRAFT), cross-lingual topic models (LLM-XTM), and ethical reasoning (MSI), demonstrating that mechanistic understanding generalizes beyond text-only LLM analysis.\n- **The geometry of internal representations directly predicts behavior**: task vector analysis shows that the geometric structure of representation spaces (not just their content) determines whether models can generalize outside their training distribution, providing a new lens for interpretability.\n- **Interpretability tools are being redesigned for agent consumption**: agentic-imodels proposes that as AI agents take over data science, interpretability must evolve to serve machine stakeholders, potentially automating the discovery of new interpretable model architectures.\n- **Attribution methods are being repurposed from diagnostic to interventional tools**: attribution-guided masking (AGM) uses gradient-based attribution not just to explain decisions but to actively regularize training, showing a productive synergy between interpretability and robustness.\n- **Grounded, symbolic rule extraction is becoming feasible at scale**: MechaRule demonstrates that neuron-localized rule extraction can produce explanations that are simultaneously human-readable, mechanistically grounded, and computationally efficient, bridging the gap between mechanistic interpretability and classical XAI.",
+    "papers": [
+      {
+        "title": "How Language Models Process Negation",
+        "url": "",
+        "authors": [
+          "Zhejian Zhou",
+          "Tianyi Zhou",
+          "Robin Jia",
+          "Jonathan May"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "LLM-XTM: Enhancing Cross-Lingual Topic Models with Large Language Models",
+        "url": "",
+        "authors": [
+          "Minh Chu Xuan",
+          "Tien-Phat Nguyen",
+          "Linh Ngo Van",
+          "Dinh Viet Sang",
+          "Nguyen Thi Ngoc Diep",
+          "Trung Le"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Revisiting the Travel Planning Capabilities of Large Language Models",
+        "url": "",
+        "authors": [
+          "Bo-Wen Zhang",
+          "Jin Ye",
+          "Peng-Yu Hua",
+          "Jia-Wei Cao",
+          "Jie-Jing Shao",
+          "Yu-Feng Li",
+          "Lan-Zhe Guo"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Proteo-R1: Reasoning Foundation Models for De Novo Protein Design",
+        "url": "",
+        "authors": [
+          "Fang Wu",
+          "Weihao Xuan",
+          "Heli Qi",
+          "Hanqun Cao",
+          "Heng-Jui Chang",
+          "Zeqi Zhou",
+          "Haokai Zhao",
+          "Ma Jian",
+          "Carl Ma",
+          "Yu-Chi Cheng",
+          "Kuan Pang",
+          "Xiangru Tang",
+          "Zehong Wang",
+          "Guanlue Li",
+          "Hanchen Wang",
+          "Kejun Ying",
+          "Pan Lu",
+          "Chiho Im",
+          "Seungju Han",
+          "Peng Xia",
+          "Tinson Xu",
+          "Yinxi Li",
+          "Deyao Zhu",
+          "Pheng-Ann Heng",
+          "Naoto Yokoya",
+          "Masashi Sugiyama",
+          "Li Erran Li",
+          "Jure Leskovec",
+          "Yejin Choi"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Kernel Affine Hull Machines for Compute-Efficient Query-Side Semantic Encoding",
+        "url": "",
+        "authors": [
+          "Mohit Kumar",
+          "Somayeh Kargaran",
+          "Bernhard A. Moser",
+          "Manuela Geiß"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Agentic-imodels: Evolving agentic interpretability tools via autoresearch",
+        "url": "",
+        "authors": [
+          "Chandan Singh",
+          "Yan Shuo Tan",
+          "Weijia Xu",
+          "Zelalem Gero",
+          "Weiwei Yang",
+          "Michel Galley",
+          "Jianfeng Gao"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Neuron-Anchored Rule Extraction for Large Language Models via Contrastive Hierarchical Ablation",
+        "url": "",
+        "authors": [
+          "Francesco Sovrano",
+          "Gabriele Dominici",
+          "Marc Langheinrich"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Attribution-Guided Masking for Robust Cross-Domain Sentiment Classification",
+        "url": "",
+        "authors": [
+          "Shubham Harkare",
+          "Arvind Yogesh Suresh Babu",
+          "Yash Kulkarni"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Pairwise matrices for sparse autoencoders: single-feature inspection mislabels causal axes",
+        "url": "",
+        "authors": [
+          "Michael A. Riegler",
+          "Birk Sebastian Frostelid Torpmann-Hagen"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Moral Sensitivity in LLMs: A Tiered Evaluation of Contextual Bias via Behavioral Profiling and Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Yash Aggarwal",
+          "Atmika Gorti",
+          "Vinija Jain",
+          "Aman Chadha",
+          "Krishnaprasad Thirunarayan",
+          "Manas Gaur"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Task Vector Geometry Underlies Dual Modes of Task Inference in Transformers",
+        "url": "",
+        "authors": [
+          "Hao Yan",
+          "Haolin Yang",
+          "Yiqiao Zhong"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "GRAFT: Auditing Graph Neural Networks via Global Feature Attribution",
+        "url": "",
+        "authors": [
+          "Rishi Raj Sahoo",
+          "Subhankar Mishra"
+        ],
+        "date": "2026-05-06"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-06",
+    "paperCount": 2,
+    "markdown": "# Disease as Spectral Perturbation and Atomic Trust: Mechanistic Explainability in Clinical AI\n\nToday's research landscape presents a fascinating dual focus: one paper reimagines disease as a spectral perturbation in biomarker covariance space to achieve molecular-level mechanistic explanations, while another demonstrates through a large randomized trial that atomic fact-checking—decomposing AI recommendations into individually verifiable claims—dramatically increases clinician trust over traditional explainability methods. Together, these works shift the conversation from \"how does the model work\" to \"how does the disease work\" and \"how can we make explanations verifiable.\"\n\n## Mechanistic Explainability via Spectral Perturbation Theory\n\n**Paper [1] \"Disease Is a Spectral Perturbation\"** introduces a fundamentally new framework for understanding disease as a perturbed state of a healthy baseline, with biomarker-level explainability derived from linear algebra. The authors propose modeling biomarker covariance matrices of healthy controls and disease states, defining a biomarker \"Hamiltonian\" *H = X^T X / n* where *X* is the covariant biomarker matrix of shape *n × p*. The eigenvectors of *H* encode the natural modes of biomarker covariation, and disease is treated as a spectral perturbation of this Hamiltonian. This approach yields mechanistic explanations of disease trajectories at both the molecular level (which biomarkers drive the perturbation) and the individual patient level (how that patient's biomarker profile deviates from the healthy subspace). The key contribution is a shift from black-box or feature-attribution explainability to a first-principles mathematical framework where explainability is inherent in the spectral decomposition. This matters because it offers a path to biologically meaningful explanations that are not post-hoc but rather derived from the intrinsic structure of the data—potentially enabling early detection, personalized treatment planning, and drug target identification through spectral analysis of biomarker dynamics.\n\n## Atomic Explainability and Clinician Trust in Oncology Decision Support\n\n**Paper [2] \"Atomic Fact-Checking Increases Clinician Trust in Large Language Model Recommendations for Oncology Decision Support: A Randomized Controlled Trial\"** tackles the critical problem of trust in AI-assisted clinical decision-making by introducing a novel explainability paradigm: atomic fact-checking. The core technical approach decomposes LLM-generated treatment recommendations into individually verifiable atomic claims, each linked to specific source guideline documents (e.g., NCCN, ESMO). In a randomized trial with 356 clinicians generating 7,476 trust ratings, atomic fact-checking produced a large effect size (Cohen's *d* = 0.94), increasing the proportion of clinicians expressing trust from 26.9% to 66.5%—more than doubling trust. Traditional transparency mechanisms (e.g., highlighting relevant text, confidence scores, or citation lists) showed only modest dose-response improvements over baseline (*d* = 0.25 to 0.50). The key contribution is demonstrating that *verifiability*—not just interpretability—is the primary driver of trust in high-stakes medical AI. This matters because it provides an evidence-based design principle: for AI to be trusted in clinical practice, explanations must be decomposable into independently checkable facts grounded in authoritative sources, rather than relying on holistic reasoning rationales.\n\n## Contrasting Philosophical Approaches to Explainability\n\nThese two papers represent fundamentally different yet complementary philosophies of explainability. Paper [1] pursues *intrinsic mechanistic explainability*: the explanation is the model itself, recast in spectral terms derived from first principles of covariance structure. Paper [2] pursues *verifiable decomposability*: explanations are chains of atomic claims that can be independently checked against ground truth sources. The former is mathematically elegant and discovery-oriented (what is the disease doing?), while the latter is pragmatically oriented toward human-AI interaction (can I, as a clinician, verify this recommendation?). Both reject the dominant paradigm of post-hoc feature attribution (e.g., SHAP, LIME) in favor of explanations that are either inherent to the model structure or decomposable into independently verifiable units. The tension between spectral perturbation theory (which requires a healthy baseline and rich biomarker data) and atomic fact-checking (which requires structured knowledge bases) suggests that future explainability systems for clinical AI may need to integrate both: spectral mechanisms for biological insight and atomic verification for clinical trust.\n\n## Implications for AI/ML Research Community\n\nThe combined insights from these papers have several implications for the direction of explainability research. First, the concept of \"explanation as perturbation\" opens new avenues for applying spectral graph theory and random matrix theory to biomarker data, potentially unifying disease modeling with anomaly detection in high-dimensional spaces. Second, the atomic fact-checking framework provides a rigorous experimental methodology for evaluating explainability: trust is quantifiable through randomized controlled trials, and the *d* = 0.94 effect size sets a new benchmark for what constitutes a practically meaningful explanation. Third, both papers implicitly challenge the field to move beyond \"why did the model predict X?\" toward \"what is the underlying biological mechanism?\" and \"can I verify this recommendation?\" Finally, the dramatic difference between atomic fact-checking and traditional transparency mechanisms suggests that the current focus on interpretability techniques (attention weights, feature importance, saliency maps) may be misaligned with actual user needs in high-stakes domains.\n\n## Key Takeaways\n\n- **Spectral perturbation theory offers a new paradigm for mechanistic explainability**: By modeling disease as a perturbation of a healthy baseline covariance matrix, Paper [1] provides biomarker-level explanations that are mathematically intrinsic rather than post-hoc, potentially enabling personalized disease trajectory analysis.\n- **Atomic fact-checking more than doubles clinician trust compared to traditional explainability**: Paper [2] demonstrates that decomposing AI recommendations into individually verifiable claims linked to source guidelines produces a large effect (Cohen's *d* = 0.94), raising trust from 26.9% to 66.5%—far exceeding traditional transparency mechanisms.\n- **Verifiability outperforms interpretability for clinical trust**: The stark contrast between atomic fact-checking (*d* = 0.94) and simple transparency (*d* = 0.25–0.50) suggests that explanations must be independently checkable against authoritative sources, not just human-readable.\n- **Both papers reject post-hoc feature attribution as the primary explainability tool**: Paper [1] offers intrinsic spectral explanations; Paper [2] offers decomposable atomic claims—neither relies on SHAP, LIME, or attention-based methods.\n- **Explainability research needs to distinguish between mechanistic understanding and user trust**: These papers address different audiences (researchers vs. clinicians) and different goals (discovery vs. decision support), highlighting that a single explainability method may not serve all stakeholders.\n- **The spectral Hamiltonian framework (Paper [1]) connects disease modeling to spectral graph theory**: This opens opportunities for applying random matrix theory, perturbation analysis, and manifold learning to biomarker covariance data, potentially unifying anomaly detection with mechanistic biology.\n- **Randomized controlled trials are a viable methodology for evaluating explainability**: Paper [2] provides a template for how to rigorously measure the impact of explainability methods on human decision-makers, with clear, quantifiable outcomes (trust, adoption, correctness of verification).",
+    "papers": [
+      {
+        "title": "Disease Is a Spectral Perturbation",
+        "url": "",
+        "authors": [
+          "John D. Mayfield",
+          "Matthew S. Rosen"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Atomic Fact-Checking Increases Clinician Trust in Large Language Model Recommendations for Oncology Decision Support: A Randomized Controlled Trial",
+        "url": "",
+        "authors": [
+          "Lisa C. Adams",
+          "Linus Marx",
+          "Erik Thiele Orberg",
+          "Keno Bressem",
+          "Sebastian Ziegelmayer",
+          "Denise Bernhardt",
+          "Markus Graf",
+          "Marcus R. Makowski",
+          "Stephanie E. Combs",
+          "Florian Matthes",
+          "Jan C. Peeken"
+        ],
+        "date": "2026-05-06"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-06",
+    "paperCount": 13,
+    "markdown": "# Multimodal Reasoning and Agentic Systems: From Controlled Generation to Interpretable Design\n\nToday's research landscape reveals a decisive shift toward reasoning-enabled multimodal systems that move beyond simple pattern matching to explicit deliberation, decomposition, and validation. The community is increasingly focused on making multimodal AI systems more interpretable, controllable, and trustworthy through structured reasoning, agentic decomposition, and principled forgetting mechanisms.\n\n## Reasoning-Enhanced Multimodal Understanding and Retrieval\n\nMultimodal systems are evolving from static representation learning toward explicit reasoning capabilities that enable negation understanding, temporal reasoning, and causal inference across modalities. This section covers work on audio retrieval reasoning, controversy detection, and document understanding that demands higher-order cognitive skills.\n\n**ReasonAudio [6]** addresses the gap in audio retrieval benchmarks, which traditionally focus on semantic matching rather than the advanced reasoning required by real-world queries. The authors introduce a benchmark of 1,000 queries designed to test negation understanding, temporal ordering, concurrent event recognition, and duration discrimination in text-audio retrieval. This work matters because it exposes fundamental limitations in current audio retrieval systems and provides a standardized evaluation for next-generation reasoning-capable audio models.\n\n**AuDisAgent [5]** reframes multimodal controversy detection (MCD) as an audience dissemination simulation rather than a static representation learning task. The training-free multi-agent framework decomposes video content analysis into specialized agent roles that capture diverse audience perspectives, enabling more nuanced controversy assessment than prior feature-extraction approaches. By modeling the real-world process of content dissemination, this work demonstrates that controversy detection benefits from explicit reasoning about multiple stakeholder viewpoints rather than monolithic video-comment analysis.\n\n**CC-OCR V2 [8]** addresses the misalignment between existing OCR benchmarks and real-world document processing needs by introducing a comprehensive benchmark focused on practical enterprise document tasks. The benchmark accounts for heterogeneous acquisition conditions that prior work ignores, testing large multimodal models on the messy, variable-quality documents encountered in production environments. This contribution is critical for transitioning OCR research from controlled lab settings to deployable document processing systems.\n\n## Agentic Architectures for Sequential Decision-Making and Validation\n\nA major theme emerging across papers is the use of agentic decomposition and structured reasoning to handle sequential behaviors—whether in autonomous agents, clinical assessments, or adversarial testing. These approaches share a common philosophy of breaking complex tasks into verifiable subcomponents.\n\n**Sharma et al. [1]** tackle the challenge of validating sequential behavior in autonomous agents without requiring massive training datasets or manual test specifications. Their algorithm combines dominator analysis from compiler theory with multimodal LLM-powered semantic understanding to learn correct behavior from just 2-10 passing execution traces. This hybrid approach identifies essential states in execution trajectories and handles non-determinism, offering a practical path to agent validation that dramatically reduces the data and engineering burden.\n\n**ADAPTS [3]** presents a mixture-of-agents LLM architecture for automated depression and anxiety severity rating from unstructured clinical interviews. The framework decomposes long-form interviews into symptom-specific reasoning tasks, producing auditable justifications while preserving temporal and speaker alignment across two independent datasets totaling 204 subjects. This work demonstrates that clinical assessment, traditionally requiring expert human judgment, can be made tractable through structured agentic decomposition while maintaining interpretability essential for clinical deployment.\n\n**Dheekonda et al. [9]** introduce an AI red teaming agent built on the Dreadnode SDK that reduces adversarial testing timelines from weeks to hours. The agent automates the previously manual, library-specific workflow of assembling attacks, transforms, and scorers, allowing operators to focus on probing targets rather than constructing workflows. This contribution is particularly timely as AI systems enter critical domains like healthcare and finance where rapid, systematic security validation is essential.\n\n## Reinforcement Learning and Distillation for Multimodal Systems\n\nThe intersection of reinforcement learning, reasoning, and multimodal systems is producing new paradigms for post-training optimization and knowledge consolidation, with careful attention to rollout design and student-teacher dynamics.\n\n**Surana et al. [2]** provide a comprehensive survey of rollout strategies for RL-based post-training of reasoning LLMs, formalizing rollout pipelines with unified notation under a Generate-Filter-Control-Replay framework. The survey is optimizer-agnostic, examining how trajectory sampling, intermediate reasoning steps, and tool interactions determine the data that optimizers learn from. This work fills a critical gap in the RL-for-LLM literature, where rollout design is often underreported despite being arguably as important as the optimization algorithm itself.\n\n**Uni-OPD [13]** identifies two fundamental bottlenecks in on-policy distillation (OPD) for consolidating expert capabilities into student models: insufficient exploration of informative states and unreliable teacher supervision for student rollouts. The proposed unified framework generalizes across LLMs and vision-language models, providing theoretical grounding for when OPD yields reliable improvement. This work is important for practitioners seeking to compress multiple expert models into deployable students without catastrophic degradation.\n\n**Proteo-R1 [4]** introduces a reasoning-guided protein design framework that explicitly decouples molecular understanding from geometric generation, rather than directly synthesizing molecular geometries as existing models do. By enabling explicit reasoning about which residues or interactions are functionally essential, this approach produces interpretable, controllable protein designs with systematic reuse of biochemical knowledge. This represents a paradigm shift in de novo protein design from black-box generation to deliberative molecular engineering.\n\n## Structural and Disentangled Multimodal Representations\n\nSeveral papers challenge the monolithic embedding paradigm, proposing instead that multimodal learning benefits from structured, disentangled, or task-specific representations that explicitly model the relationships between modalities and tasks.\n\n**S3 (Specialization, Selection, Sparsification) [11]** rethinks multimodal learning by decomposing inputs into semantic experts in a shared latent space, selectively routing them per task, and pruning low-utility paths for compact representations. Across four MultiBench benchmarks, the framework shows consistent reverse U-shaped performance curves, suggesting an optimal trade-off between representation richness and sparsity. This structural approach offers a principled alternative to fixed embeddings for multimodal systems.\n\n**Ly et al. [12]** address negative transfer in multi-task clinical learning by proposing a Transformer-based framework that disentangles shared and task-specific representations from multimodal clinical data. The approach prevents task gradient conflicts that plague hard parameter sharing while avoiding the entanglement of shared and task-specific signals in flexible sharing schemes. This work is crucial for clinical AI where multiple related outcomes must be jointly predicted from heterogeneous modalities.\n\n**ScrapMem [7]** introduces a bio-inspired framework for on-device personalized agent memory that addresses storage constraints through \"Optical Forgetting\"—an optical compression mechanism that progressively reduces resolution of older memories. Combined with an Episodic Memory Graph (EM-Graph) for causal-temporal organization, this work enables long-term multimodal memory on resource-limited edge devices. The bio-inspired forgetting mechanism is particularly innovative, drawing parallels to human memory consolidation for efficient AI agent memory management.\n\n**Zhou et al. [10]** identify a critical flaw in existing graph unlearning methods: uniform parameter selection across GNN layers catastrophically damages utility in multimodal graphs where high-dimensional input projections encode dominant cross-modal knowledge. Their feature-dimension aware quantile selection approach selectively edits parameters based on their sensitivity, preserving model utility while achieving effective forgetting. This work is essential for privacy-preserving multimodal learning where unlearning must be both effective and non-destructive.\n\n## Key Takeaways\n- Explicit reasoning and agentic decomposition are replacing monolithic black-box approaches across multimodal AI, with frameworks now breaking complex tasks (clinical assessment, controversy detection, protein design) into verifiable subcomponents\n- Validation and testing of sequential agent behavior is being dramatically accelerated through compiler theory hybrids (dominator analysis + LLMs) and automated adversarial testing, reducing data and time requirements by orders of magnitude\n- Reinforcement learning for LLMs is maturing from empirical practice to principled science, with formalized rollout strategies and identified bottlenecks in on-policy distillation guiding more reliable training\n- Multimodal representation learning is moving beyond fixed embeddings toward structural approaches—semantic expert routing, disentangled representations, and bio-inspired forgetting—that offer interpretability and efficiency gains\n- Privacy-preserving multimodal learning requires careful unlearning strategies that respect the differential importance of feature dimensions in high-dimensional cross-modal projections\n- Benchmarking is catching up to real-world complexity, with new benchmarks for audio reasoning, document OCR, and multimodal controversy detection that test higher-order cognitive skills rather than surface-level matching",
+    "papers": [
+      {
+        "title": "Learning Correct Behavior from Examples: Validating Sequential Execution in Autonomous Agents",
+        "url": "",
+        "authors": [
+          "Reshabh K Sharma",
+          "Gaurav Mittal",
+          "Yu Hu"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Generate, Filter, Control, Replay: A Comprehensive Survey of Rollout Strategies for LLM Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Rohan Surana",
+          "Gagan Mundada",
+          "Xunyi Jiang",
+          "Chuhan Wang",
+          "Zhenwei Tang",
+          "Difan Jiao",
+          "Zihan Huang",
+          "Yuxin Xiong",
+          "Junda Wu",
+          "Sheldon Yu",
+          "Xintong Li",
+          "Raghav Jain",
+          "Nikki Kuang",
+          "Sizhe Zhou",
+          "Bowen Jin",
+          "Zhendong Chu",
+          "Tong Yu",
+          "Ryan Rossi",
+          "Kuan-Hao Huang",
+          "Jingbo Shang",
+          "Jiawei Han",
+          "Julian McAuley"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "ADAPTS: Agentic Decomposition for Automated Protocol-agnostic Tracking of Symptoms",
+        "url": "",
+        "authors": [
+          "Alexandria K. Vail",
+          "Marcelo Cicconet",
+          "Katie Aafjes-van Doorn",
+          "Ryan Maroney",
+          "Marc Aafjes"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Proteo-R1: Reasoning Foundation Models for De Novo Protein Design",
+        "url": "",
+        "authors": [
+          "Fang Wu",
+          "Weihao Xuan",
+          "Heli Qi",
+          "Hanqun Cao",
+          "Heng-Jui Chang",
+          "Zeqi Zhou",
+          "Haokai Zhao",
+          "Ma Jian",
+          "Carl Ma",
+          "Yu-Chi Cheng",
+          "Kuan Pang",
+          "Xiangru Tang",
+          "Zehong Wang",
+          "Guanlue Li",
+          "Hanchen Wang",
+          "Kejun Ying",
+          "Pan Lu",
+          "Chiho Im",
+          "Seungju Han",
+          "Peng Xia",
+          "Tinson Xu",
+          "Yinxi Li",
+          "Deyao Zhu",
+          "Pheng-Ann Heng",
+          "Naoto Yokoya",
+          "Masashi Sugiyama",
+          "Li Erran Li",
+          "Jure Leskovec",
+          "Yejin Choi"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "From Static Analysis to Audience Dissemination: A Training-Free Multimodal Controversy Detection Multi-Agent Framework",
+        "url": "",
+        "authors": [
+          "Zihan Ding",
+          "Ziyuan Yang",
+          "Yi Zhang"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "ReasonAudio: A Benchmark for Evaluating Reasoning Beyond Matching in Text-Audio Retrieval",
+        "url": "",
+        "authors": [
+          "Honglei Zhang",
+          "Yuting Chen",
+          "Chenpeng Hu",
+          "Siyue Zhang",
+          "Yilei Shi"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "ScrapMem: A Bio-inspired Framework for On-device Personalized Agent Memory via Optical Forgetting",
+        "url": "",
+        "authors": [
+          "Jiale Chang",
+          "Yuxiang Ren"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "CC-OCR V2: Benchmarking Large Multimodal Models for Literacy in Real-world Document Processing",
+        "url": "",
+        "authors": [
+          "Zhipeng Xu",
+          "Junhao Ji",
+          "Zulong Chen",
+          "Zhenghao Liu",
+          "Qing Liu",
+          "Chunyi Peng",
+          "Zubao Qin",
+          "Ze Xu",
+          "Jianqiang Wan",
+          "Jun Tang",
+          "Zhibo Yang",
+          "Shuai Bai",
+          "Dayiheng Liu"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Redefining AI Red Teaming in the Agentic Era: From Weeks to Hours",
+        "url": "",
+        "authors": [
+          "Raja Sekhar Rao Dheekonda",
+          "Will Pearce",
+          "Nick Landers"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Stable Multimodal Graph Unlearning via Feature-Dimension Aware Quantile Selection",
+        "url": "",
+        "authors": [
+          "Jingjing Zhou",
+          "Yongshuai Yang",
+          "Qing Qing",
+          "Ziqi Xu",
+          "Xikun Zhang",
+          "Renqiang Luo",
+          "Ivan Lee",
+          "Feng Xia"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Toward Structural Multimodal Representations: Specialization, Selection, and Sparsification via Mixture-of-Experts",
+        "url": "",
+        "authors": [
+          "Hahyeon Choi",
+          "Nojun Kwak"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Disentangling Shared and Task-Specific Representations from Multi-Modal Clinical Data",
+        "url": "",
+        "authors": [
+          "He Lyu",
+          "Huolin Zeng",
+          "Junren Wang",
+          "Huazhen Yang",
+          "Linchao He",
+          "Yong Chen",
+          "Zhirui Li",
+          "Andreas Maier",
+          "Siming Bayer",
+          "Huan Song"
+        ],
+        "date": "2026-05-06"
+      },
+      {
+        "title": "Uni-OPD: Unifying On-Policy Distillation with a Dual-Perspective Recipe",
+        "url": "",
+        "authors": [
+          "Wenjin Hou",
+          "Shangpin Peng",
+          "Weinong Wang",
+          "Zheng Ruan",
+          "Yue Zhang",
+          "Zhenglin Zhou",
+          "Mingqi Gao",
+          "Yifei Chen",
+          "Kaiqi Wang",
+          "Hongming Yang",
+          "Chengquan Zhang",
+          "Zhuotao Tian",
+          "Han Hu",
+          "Yi Yang",
+          "Fei Wu",
+          "Hehe Fan"
+        ],
+        "date": "2026-05-06"
+      }
+    ]
+  }
+]
