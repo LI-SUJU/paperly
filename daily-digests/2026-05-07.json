@@ -1,0 +1,233 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-07",
+    "paperCount": 11,
+    "markdown": "# Mechanistic Interpretability Across Domains: From Language Models to Financial Forecasting\n\nToday's research landscape reveals a critical tension in interpretability: while linear probing and attention-based methods have dominated as explanatory tools, multiple studies demonstrate their fundamental inadequacy for understanding complex model behaviors. Simultaneously, the field is expanding beyond NLP into high-stakes domains like healthcare, finance, and environmental monitoring, where interpretability is not merely desirable but legally and ethically required.\n\n## The Failure of Naive Interpretability Methods\n\n[1] Cheng and Zhang present a devastating critique of linear probing as a mechanistic interpretability tool in their study of in-context learning in Llama-3.2-3B. While probing achieves 100% accuracy at identifying task representations at specific layers, single-position activation interventions achieve exactly 0% task transfer across all 28 layers. This complete dissociation between probing accuracy and causal importance reveals that in-context learning relies on distributed output templates rather than localized task representations. The paper's null result is methodologically crucial: it demonstrates that high probing accuracy provides no guarantee of causal relevance, fundamentally challenging the validity of a large body of prior interpretability work that relies on probing alone.\n\n[9] Yıldırım applies sparse autoencoders (SAEs) from mechanistic interpretability to probe PatchTST's internal representations for time series forecasting, revealing a surprising result. A single-layer, narrow-dimensional transformer captures no superposition in its hidden representations—contradicting the assumption that superposition is a necessary feature of transformer computation. This mechanistic finding explains the persistent competitiveness of simple linear models like DLinear: transformers for time series simply do not engage the same distributed representational strategies they use in NLP. The work demonstrates that SAEs can serve as a diagnostic tool to determine *whether* certain computational mechanisms are present, not just to analyze mechanisms assumed to exist.\n\n[5] Luongo, Marocco, and Milano introduce a theory-driven, fully unsupervised framework for measuring psychological states from language using semantic projection, circumventing the interpretability limitations of supervised models. By operationalizing psychological constructs as interpretable semantic axes derived from lexical anchors and validated questionnaire items, their approach achieves measurement without training on labeled psychological assessments. This work matters because it offers a path toward interpretable language-based assessment that generalizes across contexts, avoiding the black-box behavior of supervised NLP models while maintaining measurement validity.\n\n## Uncertainty-Aware and Trustworthy Systems\n\n[6] Ruan et al. tackle the critical problem of overconfident predictions in mental health prediction models, which undermines trust in high-stakes clinical settings. Their multi-view learning framework integrates semantic representations with evidential reasoning to produce reliable uncertainty estimates, addressing the tendency of deep learning models to make overconfident predictions under ambiguous or shifted data. This work is significant because it directly addresses a deployment barrier for AI in mental health: without trustworthy uncertainty quantification, no clinician can responsibly act on model predictions. The evidential reasoning-aware approach provides a principled mathematical framework for knowing when to be uncertain.\n\n[3] Uddin presents a regulatory governance framework for AI-driven financial fraud detection that spans four fragmented U.S. regulatory frameworks (OCC Bulletin 2011-12, SR 11-7, CFPB AI circular, and FinCEN BSA/SAR requirements). The three-tier governance architecture connects these compliance requirements directly to model development, validation, and monitoring lifecycles, validated empirically on the IEEE-CIS dataset. This work is important because it bridges the gap between technical AI development and regulatory compliance, providing a concrete template for financial institutions needing to satisfy model risk management requirements while deploying advanced AI systems.\n\n## Bridging Mechanistic and Domain-Specific Interpretability\n\n[2] Zheng et al. propose SensingAgents, a multi-agent system for IMU-based human activity recognition that uses LLM-powered agents organized into specialized collaborative roles. The framework addresses the transparency deficit in deep learning-based HAR models by incorporating explicit reasoning steps from each agent, making the recognition process interpretable rather than a black-box mapping from sensor data to activity labels. This approach is notable for applying LLM agents to a non-language domain (sensor data), using the inherent interpretability of language generation to explain time-series classification decisions.\n\n[4] Gahrouei et al. combine machine learning models (achieving R² = 0.79-0.89) with mechanistic wastewater treatment models for interpretable N₂O emission predictions. By simulating monitoring campaigns with a plant-wide mechanistic model that includes additional soft sensor locations, they create an explainable hybrid framework that integrates data-driven predictions with process-specific physical understanding. This work demonstrates how interpretability can be achieved not through post-hoc explanation techniques, but through principled integration of mechanistic domain knowledge with ML models.\n\n[7] Sun et al. address the interpretability gap in shape optimization by proposing a Geometry-Aware Neural Optimizer that provides part-wise control and gradients from objectives to geometry. Unlike existing differentiable methods that rely on restrictive parameterizations or unstable latent optimization driven by scalar objectives, their approach maintains interpretability through explicit geometric control. This work matters for scientific computing because it closes the optimization loop while preserving the physical interpretability that domain experts require.\n\n[10] Mahdian, Ender, and Pardy systematically evaluate feature importance consistency across multiple ML model families in electrospinning process modeling, revealing that most existing studies' reliance on single-model analyses produces potentially misleading conclusions. By demonstrating which features are robust across models and which are model-dependent, they provide a methodological framework for separating signal from noise in feature importance analysis. This work underscores that interpretability claims based on feature importance from a single model class should be viewed with skepticism until cross-model consistency is established.\n\n[8] Rovirosa and Schmolze propose a neural parameterization framework for learning time-inhomogeneous Markov dynamics in financial time series that balances deep learning's representational power with the mathematical transparency of classical models. Their approach overcomes the degeneracy of empirical counting estimators in high-resolution, high-noise environments while maintaining explicit, theoretically grounded transition operators. This work addresses a fundamental tension in interpretability: how to leverage neural networks' expressive power without sacrificing the mathematical transparency that financial modelers and regulators require.\n\n[11] Bai et al. introduce a gated multimodal model for predicting energy performance scores from both tabular data and free-text assessor descriptions, enabling interpretable retrofit scenario analysis at city scale. The gating mechanism allows the model to selectively integrate information from different modalities, providing insight into which data sources drive predictions for specific buildings. This work is significant for sustainable cities because it demonstrates how multimodal interpretability can support practical decision-making in building decarbonization, where understanding *why* a building receives a certain rating is as important as the rating itself.\n\n## Key Takeaways\n- Linear probing accuracy is fundamentally unreliable as a measure of causal importance: single-position interventions achieving 0% task transfer despite 100% probing accuracy demonstrate a complete dissociation that invalidates much prior interpretability work relying solely on probing.\n- Sparse autoencoders can serve as diagnostic tools to determine whether computational mechanisms like superposition are actually present, not just to analyze assumed mechanisms—revealing that transformers for time series forecasting operate mechanistically differently from those in NLP.\n- The field is converging on the importance of uncertainty quantification as a prerequisite for trustworthy deployment, particularly in high-stakes domains like mental health prediction where overconfident errors are unacceptable.\n- Regulatory compliance frameworks are becoming inextricable from model governance, with financial fraud detection requiring explicit bridges between technical ML development and fragmented regulatory requirements across multiple agencies.\n- Cross-model consistency analysis of feature importance reveals that single-model interpretability claims should be treated as hypotheses requiring validation, not as definitive mechanistic explanations.\n- Hybrid approaches that integrate mechanistic domain knowledge with ML models (e.g., wastewater treatment physics, Markov transition operators) offer a principled path to interpretability that neither pure black-box nor pure white-box methods achieve alone.\n- The expansion of interpretability research beyond NLP into sensor data, physical systems, and regulatory domains marks a maturation of the field, with domain-specific constraints driving methodological innovation rather than the reverse.",
+    "papers": [
+      {
+        "title": "Single-Position Intervention Fails: Distributed Output Templates Drive In-Context Learning",
+        "url": "",
+        "authors": [
+          "Bryan Cheng",
+          "Jasper Zhang"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "SensingAgents: A Multi-Agent Collaborative Framework for Robust IMU Activity Recognition",
+        "url": "",
+        "authors": [
+          "Naiyu Zheng",
+          "Tianlong Yu",
+          "Haochen Yin",
+          "Xiaoyi Fan",
+          "Xiping Hu",
+          "Zhimeng Yin"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "A Regulatory Governance Framework for AI-Driven Financial Fraud Detection in U.S. Banking: Integrating OCC, SR 11-7, CFPB, and FinCEN Compliance Requirements for Model Development, Validation, and Monitoring Lifecycles",
+        "url": "",
+        "authors": [
+          "Mohammad Nasir Uddin"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Enhancing the interpretability of spatially variable N2O model predictions with soft sensors during wastewater treatment",
+        "url": "",
+        "authors": [
+          "Mohammad Raeisi Gahrouei",
+          "Pedram Ramin",
+          "Vincenzo A. Riggio",
+          "Carlos Domingo-Felez"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Measuring Psychological States Through Semantic Projection: A Theory-Driven Approach to Language-Based Assessment",
+        "url": "",
+        "authors": [
+          "Maria Luongo",
+          "Davide Marocco",
+          "Nicola Milano"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Beyond Semantics: An Evidential Reasoning-Aware Multi-View Learning Framework for Trustworthy Mental Health Prediction",
+        "url": "",
+        "authors": [
+          "Yucheng Ruan",
+          "Ling Huang",
+          "Qika Lin",
+          "Kai He",
+          "Mengling Feng"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Geometry-Aware Neural Optimizer for Shape Optimization and Inversion",
+        "url": "",
+        "authors": [
+          "Guoze Sun",
+          "Tianya Miao",
+          "Haoyang Huang",
+          "Huaguan Chen",
+          "Han Wan",
+          "Rui Zhang",
+          "Hao Sun"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Learning Time-Inhomogeneous Markov Dynamics in Financial Time Series via Neural Parameterization",
+        "url": "",
+        "authors": [
+          "Jan Rovirosa",
+          "Jesse Schmolze"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Superposition Is Not Necessary: A Mechanistic Interpretability Analysis of Transformer Representations for Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Alper Yıldırım"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Cross-Model Consistency of Feature Importance in Electrospinning: Separating Robust from Model-Dependent Features",
+        "url": "",
+        "authors": [
+          "Mehrab Mahdian",
+          "Ferenc Ender",
+          "Tamas Pardy"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Gated Multimodal Learning for Interpretable Property Energy Performance Prediction and Retrofit Scenario Analysis",
+        "url": "",
+        "authors": [
+          "Yunfei Bai",
+          "Aaron Tesfa Tsion",
+          "Raul Rosales",
+          "Barbara Shollock",
+          "Wei He"
+        ],
+        "date": "2026-05-07"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-07",
+    "paperCount": 8,
+    "markdown": "# Multimodal Intelligence at Scale: From Egocentric Assistance to Scientific Discovery and Efficient Deployment\n\nToday's research landscape reveals a community deeply engaged with three fundamental challenges in multimodal AI: enabling proactive, context-aware assistance for real-world procedural tasks; scaling multimodal models to handle unprecedented volumes of scientific and environmental data; and addressing the critical bottlenecks of memory efficiency, hallucination, and interpretability that hinder practical deployment. The papers span from embodied assistance to materials science, soil biology, and driver safety, unified by a shared commitment to making multimodal systems more capable, efficient, and trustworthy.\n\n## Proactive Perception and Continuous Assistance in the Real World\n\n**Pro²Assist** [1] addresses the limitation of existing multimodal assistants that provide only reactive, query-triggered guidance or short-term proactive support, rather than continuous assistance for long-horizon procedural tasks. The system leverages step-aware tracking of fine-grained task progress using multimodal egocentric perception, reasoning over the user's evolving state to deliver timely, unsolicited assistance. This contribution matters because it moves beyond the \"question-answer\" paradigm toward genuinely helpful AI that anticipates user needs during complex, multi-step activities like cooking or assembly.\n\n**RetentiveKV** [4] tackles a critical efficiency bottleneck in multimodal LLMs: the explosive growth of visual key-value (KV) cache when processing long visual contexts, which undermines both computational efficiency and memory consumption. The authors identify two key failures in existing compression methods—visual tokens exhibit \"deferred importance\" (low initial salience but later pivotal) and discrete pruning disrupts continuity—and propose a state-space memory approach for uncertainty-aware KV cache eviction. This work is significant because it directly addresses a fundamental obstacle to deploying multimodal models on long-form video or high-resolution image sequences in real-time applications.\n\n**EdgeRazor** [3] confronts the challenge of deploying large language models on resource-constrained edge devices, where traditional quantization approaches like Post-Training Quantization suffer severe degradation below 4-bit precision. The framework introduces mixed-precision quantization-aware distillation, combining knowledge distillation with learned quantization strategies to maintain model quality while aggressively reducing bit-width. This matters for the broader multimodal ecosystem because enabling efficient edge deployment is essential for privacy-preserving, low-latency applications of multimodal assistants in healthcare, manufacturing, and consumer devices.\n\n## From Preference Learning to Interpretable Decision-Making\n\n**Uncertainty-Aware Exploratory DPO** [6] addresses a fundamental flaw in using Direct Preference Optimization (DPO) to mitigate hallucination in multimodal LLMs: the self-referential bias where a model's own visual sensitivity estimates, used to weight training emphasis, become unreliable because the model is still under training. The proposed method introduces uncertainty-aware exploration into preference optimization, allocating training emphasis based on more robust signals rather than the model's evolving self-assessment. This contribution is critical because hallucination remains one of the most significant barriers to trust in multimodal systems, particularly in high-stakes domains like medical imaging or autonomous navigation.\n\n**Gated Multimodal Learning for Property Energy Performance** [7] tackles the practical challenge of predicting building energy performance at city scale, where current methods rely on expensive on-site inspections for Energy Performance Certificates. The model integrates three heterogeneous modalities—tabular EPC variables, natural language assessor text, and geometric features from floor plan images—using a gated architecture that learns which modalities to emphasize for different inputs. This work demonstrates how multimodal fusion can automate and scale sustainability assessment, with direct implications for retrofit planning and carbon reduction policy in the residential sector.\n\n## Scientific Knowledge Extraction and Environmental Understanding\n\n**Material Database Agent (MDA)** [2] addresses the painstaking manual process of extracting structured materials science data from scattered text, tables, graphs, and figures in scientific literature. The agentic framework leverages multimodal LLMs to automatically construct production-scale material databases by extracting information from both text and scientific figures with high speed and accuracy. This research is transformative because it promises to accelerate materials discovery by making the vast, unstructured corpus of experimental literature machine-readable and queryable at scale.\n\n**LUCAS-MEGA** [5] confronts the fragmentation and heterogeneity of soil-environment datasets, which has historically constrained soil modeling to small-scale prediction rather than high-dimensional representation learning. The dataset fuses over 70,000 samples from the European LUCAS survey with more than 1,000 features spanning physical, chemical, environmental, biological, and visual modalities. This contribution is foundational—it provides the first large-scale multimodal benchmark for soil science, enabling representation learning approaches that could revolutionize our understanding of carbon cycling, agricultural productivity, and ecosystem health.\n\n## Interpretable Multimodal Sensing for Safety-Critical Domains\n\n**Physiologically Grounded Driver Behavior Classification** [8] proposes an interpretable framework for decoding driving behaviors from multimodal physiological signals (EEG, EMG, GSR), addressing the need for both accuracy and transparency in safety-critical applications. The approach combines rigorous domain-specific feature extraction (time-domain, frequency-domain, and derived physiological indices) with SHAP-based elite feature selection to reduce dimensionality while preserving interpretability, then applies hybrid gradient boosting for classification. This work matters because it demonstrates that high-performance multimodal sensing can remain interpretable, a prerequisite for regulatory acceptance and user trust in automotive and healthcare applications.\n\n## Key Takeaways\n\n- **Proactive, step-aware assistance** represents the next frontier in multimodal assistants, moving beyond reactive QA to continuous, contextually appropriate support for complex procedural tasks [1].\n- **Memory efficiency remains the critical bottleneck** for deploying multimodal LLMs on long visual contexts, with novel approaches like state-space memory for KV cache eviction [4] and mixed-precision quantization-aware distillation [3] offering complementary solutions.\n- **Self-referential bias in preference learning** is a subtle but significant failure mode in hallucination mitigation for multimodal models, requiring uncertainty-aware exploration strategies rather than naive reliance on model self-assessment [6].\n- **Multimodal agentic frameworks** are beginning to unlock scientific discovery at scale, from automated material database construction [2] to large-scale soil-environment representation learning [5].\n- **Interpretability and modality gating** are converging as essential design principles for high-stakes multimodal applications, whether in building energy performance [7] or driver safety [8].\n- **Heterogeneous data fusion** is expanding to encompass novel modality combinations—tabular, text, visual, physiological, and environmental—each requiring careful architectural choices about when and how to integrate information.\n- **The field is bifurcating** between pushing the boundaries of large-scale multimodal models and developing efficient, interpretable, and uncertainty-aware variants suitable for real-world deployment, with both trajectories showing rapid and complementary progress.",
+    "papers": [
+      {
+        "title": "Pro$^2$Assist: Continuous Step-Aware Proactive Assistance with Multimodal Egocentric Perception for Long-Horizon Procedural Tasks",
+        "url": "",
+        "authors": [
+          "Lilin Xu",
+          "Bufang Yang",
+          "Siyang Jiang",
+          "Kaiwei Liu",
+          "Kaiyuan Hou",
+          "Yuang Fan",
+          "Hongkai Chen",
+          "Zhenyu Yan",
+          "Xiaofan Jiang"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Material Database Agent: A Multimodal Agentic Framework for Scientific Literature Mining",
+        "url": "",
+        "authors": [
+          "Achuth Chandrasekhar",
+          "Omid Barati Farimani",
+          "Radheesh Sharma Meda",
+          "Amir Barati Farimani"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "EdgeRazor: A Lightweight Framework for Large Language Models via Mixed-Precision Quantization-Aware Distillation",
+        "url": "",
+        "authors": [
+          "Shu-Hao Zhang",
+          "Le-Tong Huang",
+          "Xiang-Sheng Deng",
+          "Xin-Yi Zou",
+          "Chen Wu",
+          "Nan Li",
+          "Shao-Qun Zhang"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "RetentiveKV: State-Space Memory for Uncertainty-Aware Multimodal KV Cache Eviction",
+        "url": "",
+        "authors": [
+          "Sihao Liu",
+          "YuFan Xiong",
+          "Zhonghua Jiang",
+          "Zhaode Wang",
+          "chengfei lv Shengyu Zhang"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "LUCAS-MEGA: A Large-Scale Multimodal Dataset for Representation Learning in Soil-Environment Systems",
+        "url": "",
+        "authors": [
+          "Kuangdai Leng",
+          "Simon Jeffery",
+          "Panos Panagos",
+          "Tarje Nissen-Meyer"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Uncertainty-Aware Exploratory Direct Preference Optimization for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Huatian Zhang",
+          "Zhendong Mao",
+          "Lei Zhang",
+          "Yongdong Zhang"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Gated Multimodal Learning for Interpretable Property Energy Performance Prediction and Retrofit Scenario Analysis",
+        "url": "",
+        "authors": [
+          "Yunfei Bai",
+          "Aaron Tesfa Tsion",
+          "Raul Rosales",
+          "Barbara Shollock",
+          "Wei He"
+        ],
+        "date": "2026-05-07"
+      },
+      {
+        "title": "Physiologically Grounded Driver Behavior Classification: SHAP-Driven Elite Feature Selection and Hybrid Gradient Boosting for Multimodal Physiological Signals",
+        "url": "",
+        "authors": [
+          "Sahar Askari",
+          "Mohammad Mahdi Mirza Ali Mohammadi",
+          "Fatemeh Ensafdoust",
+          "Amin Golnari",
+          "Saeid Sanei"
+        ],
+        "date": "2026-05-07"
+      }
+    ]
+  }
+]
