@@ -1,0 +1,597 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-10",
+    "paperCount": 22,
+    "markdown": "# Mechanistic Interpretability at Scale: From Causal Circuits to Structured Representations\n\nToday's research landscape reveals a maturing field of interpretability that is moving beyond simple feature visualization toward structured, graph-based, and game-theoretic frameworks for understanding neural network computations. Key advances include the development of post-hoc interpretability methods that respect the hierarchical structure of concepts, the systematic study of how interpretability findings behave under model fine-tuning, and the application of multi-agent and causal representation learning approaches to domains ranging from healthcare to anomaly detection.\n\n## Redefining Mechanistic Interpretability: Graphs, Games, and Causal Structure\n\n[11] proposes a paradigm shift in mechanistic interpretability by reframing activation-patching profiles as **patch-effect graphs** over model components. The authors introduce three graph construction methods—direct-influence via causal mediation, partial-correlation, and kernel-based similarity—enabling systematic comparison of circuits across diverse prompts and task families. This transforms the high-dimensional, unstructured output of activation patching into structured graph representations amenable to machine learning analysis, potentially enabling automated circuit discovery at scale.\n\n[13] addresses a critical limitation of sparse autoencoders (SAEs): their near-exclusive characterization through top-activating token lists. The authors introduce a **graph-structured representation** where each SAE feature is modeled as a token co-occurrence graph, with nodes representing tokens and edges connecting co-occurring pairs within local contexts. Applying Weisfeiler-Lehman graph isomorphism analysis, they demonstrate that features with similar token lists can have fundamentally different co-occurrence structures, revealing higher-order semantic relationships previously invisible to standard SAE analysis techniques.\n\n[15] provides a theoretical unification of backward attribution methods—including gradients, LRP, and transformer-specific rules—by recasting them as **two-player games on an extended network graph**. Building on the ReLU Net Game framework, the authors show that gradients and the full alpha-beta-LRP family arise as integrals over game trajectories under specific equilibrium conditions. This work offers a principled framework for comparing, evaluating, and potentially improving attribution methods, addressing a long-standing gap in the field where many methods existed without a shared theoretical foundation.\n\n[18] introduces the **metagame framework** for quantifying second-order interaction effects of model explanations, treating the attribution method itself as a cooperative game. The authors theoretically prove that attributions hierarchically decompose into meta-attributions, establishing them as directional extensions of existing interaction indices. This work addresses the often-overlooked issue that explanations themselves have dependencies and interactions, providing a rigorous way to understand how explanations of explanations (meta-explanations) can reveal deeper model behavior.\n\n## The Dynamic Nature of Interpretability: Circuit Evolution and Feature Stability\n\n[4] systematically challenges the fundamental assumption underlying the \"Locate-then-Update\" paradigm in LLM post-training by tracing the **structural evolution of Transformer circuits throughout supervised fine-tuning (SFT)** . The authors reveal that mechanisms derived from static parameters do not reliably guide future parameter updates, as circuit structure shifts dynamically during training. This finding has profound implications: if the components identified as \"critical\" for a task change during fine-tuning, then targeted parameter updates based on static mechanistic interpretability may be fundamentally misguided.\n\n[22] addresses a key limitation of TopK sparse autoencoders—their reliance on fixed sparsity levels across all inputs—by introducing **SoftSAE**, a dynamic top-K selection mechanism. Natural data varies in complexity, and forcing the same number of active features (K) across all inputs either underfits simple samples or overfits complex ones. SoftSAE adaptively selects the optimal sparsity level per input, improving reconstruction quality while maintaining interpretability. This work is particularly important for mechanistic interpretability because it suggests that feature monosemy may be input-dependent rather than a fixed property of the model.\n\n[2] investigates how large language models process emotional valence, revealing that **negative and positive valence are processed at different network depths** through activation patching and steering experiments. Negative outcomes localize to early layers while positive outcomes peak at mid-to-late layers, with sign-opposite effects when topic is held fixed while flipping valence. This asymmetric valence processing has implications for understanding safety-critical behaviors in LLMs, as it suggests that negative and positive content engage fundamentally different neural pathways.\n\n[3] proposes **LiSCP (Lightweight Stylistic Consistency Profiling)** , a novel method for detecting LLM-generated textual content that focuses on feature stability rather than statistical cues. By analyzing stylistic consistency across multiple dimensions, the method achieves robustness against paraphrasing and adversarial manipulation while maintaining interpretability. This work bridges the gap between practical detection needs and mechanistic understanding of what distinguishes human from machine writing.\n\n## Structured Representations: From Euclidean Bottlenecks to Causal Discovery\n\n[21] introduces **Hyperbolic Concept Bottleneck Models (HypCBM)** , a post-hoc framework that grounds interpretability in hierarchical structure by reformulating concept activation as asymmetric geometric relationships in hyperbolic space. Standard CBMs embed concepts in flat Euclidean space, treating them as independent orthogonal dimensions—a fundamental mismatch with the hierarchical nature of real-world concepts. HypCBM resolves this by using hyperbolic geometry's natural ability to represent tree-like hierarchies, enabling more faithful and interpretable concept representations that reflect the actual structure of knowledge.\n\n[5] develops a **non-neural framework for adaptive basis discovery** through variational principles, offering an alternative to neural networks that sacrifices some flexibility for mathematical transparency and interpretability. Unlike neural networks that learn features through layered nonlinear parameterizations, this method learns basis functions directly from data while maintaining explicit control over basis structure. For interpretability researchers, this work provides a complementary approach: rather than explaining black-box neural representations, build inherently interpretable representations from the ground up.\n\n[9] presents **MOSAIC**, a causal representation learning framework for scientific time series that addresses the gap between identifiability (guaranteeing recovery of latent variables) and interpretability (understanding what those variables mean). The authors leverage sparse additive causal structures and observable scientific constraints (such as residue-pair distances or climate indices) to discover modules that correspond to meaningful underlying mechanisms. This work demonstrates that for scientific domains, domain knowledge can guide the discovery of interpretable latent structures without requiring post-hoc alignment with ground-truth factors.\n\n[6] identifies and resolves the **bias-precision paradox in causal representation learning for personalized medicine**: reducing confounding bias often suppresses clinically informative heterogeneity, degrading patient-specific predictions. The authors introduce sampling-based maximum mean discrepancy (sMMD), a stochastic alignment strategy that replaces global adversarial balancing with subset-level matching. This work is significant for interpretability because it shows that faithful causal representations must preserve clinically meaningful variation rather than simply minimizing statistical bias.\n\n## Multi-Agent and Application-Driven Interpretability\n\n[10] proposes **MAS-Algorithm**, a multi-agent workflow for solving algorithmic programming problems that decomposes the reasoning process into specialized agents. Unlike model-centric approaches that rely on architectural modifications or data scaling—which offer limited interpretability—this framework externalizes the reasoning process across agents, making the problem-solving strategy transparent and auditable. The work demonstrates how multi-agent architectures can serve as interpretability mechanisms by design, rather than requiring post-hoc explanation.\n\n[7] introduces **SAGE (Specialized Analyzer Group for Expert-like Detection)** , a multi-agent LLM framework for time-series anomaly detection that decomposes analysis into four specialized Analyzers for point, structural, seasonal, and pattern anomalies. By assigning each analyzer a specific family of anomaly detection methods, the framework achieves both high accuracy and interpretability—unlike single-model approaches that operate as black boxes. The structured decomposition allows domain experts to validate, modify, or extend specific components independently.\n\n[12] presents **Hygieia**, a multi-modal AI agent system for rare disease diagnosis that integrates phenotypic features, genetic profiles, and clinical records through a router-based, knowledge-enhanced framework. The system explicitly addresses hallucination by grounding diagnostic strategies in established medical knowledge, making its reasoning process transparent and verifiable. For interpretability research, this work demonstrates how domain-specific knowledge can be structurally embedded to constrain and explain AI reasoning in high-stakes applications.\n\n[1] uses a detailed analysis of **annotator disagreement in safety policy annotation** to distinguish between three fundamentally different sources: operational failures (annotators misunderstand the task), policy ambiguity (wording leaves room for interpretation), and value pluralism (different annotators hold legitimate disagreements about safety). Using interpretability techniques to trace disagreement sources, the authors show that distinguishing these sources is critical for appropriate interventions—quality control for operational failures, policy clarification for ambiguity, and deliberation for pluralism.\n\n[8] provides a **structured evaluation of explainability methods in safety-critical Automatic Target Recognition (ATR) systems**, identifying major XAI paradigms including saliency-based, attention-based, and surrogate methods. The authors systematically analyze limitations of post-hoc methods in safety-critical contexts, where model decisions must be not only interpretable but also reliable and suitable for validation. This work establishes practical evaluation criteria for XAI in domains where interpretability is not optional but essential for deployment.\n\n## Practical Tools for Geometric and Structural Interpretability\n\n[16] introduces **AffineLens**, a practical tool for enumerating and visualizing the continuous piecewise affine (CPA) function of neural networks with piecewise affine activations (PANNs). While the geometric perspective on neural networks is well-established theoretically—characterizing input-output maps by the number and arrangement of affine regions—existing analyses rely on indirect proxies or theoretical upper bounds. AffineLens provides practical, accurate tools for computing region partitions under realistic architectures and bounded input domains, enabling researchers to directly observe how network complexity grows with depth and width.\n\n[17] presents **PACE (Prune-And-Compress Ensemble models)** , a framework that interleaves pruning and compression to create interpretable yet high-performing ensemble models. By first generating diverse learners through a theoretically grounded active generation procedure, then pruning redundant ones, PACE produces compact ensembles that maintain state-of-the-art performance while enabling downstream tasks such as robustness verification. This work is relevant to interpretability because it shows that ensembles need not be black boxes—they can be systematically simplified while preserving their predictive power.\n\n[20] establishes a **unified theoretical framework for preference-based RL alignment** through the Pair-GRPO family, addressing instability, ambiguous gradient directions, and poor interpretability in existing RLHF approaches. The two variants—Soft-Pair-GRPO and Hard-Pair-GRPO—replace problematic optimization objectives with theoretically grounded alternatives that provide more stable and interpretable training dynamics. For the interpretability community, this work demonstrates that alignment itself can be made more interpretable through careful theoretical design.\n\n[14] studies **in-context black-box optimization with unreliable feedback**, where side information from experts, simulators, or heuristics may be biased or misleading. The authors develop an in-context optimizer that can handle multiple sources of feedback simultaneously, adapting to their reliability at test time. This work bridges interpretability and optimization by showing how models can learn to weigh different information sources based on their reliability, a fundamental capability for trustworthy AI systems.\n\n[19] presents preliminary insights into how the **Chronos foundation model processes frequency domain information** in time-series data. By analyzing the model's internal representations of frequency components, the authors begin to characterize how foundation models encode fundamental signal properties—a necessary step for understanding when and why these models can be trusted for scientific applications. This work represents an important first step toward mechanistic interpretability of time-series foundation models.\n\n## Key Takeaways\n\n- **Interpretability methods must account for dynamic model behavior**: Mechanistic findings derived from static model parameters (circuit localization, feature importance) can shift fundamentally during fine-tuning, challenging the \"Locate-then-Update\" paradigm and suggesting that interpretability must be treated as an ongoing process rather than a one-time analysis.\n\n- **Graph-structured and game-theoretic frameworks are unifying mechanistic interpretability**: Activation patching, attribution methods, and SAE features are increasingly being reframed as graph problems or game-theoretic systems, enabling systematic comparison across methods and tasks that was previously impossible.\n\n- **Hierarchical and non-Euclidean representations better capture concept structure**: Hyperbolic concept bottleneck models and graph-based SAE analysis demonstrate that human-understandable concepts have hierarchical, not flat, structure—interpretability methods must respect this structure to provide faithful explanations.\n\n- **Multi-agent architectures offer inherent interpretability**: By decomposing reasoning, anomaly detection, and diagnosis into specialized agents, these systems externalize decision-making processes, providing transparency by design rather than requiring post-hoc explanation.\n\n- **The gap between identifiability and interpretability in causal representation learning is being bridged**: Domain knowledge and sparse additive structures can guide the discovery of latent variables that are both identifiable (mathematically guaranteed) and interpretable (meaningful for domain experts).\n\n- **On-the-fly adaptation improves both performance and interpretability**: Dynamic sparsity selection (SoftSAE) and stochastic causal alignment (sMMD) show that fixed hyperparameters can obscure meaningful variation in data—adaptive methods reveal structure while maintaining or improving performance.\n\n- **Interpretability is essential for safety-critical deployment, but post-hoc methods have fundamental limitations**: Evaluation frameworks for safety-critical domains (ATR, medicine) reveal that saliency, attention, and surrogate methods often fail to provide the reliability and validation needed for high-stakes decisions, pushing toward inherently interpretable designs.",
+    "papers": [
+      {
+        "title": "Understanding Annotator Safety Policy with Interpretability",
+        "url": "",
+        "authors": [
+          "Alex Oesterling",
+          "Donghao Ren",
+          "Yannick Assogba",
+          "Dominik Moritz",
+          "Sunnie S. Y. Kim",
+          "Leon Gatys",
+          "Fred Hohman"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Negative Before Positive: Asymmetric Valence Processing in Large Language Models",
+        "url": "",
+        "authors": [
+          "Sohan Venkatesh"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Lightweight Stylistic Consistency Profiling: Robust Detection of LLM-Generated Textual Content for Multimedia Moderation",
+        "url": "",
+        "authors": [
+          "Siyuan Li",
+          "Aodu Wulianghai",
+          "Xi Lin",
+          "Xibin Yuan",
+          "Qinghua Mao",
+          "Guangyan Li",
+          "Xiang Chen",
+          "Jun Wu",
+          "Jianhua Li"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Navigating by Old Maps: The Pitfalls of Static Mechanistic Localization in LLM Post-Training",
+        "url": "",
+        "authors": [
+          "Hang Chen",
+          "Jiaying Zhu",
+          "Hongyang Chen",
+          "Hongxu Liu",
+          "Xinyu Yang",
+          "Wenya Wang"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Data-Driven Variational Basis Learning Beyond Neural Networks: A Non-Neural Framework for Adaptive Basis Discovery",
+        "url": "",
+        "authors": [
+          "Andrew Kiruluta"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Resolving the bias-precision paradox with stochastic causal representation learning for personalized medicine",
+        "url": "",
+        "authors": [
+          "Peisong Zhang",
+          "Manqiang Peng",
+          "Yuxuan Wu",
+          "Pawit Phadungsaksawasdi",
+          "Wesley Yeung",
+          "Ye Zhang",
+          "Trang Nguyen",
+          "Qiang Zhang",
+          "Nan Liu",
+          "Meng Wang",
+          "Kee Yuan Ngiam",
+          "Yih-Chung Tham",
+          "Ching-Yu Cheng",
+          "Tianfan Fu",
+          "Qingyu Chen",
+          "Rosemary Ke",
+          "Chang Li",
+          "Wenzhuo Yang",
+          "Zhenghao Lu",
+          "Chunyou Lai",
+          "Yu Zhang",
+          "Sheng Zhong",
+          "Hao Deng",
+          "Dianbo Liu"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Detecting Time Series Anomalies Like an Expert: A Multi-Agent LLM Framework with Specialized Analyzers",
+        "url": "",
+        "authors": [
+          "Hyeongwon Kang",
+          "Jeongseob Kim",
+          "Jinwoo Park",
+          "Pilsung Kang"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Evaluating Explainability in Safety-Critical ATR Systems: Limitations of Post-Hoc Methods and Paths Toward Robust XAI",
+        "url": "",
+        "authors": [
+          "Vanessa Buhrmester",
+          "David Muench",
+          "Dimitri Bulatov",
+          "Michael Arens"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "MOSAIC: Module Discovery via Sparse Additive Identifiable Causal Learning for Scientific Time Series",
+        "url": "",
+        "authors": [
+          "Shicheng Fan",
+          "Nour Elhendawy",
+          "Jianle Sun",
+          "Ke Fang",
+          "Kun Zhang",
+          "Yihang Wang",
+          "Lu Cheng"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "MAS-Algorithm: A Workflow for Solving Algorithmic Programming Problems with a Multi-Agent System",
+        "url": "",
+        "authors": [
+          "Yuliang Xu",
+          "Xiang Xu",
+          "Yao Wan",
+          "Hu Wei",
+          "Tong Jia"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Patch-Effect Graph Kernels for LLM Interpretability",
+        "url": "",
+        "authors": [
+          "Ruben Fernandez-Boullon",
+          "David N. Olivieri"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "A Versatile AI Agent for Rare Disease Diagnosis and Risk Gene Prioritization",
+        "url": "",
+        "authors": [
+          "Tianyu Liu",
+          "Wangjie Zheng",
+          "Rui Yang",
+          "Benny Kai Guo Loo",
+          "Hui Zhang",
+          "Jeffries Lauran",
+          "Jianlei Gu",
+          "Botao Yu",
+          "Weihao Xuan",
+          "Kexin Huang",
+          "Nan Liu",
+          "James Zou",
+          "Yonghui Jiang",
+          "Hua Xu",
+          "Hongyu Zhao"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "From Token Lists to Graph Motifs: Weisfeiler-Lehman Analysis of Sparse Autoencoder Features",
+        "url": "",
+        "authors": [
+          "Ruben Fernandez-Boullon",
+          "Pablo Magariños-Docampo",
+          "Javier Perez-Robles"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "In-Context Black-Box Optimization with Unreliable Feedback",
+        "url": "",
+        "authors": [
+          "Nicolas Samuel Blumer",
+          "Julien Martinelli",
+          "Samuel Kaski"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Playing the network backward: A Game Theoretic Attribution Framework",
+        "url": "",
+        "authors": [
+          "Jakob Paul Zimmermann",
+          "Jim Berend",
+          "Georg Loho",
+          "Sebastian Lapuschkin",
+          "Wojciech Samek"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "AffineLens: Capturing the Continuous Piecewise Affine Functions of Neural Networks",
+        "url": "",
+        "authors": [
+          "Yi Wei",
+          "Xuan Qi",
+          "Furao shen",
+          "Jian Zhao",
+          "Vittorio Murino",
+          "Cigdem Beyan"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "PACE: Prune-And-Compress Ensemble Models",
+        "url": "",
+        "authors": [
+          "Fabian Akkerman",
+          "Julien Ferry",
+          "Théo Guyard",
+          "Thibaut Vidal"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Attributions All the Way Down? The Metagame of Interpretability",
+        "url": "",
+        "authors": [
+          "Hubert Baniecki",
+          "Przemyslaw Biecek",
+          "Fabian Fumagalli"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Preliminary Insights in Chronos Frequency Data Understanding and Reconstruction",
+        "url": "",
+        "authors": [
+          "Alessandro Pagani",
+          "Marco Cominelli",
+          "Liying Han",
+          "Gaofeng Dong",
+          "Sergio Benini",
+          "Francesco Gringoli",
+          "Mattia Savardi",
+          "Mani B. Srivastava",
+          "Trevor Bihl",
+          "Erik P. Blasch",
+          "Daniel O. Brigham",
+          "Kara Combs",
+          "Lance M. Kaplan",
+          "Federico Cerutti"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "A Unified Pair-GRPO Family: From Implicit to Explicit Preference Constraints for Stable and General RL Alignment",
+        "url": "",
+        "authors": [
+          "Hao Yu"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Hyperbolic Concept Bottleneck Models",
+        "url": "",
+        "authors": [
+          "Daniel Uyterlinde",
+          "Swasti Shreya Mishra",
+          "Pascal Mettes"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "SoftSAE: Dynamic Top-K Selection for Adaptive Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Jakub Stępień",
+          "Marcin Mazur",
+          "Jacek Tabor",
+          "Przemysław Spurek"
+        ],
+        "date": "2026-05-10"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-10",
+    "paperCount": 2,
+    "markdown": "# Explainability in the Spotlight: From Safety-Critical Systems to Scalable Shapley Computation\n\nToday's research landscape in explainable AI (XAI) reveals a field maturing beyond simple saliency maps toward rigorous, mathematically grounded frameworks. Two complementary papers address critical gaps: one evaluates the fundamental limitations of post-hoc explainability methods in high-stakes automatic target recognition (ATR) systems, while the other introduces a novel computational breakthrough for Shapley values that dramatically improves scalability and stability.\n\n## Evaluating Explainability in High-Stakes Environments\n\n[1] This paper tackles the pressing problem of deploying explainable AI in safety-critical Automatic Target Recognition (ATR) systems, where models process heterogeneous data (image, video, radar, multisensor) and decisions carry life-or-death consequences. The authors conduct a structured evaluation of major XAI paradigms—including saliency-based, attention-based, and surrogate methods—identifying critical limitations such as instability across similar inputs, sensitivity to hyperparameters, and vulnerability to adversarial manipulation. Their key contribution is a systematic framework that maps specific failure modes of post-hoc methods to the unique constraints of ATR pipelines, demonstrating that current XAI techniques can produce misleading explanations that undermine rather than enhance trust. This work matters because it forces the community to confront uncomfortable truths: popular explainability methods may actively harm decision-making in safety-critical contexts unless redesigned with domain-specific reliability guarantees.\n\n## Scalable and Stable Shapley Values\n\n[2] This paper addresses the computational bottleneck of Shapley values, which require evaluating exponentially many feature coalitions and remain notoriously unstable in practice. The authors identify a previously underexplored class of *product games*—where the value function factorizes multiplicatively across players—and prove that Shapley values for such games collapse to a simple one-dimensional integral representation. Their core technical innovation, QuadraSHAP, leverages Gauss-Legendre quadrature to compute this integral with high precision using remarkably few evaluation points, achieving exponential convergence rates compared to Monte Carlo sampling. The key results demonstrate orders-of-magnitude speedups over state-of-the-art Shapley approximation methods (e.g., KernelSHAP) while simultaneously improving stability, with analytical error bounds replacing heuristic convergence checks. This contribution is significant because it provides the first provably efficient and numerically stable algorithm for a broad class of practical models, including kernel methods and tree ensembles, opening the door to real-time Shapley-based explanations in production systems.\n\n## Key Takeaways\n\n- Post-hoc explainability methods face fundamental reliability issues in safety-critical domains, with current approaches producing unstable and potentially misleading explanations that require domain-specific validation frameworks.\n- The emergence of structured evaluation frameworks for XAI in high-stakes applications signals a necessary shift from \"more explanations\" to \"explainability that can be trusted.\"\n- Shapley values for product games admit an exact one-dimensional integral representation, enabling dramatic computational savings over combinatorial enumeration.\n- QuadraSHAP demonstrates that Gauss-Legendre quadrature achieves exponential convergence for Shapley computation, offering both theoretical guarantees and practical speedups over Monte Carlo approaches.\n- The mathematical structures underlying model families—such as multiplicative factorizations—directly translate into tractable explainability algorithms, suggesting deeper connections between model architecture and explainability complexity.\n- The field is bifurcating: safety-critical applications demand explainability methods with provable reliability guarantees, while scalable Shapley variants enable practical deployment in high-throughput settings.\n- Both papers underscore that the future of XAI lies not in developing more post-hoc methods, but in understanding when mathematical structures allow exact or provably accurate explanations.",
+    "papers": [
+      {
+        "title": "Evaluating Explainability in Safety-Critical ATR Systems: Limitations of Post-Hoc Methods and Paths Toward Robust XAI",
+        "url": "",
+        "authors": [
+          "Vanessa Buhrmester",
+          "David Muench",
+          "Dimitri Bulatov",
+          "Michael Arens"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "QuadraSHAP: Stable and Scalable Shapley Values for Product Games via Gauss-Legendre Quadrature",
+        "url": "",
+        "authors": [
+          "Majid Mohammadi",
+          "Grigory Reznikov",
+          "Pavel Sinitcyn",
+          "Krikamol Muandet",
+          "Siu Lun Chau"
+        ],
+        "date": "2026-05-10"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-10",
+    "paperCount": 21,
+    "markdown": "# Multimodal Frontiers: From Mechanistic Understanding to Efficient Deployment\n\nToday's research landscape reveals a field in rapid maturation, where multimodal AI systems are being scrutinized for fundamental failure modes—from attentional collapse and entity confusion to cultural bias—while simultaneously pushing toward practical deployment through efficient architectures, robust unlearning, and domain-specific applications spanning food analysis, neuroimaging, and even ceramic glaze design.\n\n## Diagnosing and Mitigating Fundamental Failure Modes\n\n[1] **\"The Cost of Context\"** identifies a troubling failure mode in multimodal RAG systems called *recorruption*, where adding perfectly accurate oracle context causes an initially correct MLLM prediction to become incorrect. Through mechanistic analysis of internal attention matrices, the authors trace this to a two-fold attentional collapse involving *visual blindness*—where textual context overwhelms visual processing. This work is critical because it reveals that RAG, widely adopted to reduce hallucinations, can paradoxically introduce new failure modes at the instance level, demanding more careful integration of retrieved context with visual reasoning.\n\n[7] **\"Uncovering Entity Identity Confusion in Multimodal Knowledge Editing\"** identifies Entity Identity Confusion (EIC), a systemic failure where post-edit models absurdly return information about a new entity when queried about the original entity in text-only settings. The authors construct EC-Bench, a diagnostic benchmark probing how image-entity bindings shift after editing. This matters because it exposes a fundamental brittleness in how knowledge editing alters cross-modal representations, suggesting that current editing methods fail to properly disentangle visual grounding from textual associations.\n\n[8] **\"Causal Probing for Internal Visual Representations in MLLMs\"** introduces a causal framework based on activation steering to actively probe and manipulate internal visual representations across four visual concept categories. The authors reveal a critical divergence: entities exhibit localized memorization in specific network regions, while abstract concepts are globally distributed across the network. This mechanistic insight is valuable for understanding why MLLMs handle concrete and abstract queries differently, with implications for targeted model editing and interpretability.\n\n[10] **\"Conceal, Reconstruct, Jailbreak\"** formalizes the *reconstruction-concealment tradeoff* governing intent-obfuscation jailbreak attacks on MLLMs, where harmful queries must be concealed from safety filters while remaining recoverable. Through reconstruction analysis of three black-box methods, the authors find existing transformations struggle to balance this tradeoff, limiting attack effectiveness. This work provides a principled foundation for understanding and potentially hardening MLLM safety mechanisms against multimodal adversarial inputs.\n\n[20] **\"Attributions All the Way Down?\"** introduces the *metagame* framework for quantifying second-order interaction effects of model explanations, computing meta-attributions that measure how one feature influences the attribution of another. The authors prove that attributions hierarchically decompose into meta-attributions, establishing them as directional extensions of existing interaction indices. While not exclusively multimodal, this theoretical contribution has clear implications for understanding cross-modal attribution interactions in multimodal models.\n\n## Efficient Architectures and Deployment Strategies\n\n[9] **\"MACS: Modality-Aware Capacity Scaling\"** addresses the straggler effect in Mixture-of-Experts MLLMs during Expert Parallelism inference, caused by treating redundant visual tokens equally to semantically critical ones and failing to handle varying visual-to-text ratios across tasks. MACS introduces modality-aware capacity scaling that accounts for information heterogeneity and modality dynamics. This is practically significant because it tackles a real bottleneck in deploying large MoE MLLMs, where naive load balancing wastes resources on numerous but information-poor visual tokens.\n\n[14] **\"VisMMoE: Exploiting Visual-Expert Affinity for Efficient VL-MoE Offloading\"** tackles efficient deployment of vision-language MoE models on memory-constrained platforms, where visual-heavy inputs induce broader and less predictable expert accesses. The key insight is that pruning redundant visual tokens improves offloading not just through reduced computation but by reshaping expert access patterns. This work bridges visual token pruning and system-level optimization, offering a practical path to deploying powerful VL-MoE models on resource-limited hardware.\n\n[21] **\"MINER: Mining Multimodal Internal Representation for Efficient Retrieval\"** addresses the quality-efficiency tradeoff in visual document retrieval, where late-interaction retrievers achieve strong quality but store hundreds of vectors per page, while single-vector retrievers sacrifice quality for efficiency. Through layerwise diagnostic analysis, the authors develop a method that mines internal representations to achieve high-quality retrieval without the massive storage overhead. This is important for practical document retrieval systems that must balance accuracy with index size and serving cost.\n\n[11] **\"Null Space Constrained Contrastive Visual Forgetting for MLLM Unlearning\"** tackles machine unlearning in MLLMs by freezing the LLM backbone and fine-tuning only the visual modality to forget target visual knowledge while preserving non-target visual and all textual knowledge. The approach uses null space constraints and contrastive objectives to separate forgetting from retention. This addresses the unique challenge that multimodal knowledge entanglement poses for privacy-focused unlearning, where visual and textual modalities are tightly intertwined.\n\n[12] **\"ICU-Bench: Benchmarking Continual Unlearning in Multimodal Large Language Models\"** introduces a continual multimodal unlearning benchmark built on 1,000 privacy-sensitive document instances, filling the gap left by static or short-sequence benchmarks that cannot evaluate realistic privacy deletion requests. This benchmark is crucial as regulatory pressure for data deletion increases, and real-world deployment requires handling sequential unlearning requests without catastrophic forgetting of retained knowledge.\n\n## Interactive Reasoning and Agentic Systems\n\n[2] **\"PRISM: Perception Reasoning Interleaved for Sequential Decision Making\"** addresses the perception-reasoning-decision gap in standalone VLMs for embodied agents by tightly coupling perception (VLM) and decision (LLM) through a dynamic question-answer pipeline. Instead of passively accepting VLM descriptions, the LLM critiques them, probes with goal-oriented questions, and synthesizes compact image descriptions. This framework is significant because it shows that active, iterative cross-modal communication between models can overcome the limitations of passive visual descriptions in complex decision-making tasks.\n\n[4] **\"FoodCHA: Multi-Modal LLM Agent for Fine-Grained Food Analysis\"** tackles the challenges of real-world food recognition—high intra-class similarity, multiple food items per image, and fine-grained attributes like cooking style—by combining visual perception with structured analysis. The agent goes beyond coarse classification to capture nuanced dietary attributes. This matters for practical dietary monitoring applications where standard vision-language models produce non-canonical or inconsistent outputs.\n\n[15] **\"Debiased Multimodal Personality Understanding through Dual Causal Intervention\"** addresses subject bias in video-based personality understanding, where spurious correlations between demographic attributes and personality traits lead to unfair predictions. The authors construct a Structural Causal Model to analyze these biases and propose dual causal intervention to debias multimodal representations. This work is important for developing fair, human-centered AI systems that avoid perpetuating demographic stereotypes.\n\n[16] **\"NeuroAgent: LLM Agents for Multimodal Neuroimaging Analysis\"** automates complex, modality-specific preprocessing workflows in neuroimaging that require careful configuration, quality control, and coordination across heterogeneous toolchains. The LLM-driven agentic framework handles everything from preprocessing to downstream statistical analysis and disease classification. This represents a practical application of multimodal AI to scientific research, potentially accelerating neuroimaging studies while improving reproducibility.\n\n[18] **\"PRISM: Iterative Cross-Modal Posterior Refinement for Dynamic Text-Attributed Graphs\"** improves representation learning on dynamic text-attributed graphs by replacing rigid modality partitions and one-shot fusion with iterative cross-modal posterior refinement. This captures intrinsic and evolving dependencies between node semantics and interaction behaviors. The contribution is significant for modeling temporally evolving systems where text semantics and graph structure co-evolve.\n\n## Robustness, Safety, and Cross-Cultural Adaptation\n\n[3] **\"Lightweight Stylistic Consistency Profiling\"** proposes LiSCP for robust detection of LLM-generated text, focusing on feature stability under paraphrasing and adversarial manipulation. The method profiles stylistic consistency rather than relying on statistical cues or model-specific heuristics, making it more robust to evasion. This is directly relevant to multimedia moderation where distinguishing human from AI-generated content is increasingly critical, though notably focused on text modality.\n\n[5] **\"TableVista: Benchmarking Multimodal Table Reasoning under Visual and Structural Complexity\"** introduces a comprehensive benchmark with 30,000 multimodal samples evaluating 29 state-of-the-art models across diverse visual variants, robustness perturbations, and vision-only configurations. This reveals significant gaps in current models' ability to handle visually complex table reasoning. The benchmark's systematic variation of visual presentation style is valuable for understanding how visual formatting impacts model performance.\n\n[6] **\"SPARK: Self-Play with Asymmetric Reward from Knowledge Graphs\"** extends self-play reinforcement learning to scientific literature by using knowledge graphs to automatically generate relational reasoning questions and compute reliable reward signals. This addresses the challenge that multimodal relationships across documents are rarely explicit in text. The approach is significant for domains where verifiable structure exists but is not formally coded, opening new possibilities for RL-based scientific reasoning.\n\n[13] **\"CrossCult-KIBench: A Benchmark for Cross-Cultural Knowledge Insertion in MLLMs\"** introduces the task of cross-cultural knowledge insertion and a benchmark for evaluating both insertion effectiveness and unintended side effects on non-target cultures. This addresses the problem that English-centric training data leads to culturally inappropriate responses. The benchmark is timely as global deployment of MLLMs requires cultural adaptation without catastrophic forgetting of general capabilities.\n\n[17] **\"GlazyBench: A Benchmark for Ceramic Glaze Property Prediction and Image Generation\"** provides the first large-scale dataset (23,148 formulations) for AI-assisted ceramic glaze design, supporting both property prediction from raw materials and visual representation generation. This niche but concrete application demonstrates how multimodal AI can transform traditional crafts, reducing costly trial-and-error in material science.\n\n[19] **\"Band Together: Untargeted Adversarial Training with Multimodal Coordination\"** identifies cross-modal gradient mismatch in multimodal recommender systems under evasion-based promotion attacks, where visual and textual perturbations are optimized in inconsistent directions. The proposed adversarial training coordinates multimodal perturbations to defend against these attacks. This matters because multimodal recommender systems, while more expressive, introduce new attack surfaces that single-modal defenses cannot address.\n\n## Key Takeaways\n- **Attentional collapse and entity confusion** are newly formalized failure modes in MLLMs: textual context can overwhelm visual processing in RAG systems, and knowledge editing can break entity-identity bindings across modalities, revealing fundamental limitations in current multimodal architectures.\n- **Efficient deployment of MoE MLLMs** requires modality-aware load balancing and visual token pruning, as treating all visual tokens equally wastes resources on redundant information and causes straggler effects during expert parallelism.\n- **Active, iterative cross-modal communication** between VLMs and LLMs (as in PRISM) outperforms passive visual description for embodied decision-making, suggesting that inter-model critique and goal-oriented probing is a promising paradigm.\n- **Multimodal unlearning** is uniquely challenging due to entangled visual-textual representations, requiring modality-specific forgetting techniques and new continual benchmarks (ICU-Bench) for realistic privacy deletion scenarios.\n- **Mechanistic interpretability methods**—from causal probing to second-order meta-attributions—are revealing how MLLMs encode entities locally but abstract concepts globally, with implications for targeted editing and safety analysis.\n- **Domain-specific multimodal agents** (food analysis, neuroimaging, ceramic glaze design) demonstrate that structured, task-oriented systems outperform general-purpose VLMs on fine-grained, specialized tasks requiring controlled output generation.\n- **Cross-cultural and fairness considerations** are gaining attention: debiasing personality understanding via causal intervention and benchmarking cultural knowledge insertion highlight the need for multimodal systems that generalize equitably across diverse populations and contexts.",
+    "papers": [
+      {
+        "title": "The Cost of Context: Mitigating Textual Bias in Multimodal Retrieval-Augmented Generation",
+        "url": "",
+        "authors": [
+          "Hoin Jung",
+          "Xiaoqian Wang"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "PRISM: Perception Reasoning Interleaved for Sequential Decision Making",
+        "url": "",
+        "authors": [
+          "Mohamed Salim Aissi",
+          "Clemence Grislain",
+          "Clement Romac",
+          "Laure Soulier",
+          "Mohamed Chetouani",
+          "Olivier Sigaud",
+          "Nicolas Thome"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Lightweight Stylistic Consistency Profiling: Robust Detection of LLM-Generated Textual Content for Multimedia Moderation",
+        "url": "",
+        "authors": [
+          "Siyuan Li",
+          "Aodu Wulianghai",
+          "Xi Lin",
+          "Xibin Yuan",
+          "Qinghua Mao",
+          "Guangyan Li",
+          "Xiang Chen",
+          "Jun Wu",
+          "Jianhua Li"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "FoodCHA: Multi-Modal LLM Agent for Fine-Grained Food Analysis",
+        "url": "",
+        "authors": [
+          "Woojin Lee",
+          "Pranav Mekkoth",
+          "Ye Tian",
+          "Onat Gungor",
+          "Tajana Rosing"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "TableVista: Benchmarking Multimodal Table Reasoning under Visual and Structural Complexity",
+        "url": "",
+        "authors": [
+          "Zheyuan Yang",
+          "Liqiang Shang",
+          "Junjie Chen",
+          "Xun Yang",
+          "Chenglong Xu",
+          "Bo Yuan",
+          "Chenyuan Jiao",
+          "Yaoru Sun",
+          "Yilun Zhao"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "SPARK: Self-Play with Asymmetric Reward from Knowledge Graphs",
+        "url": "",
+        "authors": [
+          "Hyobin Park",
+          "Taeseop Kim",
+          "Dong-Geol Choi"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Uncovering Entity Identity Confusion in Multimodal Knowledge Editing",
+        "url": "",
+        "authors": [
+          "Shu Wu",
+          "Xiaotian Ye",
+          "Xinyu Mou",
+          "Dongsheng Liu",
+          "Xiaohan Wang",
+          "Mengqi Zhang"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Causal Probing for Internal Visual Representations in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Zehao Deng",
+          "Tianjie Ju",
+          "Zheng Wu",
+          "Liangbo He",
+          "Jun Lan",
+          "Huijia Zhu",
+          "Weiqiang Wang",
+          "Zhuosheng Zhang"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "MACS: Modality-Aware Capacity Scaling for Efficient Multimodal MoE Inference",
+        "url": "",
+        "authors": [
+          "Bo Li",
+          "Chuan Wu",
+          "shaolin Zhu"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Conceal, Reconstruct, Jailbreak: Exploiting the Reconstruction-Concealment Tradeoff in MLLMs",
+        "url": "",
+        "authors": [
+          "Md Farhamdur Reza",
+          "Richeng Jin",
+          "Tianfu Wu",
+          "Huaiyu Dai"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Null Space Constrained Contrastive Visual Forgetting for MLLM Unlearning",
+        "url": "",
+        "authors": [
+          "Yuhang Wang",
+          "Zhenxing Niu",
+          "Haoxuan Ji",
+          "Guangyu He",
+          "Linlin Zhang",
+          "Haichang Gao"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "ICU-Bench:Benchmarking Continual Unlearning in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Yuhang Wang",
+          "Wenjie Mei",
+          "Junkai Zhang",
+          "Guangyu He",
+          "Zhenxing Niu",
+          "Haichang Gao"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "CrossCult-KIBench: A Benchmark for Cross-Cultural Knowledge Insertion in MLLMs",
+        "url": "",
+        "authors": [
+          "Zhen Zeng",
+          "Leijiang Gu",
+          "Feng Li",
+          "Jing Yu",
+          "Zenglin Shi"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "VisMMOE: Exploiting Visual-Expert Affinity for Efficient Visual-Language MoE Offloading",
+        "url": "",
+        "authors": [
+          "Cheng Xu",
+          "Xiaofeng Hou",
+          "Jiacheng Liu",
+          "Chao Li"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Debiased Multimodal Personality Understanding through Dual Causal Intervention",
+        "url": "",
+        "authors": [
+          "Yangfu Zhu",
+          "Zitong Han",
+          "Nianwen Ning",
+          "Yuting Wei",
+          "Yuandong Wang",
+          "Hang Feng",
+          "Zhenzhou Shao"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "NeuroAgent: LLM Agents for Multimodal Neuroimaging Analysis and Research",
+        "url": "",
+        "authors": [
+          "Lujia Zhong",
+          "Yihao Xia",
+          "Jianwei Zhang",
+          "Shuo huang",
+          "Jiaxin Yue",
+          "Mingyang Xia",
+          "Yonggang Shi"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "GlazyBench: A Benchmark for Ceramic Glaze Property Prediction and Image Generation",
+        "url": "",
+        "authors": [
+          "Ziyu Zhai",
+          "Siyou Li",
+          "Juexi Shao",
+          "Juntao Yu"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "PRISM: Iterative Cross-Modal Posterior Refinement for Dynamic Text-Attributed Graphs",
+        "url": "",
+        "authors": [
+          "Trimble Chang",
+          "Yihang Liu",
+          "Mingjing Han",
+          "Han Zhang"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Band Together: Untargeted Adversarial Training with Multimodal Coordination against Evasion-based Promotion Attacks",
+        "url": "",
+        "authors": [
+          "Guanmeng Xian",
+          "Ning Yang",
+          "Philip S. Yu"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "Attributions All the Way Down? The Metagame of Interpretability",
+        "url": "",
+        "authors": [
+          "Hubert Baniecki",
+          "Przemyslaw Biecek",
+          "Fabian Fumagalli"
+        ],
+        "date": "2026-05-10"
+      },
+      {
+        "title": "MINER: Mining Multimodal Internal Representation for Efficient Retrieval",
+        "url": "",
+        "authors": [
+          "Weien Li",
+          "Rui Song",
+          "Zeyu Li",
+          "Haochen Liu",
+          "Gonghao Zhang",
+          "Difan Jiao",
+          "Zhenwei Tang",
+          "Bowei He",
+          "Haolun Wu",
+          "Xue Liu",
+          "Ye Yuan"
+        ],
+        "date": "2026-05-10"
+      }
+    ]
+  }
+]
