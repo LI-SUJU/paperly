@@ -1,0 +1,317 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-11",
+    "paperCount": 14,
+    "markdown": "# Mechanistic Interpretability: Causal Claims, Sparse Abstractions, and Auditable Interfaces\n\nToday's research landscape reveals a maturing field that is moving beyond post-hoc explanations toward rigorous causal frameworks for understanding model internals, while simultaneously developing practical tools for auditing agentic behavior and learning interpretable representations without supervision. A key tension emerges between the desire for causal claims and the methodological rigor required to support them, with multiple papers proposing new formalisms for abstraction, localization, and verification.\n\n## Causal Abstraction and Mechanistic Foundations\n\n**[8] PLOT: Progressive Localization via Optimal Transport in Neural Causal Abstraction.** This paper addresses the computational bottleneck in causal abstraction methods, where finding the neural \"handle\" for high-level variables requires exhaustive search over candidate sites. The authors introduce a transport-based framework that progressively localizes causal variables by solving optimal transport problems between model representations, eliminating the need for brute-force search. PLOT achieves efficient localization with theoretical guarantees, reducing search complexity from exponential to linear in the number of candidate sites. This work is significant because it makes causal abstraction practical for larger models and deeper layers, directly enabling more scalable mechanistic interpretability.\n\n**[11] Position: Mechanistic Interpretability Must Disclose Identification Assumptions for Causal Claims.** This position paper identifies a critical methodological gap: papers using causal vocabulary (circuits, mediators, causal abstraction) routinely report validation metrics like faithfulness or ablation effects without stating the identification assumptions that make those metrics causal. The authors audit 10 papers and find zero with dedicated identification-assumptions sections, supported by a two-human-coder replication on 30 papers. This work matters because it provides a concrete, actionable standard—if the field adopts explicit identification assumptions, causal claims in mechanistic interpretability will become scientifically defensible rather than merely suggestive.\n\n**[4] Activation Differences Reveal Backdoors: A Comparison of SAE Architectures.** This paper investigates whether sparse autoencoders (SAEs) can isolate backdoor-related features in language models, addressing the open challenge of detecting backdoors through mechanistic interpretability. The authors compare Crosscoders and Differential SAEs (Diff-SAE) on a controlled SQL injection backdoor triggered by year-based context (\"2024\" triggers vulnerable code, \"2023\" triggers safe code). Diff-SAE proves more effective at isolating the backdoor mechanism by focusing on activation differences between triggered and clean inputs. This contribution is important for AI safety, offering a principled, interpretable method for backdoor detection that doesn't rely on input-output probing alone.\n\n## Interpretable Architectures and Representation Learning\n\n**[6] ProtoSSL: Interpretable Prototype Learning from Unlabeled Time-Series Data.** This paper addresses the limitation that prototype-based interpretability methods require labeled data, tying explanations to specific tasks. ProtoSSL introduces a novel framework for learning interpretable prototypes from unlabeled time-series data by leveraging self-supervised learning objectives that encourage prototypes to capture reusable, semantically meaningful patterns. The framework produces case-based explanations and enables global prototype inspection without any task-specific supervision. This matters for domains like healthcare where labeled data is scarce but interpretability is non-negotiable.\n\n**[13] Approximation-Free Differentiable Oblique Decision Trees.** This paper tackles the challenge of training accurate oblique decision trees, which are valued for interpretability in safety-critical domains but suffer from complex optimization landscapes. The authors propose a fully differentiable formulation that avoids the common approximation strategies of probabilistic softening or quantization, enabling true gradient-based joint optimization of decision boundaries and leaf regressors. The method achieves competitive performance with ensemble methods while maintaining single-tree interpretability. This is significant because it bridges the accuracy-interpretability gap for tabular data in high-stakes applications.\n\n**[9] FastOmniTMAE: Parallel Clause Learning for Scalable and Hardware-Efficient Tsetlin Embeddings.** This paper addresses the slow training of Omni TM-AE, a Tsetlin Machine-based autoencoder that offers interpretable logic-based embedding. The authors reformulate the training process to replace sequential dependencies with parallel clause learning, dramatically accelerating training while preserving the interpretable automaton state distributions. FastOmniTMAE maintains the interpretability advantages of Tsetlin Machines—learned propositional logic rules—while becoming practical for larger NLP tasks. This matters because it provides a logic-based alternative to deep embedding models in resource-constrained or safety-critical settings.\n\n## Agentic AI and Auditable Interfaces\n\n**[2] Beyond the Black Box: Interpretability of Agentic AI Tool Use.** This paper addresses the critical problem that tool-use failures in AI agents—skipped calls, unnecessary invocations, invisible consequences—are difficult to diagnose and control, especially in long-horizon enterprise workflows. The authors catalog failure modes specific to tool-using agents and analyze why existing observability methods (prompt analysis, output scoring, post-hoc logs) are insufficient for catching early errors that cascade. The paper proposes requirements for agent-specific interpretability, including real-time tool-call auditing, consequence prediction, and intervention mechanisms. This matters because dependable deployment of AI agents in high-stakes domains requires interpretability that is tightly coupled to the tool-use loop itself.\n\n**[7] MAVEN: Multi-Agent Verification-Elaboration Network with In-Step Epistemic Auditing.** This paper addresses the problem that monolithic reasoning chains lack intermediate verification, allowing early errors to cascade undetected. MAVEN introduces a blackboard-inspired framework with explicit role-decoupling, featuring an adversarial \"Skeptic\" agent that challenges each reasoning step before it is incorporated. The framework provides in-step epistemic auditing, enabling granular tracing of where and why reasoning fails. This matters because it transforms LLMs into deliberate reasoners with auditable trajectories, essential for high-stakes applications where trust requires more than final-answer accuracy.\n\n**[3] Semantic State Abstraction Interfaces for LLM-Augmented Portfolio Decisions: Multi-Axis News Decomposition and RL Diagnostics.** This paper introduces Semantic State Abstraction Interfaces (SSAI), a methodological template for mapping unstructured text into auditable, named coordinates with neutral defaults on low-information days. The framework is instantiated with four axes (sentiment, risk, confidence, volatility forecast) on a US-equity panel, explicitly separating representation hypotheses from optimization variance in sequential decision systems. The key contribution is the evaluation protocol itself, not performance claims over denser alternatives. This matters for interpretability in financial AI, where regulators and users need to understand what information the model is using and why.\n\n## World Models, Reinforcement Learning, and Diagnostics\n\n**[1] AGWM: Affordance-Grounded World Models for Environments with Compositional Prerequisites.** This paper addresses a fundamental flaw in standard world models: they learn stationary transition functions that conflate correlation with causation, ignoring action preconditions that depend on temporal or compositional prerequisites. The authors propose affordance-grounded world models that explicitly model which actions are executable at each timestep, learning the conditions under which actions become available. This is crucial because in interactive environments, an action's feasibility depends on prior actions having met its prerequisites. This work matters for model-based RL in complex environments where naive correlation-based world models fail catastrophically on out-of-distribution trajectories.\n\n**[14] Interpreting Reinforcement Learning Agents with Susceptibilities.** This paper generalizes the susceptibility technique—studying how posterior expectations respond to loss perturbations—to deep reinforcement learning regret. The authors demonstrate in a simple gridworld that susceptibilities reveal internal features of model development in parameter space that are invisible when studying the learned policy alone. The method provides a window into stagewise learning dynamics, showing when and how the agent's internal representations shift during training. This matters because it offers a new interpretability tool for understanding developmental trajectories in RL, beyond what policy analysis or value-function inspection can reveal.\n\n**[10] Learning Multi-Relational Graph Representations for DNA Methylation-Based Biological Age Estimation.** This paper addresses the limitation that existing age clock models treat CpG sites as independent features, ignoring the complex biological relationships among them. The authors propose RelAge-GNN, a multi-relational graph neural network that explicitly models heterogeneous relationships between methylation sites, learning interpretable edge-type-specific representations. The model achieves state-of-the-art biological age prediction while providing insight into which biological pathways and CpG interactions drive aging. This matters for interpretability in computational biology, where understanding the \"why\" behind predictions is as important as accuracy.\n\n**[12] Instruction Tuning Changes How Upstream State Conditions Late Readout: A Cross-Patching Diagnostic.** This paper investigates how instruction tuning (IT) changes the internal computation of language models compared to pretrained (PT) baselines, specifically how earlier-layer states condition later-layer readout. The authors introduce first-divergence cross-patching: at the first token where PT and IT disagree, they cross each model's earlier-layer state with the other's later-layer components. This diagnostic reveals that instruction tuning does not simply add a \"refusal direction\" or \"assistant persona\" at a single layer, but rather reorganizes how upstream computation feeds into downstream decision-making. This matters because it refines our understanding of where and how fine-tuning alters model behavior, enabling more targeted interpretability and control.\n\n**[5] Efficient Data Selection for Multimodal Models via Incremental Optimization Utility.** This paper addresses the quality-quantity trade-off in synthetic data for large multimodal models, where LLM-as-a-Judge approaches are effective but computationally prohibitive and lack interpretability. The authors propose One-Step-Train (OST), which reformulates data selection as an incremental optimization utility ranking problem, estimating the marginal utility of each sample via a simulated single-step update on a lightweight proxy model. OST provides an interpretable criterion for why each sample is selected or rejected, grounded in its estimated contribution to model improvement. This matters because transparent data selection is essential for understanding and debugging the training pipelines of large multimodal models.\n\n## Key Takeaways\n- Causal interpretability is undergoing a rigor revolution: papers are now expected to state identification assumptions for causal claims [11], and new methods like PLOT [8] and susceptibility analysis [14] provide principled tools for causal abstraction and developmental analysis.\n- Sparse autoencoders and prototype learning are converging on unsupervised interpretability: ProtoSSL [6] enables prototype learning without labels, while Diff-SAE [4] shows that focusing on activation differences can isolate specific mechanisms like backdoors.\n- Agentic AI demands interpretability tightly integrated with the action loop: MAVEN [7] and the tool-use analysis [2] both argue for in-step auditing rather than post-hoc explanation, while SSAI [3] provides a template for auditable state representations in sequential decisions.\n- World models for interactive environments must model action preconditions, not just transitions: AGWM [1] addresses the fundamental failure of stationary world models in environments with compositional prerequisites, showing that causal grounding is essential for model-based RL.\n- Instruction tuning reconfigures internal computation in distributed, non-local ways: cross-patching diagnostics [12] reveal that fine-tuning reorganizes how upstream states condition late readout, rather than adding a single \"behavior direction\" at a fixed layer.\n- Interpretable architectures continue to close the gap with black-box methods: approximation-free differentiable oblique decision trees [13] and parallelized Tsetlin embeddings [9] demonstrate that logic-based models can achieve competitive performance while maintaining full transparency.\n- Multimodal and biological domains enforce interpretability constraints that drive method innovation: RelAge-GNN [10] and OST [5] show that domain-specific requirements for transparency can lead to novel architectures and training paradigms that are interpretable by design.",
+    "papers": [
+      {
+        "title": "AGWM: Affordance-Grounded World Models for Environments with Compositional Prerequisites",
+        "url": "",
+        "authors": [
+          "Qinshi Zhang",
+          "Weipeng Deng",
+          "Zhihan Jiang",
+          "Jiaming Qu",
+          "Qianren Li",
+          "Weitao Xu",
+          "Ray LC"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Beyond the Black Box: Interpretability of Agentic AI Tool Use",
+        "url": "",
+        "authors": [
+          "Hariom Tatsat",
+          "Ariye Shater"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Semantic State Abstraction Interfaces for LLM-Augmented Portfolio Decisions: Multi-Axis News Decomposition and RL Diagnostics",
+        "url": "",
+        "authors": [
+          "Likhita Yerra",
+          "Remi Uttejitha Allam"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Activation Differences Reveal Backdoors: A Comparison of SAE Architectures",
+        "url": "",
+        "authors": [
+          "Sachin Kumar"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Efficient Data Selection for Multimodal Models via Incremental Optimization Utility",
+        "url": "",
+        "authors": [
+          "Jinhao Jing",
+          "Qiannian Zhao",
+          "Chao Huang",
+          "Zhan Su"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "ProtoSSL: Interpretable Prototype Learning from Unlabeled Time-Series Data",
+        "url": "",
+        "authors": [
+          "Steven Song",
+          "Sahil Sethi",
+          "Brett Beaulieu-Jones",
+          "Robert L. Grossman"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "MAVEN: Multi-Agent Verification-Elaboration Network with In-Step Epistemic Auditing",
+        "url": "",
+        "authors": [
+          "Yinsheng Yao",
+          "Jiehao Tang",
+          "Zhaozhen Yang",
+          "Dawei Cheng"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "PLOT: Progressive Localization via Optimal Transport in Neural Causal Abstraction",
+        "url": "",
+        "authors": [
+          "Jonathn Chang",
+          "Arya Datla",
+          "Ziv Goldfeld"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "FastOmniTMAE: Parallel Clause Learning for Scalable and Hardware-Efficient Tsetlin Embeddings",
+        "url": "",
+        "authors": [
+          "Ahmed K. Kadhim",
+          "Lei Jiao",
+          "Rishad Shafik",
+          "Ole-Christoffer Granmo",
+          "Mayur Kishor Shende"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Learning Multi-Relational Graph Representations for DNA Methylation-Based Biological Age Estimation",
+        "url": "",
+        "authors": [
+          "Qing Qing",
+          "Xikun Zhang",
+          "Zhongyuan Zhang",
+          "Jiarui Liu",
+          "Xingtong Yu",
+          "Xiaotao Shen",
+          "Ziqi Xu",
+          "Qixin Zhang",
+          "Zhe Wang",
+          "Renqiang Luo"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Position: Mechanistic Interpretability Must Disclose Identification Assumptions for Causal Claims",
+        "url": "",
+        "authors": [
+          "Zezheng Lin",
+          "Fengming Liu"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Instruction Tuning Changes How Upstream State Conditions Late Readout: A Cross-Patching Diagnostic",
+        "url": "",
+        "authors": [
+          "Yifan Zhou"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Approximation-Free Differentiable Oblique Decision Trees",
+        "url": "",
+        "authors": [
+          "Subrat Prasad Panda",
+          "Blaise Genest",
+          "Arvind Easwaran"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Interpreting Reinforcement Learning Agents with Susceptibilities",
+        "url": "",
+        "authors": [
+          "Chris Elliott",
+          "Einar Urdshals",
+          "David Quarel",
+          "Daniel Murfet"
+        ],
+        "date": "2026-05-11"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-11",
+    "paperCount": 1,
+    "markdown": "Here is the technical digest based on the provided paper.\n\n# From Black Box to Glass Graph: Distilling Model Logic into Data-Centric Transparency\n\nToday’s research landscape in explainability is shifting from merely generating post-hoc explanations for individual predictions toward fundamentally redesigning how models achieve transparency. The highlighted work tackles the core opacity of Graph Neural Networks (GNNs) by proposing a novel framework that moves complexity from the model architecture into the graph structure itself, aiming for inherent explainability rather than just local attribution.\n\n## Distilling Complexity: The M2D Framework for Transparent Graph Learning\n\n**Paper 1: \"From Model to Data (M2D): Shifting Complexity from GNNs to Graphs for Transparent Graph Learning\"** [1]\nThis paper addresses the core problem that while many GNN architectures exist, understanding *why* a more complex model outperforms a simpler one remains opaque, as existing explainability methods only offer local, post-hoc attributions. The authors propose **Model-to-Data (M2D) distillation**, a novel framework that inverts the training process: instead of distilling knowledge from a large teacher model into a smaller student model, M2D distills the teacher’s learned decision boundary *into the data itself* (specifically, into synthetic graphs). The key contribution is that by training a simple, fully transparent GNN (e.g., a single-layer GCN) on this distilled data, it can match the performance of the original complex teacher, making the previously implicit \"performance gap\" explicit and interpretable through the structural features of the new data. This matters because it provides a new lens for architectural transparency, allowing researchers to visualize *what* the complex model learned as concrete graph patterns, rather than relying on opaque feature or node importance scores.",
+    "papers": [
+      {
+        "title": "From Model to Data (M2D): Shifting Complexity from GNNs to Graphs for Transparent Graph Learning",
+        "url": "",
+        "authors": [
+          "Debolina Halder Lina",
+          "Arlei Silva"
+        ],
+        "date": "2026-05-11"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-11",
+    "paperCount": 10,
+    "markdown": "# Multimodal Reasoning: From Decoding Interventions to Cognitive Profiling and Agentic Systems\n\nToday's research landscape reveals a decisive shift from simply benchmarking multimodal models to actively intervening in their reasoning processes—whether through decoding-time corrections, reinforcement learning with fine-grained credit assignment, or architectural unification of generation and understanding. A parallel thread sees the community building specialized benchmarks and agents for real-world deployment in domains ranging from smart homes to weather forecasting, while simultaneously grappling with fundamental questions about model cognition and data efficiency.\n\n## Decoding-Time Interventions and Visual Grounding\n\n[1] **Breaking the Illusion: When Positive Meets Negative in Multimodal Decoding** — This paper tackles object hallucination in Vision-Language Models (VLMs), where models generate content contradicting visual input due to over-reliance on linguistic priors. The authors propose Positive-and-Negative Decoding (PND), a training-free inference framework that intervenes directly in the decoding process by introducing a dual-path contrast: a positive path amplifying visual evidence and a negative path constructing counterfactuals. The approach is motivated by a discovered attention imbalance where visual features are systematically under-weighted. PND enforces visual fidelity without additional training, making it immediately applicable to existing VLMs.\n\n[4] **Retrieve, Integrate, and Synthesize: Spatial-Semantic Grounded Latent Visual Reasoning** — This work addresses the information bottleneck in Multimodal Large Language Models (MLLMs) that arises from compressing visual evidence into discrete textual thoughts for reasoning. The authors identify three failure modes in prior latent reasoning methods: drifting from pretrained circuits, collapsing into instance-agnostic patterns, and being bypassed during answer generation. Their proposed RIS framework performs retrieval, integration, and synthesis entirely in the latent space, maintaining manifold compatibility with pretrained representations. This enables fine-grained spatial-semantic reasoning without the information loss inherent to discrete tokenization.\n\n[5] **Structured Role-Aware Policy Optimization for Multimodal Reasoning** — This paper identifies a critical limitation in reinforcement learning from verifiable rewards (RLVR) for large vision-language models: sequence-level final-answer rewards cannot distinguish whether a correct answer is supported by task-relevant visual evidence or arrived at via spurious correlations. The authors revisit multimodal RLVR from a role-aware token-level credit assignment perspective, proposing structured optimization that differentiates the functional roles of different tokens. This allows the model to reinforce correct reasoning chains rather than merely correct outputs. The approach improves both accuracy and visual grounding in multimodal reasoning tasks.\n\n## Cognitive Evaluation and Safety Reasoning\n\n[3] **Uneven Evolution of Cognition Across Generations of Generative AI Models** — This paper introduces a psychometric framework for evaluating generative AI models using tasks adapted from the Wechsler Adult Intelligence Scale, comparing their cognitive profiles to human norms across model generations. Initial evaluation reveals a profoundly uneven cognitive architecture: near-ceiling performance in verbal comprehension and working memory (>98th percentile) contrasts starkly with deficits in other cognitive domains. The framework enables tracking of cognitive evolution across model generations, revealing which capabilities improve and which stagnate. This work provides a rigorous methodology for moving beyond narrow task performance toward holistic cognitive assessment of AI systems.\n\n[8] **RuleSafe-VL: Evaluating Rule-Conditioned Decision Reasoning in Vision-Language Content Moderation** — This paper addresses the gap in current multimodal safety benchmarks, which reduce content moderation to matching predefined final labels without testing the underlying rule-based reasoning process. The authors construct a benchmark where correct moderation outcomes depend on which policy rules are activated, how rules interact, and whether available evidence is sufficient. This tests whether models apply policies correctly rather than simply arriving at correct labels through spurious correlations. RuleSafe-VL reveals that high benchmark scores can mask fundamental failures in rule-conditioned decision reasoning.\n\n## Domain-Specific Multimodal Systems\n\n[2] **MIST: Multimodal Interactive Speech-based Tool-calling Conversational Assistants for Smart Homes** — This work tackles the understudied challenge of modeling real-world IoT devices with voice-based interfaces that must handle spatiotemporal constraints, dynamic state tracking, and mixed-initiative interaction patterns. The authors introduce MIST, a synthetic multi-turn, voice-driven code generation dataset designed for smart home scenarios. While modern LLMs demonstrate strong tool-usage capabilities, MIST reveals that modeling real-world IoT presents unique challenges around state changes over time and space. The dataset provides a foundation for developing conversational agents that can dynamically invoke IoT devices through natural speech interactions.\n\n[7] **WeatherSyn: An Instruction Tuning MLLM For Weather Forecasting Report Generation** — This paper proposes the Weather Forecasting Report (WFR) task, addressing the inefficiency of manual analysis of multi-source data for weather reporting. The authors construct the first instruction-tuning dataset for generating weather forecast reports from multimodal meteorological data. Despite the prevalence of MLLMs, the weather forecasting domain remains largely underexplored for data-driven report generation. This work bridges that gap, enabling automated synthesis of multi-source weather data into coherent, actionable forecast reports.\n\n## Architectural Innovation and Data Efficiency\n\n[9] **TextLDM: Language Modeling with Continuous Latent Diffusion** — This paper takes a significant step toward unifying visual generation and language understanding under a single architecture by applying the latent diffusion recipe—successful for images and videos—to text generation. The authors propose TextLDM, which uses a Transformer-based VAE to map discrete tokens to continuous latents, enhanced by Representation Alignment (REPA) with a frozen pretrained language model. This transfers the diffusion transformer (DiT) framework to language modeling with minimal architectural modification. The work suggests a path toward a unified architecture capable of both generation (visual synthesis) and understanding (text generation).\n\n[6] **Efficient Data Selection for Multimodal Models via Incremental Optimization Utility** — This paper addresses the quality-quantity trade-off in synthetic data scaling for Large Multimodal Models (LMMs), where LLM-as-a-Judge approaches are effective but computationally prohibitive. The authors propose One-Step-Train (OST), a framework that reformulates data selection as an incremental optimization utility ranking problem, estimating the marginal utility of each sample via a simulated single-step update on a lightweight proxy model. Unlike semantic heuristics, OST directly measures how much each sample contributes to model improvement. This provides an interpretable, efficient alternative to expensive LLM-based quality filtering.\n\n[10] **HyperEyes: Dual-Grained Efficiency-Aware Reinforcement Learning for Parallel Multimodal Search Agents** — This paper identifies a critical inefficiency in existing multimodal search agents, which process target entities sequentially, issuing one tool call per entity and accumulating redundant interaction rounds for independent sub-retrievals. The authors argue that effective multimodal agents should \"search wider rather than longer,\" and propose HyperEyes, a parallel multimodal search agent that fuses visual grounding and retrieval into a single atomic action. The agent dispatches multiple grounded queries concurrently within a single round, treating inference efficiency as a primary optimization objective. This represents a paradigm shift from sequential tool-use to parallel, coordinated multimodal search.\n\n## Key Takeaways\n\n- **Decoding-time interventions** offer immediate, training-free solutions for hallucination in VLMs, with PND's dual-path contrast demonstrating that amplifying visual evidence while constructing visual counterfactuals effectively enforces visual fidelity.\n- **Latent-space reasoning** is emerging as a critical direction for overcoming the information bottleneck of discrete tokenization, with RIS achieving fine-grained spatial-semantic reasoning through retrieval, integration, and synthesis entirely in continuous hidden states.\n- **Reinforcement learning for multimodal reasoning** requires moving beyond sequence-level rewards to role-aware token-level credit assignment, enabling models to learn correct reasoning chains rather than merely correct outputs.\n- **Psychometric evaluation frameworks** reveal that generative AI exhibits profoundly uneven cognitive architectures—excelling in verbal comprehension while potentially underperforming in other domains—providing a more nuanced assessment than task-specific benchmarks.\n- **Domain-specific multimodal systems** are expanding into practical applications (smart homes, weather forecasting), revealing that real-world deployment introduces challenges around spatiotemporal constraints and dynamic state tracking that generic benchmarks fail to capture.\n- **Architectural unification** of generation and understanding is advancing through TextLDM's application of latent diffusion to language modeling, suggesting a path toward single-architecture multimodal systems.\n- **Data efficiency and parallelization** are being optimized through interpretable marginal utility estimation (OST) and concurrent multi-entity search (HyperEyes), respectively, reducing both computational cost and interaction rounds in multimodal systems.",
+    "papers": [
+      {
+        "title": "Breaking the Illusion: When Positive Meets Negative in Multimodal Decoding",
+        "url": "",
+        "authors": [
+          "Yubo Jiang",
+          "Yitong An",
+          "Xin Yang",
+          "Abudukelimu Wuerkaixi",
+          "Xuxin Cheng",
+          "Fengying Xie",
+          "Zhiguo Jiang",
+          "Cao Liu",
+          "Ke Zeng",
+          "Haopeng Zhang"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "MIST: Multimodal Interactive Speech-based Tool-calling Conversational Assistants for Smart Homes",
+        "url": "",
+        "authors": [
+          "Maximillian Chen",
+          "Xuanming Zhang",
+          "Michael Peng",
+          "Zhou Yu",
+          "Alexandros Papangelis",
+          "Yohan Jo"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Uneven Evolution of Cognition Across Generations of Generative AI Models",
+        "url": "",
+        "authors": [
+          "Isaac Galatzer-Levy",
+          "Daniel McDuff",
+          "Xin Liu",
+          "Jed McGiffin"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Retrieve, Integrate, and Synthesize: Spatial-Semantic Grounded Latent Visual Reasoning",
+        "url": "",
+        "authors": [
+          "Jin Cui",
+          "Xinyue Long",
+          "Xunyong Zhang",
+          "Yadong Zhang",
+          "Chuanchang Su",
+          "Jingye Gan",
+          "Boran Zhao",
+          "Pengju Ren"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Structured Role-Aware Policy Optimization for Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Bingqing Jiang",
+          "Difan Zou"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "Efficient Data Selection for Multimodal Models via Incremental Optimization Utility",
+        "url": "",
+        "authors": [
+          "Jinhao Jing",
+          "Qiannian Zhao",
+          "Chao Huang",
+          "Zhan Su"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "WeatherSyn: An Instruction Tuning MLLM For Weather Forecasting Report Generation",
+        "url": "",
+        "authors": [
+          "Zinan Zheng",
+          "Yang Liu",
+          "Nuo Chen",
+          "Juepeng Zheng",
+          "Hong Cheng",
+          "Jia Li"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "RuleSafe-VL: Evaluating Rule-Conditioned Decision Reasoning in Vision-Language Content Moderation",
+        "url": "",
+        "authors": [
+          "Zhifeng Lu",
+          "Dianyuan Wang",
+          "Yuhu Shang",
+          "Zhenbo Xu"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "TextLDM: Language Modeling with Continuous Latent Diffusion",
+        "url": "",
+        "authors": [
+          "Jiaxiu Jiang",
+          "Jingjing Ren",
+          "Wenbo Li",
+          "Bo Wang",
+          "Haoze Sun",
+          "Yijun Yang",
+          "Jianhui Liu",
+          "Yanbing Zhang",
+          "Shenghe Zheng",
+          "Yuan Zhang",
+          "Haoyang Huang",
+          "Nan Duan",
+          "Wangmeng Zuo"
+        ],
+        "date": "2026-05-11"
+      },
+      {
+        "title": "HyperEyes: Dual-Grained Efficiency-Aware Reinforcement Learning for Parallel Multimodal Search Agents",
+        "url": "",
+        "authors": [
+          "Guankai Li",
+          "Jiabin Chen",
+          "Yi Xu",
+          "Xichen Zhang",
+          "Yuan Lu"
+        ],
+        "date": "2026-05-11"
+      }
+    ]
+  }
+]
