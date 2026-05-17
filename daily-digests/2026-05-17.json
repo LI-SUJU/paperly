@@ -1,0 +1,483 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-17",
+    "paperCount": 18,
+    "markdown": "# Mechanistic Interpretability at Scale: From Neural Activations to Verified Concepts\n\nToday's research landscape reveals a community rapidly maturing beyond toy models, tackling interpretability across diverse domains—from EEG signals and genomic sequences to LLMs and materials science. The field is characterized by a dual movement: developing scalable, unsupervised methods for discovering interpretable features (via sparse autoencoders, Voronoi partitions, and attention-guided training), while simultaneously building rigorous evaluation frameworks to verify that these interpretations correspond to genuine mechanistic understanding rather than spurious correlations.\n\n## Unsupervised Feature Discovery in High-Dimensional Neural Representations\n\n**[1]** This paper applies TopK Sparse Autoencoders (SAEs) to three architecturally distinct EEG foundation models (SleepFM, REVE, LaBraM) to extract sparse feature dictionaries from their embeddings. By grounding extracted features in a clinical taxonomy covering abnormality, age, sex, and medication status, the authors benchmark monosemanticity and entanglement across architectures. A single hyperparameter procedure driven by an intrinsic dictionary health audit enables principled comparison, directly addressing the opacity that blocks clinical trust in EEG-based AI systems.\n\n**[8]** Exemplar Partitioning (EP) introduces an unsupervised method for constructing interpretable feature dictionaries from LLM activations that requires approximately 1000× fewer tokens than comparable sparse autoencoders. EP builds a Voronoi partition of activation space via leader-clustering streamed activations within a distance threshold, where each region is anchored by an observed exemplar serving as both membership criterion and intervention direction. This approach offers a computationally efficient alternative to SAEs while maintaining interpretability, though its dictionary size is determined by activation geometry rather than being prespecified.\n\n**[13]** This paper formalizes the Rate-Distortion-Polysemanticity tradeoff in SAEs, theoretically and empirically demonstrating that restricting SAEs to produce monosemantic (highly interpretable) representations necessarily comes with costs in reconstruction fidelity and feature efficiency. Under toy-modeling assumptions, the authors show that sparse autoencoders face an inherent tension: minimizing distortion while using few features often produces polysemantic features. This fundamental characterization has direct implications for mechanistic interpretability, suggesting practitioners must explicitly navigate this tradeoff when designing feature dictionaries.\n\n**[4]** The authors demonstrate that cosine similarity—a widely used tool for assessing layer relevance in LLMs—is a poor proxy for actual performance degradation caused by layer removal. Their theoretical analysis shows that a layer can exhibit arbitrarily low cosine similarity while still being functionally critical, challenging a common practice in mechanistic interpretability. This work calls for more principled approaches to evaluating layer relevance in transformer architectures.\n\n## Interpretability-by-Design: Training Frameworks with Built-In Transparency\n\n**[3]** AttnGen introduces an attention-guided training framework that embeds interpretability directly into the optimization process for genomic sequence classification. The method computes nucleotide-level importance scores via attention mechanisms and progressively suppresses low-contribution positions during training, encouraging the model to focus on compact sets of informative regions. This direct embedding of interpretability into the training loop offers a compelling alternative to post-hoc explanation methods, promising more biologically meaningful and reliable genomic predictions.\n\n**[7]** This paper proposes a fine-grained Concept Bottleneck Model (CBM) framework that grounds each concept in localized visual evidence, enabling direct inspection of where and how concepts are encoded in the model. Unlike existing CBMs that struggle to verify whether predicted concepts correspond to correct visual evidence, this approach allows users to interpret predictions and verify that the model learns intended concepts rather than spurious correlations. The work significantly advances the reliability of concept-based explanations for vision tasks.\n\n**[14]** Composable Crystals introduces a concept-based compositional framework for materials discovery, training a vector-quantized variational autoencoder to automatically discover reusable crystal concepts that serve as building blocks for guided generation. This approach replaces black-box stochastic sampling with controllable generation based on learned concepts, enabling domain experts to reason about why generated structures are valid, stable, or novel. The work demonstrates how interpretable representations can drive practical scientific discovery in materials science.\n\n**[6]** This paper proposes a semantic feature segmentation framework for predictive maintenance that decomposes the monitored feature space into canonical and residual components based on domain-informed criteria. By organizing monitoring variables into functional groups reflecting operational meaning, the framework enhances model interpretability in complex systems where feature heterogeneity and redundancy obscure fault-relevant information. The approach addresses the practical challenge of making predictive maintenance models transparent to domain experts.\n\n## Mechanistic Analysis of Specialized Architectures\n\n**[2]** This comparative evaluation examines classical statistical methods, ensemble learning approaches, and exploratory neural models for financial distress prediction under severe class imbalance. The study incorporates structured preprocessing and imbalance mitigation via SMOTE, but notably focuses on benchmark comparisons rather than mechanistic understanding of how different architectures handle minority-class signals. While providing practical insights for financial risk modeling, the work highlights the gap between predictive performance and interpretability in high-stakes financial applications.\n\n**[9]** A deterministic agentic workflow for Harmonized System tariff classification addresses the challenge of multi-dimensional rule reasoning, where correct classification must satisfy competing priority rules along material, form, function, essential character, and other axes simultaneously. The agentic workflow replaces end-to-end black-box approaches with interpretable rule-based reasoning, producing decisions that can be traced back to specific General Interpretive Rules. This work demonstrates how interpretable AI can handle high-stakes, expert-level classification tasks requiring complex multi-factorial reasoning.\n\n**[10]** This extended abstract examines how LLMs process relative geographic space using activation patching, an emerging mechanistic interpretability technique. By intervening on specific model components, the authors investigate whether geographic knowledge is localized or distributed across model layers. Though preliminary, this work extends mechanistic interpretability methods beyond linguistic phenomena to spatial reasoning, addressing important safety questions about LLM deployment in geographic analysis.\n\n**[12]** Hidden State Poisoning Attacks (HiSPA) reveal that Mamba-based language models—state space models offering linear time complexity—are vulnerable to specific short input phrases that induce a partial amnesia effect by irreversibly overwriting information in hidden states. The paper introduces RoBench-25, a benchmark for evaluating information retrieval capabilities under such attacks. This work critically extends adversarial robustness analysis to SSMs, demonstrating that interpretability methods must account for vulnerabilities unique to non-transformer architectures.\n\n**[18]** Tensor similarity introduces a weight-based metric for comparing neural network components that is invariant to weight-space symmetries, capturing global functional equivalence and accounting for cross-layer mechanisms. Unlike existing similarity measures that are either blind to out-of-distribution mechanisms or disregard weight-space symmetries, this metric enables principled verification that two network parts implement the same computation. The work provides a foundational tool for mechanistic interpretability, particularly for verifying circuit-level analyses across different training runs or architectures.\n\n## Evaluation Frameworks and Benchmarking for Interpretability\n\n**[16]** AIMing proposes a standardized framework for evaluating explainability in Graph Neural Networks, addressing the lack of comprehensive evaluation protocols. The framework tackles the challenge that existing evaluations primarily involve post-hoc explanations for single models, making cross-model comparison difficult, while evaluation of inherently interpretable models remains underdeveloped. This work represents an important step toward rigorous, comparable interpretability evaluation in the graph domain.\n\n**[17]** Critic-Driven Voronoi State Partitioning introduces a model-agnostic method for distilling deep RL policies into explainable surrogate models by partitioning a black-box control policy into regions where simple action selection rules apply. Unlike traditional distillation that only minimizes behavioral distance, this method leverages RL-specific components such as action value functions to create more faithful surrogates. The work addresses the long-standing performance-interpretability trade-off in deep reinforcement learning.\n\n**[11]** This paper proposes an explainable framework for detecting depression-related status shifts from user digital traces by combining multiple BERT-based models to extract complementary signals across different dimensions of mental health. The temporal trajectories capture how mental health signals evolve, including phases of improvement, deterioration, or stability. While the focus is on clinical application, the framework demonstrates how interpretability can be built into mental health monitoring systems that process inherently timestamped digital traces.\n\n**[15]** While primarily focused on energy-efficient GNSS signal classification on edge TPUs, this work's approach to compressed sensing with interference classification has interpretability implications. The method compresses data streams directly at hardware receivers while simultaneously classifying jamming and spoofing attacks in real time, suggesting that interpretable signal processing can be achieved within severe computational constraints. The work underscores that interpretability research must extend to embedded and edge computing contexts.\n\n**[5]** This investigation of multimodal pediatric sleep embeddings tests whether augmenting embeddings with PHATE-derived per-epoch coordinates, persistent homology summaries, and EHR data yields task-relevant signals. Using simple linear and MLP models chosen for interpretability rather than state-of-the-art performance, the authors show that topological signatures contain clinically meaningful information. This work demonstrates how interpretable analyses of latent spaces can extract diagnostic signals without requiring complex models.\n\n## Key Takeaways\n\n1. **Scalable feature extraction is advancing rapidly**: Exemplar Partitioning [8] achieves 1000× efficiency gains over SAEs, while the Rate-Distortion-Polysemanticity tradeoff [13] provides theoretical grounding for why interpretable features require explicit tradeoffs, not assumptions.\n\n2. **Interpretability-by-design is gaining traction**: Multiple works [3, 7, 14] embed transparency directly into training objectives—suppressing irrelevant features, grounding concepts in visual evidence, or learning composable concept representations—rather than relying solely on post-hoc explanations.\n\n3. **Established interpretability tools face scrutiny**: Cosine similarity for layer relevance [4] and existing SAE evaluation methods [13] are shown to have fundamental limitations, pushing the field toward more rigorous validation of interpretability methods themselves.\n\n4. **Mechanistic analysis is expanding to specialized architectures**: Activation patching now extends to geographic reasoning in LLMs [10], while tensor similarity [18] enables circuit-level verification across different model instances, and SSMs are shown to have unique vulnerabilities [12].\n\n5. **Domain-specific interpretability frameworks are emerging**: From EEG foundations [1] and genomics [3] to tariff classification [9] and materials discovery [14], interpretability methods are being tailored to domain constraints while maintaining mechanistic rigor.\n\n6. **Evaluation frameworks are maturing**: Standardized protocols for GNN explainability [16] and distillation-driven RL interpretability [17] demonstrate the field's growing commitment to reproducible, comparable interpretability assessments.\n\n7. **The bridge between interpretability and real-world deployment remains critical**: Multiple works [1, 2, 6, 11, 15] address practical barriers such as clinical trust, class imbalance, feature heterogeneity, and edge computing constraints, showing that mechanistic understanding must ultimately serve applications.",
+    "papers": [
+      {
+        "title": "Mechanistic Interpretability of EEG Foundation Models via Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "William Lehn-Schiøler",
+          "Magnus Ruud Kjær",
+          "Rahul Thapa",
+          "Magnus Guldberg Pedersen",
+          "Anton Storgaard Mosquera",
+          "Nick Williams",
+          "Radu Gatej",
+          "Tue Lehn-Schiøler",
+          "Sándor Beniczky",
+          "Sadasivan Puthusserypady",
+          "James Zou",
+          "Lars Kai Hansen"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Comparative Evaluation of Machine Learning Approaches for Minority-Class Financial Distress Prediction Under Class Imbalance Constraints",
+        "url": "",
+        "authors": [
+          "Karan Sehgal",
+          "Khawar Naveed Bhatti"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "AttnGen: Attention-Guided Saliency Learning for Interpretable Genomic Sequence Classification",
+        "url": "",
+        "authors": [
+          "Rayhaneh Shabani Nia",
+          "Ali Karkehabadi"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Rethinking Layer Relevance in Large Language Models Beyond Cosine Similarity",
+        "url": "",
+        "authors": [
+          "Cristian Hinostroza",
+          "Rodrigo Toro Icarte",
+          "Christ Devia",
+          "Andres Carvallo De Ferari",
+          "Eugenio Herrera-Berg",
+          "Denis Parra",
+          "Jorge F Silva"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Uncovering Trajectory and Topological Signatures in Multimodal Pediatric Sleep Embeddings",
+        "url": "",
+        "authors": [
+          "Scott Ye",
+          "Harlin Lee"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Semantic Feature Segmentation for Interpretable Predictive Maintenance in Complex Systems",
+        "url": "",
+        "authors": [
+          "Emilio Mastriani",
+          "Alessandro Costa",
+          "Federico Incardona",
+          "Kevin Munari",
+          "Sebastiano Spinello"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Towards Fine-Grained and Verifiable Concept Bottleneck Models",
+        "url": "",
+        "authors": [
+          "Yingying Fang",
+          "Haijie Xu",
+          "Shuang Wu",
+          "Mariathasan Anish",
+          "Guang Yang"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Exemplar Partitioning for Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Jessica Rumbelow"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "A Deterministic Agentic Workflow for HS Tariff Classification: Multi-Dimensional Rule Reasoning with Interpretable Decisions",
+        "url": "",
+        "authors": [
+          "Yu Zhang",
+          "Dongjiang Zhuang",
+          "Qu Zhou",
+          "Zheng Huang",
+          "Junhe Wu",
+          "Jing Cao",
+          "Kai Chen"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Exploring Geographic Relative Space in Large Language Models through Activation Patching",
+        "url": "",
+        "authors": [
+          "Stef De Sabbata",
+          "Rahul Baiju",
+          "Stefano Mizzaro",
+          "Kevin Roitero"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Explainable Detection of Depression Status Shifts from User Digital Traces",
+        "url": "",
+        "authors": [
+          "Loris Belcastro",
+          "Francesco Gervino",
+          "Fabrizio Marozzo",
+          "Domenico Talia",
+          "Paolo Trunfio"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Hidden State Poisoning Attacks against Mamba-based Language Models",
+        "url": "",
+        "authors": [
+          "Alexandre Le Mercier",
+          "Chris Develder",
+          "Thomas Demeester"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "The Rate-Distortion-Polysemanticity Tradeoff in SAEs",
+        "url": "",
+        "authors": [
+          "Tommaso Mencattini",
+          "Francesco Montagna",
+          "Francesco Locatello"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Composable Crystals: Controllable Materials Discovery via Concept Learning",
+        "url": "",
+        "authors": [
+          "Nian Liu",
+          "Yuwei Zeng",
+          "Ryoji Kubo",
+          "Nikita Kazeev",
+          "Stephen Gregory Dale",
+          "Artem Maevskiy",
+          "Pengru Huang",
+          "Thomas Laurent",
+          "Kostya S. Novoselov",
+          "Xavier Bresson"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "GenAI for Energy-Efficient and Interference-Aware Compressed Sensing of GNSS Signals on a Google Edge TPU",
+        "url": "",
+        "authors": [
+          "Thorben Wegner",
+          "Lucas Heublein",
+          "Tobias Feigl",
+          "Felix Ott",
+          "Christopher Mutschler",
+          "Alexander Rügamer"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "AIMing for Standardised Explainability Evaluation in GNNs: A Framework and Case Study on Graph Kernel Networks",
+        "url": "",
+        "authors": [
+          "Magdalena Proszewska",
+          "N. Siddharth"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Critic-Driven Voronoi-Quantization for Distilling Deep RL Policies to Explainable Models",
+        "url": "",
+        "authors": [
+          "Senne Deproost",
+          "Denis Steckelmacher",
+          "Ann Nowé"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "When Are Two Networks the Same? Tensor Similarity for Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "ML Nissen Gonzalez",
+          "Melwina Albuquerque",
+          "Laurence Wroe",
+          "Jacob Meyer Cohen",
+          "Logan Riggs Smith",
+          "Thomas Dooms"
+        ],
+        "date": "2026-05-17"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-17",
+    "paperCount": 5,
+    "markdown": "# Beyond Black Boxes: Advances in Explainable and Responsible AI\n\nToday's research landscape reveals a maturing focus on making AI systems not just accurate, but fundamentally interpretable, auditable, and trustworthy. From novel rule-based classifiers that guarantee optimal pattern discovery to unified frameworks that holistically assess model integrity across ethical dimensions, the field is moving beyond simple post-hoc explanations toward principled, built-in transparency.\n\n## Rethinking Explainability: From Post-Hoc to Inherent\n\n[2] The Optimal Pattern Detection Tree (OPDT) introduces a paradigm shift in rule-based classification by formulating pattern discovery as a mixed-integer programming problem. Unlike greedy decision tree algorithms that settle for locally optimal splits, OPDT guarantees the discovery of a single globally optimal pattern through binary classification. This approach not only produces human-interpretable rules with inherent transparency, but also allows practitioners to incorporate prior knowledge and compliance constraints directly into the optimization framework. The work matters because it bridges the gap between the interpretability of symbolic rules and the optimality guarantees typically associated with mathematical programming, making it particularly valuable for regulated domains where auditability is non-negotiable.\n\n[5] The authors propose AIM (Assessment of Interpretability in Models), a standardized evaluation framework specifically designed for Graph Neural Networks (GNNs). Current evaluation practices suffer from a critical blind spot: they evaluate post-hoc explanations from multiple methods applied to a single model, making cross-model comparisons fundamentally flawed. AIM addresses this by enabling systematic comparison of explanations across different models, including inherently interpretable architectures. The paper demonstrates this framework on Graph Kernel Networks, showing how it can generate actionable insights about model behavior that post-hoc methods alone cannot provide. This is significant because as GNNs proliferate in sensitive applications like drug discovery and social network analysis, the community desperately needs standardized benchmarks to compare not just accuracy, but interpretability.\n\n## Unified Frameworks for Model Responsibility and Trust\n\n[3] The Model Integrity and Responsibility Assessment Index (MIRAI) tackles a critical gap in high-stakes tabular AI: the fragmented evaluation of model quality across separate dimensions. Current practice typically assesses explainability, fairness, robustness, privacy, and sustainability in isolation, leaving practitioners without a holistic view of model trustworthiness. MIRAI introduces a unified scoring framework that normalizes and direction-aligns metrics across all five dimensions, then aggregates them into a single interpretable score under controlled comparison settings. This enables direct apples-to-apples comparisons between models on their overall responsibility profile. The framework is particularly impactful because it operationalizes the growing consensus that predictive performance alone is insufficient for deployment in domains like credit scoring, healthcare diagnostics, and criminal justice.\n\n## Efficient Computation for Explainability at Scale\n\n[4] Woodelf++ presents a unified and computationally efficient algorithm for computing Partial Dependence Plots (PDPs), Joint-PDPs, and Partial Dependence Interaction Values (PDIVs) on decision tree ensembles. While PDPs are among the most widely used explainability tools in practice, existing implementations often compute each variant separately, leading to redundant computations and prohibitive runtime on large datasets. Woodelf++ exploits the tree structure to unify these computations into a single pass, dramatically reducing the time needed for any-order PDIV computations across all feature subsets and all data rows. This technical contribution matters because it removes a practical bottleneck: data scientists can now routinely compute comprehensive interaction analyses that were previously too expensive, enabling richer model debugging and feature engineering workflows.\n\n## Addressing Real-World Data Challenges for Reliable Explanations\n\n[1] This paper confronts a pervasive but under-discussed problem in financial distress prediction: the severe class imbalance that makes standard model evaluation and explanation unreliable. When bankrupt firms constitute less than 1% of observations, accuracy-based metrics become misleading, and explanations derived from such models can be dangerously incorrect. The study conducts a systematic comparative evaluation of classical statistical methods, ensemble approaches, and neural models under imbalance constraints, incorporating structured preprocessing and Synthetic Minority Oversampling Technique (SMOTE) for mitigation. While the abstract is truncated, the core contribution lies in establishing which modeling paradigms maintain interpretable and reliable predictions under extreme imbalance. This is crucial because financial regulators increasingly demand explainable risk models, and explanations derived from models that simply predict \"not bankrupt\" for every case are worse than useless.\n\n## Key Takeaways\n\n- The field is shifting from post-hoc explanations toward inherently interpretable models, with OPDT [2] demonstrating that rule-based systems can now offer optimality guarantees alongside transparency.\n- Standardized evaluation frameworks for explainability are emerging as a critical need, with AIM [5] for GNNs and MIRAI [3] for tabular models addressing the fragmentation of current assessment practices.\n- Computational efficiency for explainability tools is being dramatically improved, as Woodelf++ [4] shows that comprehensive interaction analysis need not be prohibitively expensive on decision tree ensembles.\n- Model responsibility must be evaluated holistically across explainability, fairness, robustness, privacy, and sustainability simultaneously, not as independent dimensions [3].\n- Real-world data challenges like class imbalance fundamentally undermine both model reliability and explanation validity, requiring careful methodological consideration before any interpretability analysis [1].\n- The community is moving toward principled, mathematically grounded approaches to interpretability, leveraging mixed-integer programming [2] and unified algorithmic frameworks [4] rather than heuristic approximations.\n- For high-stakes domains, the integration of prior knowledge and compliance constraints into model design itself (rather than as afterthoughts) represents a promising direction for trustworthy AI [2][3].",
+    "papers": [
+      {
+        "title": "Comparative Evaluation of Machine Learning Approaches for Minority-Class Financial Distress Prediction Under Class Imbalance Constraints",
+        "url": "",
+        "authors": [
+          "Karan Sehgal",
+          "Khawar Naveed Bhatti"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Optimal Pattern Detection Tree for Symbolic Rule-Based Classification",
+        "url": "",
+        "authors": [
+          "Young-Chae Hong",
+          "Yangho Chen"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Multi-Dimensional Model Integrity and Responsibility Assessment Index and Scoring Framework",
+        "url": "",
+        "authors": [
+          "Phuc Truong Loc Nguyen",
+          "Thanh Hung Do",
+          "Truong Thanh Hung Nguyen",
+          "Hung Cao"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Woodelf++: A Fast and Unified Partial Dependence Plot Algorithm for Decision Tree Ensembles",
+        "url": "",
+        "authors": [
+          "Ron Wettenstein",
+          "Alexander Nadel",
+          "Udi Boker"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "AIMing for Standardised Explainability Evaluation in GNNs: A Framework and Case Study on Graph Kernel Networks",
+        "url": "",
+        "authors": [
+          "Magdalena Proszewska",
+          "N. Siddharth"
+        ],
+        "date": "2026-05-17"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-17",
+    "paperCount": 16,
+    "markdown": "# Multimodal Reasoning and Agents: From Visual Physics to Clinical Timelines\n\nToday's research landscape reveals a field in rapid maturation, where multimodal systems are moving beyond simple perception tasks toward complex reasoning, procedural understanding, and real-world deployment. The community is simultaneously confronting fundamental challenges—data contamination, token efficiency, temporal grounding, and evaluation rigor—while pushing the boundaries of what multimodal AI can achieve across scientific, clinical, and embodied domains.\n\n## Benchmarking and Evaluating Multimodal Reasoning Capabilities\n\nThe research community is increasingly focused on stress-testing multimodal models through carefully designed benchmarks that expose reasoning failures rather than mere perception errors. Several papers this week highlight critical gaps in current evaluation practices and propose more rigorous frameworks.\n\n[1] Shan Yang presents **Physics-R1**, an audited Olympiad corpus that documents three undetected construction practices distorting vision-language reasoning measurements: train-eval contamination, translation drift, and MCQ saturation. The work introduces a three-stage audit pipeline (Jaccard → mxbai-embed-large cosine → Haiku-4.5 LLM-judge) that surfaces 134 near-duplicates and 4,846 paraphrase candidates in SciInstruct alone, while revealing a 17-pp Sonnet 4.5 delta on 59 problems when contamination is controlled. This matters because it suggests that reported performance gains in visual physics reasoning may be substantially inflated by systematic evaluation leakage.\n\n[6] Guanhua Chen et al. introduce **ProcedureVQA**, a novel multimodal benchmark for visual procedure question answering (VP-QA) that requires models to predict next-step actions from images of intermediate procedure states. Through comprehensive analysis, they identify two critical limitations in current VLMs: inadequate temporal reasoning and insufficient understanding of procedural dependencies. The work provides a systematic evaluation framework for a practically important task that has been largely overlooked by existing vision-language benchmarks.\n\n[9] Zilin Zhu et al. present **LongAct**, a benchmark evaluating planning-level autonomy in long-horizon household tasks specified through free-form instructions, abstracting away embodiment-specific low-level control. LongAct isolates high-level cognitive capabilities including instruction understanding, dependency management, memory maintenance, and sustained reasoning across extended task sequences. This benchmark addresses a critical gap, as existing embodied AI evaluations emphasize short-horizon navigation or manipulation rather than the sustained reasoning required for real-world household assistance.\n\n## Efficient Multimodal Architectures and Token Compression\n\nToken explosion from high-resolution multimodal inputs remains a critical bottleneck, driving innovations in compression and pruning strategies that maintain performance while reducing computational overhead.\n\n[8] Yeo Jeong Park et al. propose **OmniDrop**, a training-free, layer-wise token pruning method for omni-modal LLMs that uses query-guidance rather than input-level similarity heuristics. Unlike existing omni-modal compression methods that prune tokens at the embedding level based on unreliable audio-video similarity assumptions, OmniDrop operates dynamically across transformer layers. This approach addresses the critical token explosion problem for high-resolution audio and video inputs, enabling real-time applications and long-form reasoning without sacrificing model quality.\n\n[13] Yuhao Liu et al. introduce **GeoViSTA** (Geospatial Vision-Tabular Transformer), a vision-tabular architecture that learns unified geospatial embeddings by jointly modeling satellite imagery and structured socioeconomic covariates. Most existing geospatial foundation models fail to model tabular data directly, limiting their ability to capture the complete environment for reasoning about complex environmental, social, and health outcomes. GeoViSTA bridges this modality gap, enabling more holistic environmental representation learning that integrates both visual and structured data sources.\n\n## Multimodal Retrieval, Grounding, and Alignment\n\nFine-grained retrieval and alignment across modalities remains a central challenge, with several papers proposing novel frameworks for better evidence selection and cross-modal correspondence.\n\n[7] Guanhua Chen et al. propose **GranuRAG**, a multi-granularity framework that treats visual elements as first-class retrieval units, addressing the mismatch between coarse-grained evidence retrieval (entire images) and fine-grained user queries. The accompanying benchmark, **GranuVistaVQA**, features real-world landmarks with element-level annotations across multiple viewpoints, capturing the partial observation challenge. This work is significant because it exposes and addresses a fundamental limitation in current multimodal RAG systems—the inability to retrieve and reference specific visual elements rather than whole scenes.\n\n[10] Sayantan Kumar et al. introduce a retrieval-augmented multimodal alignment framework for clinical timeline reconstruction that bridges unstructured clinical narratives (semantically rich but temporally imprecise) with structured EHR data (temporally precise but event-incomplete). The framework aligns textual event descriptions with temporal anchors from structured data, enabling precise reconstruction of patient trajectories. This work addresses a critical clinical informatics challenge, as accurate temporal reasoning is essential for modeling disease progression and forecasting risk in complex conditions like sepsis.\n\n[2] Scott Ye and Harlin Lee investigate the latent structure of multimodal embeddings from pediatric sleep analysis, using PHATE-derived per-epoch coordinates and persistent homology summaries of the embedding cloud. By augmenting embeddings with topological signatures and movement descriptors, they demonstrate that simple linear and MLP models can extract task-relevant diagnostic signals. This work reveals that generative models' latent spaces contain interpretable structure that can be exploited for clinical understanding, even without complex downstream architectures.\n\n## Multimodal Agents and Interactive Systems\n\nThe deployment of multimodal AI in interactive, real-world settings is driving the development of agentic systems that can perceive, plan, and act across diverse environments and modalities.\n\n[5] Weimin Xiong et al. present **Video2GUI**, a fully automated framework that extracts grounded GUI interaction trajectories from unlabeled Internet videos using a coarse-to-fine filtering strategy. This addresses the critical data scarcity problem for GUI agents, which have been constrained by costly manual annotations and narrow domain coverage. By leveraging the vast repository of Internet videos, Video2GUI enables large-scale pretraining for generalized GUI agent capabilities.\n\n[3] Vidya K Sudarshan et al. present a forward-looking perspective on agentic AI ecosystems in higher education, proposing an integrated multi-agent AI framework capable of coordinated planning, reasoning, and adaptive decision-making across teaching, learning, and administrative functions. The work identifies the key research gap of fragmented AI implementations and proposes an ecosystem-level architecture. While this paper is more perspective than technical contribution, it frames important design considerations for deploying multimodal agents in complex institutional settings.\n\n[4] Qi Cao et al. propose a metacognitive harness inspired by the Nelson-Narens theory from cognitive psychology that separates monitoring from control in LLMs, enabling test-time scaling based on the model's own confidence signals. They demonstrate that LLMs possess latent metacognitive ability—they can estimate their likelihood of success before solving problems and judge answer correctness afterward—but these signals are typically ignored during inference. This work provides a principled framework for using LLMs' internal self-monitoring to control test-time computation, potentially enabling more efficient and reliable reasoning.\n\n[11] Zidong Liu et al. introduce **TeachAnything**, a cloud-based, crowdsourcing-oriented demonstration platform with physics simulation for collecting diverse multimodal demonstration data across varied scenes, tasks, and embodiments. Built on a three-stage demonstration paradigm integrating multimodal demonstration signals, the platform unifies virtual and physical interactions for training embodied AI agents. This work addresses the critical bottleneck of obtaining diverse, high-quality training data for embodied AI in the emerging paradigm of Symmetrical Reality.\n\n[14] Shaoan Zhao et al. present **MediaClaw**, a multimodal agent platform built on the OpenClaw ecosystem with a three-layer architecture of unified abstraction, pluginized extension, and workflow orchestration. The system addresses practical deployment pain points including fragmented AIGC capabilities, heterogeneous interfaces, disconnected production processes, and limited reuse of production workflows. This technical report demonstrates how platform-level abstractions can enable practical multimodal agent deployment at scale.\n\n## Specialized Multimodal Applications: Biomedicine and Drug Discovery\n\nMultimodal approaches are making significant inroads into specialized scientific domains, particularly biomedicine, where integrating heterogeneous data types is essential for predictive modeling.\n\n[12] Yerin Park and Sangseon Lee propose **AIM-DDI**, an architecture-independent multimodal integration module for drug-drug interaction prediction that is designed to generalize to unseen drugs. While existing multimodal DDI models have fusion mechanisms tied to specific prediction architectures, AIM-DDI's model-agnostic design enables reuse across different architectures, addressing a key limitation in computational biomedicine. The work is important because adverse drug-drug interactions cause severe clinical risks, and generalization to unseen drugs is essential for practical deployment.\n\n[15] Leonardo Ferreira Guilhoto et al. introduce a Two-Index framework for multimodal regression active learning that separates epistemic and aleatoric uncertainty sources, addressing the limitation that variance fails to capture modal disagreement in multimodal predictive distributions. The framework identifies mutual information between the output and the epistemic index as a principled acquisition function for active learning. This theoretical contribution fills a gap in active learning methodology, providing a mathematically grounded approach for targeting epistemic uncertainty in continuous regression settings.\n\n[16] Yuehao Liu et al. propose **Octopus**, a two-stage continual learning framework for multimodal large language models based on history-free gradient orthogonalization that mitigates catastrophic forgetting without requiring stored historical data. Existing methods face limitations: architecture-based approaches incur overhead and generalize poorly, rehearsal-based methods raise privacy concerns, and conventional regularization alone is insufficient. Octopus addresses these issues through gradient orthogonalization, enabling efficient continual learning in privacy-sensitive multimodal applications.\n\n## Key Takeaways\n\n- **Evaluation contamination is systemic and underreported**: The Physics-R1 audit reveals that train-eval contamination, translation drift, and MCQ saturation distort vision-language reasoning measurements, suggesting that reported gains across many benchmarks may be inflated and requiring more rigorous auditing pipelines.\n\n- **Token efficiency remains a critical bottleneck for omni-modal models**: OmniDrop's layer-wise, query-guided pruning demonstrates that dynamic, training-free token compression can significantly improve efficiency for high-resolution multimodal inputs without sacrificing performance.\n\n- **Fine-grained multimodal retrieval is essential for trustworthy RAG**: Treating visual elements as first-class retrieval units (GranuRAG) rather than retrieving entire images addresses a fundamental limitation in current multimodal RAG systems, enabling verifiable evidence for fine-grained queries.\n\n- **LLMs possess untapped metacognitive abilities for test-time control**: The metacognitive harness framework shows that LLMs' internal confidence signals can be leveraged for efficient test-time scaling, separating monitoring from control in a principled manner inspired by cognitive psychology.\n\n- **Clinical timeline reconstruction requires bridging structured and unstructured data**: The retrieval-augmented alignment approach for clinical timelines demonstrates how combining semantically rich narratives with temporally precise structured data can yield accurate patient trajectory modeling.\n\n- **Data scarcity for GUI and embodied agents can be addressed through automated extraction from Internet videos**: Video2GUI's coarse-to-fine filtering strategy shows that unlabeled Internet videos can serve as a rich source for grounded interaction trajectories, reducing reliance on costly manual annotations.\n\n- **Multimodal active learning and continual learning require specialized theoretical frameworks**: The Two-Index mutual information framework and Octopus's gradient orthogonalization demonstrate that multimodal settings demand principled, rather than heuristic, approaches to uncertainty estimation and catastrophic forgetting mitigation.",
+    "papers": [
+      {
+        "title": "Physics-R1: An Audited Olympiad Corpus and Recipe for Visual Physics Reasoning",
+        "url": "",
+        "authors": [
+          "Shan Yang"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Uncovering Trajectory and Topological Signatures in Multimodal Pediatric Sleep Embeddings",
+        "url": "",
+        "authors": [
+          "Scott Ye",
+          "Harlin Lee"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Agentic AI Ecosystems in Higher Education: A Perspective on AI Agents to Emerging Inclusive, Agentic Multi-Agent AI Framework for Learning, Teaching and Institutional Intelligence",
+        "url": "",
+        "authors": [
+          "Vidya K Sudarshan",
+          "Anushka Sisodia",
+          "Reshma A Ramachandra",
+          "Sia Batra",
+          "Josephine Chong Leng Leng"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "LLMs Know When They Know, but Do Not Act on It: A Metacognitive Harness for Test-time Scaling",
+        "url": "",
+        "authors": [
+          "Qi Cao",
+          "Yufan Wang",
+          "Peijia Qin",
+          "Shuhao Zhang",
+          "Pengtao Xie"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Video2GUI: Synthesizing Large-Scale Interaction Trajectories for Generalized GUI Agent Pretraining",
+        "url": "",
+        "authors": [
+          "Weimin Xiong",
+          "Shuhao Gu",
+          "Bowen Ye",
+          "Zihao Yue",
+          "Lei Li",
+          "Feifan Song",
+          "Sujian Li",
+          "Hao Tian"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Chain-of-Procedure: Hierarchical Visual-Language Reasoning for Procedural QA",
+        "url": "",
+        "authors": [
+          "Guanhua Chen",
+          "Yutong Yao",
+          "Shenghe Sun",
+          "Ci-Jun Gao",
+          "Shudong Liu",
+          "Lidia S. Chao",
+          "Feng Wan",
+          "Derek F. Wong"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "From Scenes to Elements: Multi-Granularity Evidence Retrieval for Verifiable Multimodal RAG",
+        "url": "",
+        "authors": [
+          "Guanhua Chen",
+          "Chuyue Huang",
+          "Yutong Yao",
+          "Shudong Liu",
+          "Xueqing Song",
+          "Lidia S. Chao",
+          "Derek F. Wong"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "OmniDrop: Layer-wise Token Pruning for Omni-modal LLMs via Query-Guidance",
+        "url": "",
+        "authors": [
+          "Yeo Jeong Park",
+          "Hyemi Jang",
+          "Minseo Choi",
+          "Jongsun Lee",
+          "Jooyoung Choi",
+          "Yongkweon Jeon"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "When Robots Do the Chores: A Benchmark and Agent for Long-Horizon Household Task Execution",
+        "url": "",
+        "authors": [
+          "Zilin Zhu",
+          "Longteng Guo",
+          "Yanghong Mei",
+          "Bowen Pang",
+          "Zongxun Zhang",
+          "Xingjian He",
+          "Ruyi Ji",
+          "Jing Liu"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Text Knows What, Tables Know When: Clinical Timeline Reconstruction via Retrieval-Augmented Multimodal Alignment",
+        "url": "",
+        "authors": [
+          "Sayantan Kumar",
+          "Shahriar Noroozizadeh",
+          "Juyong Kim",
+          "Jeremy C. Weiss"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "TeachAnything: A Multimodal Crowdsourcing Platform for Training Embodied AI Agents in Symmetrical Reality",
+        "url": "",
+        "authors": [
+          "Zidong Liu",
+          "Rongkai Liu",
+          "Yue Li",
+          "Zhenliang Zhang"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "AIM-DDI: A Model-Agnostic Multimodal Integration Module for Drug-Drug Interaction Prediction",
+        "url": "",
+        "authors": [
+          "Yerin Park",
+          "Sangseon Lee"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "GeoViSTA: Geospatial Vision-Tabular Transformer for Multimodal Environment Representation",
+        "url": "",
+        "authors": [
+          "Yuhao Liu",
+          "Sadeer Al-Kindi",
+          "Ashok Veeraraghavan",
+          "Guha Balakrishnan"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "MediaClaw: Multimodal Intelligent-Agent Platform Technical Report",
+        "url": "",
+        "authors": [
+          "Shaoan Zhao",
+          "Huanlin Gao",
+          "Qiang Hui",
+          "Ting Lu",
+          "Xueqiang Guo",
+          "Yantao Li",
+          "Xinpei Su",
+          "Fuyuan Shi",
+          "Chao Tan",
+          "Fang Zhao",
+          "Kai Wang",
+          "Shiguo Lian"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "A Mutual Information Lower Bound for Multimodal Regression Active Learning",
+        "url": "",
+        "authors": [
+          "Leonardo Ferreira Guilhoto",
+          "Akshat Kaushal",
+          "Paris Perdikaris"
+        ],
+        "date": "2026-05-17"
+      },
+      {
+        "title": "Octopus: History-Free Gradient Orthogonalization for Continual Learning in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Yuehao Liu",
+          "Shanyan Guan",
+          "Weijia Zhang",
+          "Xuanming Shang",
+          "Yanhao Ge",
+          "Wei Li",
+          "Chao Ma"
+        ],
+        "date": "2026-05-17"
+      }
+    ]
+  }
+]
