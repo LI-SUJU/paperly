@@ -1,0 +1,264 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-21",
+    "paperCount": 12,
+    "markdown": "# Mechanistic Interpretability: From Circuit Discovery to Causal Assurance in Neural Systems\n\nToday's research landscape reveals a maturing field moving beyond post-hoc circuit discovery toward formal frameworks for cumulative mechanistic science, with applications spanning bias detection, safety assurance, and causal reasoning. Key developments include novel information-theoretic probes for understanding internal representations, rigorous approaches to tying mechanistic evidence to behavioral outcomes, and critical perspectives on the limitations of causal machine learning in high-stakes domains.\n\n## Information-Theoretic Probes for Internal Representations\n\n[1] **\"Neural Estimation of Pairwise Mutual Information in Masked Discrete Sequence Models\"** addresses the challenge that masked diffusion models (MDMs) expose marginal conditional distributions but not explicit inter-variable dependencies. The authors propose a neural framework that estimates pairwise conditional mutual information (MI) directly from hidden states of a pretrained MDM, using ground-truth MI computed from the model's own conditional distributions as supervision. This estimator captures the model's internal belief about dependency structure, enabling interpretability of how MDMs reason about variable relationships during generation. The work matters because it opens a window into the latent dependency representations that drive generation in state-of-the-art discrete diffusion models.\n\n[7] **\"Post-Hoc Understanding of Metaphor Processing in Decoder-Only Language Models via Conditional Scale Entropy\"** tackles the open problem of how transformer models organize the reinterpretation of metaphorical tokens across depth. The authors introduce conditional scale entropy (CSE), a wavelet-derived measure that captures how broadly transformer computation engages across frequency scales at each layer position, with two theorems establishing invariance to update magnitude. Using CSE, they find that metaphorical tokens produce distinct computational signatures across layers, revealing a structured progression from literal to figurative interpretation. This contribution provides a theoretically grounded tool for tracking semantic transformation in autoregressive models without requiring ground-truth labels.\n\n[9] **\"Markovian Circuit Tracing for Transformer State Dynamic\"** addresses the challenge that many sequence computations are easier understood as movement through internal states than as isolated local circuits. The author introduces Markovian Circuit Tracing (MCT), a diagnostic pipeline that tests whether transformer activations contain coarse state-transition structure using synthetic Hidden Markov Model (HMM) tasks where latent states, transition matrices, and Bayes-optimal predictions are known exactly. Across six HMM families, tiny causal transformers learn near-Bayes optimal next-token predictors, and MCT reveals that their internal representations track Bayesian belief states over latent dynamics. This work provides a rigorous benchmark for testing whether mechanistic explanations capture the sequential reasoning structure in transformers.\n\n## Bias, Reasoning, and Mechanistic Understanding\n\n[3] **\"Mechanics of Bias and Reasoning: Interpreting the Impact of Chain-of-Thought Prompting on Gender Bias in LLMs\"** investigates whether chain-of-thought (CoT) prompting's apparent bias reductions reflect meaningful changes in internal mechanisms or merely surface-level adjustments. Combining benchmark evaluation with mechanistic interpretability techniques, the authors analyze how CoT alters the internal computation paths associated with gender-biased outputs. Their results demonstrate that CoT prompting can reduce biased outputs by restructuring the model's reasoning pathway rather than simply masking biased predictions. This matters for deploying LLMs in socially sensitive settings, as it suggests mechanistic interventions may be more reliable than behavioral metrics alone.\n\n[11] **\"From Circuit Evidence to Mechanistic Theory: An Inductive Logic Approach\"** addresses a critical gap in mechanistic interpretability: discovered circuits remain isolated experimental artefacts without shared formal representation for what circuits compute or how they relate. The authors provide formal infrastructure for cumulative mechanistic science by treating circuit interpretation as inductive theory construction, characterizing each circuit at two levels—a Causal Functional Signature (CFS) grounded in causal attribution and a higher-level interpretive theory. This framework enables rigorous comparison across circuit findings and formalizes when two studies provide evidence for the same mechanism. The work is foundational for transforming mechanistic interpretability from a collection of case studies into a cumulative scientific discipline.\n\n[10] **\"A Sharper Picture of Generalization in Transformers\"** studies transformer generalization on boolean domains from the perspective of Fourier spectra of target functions, moving beyond prior Rademacher complexity bounds to PAC-Bayes theory. The authors show that sparse spectra concentrated on low-degree components enable low-sharpness constructions with good generalization properties, demonstrating the existence of flat minima implementing any boolean function of sparsity no worse than the function's Fourier sparsity. This provides a mechanistic understanding of how transformers generalize—through spectral simplicity rather than parameter norm—connecting generalization theory to the internal structure of learned representations.\n\n## Causal Reasoning: Foundations and Limitations\n\n[8] **\"Causal Machine Learning Is Not a Panacea: A Roadmap for Observational Causal Inference in Health\"** presents a critical roadmap for applying causal ML to observational clinical data, emphasizing the importance of assessing validity assumptions within available data rather than treating causal ML as a universal solution. The authors outline the gap between technical capabilities and clinical requirements, noting that despite advances, causal ML's limitations in handling unmeasured confounding, treatment effect heterogeneity, and specification uncertainty are often underappreciated. This perspective is essential for the interpretability community as it delineates when mechanistic understanding of causal structure is genuinely achievable versus when fundamental assumptions remain unverifiable.\n\n[4] **\"Causal Unlearning in Collaborative Optimization: Exact and Approximate Influence Reversal under Adversarial Contributions\"** addresses federated learning's need for efficient data deletion by presenting HF-KCU, a method that removes a client's contribution through influence function approximation via conjugate gradient iterations in Krylov subspaces. The approach reduces complexity from O(d³) to O(kd) where k<<d, with a causal weighting mechanism ensuring only clients holding deleted data receive parameter updates. While primarily a privacy-preserving method, the work's causal formulation of influence reversal has implications for interpretability—it provides a formal framework for understanding and manipulating how individual data points shape model parameters.\n\n[6] **\"Mechanistic Interpretability for Learning Assurance of a Vision-Based Landing System\"** addresses EASA's learning-assurance requirement that neural networks in aviation must build and monitor their own situation representation. The authors propose that a minimally assurable model must be shown to separate content from style in its internal representation, and that predictions rely largely on contentful components. Demonstrating this on a vision-based landing system, the work provides a concrete path for using mechanistic interpretability to satisfy regulatory requirements. This is a landmark application of interpretability techniques to safety-critical certification, moving beyond toy models to real aviation systems.\n\n## Formal Frameworks for Symmetry and Interpretability\n\n[5] **\"Group-Algebraic Tensors: Provably-optimal Equivariant Learning and Physical Symmetry Discovery\"** introduces the ⋆_G tensor algebra where any finite group G defines the multiplication rule, making equivariance an intrinsic algebraic property rather than an architectural constraint. The framework provides three machine-verified pillars: an Eckart-Young optimality guarantee for symmetry-preserving tensor approximation, Kronecker factorization for composing multiple symmetries without architectural redesign, and a 600-line Lean 4 proof of the algebraic foundations. This matters for interpretability because it provides provably optimal structure for encoding known symmetries, enabling mechanistic understanding of how geometric priors shape learned representations.\n\n[12] **\"HiRes: Inspectable Precedent Memory for Reaction Condition Recommendation\"** presents a retrieval-augmented system whose learned reaction space serves as both a classifier feature and an inspectable precedent memory for chemistry applications. The model combines graph encoders, transformation-aware cross-attention, and multi-stream reaction fusion with k-NN retrieval, achieving state-of-the-art performance while providing chemists with the precedents justifying predictions. This work demonstrates how interpretability-by-design—through inspectable memory rather than post-hoc explanation—can be built into high-performance retrieval systems for scientific domains.\n\n[2] **\"MedicalBench: Evaluating Large Language Models Toward Improved Medical Concept Extraction\"** presents a benchmark for medical concept extraction with evidence grounding that specifically evaluates implicit medical reasoning. The benchmark addresses the challenge that medically meaningful concepts in electronic health records are frequently implied rather than explicitly stated, requiring models to reason about unstated clinical implications. This contributes to interpretability by establishing evaluation standards for whether models truly understand medical concepts versus pattern-matching surface forms, with implications for building trustworthy clinical decision support systems.\n\n## Key Takeaways\n- Information-theoretic probes (MI estimation, CSE, MCT) are emerging as principled tools for understanding internal representations without requiring ground-truth labels, enabling scalable interpretability of generative and autoregressive models.\n- Mechanistic interpretability is transitioning from isolated circuit discovery toward formal cumulative science, with frameworks for comparing circuit findings and building inductive theories from causal evidence.\n- Chain-of-thought prompting produces meaningful internal mechanism changes rather than surface-level bias masking, as revealed by combined behavioral and mechanistic analysis.\n- Critical perspectives on causal ML highlight fundamental limitations (unmeasured confounding, heterogeneity) that must be acknowledged even as mechanistic tools advance—causal interpretability is not a panacea.\n- Safety-critical domains (aviation) are driving concrete requirements for mechanistic assurance, creating regulatory pressure for interpretability methods that go beyond toy demonstrations.\n- Formal algebraic frameworks for equivariance provide provably optimal structure that enables mechanistic understanding of how geometric priors shape learned representations.\n- Inspectable memory systems for scientific domains (chemistry, medicine) demonstrate that interpretability-by-design—embedding explanation mechanisms into model architecture—can achieve state-of-the-art performance while enabling human verification.",
+    "papers": [
+      {
+        "title": "Neural Estimation of Pairwise Mutual Information in Masked Discrete Sequence Models",
+        "url": "",
+        "authors": [
+          "Jai Sharma",
+          "Yifan Wang",
+          "Bryan Li"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "MedicalBench: Evaluating Large Language Models Toward Improved Medical Concept Extraction",
+        "url": "",
+        "authors": [
+          "Zhichao Yang",
+          "Gregory D. Lyng",
+          "Sanjit Singh Batra",
+          "Robert E. Tillman"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Mechanics of Bias and Reasoning: Interpreting the Impact of Chain-of-Thought Prompting on Gender Bias in LLMs",
+        "url": "",
+        "authors": [
+          "Edie Pearman",
+          "Sophia Osborne",
+          "Mira Kandlikar-Bloch",
+          "Mina Arzaghi",
+          "Florian Carichon",
+          "Golnoosh Farnadi"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Causal Unlearning in Collaborative Optimization: Exact and Approximate Influence Reversal under Adversarial Contributions",
+        "url": "",
+        "authors": [
+          "Ali Mahdavi",
+          "Azadeh Zamanifar",
+          "Amirfarhad Farhadi",
+          "Omid Kashefi"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Group-Algebraic Tensors: Provably-optimal Equivariant Learning and Physical Symmetry Discovery",
+        "url": "",
+        "authors": [
+          "Paulina Hoyos",
+          "Shashanka Ubaru",
+          "Dongsung Huh",
+          "Vasileios Kalantzis",
+          "Kenneth L. Clarkson",
+          "Misha Kilmer",
+          "Haim Avron",
+          "Lior Horesh"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Mechanistic Interpretability for Learning Assurance of a Vision-Based Landing System",
+        "url": "",
+        "authors": [
+          "Romeo Valentin",
+          "Olivia Beyer Bruvik",
+          "Marc R. Schlichting",
+          "Mykel J. Kochenderfer"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Post-Hoc Understanding of Metaphor Processing in Decoder-Only Language Models via Conditional Scale Entropy",
+        "url": "",
+        "authors": [
+          "Lawhori Chakrabarti",
+          "Jennifer Johnson-Leung",
+          "Bert Baumgaertner",
+          "Aleksandar Vakanski",
+          "Min Xian",
+          "Boyu Zhang"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Causal Machine Learning Is Not a Panacea: A Roadmap for Observational Causal Inference in Health",
+        "url": "",
+        "authors": [
+          "Donna Tjandra",
+          "Trenton Chang",
+          "Sonali Parbhoo",
+          "Rajesh Ranganath",
+          "Andre Kurepa Waschka",
+          "William Mitchell",
+          "Maggie Makar",
+          "Shalmali Joshi",
+          "Finale Doshi-Velez",
+          "Leo Anthony Celi",
+          "Jenna Wiens"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Markovian Circuit Tracing for Transformer State Dynamic",
+        "url": "",
+        "authors": [
+          "Abdullah X"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "A Sharper Picture of Generalization in Transformers",
+        "url": "",
+        "authors": [
+          "Paul Lintilhac",
+          "Sair Shaikh"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "From Circuit Evidence to Mechanistic Theory: An Inductive Logic Approach",
+        "url": "",
+        "authors": [
+          "Nura Aljaafari",
+          "Danilo S. Carvalho",
+          "Andre Freitas"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "HiRes: Inspectable Precedent Memory for Reaction Condition Recommendation",
+        "url": "",
+        "authors": [
+          "Shreyas Vinaya Sathyanarayana",
+          "Raja Sekhar Pappala",
+          "Deepak Warrier"
+        ],
+        "date": "2026-05-21"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-21",
+    "paperCount": 9,
+    "markdown": "# Multimodal Foundations and Adaptation: From Continual Learning to Domain-Specific Reasoning\n\nToday's research landscape reveals a field actively wrestling with two core challenges: how to build truly joint multimodal representations that go beyond post-hoc adaptation, and how to make large multimodal models adaptable—whether through continual learning, online editing, or training-free composition. A parallel thread explores domain-specific multimodal reasoning, from crystallography to Arabic political memes, demonstrating both the breadth of application and the persistent need for high-quality annotated resources.\n\n## Architectures for Continual and Lifelong Multimodal Learning\n\n[1] **CP-MoE**: Tackles catastrophic forgetting in vision-language models during continual learning, where existing MoE methods either isolate experts (limiting transfer) or allow overwriting (causing forgetting). The framework introduces a \"transient expert\" mechanism that preserves knowledge consistency while enabling knowledge transfer across tasks. This work addresses a fundamental tension in lifelong multimodal learning, with implications for any deployed VLM that must adapt to new tasks without retraining from scratch.\n\n[3] **M-ORE**: Addresses the problem of online model editing for multimodal LLMs, where standard text-only editing methods fail due to cross-modal conflict and inter-edit interference. The approach introduces modality-decoupled updates through a unified proximal optimization framework that prevents visually dominant activations from skewing edits. This is critical for deployed MLLMs that must incorporate user corrections in real-time without catastrophic forgetting or edit entanglement.\n\n[9] **Stochastic MeanFlow Policies**: Proposes a novel policy class for reinforcement learning that bridges the gap between Gaussian policies (fast but unimodal) and generative policies (expressive but computationally expensive). The method uses entropic mirror descent with stochastic mean-field flows, enabling tractable entropy estimation while handling multimodal action distributions. Though primarily RL-focused, this work has implications for multimodal RL where action spaces may exhibit complex, multimodal structure.\n\n## Joint Multimodal Representation Learning and Composition\n\n[2] **Chronicle**: Addresses the limitation that time series foundation models ignore accompanying text, while existing multimodal time-series-text models inherit text-biased representations. This 324M-parameter model is trained jointly on time series and text from scratch, enabling genuine cross-modal understanding rather than post-hoc adaptation. Importantly, the work evaluates against both multimodal AND unimodal baselines, asking whether joint training is actually necessary—a rigorous standard that raises the bar for multimodal model evaluation.\n\n[8] **CoMET**: Proposes a remarkably simple yet effective approach to multimodal classification: freeze per-modality encoders, compress embeddings via PCA, concatenate, and feed into a Tabular Foundation Model. The paper introduces PALPooling to handle cases where CLS tokens align poorly with downstream tasks. This work challenges the assumption that end-to-end fine-tuning is necessary, showing that proper composition of frozen features can be highly competitive with far more complex approaches.\n\n## Fine-Grained Multimodal Reasoning and Evaluation\n\n[4] **ClaimDiff-RL**: Exposes the \"reward granularity problem\" in reinforcement learning for long-form image captioning, where holistic rewards obscure local errors in individual visual claims. The framework uses reference-conditioned atomic claim differences to provide fine-grained reward signals that separately penalize hallucination and reward coverage. This matters because it provides a principled way to balance factuality and informativeness in dense captioning—a persistent challenge for VLMs.\n\n[5] **Miller-Index-Based Reasoning**: Investigates whether MLLMs can use crystallographic plane indices (Miller indices) as structured latent representations for reasoning about fracture geometry. The work evaluates two capabilities: inferring fracture planes from visual observations and assessing when such representation is physically meaningful. This represents a novel test of MLLMs' ability to leverage domain-specific mathematical abstractions as intermediate reasoning representations.\n\n## Domain-Specific Multimodal Resources and Benchmarks\n\n[6] **ArPoMeme**: Presents a dataset of approximately 7,300 Arabic political memes annotated for ideological orientation (Leftist, Islamist, Pan-Arabist, Satirical). This addresses a critical gap in multimodal political discourse analysis for the Arab world, where memes serve as a major vehicle for ideological expression. The dataset enables systematic study of how humor, imagery, and text combine to convey political positions in a culturally specific context.\n\n[7] **Manga109-v2026**: Revisits the foundational Manga109 dataset, identifying five categories of annotation issues including transcription errors and coarse labels that don't align with modern OCR and multimodal understanding tasks. This correction and refinement of existing resources is crucial as manga understanding becomes an increasingly active area for multimodal AI, from translation to content analysis.\n\n## Key Takeaways\n- **Joint training from scratch matters**: Chronicle [2] demonstrates that truly joint multimodal training (as opposed to post-hoc adaptation of text models) can yield better representations, while raising the bar for proper evaluation against strong unimodal baselines.\n- **Fine-grained rewards improve multimodal generation**: ClaimDiff-RL [4] shows that moving beyond holistic rewards to atomic claim-level supervision significantly improves the faithfulness-informativeness tradeoff in dense captioning.\n- **Simple composition can beat complex fine-tuning**: CoMET [8] challenges the assumption that end-to-end multimodal fine-tuning is necessary, demonstrating that PCA-compressed frozen features plus a tabular model achieve strong results.\n- **Modality-decoupled editing is essential for MLLMs**: M-ORE [3] shows that text-only editing methods fail in multimodal settings, and that explicit modality decomposition during updates prevents interference.\n- **Continual learning in MoE architectures remains open**: CP-MoE [1] highlights the persistent tension between expert isolation and knowledge transfer, proposing transient experts as a promising direction.\n- **Domain-specific structured reasoning tests VLM capabilities**: The Miller-index work [5] reveals a novel dimension for evaluating whether VLMs can leverage mathematical abstractions as intermediate representations.\n- **High-quality annotated resources are still limiting factors**: Both ArPoMeme [6] and Manga109-v2026 [7] underscore that even as models advance, the availability of carefully curated, domain-specific multimodal datasets remains a bottleneck for progress.",
+    "papers": [
+      {
+        "title": "CP-MoE: Consistency-Preserving Mixture-of-Experts for Continual Learning",
+        "url": "",
+        "authors": [
+          "Yang Liu",
+          "Toan Nguyen",
+          "Flora D. Salim"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Chronicle: A Multimodal Foundation Model for Joint Language and Time Series Understanding",
+        "url": "",
+        "authors": [
+          "Paul Quinlan",
+          "Jeremy Levasseur",
+          "Qingguo Li",
+          "Xiaodan Zhu"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Modality-Decoupled Online Recursive Editing",
+        "url": "",
+        "authors": [
+          "Siyuan Li",
+          "Youyuan Zhang",
+          "Fangming Liu",
+          "Jing Li"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "ClaimDiff-RL: Fine-Grained Caption Reinforcement Learning through Visual Claim Comparison",
+        "url": "",
+        "authors": [
+          "Tianle Li",
+          "Xuyang Shen",
+          "Yan Ma",
+          "Rongxin Guo",
+          "Shaoxiang Chen",
+          "Jiacheng Chen",
+          "Haochen Wang",
+          "Hongyang Tang",
+          "Yucong Zhou",
+          "Yu Cheng"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Miller-Index-Based Latent Crystallographic Fracture Plane Reasoning with Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Qinwu Xu",
+          "Yifan Jiang"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "ArPoMeme: An Annotated Arabic Multimodal Dataset for Political Ideology and Polarization",
+        "url": "",
+        "authors": [
+          "Wajdi Zaghouani",
+          "Kais Attia",
+          "Md. Rafiul Biswas",
+          "Fadhl Eryani"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Manga109-v2026: Revisiting Manga109 Annotations for Modern Manga Understanding",
+        "url": "",
+        "authors": [
+          "Jeonghun Baek",
+          "Atsuyuki Miyai",
+          "Shota Onohara",
+          "Hikaru Ikuta",
+          "Kiyoharu Aizawa"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "Modular Multimodal Classification Without Fine-Tuning: A Simple Compositional Approach",
+        "url": "",
+        "authors": [
+          "Herman Bergström",
+          "Aditya Mehrotra",
+          "Rahul G. Krishnan"
+        ],
+        "date": "2026-05-21"
+      },
+      {
+        "title": "\\textit{Stochastic} MeanFlow Policies: One-Step Generative Control with Entropic Mirror Descent",
+        "url": "",
+        "authors": [
+          "Zeyuan Wang",
+          "Da Li",
+          "Yulin Chen",
+          "Yuehu Gong",
+          "Yanming Guo",
+          "Ye Shi",
+          "Liang Bai",
+          "Tianyuan Yu",
+          "Yanwei Fu"
+        ],
+        "date": "2026-05-21"
+      }
+    ]
+  }
+]
