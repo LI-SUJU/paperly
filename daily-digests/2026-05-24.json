@@ -1,0 +1,406 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-24",
+    "paperCount": 8,
+    "markdown": "# Interpretability Digest: Bridging Feature Attribution, Prototype Explanations, and Mechanistic Faithfulness Across Model Scales\n\nThe research landscape this week reflects a maturation of interpretability research, where attention shifts from simply opening black boxes to ensuring explanations are faithful, granular, and robust under distributional shifts. Key themes include probabilistic attribution for LLMs, prototype-based explanations augmented with feature-level information, and rigorous auditing of sparse autoencoder features—demonstrating that the field is increasingly treating interpretability as an empirical science with its own failure modes and formal guarantees.\n\n## Probabilistic and Activation-Based Attribution in Language Models\n\n**Paper [1]** introduces a principled probabilistic attribution framework for LLMs by grounding next-token log-probabilities in stochastic process theory. The core technical contribution is a model-agnostic measure that uses Bayes' rule to invert token-level probabilities, attributing output tokens back to influential input tokens while capturing the model's internal representation of distributional structure. This work provides a theoretically grounded alternative to gradient-based or attention-based attribution methods, offering practitioners a way to quantify token influence without architectural assumptions.\n\n**Paper [7]** tackles the problem of attention-based interpretability methods overemphasizing semantically weak tokens (e.g., punctuation) by proposing Activation Strength-Based Token Importance (ASTI), a lightweight framework that uses hidden-state activation norms at Layer 8 of BERT. The key contribution is demonstrating that activation strength at a specific intermediate layer correlates more strongly with semantic importance than traditional attention weights, enabling model-agnostic analysis with computational efficiency suitable for small language models. This provides a practical debugging tool for practitioners working with SLMs in resource-constrained settings.\n\n**Paper [8]** performs a focused sparse-autoencoder audit on GPT-2 small's Indirect Object Identification (IOI) performance, identifying 146 features out of 24,576 that fire differentially on failed versus successful trials. The most striking finding is feature 17,491 (Neuronpedia label: 'cryptographic keys'), which is essentially silent except when the prompt contains specific syntactic patterns that trigger failure—achieving a Cohen's d of +2.93. This work matters because it demonstrates the feasibility of fine-grained, reproducible mechanistic audits using publicly available SAE releases, setting a methodological precedent for testing interpretability claims with hypothesis testing and effect-size thresholds.\n\n## Prototype-Based Explanations with Feature-Level Granularity\n\n**Paper [2]** addresses the limitation that prototype-based explanations lack feature-level detail by proposing a framework that integrates feature importance at both local and global levels. For local explanations, the *alike parts* method identifies shared, highly-weighted feature subsets between a classified instance and its nearest prototype, guiding user attention to the most decision-relevant dimensions. The global side augments the prototype selection objective to favor prototypes that maximize feature-level representativeness, creating a unified system where local and global interpretability reinforce each other.\n\n**Paper [5]** tackles the interpretability-accuracy tradeoff in multivariate time series classification by proposing a Prototype-Guided Classification Sub-Task Decoupling framework that splits the problem into separate feature extraction and prototype matching sub-tasks. Unlike direct feature-to-label mappings that conflate representation learning with decision logic, this approach first learns prototype-specific features, then performs classification via similarity to learned prototypes. The key contribution is achieving competitive accuracy while providing case-based explanations—a significant advance for high-stakes domains like healthcare and industrial monitoring where practitioners need to understand *why* a time series is classified in a particular way.\n\n## Faithfulness Under Distribution Shift and Formal Guarantees\n\n**Paper [3]** systematically examines a critical but understudied failure mode: dictionary-based explainers (e.g., sparse autoencoders, transcoders) lose faithfulness under out-of-distribution (OOD) shifts. The authors formalize this as the *faithfulness gap*, showing that distribution shift rotates the model's active subspace, creating a geometric misalignment with the explainer's dictionary trained on in-distribution activations. The technical solution is a geometry-adaptive explainer that can detect and correct for this misalignment, ensuring that mechanistic interpretations remain causally valid even when the input distribution changes. This work is essential reading for anyone deploying mechanistic interpretability in production, where distribution shift is the norm rather than the exception.\n\n## Theory-of-Mind and Explainable AI for Domain-Specific Applications\n\n**Paper [4]** introduces the ToM-based Persuasive Dialogue (ToM-PD) task, grounding it in the Belief-Desire-Intention (BDI) framework to explicitly model sequential dependencies among mental states in multi-turn dialogue. The dual knowledge-enhanced approach incorporates commonsense knowledge and ToM-specific reasoning templates to stabilize the fragmented representations that plague naive prompting strategies. While primarily a systems paper, it contributes to interpretability by making the chain of mental-state reasoning more transparent and auditable—a crucial requirement for AI agents that must explain their persuasive strategies.\n\n**Paper [6]** develops an Exploratory AI Recommender for high-dimensional predictive studies in healthcare, addressing the practical challenge of feature selection, transformation, and interaction modeling without expert manual tuning. The system provides data-driven recommendations that improve predictive performance of existing interpretable models (e.g., logistic regression with polynomial features) while maintaining transparency. The key contribution is demonstrating that complex black-box model performance can be matched by simpler models when guided by automated feature engineering recommendations, preserving interpretability without sacrificing accuracy in clinical decision support.\n\n## Key Takeaways\n\n1. **Probabilistic attribution grounded in stochastic process theory** [1] provides a mathematically principled alternative to gradient and attention-based methods, enabling model-agnostic token-level influence measurement that respects the generative nature of LLMs.\n\n2. **Sparse autoencoder audits with rigorous statistical testing** [8] are now feasible at scale, revealing that specific features (like \"cryptographic keys\") can be near-silent except in failure conditions—a finding that challenges naive feature interpretation and demands effect-size-aware analysis.\n\n3. **Dictionary-based mechanistic interpretability is fragile under distribution shift** [3], with the faithfulness gap emerging from geometric misalignment between ID-trained dictionaries and OOD activation subspaces, requiring explicit geometric corrections.\n\n4. **Prototype-based explanations are gaining feature-level granularity** [2, 5], moving beyond \"this instance looks like that prototype\" to \"these specific features of this instance match those of the prototype,\" providing more actionable insights for practitioners.\n\n5. **Activation strength at intermediate layers** [7] can outperform attention weights for semantic token importance, offering a computationally cheap, model-agnostic alternative for small language model interpretability.\n\n6. **Theory-of-Mind reasoning for persuasive dialogue** [4] demonstrates that explicit mental state modeling (BDI framework) stabilizes LLM reasoning, producing more interpretable and traceable chains of social inference.\n\n7. **Exploratory AI for high-dimensional prediction** [6] shows that interpretable models guided by automated feature engineering recommendations can match black-box performance, challenging the assumption that accuracy requires opacity in clinical settings.",
+    "papers": [
+      {
+        "title": "Probabilistic Attribution For Large Language Models",
+        "url": "",
+        "authors": [
+          "Shilpika Shilpika",
+          "Carlo Graziani",
+          "Bethany Lusch",
+          "Venkatram Vishwanath",
+          "Michael E. Papka"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Alike Parts: A Feature-Informed Approach to Local and Global Prototype Explanations",
+        "url": "",
+        "authors": [
+          "Jacek Karolczak",
+          "Jerzy Stefanowski"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Geometry-Adaptive Explainer for Faithful Dictionary-Based Interpretability under Distribution Shift",
+        "url": "",
+        "authors": [
+          "Sungjun Lim",
+          "Heedong Kim",
+          "Andrew Lee",
+          "Kyungwoo Song"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Think Thrice Before You Speak: Dual knowledge-enhanced Theory-of-Mind Reasoning for Persuasive Agents",
+        "url": "",
+        "authors": [
+          "Minghui Ma",
+          "Bin Guo",
+          "Runze Yang",
+          "Mengqi Chen",
+          "Yan Liu",
+          "Jingqi Liu",
+          "Yahan Pei",
+          "Xuehao Ma",
+          "Qiuyun Zhang",
+          "Zhiwen Yu"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Prototype-Guided Classification Sub-Task Decoupling Framework: Enhancing Generalization and Interpretability for Multivariate Time Series",
+        "url": "",
+        "authors": [
+          "Xianhao Song",
+          "Yuang Zhang",
+          "Yuqi She",
+          "Liping Wang",
+          "Xuemin Lin"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Explainable AI for Data-Driven Design of High-Dimensional Predictive Studies",
+        "url": "",
+        "authors": [
+          "Junyu Yan",
+          "Damian Machlanski",
+          "Kurt Butler",
+          "Panagiotis Dimitrakopoulos",
+          "Ewen M Harrison",
+          "Bruce Guthrie",
+          "Sotirios A Tsaftaris"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Towards Explainability of SLMs by investigating Token Level Activation",
+        "url": "",
+        "authors": [
+          "Sayantani Ghosh",
+          "Rajashik Datta",
+          "Amit Kumar Das",
+          "Amlan Chakrabarti"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Reading Task Failure Off the Activations: A Sparse-Feature Audit of GPT-2 Small on Indirect Object Identification",
+        "url": "",
+        "authors": [
+          "Mahdi Nasermoghadasi"
+        ],
+        "date": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-24",
+    "paperCount": 7,
+    "markdown": "# Beyond Black Boxes: Causality, Redundancy, and Stability in Explainable AI\n\nToday's research landscape reveals a maturing field moving beyond simple feature attribution toward deeper interrogations of model reasoning: researchers are tackling fundamental weaknesses in current explainability methods—including multicollinearity-induced instability, cross-modal evaluation collapse, and the semantic opacity of transformer internals—while simultaneously developing novel frameworks that integrate causal reasoning, token-level analysis, and computationally efficient interaction measures.\n\n## Causal and Argument-Based Approaches to Explainability\n\n[1] Salgado et al. address a critical limitation of current XAI methods: they identify *which* features matter but fail to explain *why* those features drive predictions. The authors propose a novel method that integrates causal discovery with a Bipolar Argumentation Framework (BAF), first identifying causal relationships among variables and then translating them into supportive and opposing feature interactions. Using semi-stable semantics, their approach extracts coherent feature extensions that provide causal justification for model decisions. This work is significant because it moves beyond correlational attribution to provide genuinely causal explanations, a step toward the kind of reasoning that would satisfy regulatory requirements for high-stakes AI deployments.\n\n[5] Ghosh et al. tackle the opacity of small language models (SLMs) by investigating token-level activation patterns, noting that attention-based methods often highlight structurally important but semantically weak tokens like punctuation. They introduce a lightweight, model-agnostic framework that quantifies token-level representational importance using hidden-state activation strengths at a specific layer (Layer 8) of BERT. Their approach reveals more semantically meaningful token importance rankings than traditional attention methods. This matters because as SLMs become ubiquitous in edge and mobile deployments, understanding their internal semantics without requiring massive computational overhead becomes essential for trust and debugging.\n\n## Exposing and Mitigating Evaluation Collapse in Multimodal Explainability\n\n[3] Ky et al. expose a fundamental flaw in how Vision-Language Model (VLM) explainability is evaluated: because multimodal datasets contain language priors and modality biases, VLMs often exhibit cross-modal redundancy, answering visual queries using text alone. This causes \"evaluation collapse\" where unimodal perturbation metrics penalize faithful explainers, producing contradictory visual and textual rankings. The authors propose a benchmark specifically designed to measure cross-modal synergy, forcing explainers to demonstrate genuine multimodal reasoning rather than exploiting modality biases. This is crucial for the VLM ecosystem, where models like CLIP and GPT-4V are increasingly deployed for critical visual reasoning tasks—if evaluation metrics reward explanations that ignore visual information, model debugging and safety assurance become impossible.\n\n## Theoretical Foundations and Efficient Interaction Measures\n\n[7] Thies et al. address the fundamental trade-off between speed and accuracy in estimating Shapley and Banzhaf interactions for modern machine learning models. They introduce ProxySHAP, which reconciles the high sample efficiency of tree-based proxy models with a principled path to consistency via residual correction. Theoretically, they derive a polynomial-time generalization of interventional TreeSHAP for computing exact interaction indices in tree ensembles, bypassing exponential tree-depth complexity. This is important because Shapley interactions capture complex feature dynamics (synergies, redundancies, conflicts), but practical adoption has been limited by computational intractability—ProxySHAP makes these analyses feasible at scale.\n\n[6] Vourganas and Michala identify a previously unexplored vulnerability in AI explainability for cybersecurity intrusion detection: multicollinearity-induced instability. They formally prove that multicollinearity inflates attribution variance, making SHAP and LIME explanations non-identifiable when features are correlated. Their comprehensive experiments on benchmark IDS datasets demonstrate that correlated features cause explanation rankings to vary dramatically across random seeds and perturbations. This is a critical finding for security applications where stable, reproducible explanations are necessary for incident response and forensic analysis—deploying SHAP on correlated network traffic features without this awareness could lead to dangerous misattributions.\n\n## Reinforcement Learning Explainability and Optimal Control\n\n[4] Huber et al. analytically solve the Mountain Car problem—a canonical RL benchmark—after 36 years, revealing that the optimal control policy is surprisingly simple while modern RL agents exhibit a large optimality gap. They introduce Chebyshev policies as a universal class of RL policies from first principles, which can be trained as drop-in replacements for neural networks, reducing regret by a factor of 4.18 while requiring 277 times fewer parameters. This work matters for explainability because the extreme parameter efficiency of Chebyshev policies makes them inherently more interpretable—simpler policy representations are easier to analyze, verify, and explain, directly addressing the opacity of deep RL agents.\n\n## Adaptive Training Systems and Explainability Challenges\n\n[2] Tripathi and Kapralos survey the integration of AI into serious games for training, highlighting persistent challenges in static scenario design, learner modeling, and real-time instructional adaptation. While recent AI advances enable dynamic scenario variation and learner-state modeling, the authors note that integrating AI raises important explainability considerations. This paper matters because adaptive training systems will increasingly rely on AI to make high-stakes decisions about learner pacing, content delivery, and feedback—without explainability, instructors cannot validate whether AI-driven adaptations are pedagogically sound or biased against certain learner populations.\n\n## Key Takeaways\n- **Causal explainability is moving beyond correlation**: Integrating causal discovery with argumentation frameworks [1] and investigating internal activation semantics [5] represent a shift from *what* features matter to *why* they matter, addressing a core limitation of post-hoc attribution methods.\n- **Multimodal explainability evaluation is fundamentally broken**: Current metrics fail to detect when VLMs exploit language priors rather than visual reasoning [3]; new benchmarks must actively force cross-modal synergy rather than measuring unimodal fidelity.\n- **Multicollinearity destabilizes feature attribution**: Formal proof and empirical validation [6] show that SHAP and LIME become non-identifiable under feature correlation, a critical vulnerability for high-stakes domains like cybersecurity where explanations must be stable and reproducible.\n- **Efficient interaction measures are now theoretically grounded**: ProxySHAP [7] provides polynomial-time computation for Shapley interactions in tree ensembles, making previously intractable second-order feature analyses practically available.\n- **Simpler policy representations enable inherent explainability**: Chebyshev policies [4] achieve superhuman RL performance with orders of magnitude fewer parameters, demonstrating that optimal control can be both efficient and interpretable without sacrificing performance.\n- **Explainability must be designed for deployment contexts**: From cybersecurity IDS [6] to adaptive training systems [2], each application domain introduces unique failure modes (multicollinearity, pedagogical validity) that generic explainability methods fail to address.\n- **The gap between theoretical optimality and learned behavior remains large**: The analytical solution of Mountain Car [4] reveals that modern RL agents are far from optimal, suggesting that explainability methods focused on learned policies may be explaining suboptimal heuristics rather than true task understanding.",
+    "papers": [
+      {
+        "title": "A Causal Argumentation Method for Explainability of Machine Learning Models",
+        "url": "",
+        "authors": [
+          "Henry Salgado",
+          "Meagan R. Kendall",
+          "Martine Ceberio"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "AI-Enabled Serious Games: Integrating Intelligence and Adaptivity in Training Systems",
+        "url": "",
+        "authors": [
+          "Priyamvada Tripathi",
+          "Bill Kapralos"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Measuring Cross-Modal Synergy: A Benchmark for VLM Explainability",
+        "url": "",
+        "authors": [
+          "Joël Roman Ky",
+          "Salah Ghamizi",
+          "Maxime Cordy"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Chebyshev Policies and the Mountain Car Problem: Reinforcement Learning for Low-Dimensional Control Tasks",
+        "url": "",
+        "authors": [
+          "Stefan Huber",
+          "Hannes Unger",
+          "Georg Schäfer",
+          "Jakob Rehrl"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Towards Explainability of SLMs by investigating Token Level Activation",
+        "url": "",
+        "authors": [
+          "Sayantani Ghosh",
+          "Rajashik Datta",
+          "Amit Kumar Das",
+          "Amlan Chakrabarti"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Stabilising Explainability Fragility in Cybersecurity AI: The Impact and Mitigation of Multicollinearity in Public Benchmark Datasets",
+        "url": "",
+        "authors": [
+          "Ioannis J. Vourganas",
+          "Anna Lito Michala"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Proxy-Based Approximation of Shapley and Banzhaf Interactions",
+        "url": "",
+        "authors": [
+          "Santo M. A. R. Thies",
+          "Hubert Baniecki",
+          "R. Teal Witter",
+          "Eyke Hüllermeier",
+          "Maximilian Muschalik",
+          "Fabian Fumagalli"
+        ],
+        "date": "2026-05-24"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-24",
+    "paperCount": 15,
+    "markdown": "# Multimodal Reasoning and Perception: From Latent Representations to Faithful Understanding\n\nToday's research landscape reveals a critical tension in multimodal AI: while models increasingly integrate vision, language, and audio, they struggle with faithful perception, modality imbalance, and systematic reasoning across modalities. The field is shifting from simple fusion to principled approaches that preserve sensory richness, ensure grounding in visual evidence, and enable robust cross-modal orchestration.\n\n## Rethinking Multimodal Representation and Reasoning\n\n**LatentOmni: Rethinking Omni-Modal Understanding via Unified Audio-Visual Latent Reasoning** [2] addresses the fundamental limitation that explicit text-based chain-of-thought (CoT) reasoning compresses continuous audio-visual signals into discrete tokens, weakening temporal grounding and introducing language priors. The core technical insight is that a unified latent space—preserving dense sensory information while remaining compatible with autoregressive generation—provides a better medium for joint audio-visual reasoning than text-based intermediates. This work matters because it challenges the dominance of text-centric reasoning in multimodal LLMs, proposing that continuous latent representations may be essential for tasks requiring fine-grained temporal and cross-modal evidence integration.\n\n**Enhancing Visual Token Representations for Video Large Language Models via Training-Free Spatial-Temporal Pooling and Gridding** [6] tackles the challenge of efficiently compressing visual tokens while preserving spatiotemporal interactions in video understanding. The proposed ST-GridPool introduces Pyramid Temporal Gridding (PTG) to capture multi-grained spatiotemporal patterns without requiring additional training. This contribution is significant because it offers a practical, zero-cost improvement to existing Video LLMs, addressing the tension between token efficiency and information preservation that plagues video processing.\n\n**ST-SimDiff: Balancing Spatiotemporal Similarity and Difference for Efficient Video Understanding with MLLMs** [10] addresses the computational overhead of processing long videos by proposing a novel perspective: similarity identifies redundancy while difference captures critical changes and turning points. The framework collaboratively models these complementary spatiotemporal relationships to reduce token count without sacrificing important transitional information. This matters because existing token reduction methods overlook the critical role of temporal dynamics and turning points, which are essential for coherent video understanding.\n\n**Beyond Acoustic Emotion Recognition: Multimodal Pathos Analysis in Political Speech Using LLM-Based and Acoustic Emotion Models** [13] investigates whether acoustic emotion recognition models can serve as proxies for the Pathos dimension in political speech analysis, comparing three analysis modalities: acoustic emotion recognition, full-audio LLM analysis, and text-only LLM analysis. Using a Bundestag speech as a case study, the work reveals that multimodal approaches provide richer emotional insight than any single modality alone. This is important for understanding the limitations and complementary strengths of different modality representations in real-world affective computing.\n\n## Faithful Perception and Grounded Reasoning\n\n**Faithful-MR1: Faithful Multimodal Reasoning via Anchoring and Reinforcing Visual Attention** [4] identifies a critical faithfulness challenge in multimodal LLMs: existing perception supervision operates on textual descriptions rather than native image regions, and faithful use of visual evidence during reasoning is largely overlooked. The approach anchors visual attention to task-relevant regions and reinforces this attention through reinforcement learning with verifiable rewards (RLVR). This work is significant because it reveals that current MLLM reasoning is often hallucinatory rather than truly grounded in visual evidence, and provides a mechanism for achieving genuine multimodal faithfulness.\n\n**Perception or Prejudice: Can MLLMs Go Beyond First Impressions of Personality?** [9] formalizes Grounded Personality Reasoning (GPR), requiring MLLMs to anchor each Big Five rating in observable evidence through a chain of rating, reasoning, and evidence extraction. The work introduces a new benchmark to distinguish genuine behavioral understanding from superficial pattern matching. This matters profoundly for deploying MLLMs in human-facing roles, where personality perception must be evidence-based rather than relying on surface-level stereotyping or modality bias.\n\n**Measuring Cross-Modal Synergy: A Benchmark for VLM Explainability** [11] exposes a critical flaw in current VLM explainability evaluation: because multimodal datasets contain language priors and modality biases, VLMs frequently exhibit cross-modal redundancy, allowing them to answer visual queries using text alone. This causes \"evaluation collapse\" where unimodal metrics penalize faithful explainers and visual/textual rankings contradict each other. The work is important for establishing proper evaluation protocols that capture genuine cross-modal reasoning versus modality cheating.\n\n**Do Factual Recall Mechanisms Carry over from Text to Speech in Multimodal Language Models?** [7] investigates how Speech Language Models (SLMs) encode, store, and retrieve factual knowledge compared to text-only models, using Causal Mediation Analysis to trace internal mechanisms. Initial results with SpiritLM reveal differences in how factual associations are represented across modalities. This matters because understanding whether factual recall mechanisms transfer across modalities is crucial for building truly multimodal models rather than modality-specific systems with shared surface representations.\n\n## Industrial-Scale Multimodal Systems and Applications\n\n**FLUID: From Ephemeral IDs to Multimodal Semantic Codes for Industrial-Scale Livestreaming Recommendation** [3] addresses the fundamental failure of ID-based collaborative filtering for livestreaming, where item IDs remain perpetually cold-start due to short broadcast durations (tens of minutes). FLUID fully retires the candidate-side item ID, replacing it with multimodal semantic codes derived from live room content. This is a landmark contribution for production recommendation systems, demonstrating that for ephemeral content, semantic understanding outperforms collaborative filtering paradigms that have dominated recommendation for decades.\n\n**Maestro: Reinforcement Learning to Orchestrate Hierarchical Model-Skill Ensembles** [14] tackles the bottleneck that current autonomous agent frameworks rely on monolithic LLMs and fixed logic, failing to exploit complementary strengths of different models across diverse domains. Maestro (Multimodal Agent for Expert-Skill Targeted Reinforced Orchestration) uses reinforcement learning to dynamically orchestrate between multiple LLMs and modular skills. This matters because it provides a principled framework for harnessing model diversity, moving beyond the \"one model to rule them all\" paradigm toward adaptive ensembles.\n\n**A Camera-Cooperative ISAC Framework for Multimodal Non-Cooperative UAVs Sensing** [8] proposes a multimodal sensing framework that uses cameras for coarse-grained airspace monitoring and Integrated Sensing and Communication (ISAC) for fine-grained, high-precision sensing of non-cooperative UAVs. This addresses the fundamental challenge of single-modal perception limitations and resource competition in UAV detection. The contribution is significant for real-world deployment of autonomous UAV monitoring systems, where multimodal coordination is essential for reliable detection.\n\n## Evaluation and Benchmarking Paradigms\n\n**AtelierEval: Agentic Evaluation of Humans & LLMs as Text-to-Image Prompters** [12] introduces the first unified benchmark that quantifies prompting proficiency across 360 expert-crafted tasks, evaluating both humans and MLLMs as upstream prompters for text-to-image systems. Grounded in a cognitive view spanning three task categories with a taxonomy of real-world challenges, it finally measures the previously unmeasured upstream component of the T2I pipeline. This matters because as T2I systems become ubiquitous, understanding and improving prompting proficiency is as critical as improving the generation models themselves.\n\n**Leveraging Self-Paced Curriculum Learning for Enhanced Modality Balance in Multimodal Conversational Emotion Recognition** [5] addresses modality misalignment and imbalanced learning in emotion recognition from conversations. The plug-and-play framework uses a dual-level Difficulty Measurer that captures both utterance-level and conversation-level challenges, combined with Self-Paced Curriculum Learning to balance modality contributions. This is important for practical multimodal systems where certain modalities (e.g., text) tend to dominate others (e.g., facial expressions, vocal tone), leading to suboptimal performance.\n\n## Safety, Security, and Robustness in Multimodal Systems\n\n**Latent-space Attacks for Refusal Evasion in Language Models** [1] recasts refusal suppression in safety-aligned language models as a latent-space evasion attack against linear probes trained to separate refused from answered prompts. The work provides a principled account of how steering internal representations to remove a refusal direction from model activations constitutes a form of adversarial attack on the model's safety mechanisms. This matters because it reveals that current safety alignment can be systematically bypassed through latent-space manipulations, with implications for model deployment and defense.\n\n**Understanding Multimodal Failure in Action-Chunking Behavioral Cloning** [15] studies how different multimodal parameterizations of action-chunking policies fail when the same observation admits several valid actions. The analysis reveals that latent-variable policies face a trade-off between posterior-prior regularization (making sampling reliable but potentially losing mode information) and maintaining action-conditioned distinctions. This is significant for robotics and embodied AI, where multimodality in action spaces is the norm rather than the exception, and understanding failure modes is essential for reliable deployment.\n\n## Key Takeaways\n\n- **Latent-space reasoning over text-based CoT** emerges as a promising paradigm for preserving dense sensory information in multimodal understanding, with LatentOmni [2] demonstrating that continuous representations may outperform discrete text-based intermediates for fine-grained audio-visual reasoning.\n\n- **Faithful perception remains a critical bottleneck** in MLLMs: Faithful-MR1 [4] and the GPR benchmark [9] both reveal that current models often rely on superficial pattern matching or language priors rather than genuine visual grounding, necessitating explicit attention-anchoring mechanisms.\n\n- **The \"modality cheating\" problem** is more pervasive than previously recognized: explainability evaluations suffer from \"evaluation collapse\" [11] where VLMs exploit cross-modal redundancy, while action-chunking policies [15] reveal that different multimodal parameterizations fail in fundamentally different ways.\n\n- **ID-based paradigms are being retired** for ephemeral content: FLUID [3] demonstrates that semantic multimodal codes outperform traditional collaborative filtering for livestreaming recommendation, a paradigm shift with implications for any domain with short-lived or cold-start items.\n\n- **Cross-modal orchestration requires RL-based adaptation**: Maestro [14] shows that reinforcement learning for dynamic model-skill ensemble selection outperforms fixed monolithic approaches, suggesting that future agent architectures will need adaptive routing rather than static composition.\n\n- **Safety mechanisms remain fragile**: The recasting of refusal suppression as latent-space attacks [1] reveals that current alignment techniques can be systematically bypassed through principled adversarial perturbations to internal representations.\n\n- **Modality imbalance is addressable through curriculum learning**: The self-paced curriculum approach [5] provides a generalizable, plug-and-play solution for ensuring balanced modality contributions in multimodal learning tasks, with implications beyond emotion recognition.",
+    "papers": [
+      {
+        "title": "Latent-space Attacks for Refusal Evasion in Language Models",
+        "url": "",
+        "authors": [
+          "Giorgio Piras",
+          "Raffaele Mura",
+          "Fabio Brau",
+          "Maura Pintor",
+          "Luca Oneto",
+          "Fabio Roli",
+          "Battista Biggio"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "LatentOmni: Rethinking Omni-Modal Understanding via Unified Audio-Visual Latent Reasoning",
+        "url": "",
+        "authors": [
+          "Yifan Dai",
+          "Zhenhua Wu",
+          "Bohan Zeng",
+          "Daili Hua",
+          "Jialing Liu",
+          "Bozhou Li",
+          "Yuran Wang",
+          "Chengzhuo Tong",
+          "Hao Liang",
+          "Xiaochen Ma",
+          "Junbo Niu",
+          "Tianyu Guo",
+          "Yang Shi",
+          "Yue Ding",
+          "Yiyan Ji",
+          "Bingyin Mei",
+          "Yushuo Guan",
+          "Yuanxing Zhang",
+          "Pengfei Wan",
+          "Fangcheng Fu",
+          "Wentao Zhang"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "FLUID: From Ephemeral IDs to Multimodal Semantic Codes for Industrial-Scale Livestreaming Recommendation",
+        "url": "",
+        "authors": [
+          "Xinhang Yuan",
+          "Zexi Huang",
+          "Anjia Cao",
+          "Xudong Lu",
+          "Zikai Wang",
+          "Penghao Zhou",
+          "Chang Liu",
+          "Wentao Guo",
+          "Qinglei Wang"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Faithful-MR1: Faithful Multimodal Reasoning via Anchoring and Reinforcing Visual Attention",
+        "url": "",
+        "authors": [
+          "Changyuan Tian",
+          "Zhicong Lu",
+          "Huaxing Liu",
+          "Xiang Wang",
+          "Shuai Li",
+          "Yu Chen",
+          "Wenqian Lv",
+          "Zichuan Lin",
+          "Juncheng Diao",
+          "Deheng Ye"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Leveraging Self-Paced Curriculum Learning for Enhanced Modality Balance in Multimodal Conversational Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Phuong-Anh Nguyen",
+          "The-Son Le",
+          "Duc-Trong Le",
+          "Cam-Van Thi Nguyen"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Enhancing Visual Token Representations for Video Large Language Models via Training-Free Spatial-Temporal Pooling and Gridding",
+        "url": "",
+        "authors": [
+          "Bingjun Luo",
+          "Tony Wang",
+          "Hanqi Chen",
+          "Xinpeng Ding"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Do Factual Recall Mechanisms Carry over from Text to Speech in Multimodal Language Models?",
+        "url": "",
+        "authors": [
+          "Luca Modica",
+          "Filip Landin",
+          "Mehrdad Farahani",
+          "Livia Qian",
+          "Gabriel Skantze",
+          "Richard Johansson"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "A Camera-Cooperative ISAC Framework for Multimodal Non-Cooperative UAVs Sensing",
+        "url": "",
+        "authors": [
+          "Wenfeng Wu",
+          "Luping Xiang",
+          "Kun Yang"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Perception or Prejudice: Can MLLMs Go Beyond First Impressions of Personality?",
+        "url": "",
+        "authors": [
+          "Caixin Kang",
+          "Tianyu Yan",
+          "Sitong Gong",
+          "Mingfang Zhang",
+          "Liangyang Ouyang",
+          "Ruicong Liu",
+          "Bo Zheng",
+          "Huchuan Lu",
+          "Kaipeng Zhang",
+          "Yoichi Sato",
+          "Yifei Huang"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "ST-SimDiff: Balancing Spatiotemporal Similarity and Difference for Efficient Video Understanding with MLLMs",
+        "url": "",
+        "authors": [
+          "Bingjun Luo",
+          "Tony Wang",
+          "Chaoqi Chen",
+          "Xinpeng Ding"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Measuring Cross-Modal Synergy: A Benchmark for VLM Explainability",
+        "url": "",
+        "authors": [
+          "Joël Roman Ky",
+          "Salah Ghamizi",
+          "Maxime Cordy"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "AtelierEval: Agentic Evaluation of Humans & LLMs as Text-to-Image Prompters",
+        "url": "",
+        "authors": [
+          "Hanjun Luo",
+          "Zhimu Huang",
+          "Sylvia Chung",
+          "Yiran Wang",
+          "Yingbin Jin",
+          "Jialin Li",
+          "Jiang Li",
+          "Xinfeng Li",
+          "Hanan Salam"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Beyond Acoustic Emotion Recognition: Multimodal Pathos Analysis in Political Speech Using LLM-Based and Acoustic Emotion Models",
+        "url": "",
+        "authors": [
+          "Juergen Dietrich"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Maestro: Reinforcement Learning to Orchestrate Hierarchical Model-Skill Ensembles",
+        "url": "",
+        "authors": [
+          "Jinyang Wu",
+          "Guocheng Zhai",
+          "Ruihan Jin",
+          "Yuhao Shen",
+          "Zhengxi Lu",
+          "Fan Zhang",
+          "Haoran Luo",
+          "Zheng Lian",
+          "Zhengqi Wen",
+          "Jianhua Tao"
+        ],
+        "date": "2026-05-24"
+      },
+      {
+        "title": "Understanding Multimodal Failure in Action-Chunking Behavioral Cloning",
+        "url": "",
+        "authors": [
+          "Lorenzo Mazza",
+          "Massimiliano Datres",
+          "Ariel Rodriguez",
+          "Sebastian Bodenstedt",
+          "Gitta Kutyniok",
+          "Stefanie Speidel"
+        ],
+        "date": "2026-05-24"
+      }
+    ]
+  }
+]
