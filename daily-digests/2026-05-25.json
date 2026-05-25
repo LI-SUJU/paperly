@@ -1,0 +1,229 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-25",
+    "paperCount": 8,
+    "markdown": "# From Black Box to Blueprint: Mechanistic Interpretability Across Modalities, Languages, and Reasoning\n\nToday's research landscape reveals a decisive shift from asking *which* features matter toward understanding *how* computational mechanisms operate across modalities, languages, and reasoning stages. Two dominant paradigms emerge: sparse autoencoders (SAEs) are being extended beyond English-only contexts into multimodal and multilingual settings, while a complementary family of work uses functional decomposition—transcoders, linear subspace analysis, and backward credit assignment—to trace causal pathways through transformer computations without intervention.\n\n## Mechanistic Decomposition Across Modalities: From Vision-Language to Brain Alignment\n\nVision-language models remain poorly understood at the level of cross-modal computation. **Damianos et al.** [2] address this gap by replacing static Sparse Autoencoders with Transcoders, which approximate MLP sublayer computations as sparse, interpretable functions. Applied to Gemma 3-4B-IT, the framework decomposes the model into causal pathways linking visual inputs to textual outputs, enabling the identification of computational steps that produce grounded vs. hallucinated generations. This function-centric view—tracing *how* rather than *where*—represents a methodological advance over residual-stream decomposition.\n\nIn a complementary vein, **Guo et al.** [3] bridge mechanistic interpretability and computational neuroscience by training SAEs on GPT-2 XL and Llama-3.1-8B (16K–32K features per layer) and using the resulting features to predict fMRI brain responses to language stimuli. Their human-validated taxonomy (κ ≥ 0.74) reveals that semantic features alone recover 94% of peak encoding performance (r = 0.285), far exceeding variance-matched baselines. This provides a mechanistic explanation for why intermediate layers best predict brain activity: those layers encode the semantic features that align with cortical semantic topography, not mere syntactic or positional representations.\n\n## Multilingual and Multitask Steering: Principled Control Beyond English\n\nSAE-based activation steering has proven unreliable in multilingual settings because SAEs are typically trained on English-only data and layer selection is heuristic. **Al Ghussin et al.** [4] address both limitations by training SAEs on multilingual data and establishing a principled framework for layer selection in language control tasks. Their key finding—that multilingual SAE training consistently strengthens cross-lingual representations—provides a practical recipe for extending mechanistic interpretability to non-English languages, where most safety-critical deployments occur.\n\n**Xu** [5] takes a different approach to understanding compositional control in instruction-tuned LLMs, showing that role prompts of the form \"As X, do Y\" admit a clean linear decomposition in the residual stream. Specifically, persona and task effects form partially orthogonal additive directions at the prompt-to-answer transition site (last prompt token + first two generated tokens) in early/mid layers. Substituting the clean residual with h_BB + Δ_X + Δ_Y yields output within small KL divergence of clean on Gemma-2-2B-IT and Qwen-2.5 models, across 12- and 48-cell experimental grids. This provides a mechanistic account of how role-playing and task instructions compose through simple additive interference.\n\n## Rethinking Representation: Non-Monotonic Depth, Convergent Representations, Divergent Reasoning\n\nContrary to the widespread practice of using only final-layer representations, **Batra et al.** [6] demonstrate that task-relevant information is distributed non-monotonically across model depth and cannot be recovered by naïve aggregation. Through geometric and empirical analysis across multiple modalities, they show that effective transfer depends on identifying which layers encode task-discriminative structure and understanding how these embeddings geometrically organize. This challenges the final-layer dogma and suggests that layer-wise feature selection should be a standard preprocessing step in interpretability pipelines.\n\nThe Platonic Representation Hypothesis—that models converge to similar internal representations—is tested on reasoning by **Usama and Chang** [7] across 16 models from 8 families (1.5B–72B parameters) on 800 reasoning problems. While representations converge across architectures, the reasoning processes operating over those shared representations diverge, especially on difficult problems and during later computational stages. This dissociation between representation and reasoning has profound implications: shared features do not guarantee shared logical chains, meaning interpretability findings may not transfer across models even when representations appear aligned.\n\n## From Attribution to Composition: Unifying Credit Assignment\n\nMechanistic interpretability requires not just identifying which components matter but how they compose into the computational route producing a prediction. **Chen et al.** [8] exploit the shared key-value template φ(S)U underlying both attention and MLP sublayers to develop Unpack, a backward recursion that decomposes credit through both sublayers in a single forward pass—without intervention, gradients, or auxiliary training. The method produces interaction strengths between any two components (end-to-end paths with K/Q/V composition labels) and per-token attribution simultaneously. This unifies attribution and composition analysis under a single mathematical framework, addressing a longstanding fragmentation in mechanistic interpretability tooling.\n\n**Rezaei and Krishnan** [1] tackle a complementary problem: extracting mechanistic explanations from tabular data for scientific applications. Rather than asking an LLM to predict the target directly (which forces it to search the entire output space), they anchor predictions with a base model and ask the LLM the narrower question of what that model's residuals reveal about feature interactions. This \"residuals to reasons\" approach iteratively refines explanations alongside human understanding, bridging the gap between black-box statistical models and the mechanistic explanations scientists require for hypothesis generation.\n\n## Key Takeaways\n\n- **Transcoders over SAEs for cross-modal pathways**: Function-centric decomposition (approximating MLP sublayer computations) reveals causal computational steps in vision-language models, addressing SAEs' limitation of capturing only static residual representations [2].\n- **Semantic features explain brain-LLM alignment**: The intermediate-layer encoding advantage in brain prediction is mechanistically explained by SAE-discovered semantic features that map onto cortical semantic topography, recovering 94% of peak performance [3].\n- **Multilingual SAEs are both necessary and effective for cross-lingual control**: Training SAEs on multilingual data consistently strengthens cross-lingual representations and enables reliable, quality-preserving language steering, solving a practical deployment bottleneck [4].\n- **Role and task compose through linear additive subspaces**: \"As X, do Y\" prompts decompose into partially orthogonal persona and task directions at a specific residual stream site, providing mechanistic grounding for instruction following [5].\n- **Task-relevant information is distributed non-monotonically across depth**: Effective transfer learning and interpretability require layer-wise feature selection rather than final-layer aggregation, challenging common practice [6].\n- **Representational convergence does not imply reasoning convergence**: Across 16 models, shared internal representations coexist with divergent reasoning processes, especially on hard problems—a critical caveat for cross-model interpretability transfer [7].\n- **Attribution and composition unified under one forward pass**: The shared key-value template of attention and MLP enables Unpack, a backward recursion producing both per-token attribution and component interaction strengths without intervention or training [8].",
+    "papers": [
+      {
+        "title": "From Residuals to Reasons: LLM-Guided Mechanism Inference from Tabular Data",
+        "url": "",
+        "authors": [
+          "Mohammad R. Rezaei",
+          "Rahul G. Krishnan"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Transcoders Trace Visual Grounding and Hallucinations in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Dimitrios Damianos",
+          "Leon Voukoutis",
+          "Georgios Skyrianos",
+          "Vassilis Katsouros",
+          "Georgios Paraskevopoulos"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Sparse Autoencoders Map Brain-LLM Alignment onto Cortical Semantic Topography",
+        "url": "",
+        "authors": [
+          "Dongxin Guo",
+          "Jikun Wu",
+          "Siu Ming Yiu"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Multilingual Steering by Design: Multilingual Sparse Autoencoders and Principled Layer Selection",
+        "url": "",
+        "authors": [
+          "Yusser Al Ghussin",
+          "Daniil Gurgurov",
+          "Tanja Baeumel",
+          "Josef van Genabith",
+          "Patrick Schramowski",
+          "Simon Ostermann"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "As X, Do Y: How Persona and Task Combine in Instruction-Tuned LLMs",
+        "url": "",
+        "authors": [
+          "Eric Xu"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Uncovering the Latent Potential of Deep Intermediate Representations",
+        "url": "",
+        "authors": [
+          "Arnesh Batra",
+          "Arush Gumber",
+          "Aniket Khandelwal",
+          "Jashn Khemani",
+          "Anubha Gupta"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Convergence Without Understanding: When Language Models Agree on Representations but Disagree on Reasoning",
+        "url": "",
+        "authors": [
+          "Muhammad Usama",
+          "Dong Eui Chang"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Every Component is a Lookup: Token Attribution and Composition from a Single Decomposition",
+        "url": "",
+        "authors": [
+          "Po-Kai Chen",
+          "Niki van Stein",
+          "Aske Plaat"
+        ],
+        "date": "2026-05-25"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-25",
+    "paperCount": 1,
+    "markdown": "# Beyond Black Boxes: Advancing Graph Neural Network Explainability with Efficient Walk-Based Relevance Propagation\n\nToday's research landscape in AI explainability is actively pushing beyond simple feature attribution toward more expressive, structurally-aware explanation methods. A key challenge remains balancing the richness of higher-order explanations—which capture complex interactions—with computational tractability, particularly in graph neural networks where the space of possible explanations grows combinatorially.\n\n## The Challenge of Scalable Higher-Order Explanations\n\n## [1] Relevant Walk Search for Explaining Graph Neural Networks\n\n**[1]** This paper directly tackles the computational bottleneck of GNN-LRP (Layer-wise Relevance Propagation for GNNs), which provides superior higher-order explanations by evaluating relevance scores over *walks* in the network, but requires exponential complexity in network depth. The authors propose a novel \"Relevant Walk Search\" method that reformulates the relevance propagation as a constrained optimization problem, enabling the identification of the most informative walks without enumerating the full exponential space. Their key contribution is a greedy search algorithm that approximates the top-k relevant walks with polynomial complexity, while theoretically guaranteeing that the discovered walks capture the majority of the total relevance mass. This matters because it transforms a previously impractical method into a deployable tool for explaining GNN predictions on real-world graphs, including molecular property prediction and social network analysis, where understanding multi-step information flow is critical for trust and model debugging.\n\n## The Broader Impact and Remaining Open Questions\n\nWhile this work provides a practical pathway for walk-based explanations, the reliance on greedy search introduces approximation errors, and the method's sensitivity to the choice of relevance threshold requires careful empirical tuning. The authors demonstrate that their approach preserves explanation fidelity compared to full GNN-LRP on benchmark datasets, but do not extensively characterize failure modes—such as when the relevance mass is highly diffuse across many walks. Future work could explore adaptive search strategies or theoretical bounds on worst-case approximation errors. For the research community, this paper serves as an important proof that expressive, higher-order explainability methods can be made computationally viable, potentially enabling new applications in scientific domains like drug discovery where understanding multi-hop chemical interactions is essential.",
+    "papers": [
+      {
+        "title": "Relevant Walk Search for Explaining Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Ping Xiong",
+          "Thomas Schnake",
+          "Michael Gastegger",
+          "Grégoire Montavon",
+          "Klaus-Robert Müller",
+          "Shinichi Nakajima"
+        ],
+        "date": "2026-05-25"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-25",
+    "paperCount": 8,
+    "markdown": "# Multimodal Intelligence at the Edge: From Fusion to Faithfulness, Safety, and Scientific Rigor\n\nToday's research landscape reveals a multimodal AI community grappling with three interconnected challenges: how to build efficient and adaptive systems for real-world deployment, how to rigorously evaluate and interpret multimodal models, and how to make these systems robust and trustworthy across languages, contexts, and failure modes. The papers span from foundational theoretical critiques of evaluation metrics to practical frameworks for near-sensor learning, interpretability, knowledge editing, safety, and domain-specific applications.\n\n## Architectures for Efficient and Adaptive Multimodal Processing\n\n[1] **FusionSense: Tri-Stage Near-Sensor Learning for Runtime-Adaptive Multimodal Edge Intelligence** — This paper addresses the challenge of runtime-adaptive computation in multimodal edge systems, where prior approaches either fuse modalities only on powerful servers or apply uni-modal filters that ignore cross-modal dependencies. The authors propose FusionSense, a tri-stage near-sensor learning framework that enables adaptive decision-making about what to compute and transmit across sensor, edge, and cloud tiers. By accounting for cross-modal correlations at the earliest processing stages, FusionSense reduces redundant transmissions while preserving detection of critical events, directly impacting the viability of autonomous systems and smart-industry deployments with tight energy and latency budgets.\n\n[6] **Open Multimodal Datasets and Open-Source Software for Data-Driven Modeling of Multiphase Transport and Thermal Systems** — This work tackles the problem of fragmented datasets and inaccessible raw instrument files that hinder AI-enabled thermal-fluid research. The authors present an open ecosystem of multimodal datasets and software packages from the NED3 Laboratory, introducing a spatial-plus-temporal dimensionality (S+TD) framework for classifying thermal-fluid data. This contribution fills a critical infrastructure gap by providing reproducible benchmarks and standardized data formats for data-driven modeling of multiphase transport, electronics cooling, and thermal-fluid digital twins.\n\n## Evaluation, Interpretability, and Understanding of Multimodal Models\n\n[2] **Pointwise Metrics Mislead: An Evaluation Protocol for Multimodal Inverse Problems** — This paper reveals a fundamental flaw in using pointwise metrics (RMSE, MAE) for evaluating inverse problems with multimodal posteriors, showing that the law of total variance causes point estimators trained to minimize MSE to produce marginal spectra strictly narrower than the truth. The authors demonstrate that this bias is architecture-independent and compresses precisely the spectral features—tails—that matter most in scientific reconstruction. This theoretical contribution demands a paradigm shift in how the scientific community evaluates reconstruction quality, proposing an alternative protocol that captures the multi-valued nature of inverse problems.\n\n[3] **Transcoders Trace Visual Grounding and Hallucinations in Vision-Language Models** — Addressing the poor understanding of how visual inputs are transformed to text in generative VLMs, the authors adopt Transcoder-based interpretability—sparse approximations of MLP sublayers that serve as causal proxies for layer-wise computation. Applied to Gemma 3-4B-IT, this framework decomposes the model into interpretable computational pathways, revealing the functional updates driving cross-modal interaction better than static Sparse Autoencoders. This work provides a powerful new tool for debugging hallucinations and understanding visual grounding in frontier vision-language models.\n\n[7] **Emotion Recognition in Sign Language Conversation** — This paper identifies and addresses the structural gap where existing sign language emotion datasets focus on isolated utterances without conversational context, causing degraded performance in real-world scenarios. The authors introduce the Emotion Recognition in Conversation (ERC) task to sign language analysis and propose the eJSL Dialog dataset, constructed from STUDIES corpus scripts with 1,920 video samples capturing historical dialogue flow. This contribution extends affective computing to sign language communication, enabling models that leverage temporal conversational dynamics rather than static frame-level analysis.\n\n[8] **ChartFI: Benchmarking Faithfulness and Insightfulness of Chart Descriptions from Multimodal Large Language Models** — Recognizing that current chart description benchmarks use simple, homogeneous charts with shallow descriptions, the authors develop ChartFI to evaluate how faithfully and insightfully MLLMs describe complex visualizations. The benchmark captures multi-faceted description quality beyond fact enumeration, addressing the gap in metrics for accessibility and cross-modal retrieval applications. This work provides a necessary evaluation framework as MLLMs are increasingly deployed for automated chart understanding and description generation.\n\n## Robustness, Safety, and Knowledge Integrity in Multimodal LLMs\n\n[4] **Beyond Binary Edits: Robust Multimodal Knowledge Editing with Adversarial Subspace Alignment** — This paper addresses the limited generality of intrinsic multimodal knowledge editing, where edits fail to propagate across semantically equivalent visual and linguistic variations due to lack of semantic supervision and biased anchoring. The authors propose an adversarial subspace alignment approach that explicitly targets generalizable editing in high-dimensional multimodal spaces, achieving robust knowledge updates without degrading existing capabilities. This is critical for practical MLLM deployment where efficient and reliable knowledge modification is essential.\n\n[5] **Same Model, Different Weakness: How Language and Modality Reshape the Jailbreak Attack Surface in Frontier MLLMs** — Presenting the first systematic cross-lingual, multimodal red-teaming study, the authors compare jailbreak vulnerability in US English and Mexican Spanish across four frontier MLLMs using 52,272 harm ratings from 363 diverse prompt scenarios. The study reveals that the attack surface of MLLMs is language-dependent in ways that expose the mechanistic structure of alignment failures, with vulnerability varying significantly across both language and modality conditions. This work fundamentally challenges the assumption of language-agnostic safety alignment and provides critical insights for building robust, globally-deployed multimodal systems.\n\n## Key Takeaways\n- **Cross-modal efficiency at the edge demands runtime-adaptive fusion**: FusionSense demonstrates that accounting for cross-modal dependencies at the near-sensor level can significantly reduce redundant transmissions while preserving detection fidelity, a critical insight for energy-constrained autonomous systems.\n- **Standard evaluation metrics fundamentally mislead for multimodal inverse problems**: The theoretical discovery that pointwise metrics (RMSE, MAE) inherently bias reconstructions toward narrower spectra threatens to invalidate years of published results in scientific reconstruction and demands new evaluation protocols.\n- **Transcoder-based interpretability reveals the functional dynamics of cross-modal interaction**: Unlike static Sparse Autoencoders, Transcoders provide causal, layer-wise decompositions of how VLMs transform visual inputs to text, opening new avenues for debugging hallucinations and understanding grounding mechanisms.\n- **Multimodal safety alignment is language-dependent and model-specific**: Cross-lingual red-teaming shows that jailbreak vulnerability varies dramatically across languages even within the same model, exposing the brittleness of current safety alignment approaches and the need for language-aware defenses.\n- **Knowledge editing in MLLMs requires adversarial generalization**: Simple binary edits fail to propagate across visual and linguistic variations; adversarial subspace alignment offers a principled approach to robust, generalizable multimodal knowledge updates.\n- **Domain-specific multimodal datasets remain a critical bottleneck**: The open ecosystem for thermal-fluid research highlights the broader need for standardized, reusable multimodal datasets and software infrastructure to enable reproducible AI in specialized scientific domains.\n- **Benchmarking must evolve beyond simple fact enumeration**: ChartFI's multi-faceted evaluation of faithfulness and insightfulness sets a new standard for assessing MLLM-generated descriptions, as models are increasingly trusted for accessibility and retrieval tasks.",
+    "papers": [
+      {
+        "title": "FusionSense: Tri-Stage Near-Sensor Learning for Runtime-Adaptive Multimodal Edge Intelligence",
+        "url": "",
+        "authors": [
+          "Sanggeon Yun",
+          "Ryozo Masukawa",
+          "Minhyoung Na",
+          "Hyunwoo Oh",
+          "Yoshiki Yamaguchi",
+          "Wenjun Huang",
+          "SungHeon Jeong",
+          "Mohsen Imani"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Pointwise Metrics Mislead: An Evaluation Protocol for Multimodal Inverse Problems",
+        "url": "",
+        "authors": [
+          "Mads H. Baattrup",
+          "Jörn Bach",
+          "Laurids Jeppe",
+          "Finn Labe",
+          "Alexander Grohsjean",
+          "Christian Schwanenberger",
+          "Peer Stelldinger"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Transcoders Trace Visual Grounding and Hallucinations in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Dimitrios Damianos",
+          "Leon Voukoutis",
+          "Georgios Skyrianos",
+          "Vassilis Katsouros",
+          "Georgios Paraskevopoulos"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Beyond Binary Edits Robust Multimodal Knowledge Editing with Adversarial Subspace Alignment",
+        "url": "",
+        "authors": [
+          "Haoyuan Wang",
+          "Xiaohao Liu",
+          "Jiajie Su",
+          "Jianmao Xiao",
+          "Chaochao Chen"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Same Model, Different Weakness: How Language and Modality Reshape the Jailbreak Attack Surface in Frontier MLLMs",
+        "url": "",
+        "authors": [
+          "Casey Ford",
+          "Madison Van Doren",
+          "Sicheng Jin",
+          "Emily Dix"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Open Multimodal Datasets and Open-Source Software for Data-Driven Modeling of Multiphase Transport and Thermal Systems",
+        "url": "",
+        "authors": [
+          "Christy Dunlap",
+          "Hari Pandey",
+          "Stephen Pierson",
+          "Daniel Curl",
+          "Braden Stevens",
+          "Mohammad Ishraq Hossain",
+          "Annapurna Parjuli",
+          "Chinmaya Joshi",
+          "Han Hu"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "Emotion Recognition in Sign Language Conversation",
+        "url": "",
+        "authors": [
+          "Yusong Wang",
+          "Keyu Mao",
+          "Takao Obi",
+          "Minghao Shao",
+          "Kotaro Funakoshi"
+        ],
+        "date": "2026-05-25"
+      },
+      {
+        "title": "ChartFI: Benchmarking Faithfulness and Insightfulness of Chart Descriptions from Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Fen Wang",
+          "Zekai Shao",
+          "Qiman Kang",
+          "Chunran Hu",
+          "Zhixuan Zhang",
+          "Lexu Xie",
+          "Chao Liu",
+          "Siming Chen"
+        ],
+        "date": "2026-05-25"
+      }
+    ]
+  }
+]
