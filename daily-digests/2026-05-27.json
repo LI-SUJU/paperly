@@ -1,0 +1,240 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-27",
+    "paperCount": 7,
+    "markdown": "# Mechanistic Interpretability and Beyond: Bridging Model Internals to Human-Readable Explanations\n\nToday's research landscape presents a dual focus: advancing mechanistic interpretability tools that directly probe neural network internals, while also developing frameworks that make model reasoning transparent and grounded in human-understandable concepts. The papers span from circuit-level analysis in transformers to post-training data engineering and semantic alignment of psychological constructs.\n\n## Probing and Recovering Neural Circuits\n\n[3] Mechanistic interpretability has identified that specific attention heads implement distinct behaviors in transformer models, but recovering these circuits typically requires labor-intensive manual analysis. The MechRL framework recasts circuit discovery as a reinforcement learning problem, where a PPO agent operates over the 144 attention heads of GPT-2 small, using zero-ablation and a contrastive reward that isolates task-specific circuit components from general language modeling. This approach automates what previously required bespoke analytical pipelines, demonstrating that deep RL can efficiently discover functional circuits across multiple tasks. The work matters because it scales mechanistic interpretability from manual case studies to automated discovery, though the focus remains on small models and limited action spaces.\n\n[6] Two puzzling phenomena in deep learning—grokking, where test performance improves abruptly after prolonged overfitting, and double descent, where test error rises then falls—lack a unified theoretical explanation. The authors propose a representation-readout decomposition framework that analytically separates the learning dynamics into a representational phase and a readout phase, showing that grokking arises from slow readout learning on already-good representations while double descent stems from interference between representation and readout updates. This provides a task-agnostic lens for diagnosing generalization mysteries across architectures. The contribution is significant as it offers practitioners a principled way to monitor and intervene in training dynamics using projected gradients and representation norms, rather than relying on ad-hoc explanations.\n\n## Enhancing Model Transparency Through Internal State Analysis\n\n[7] Post-training data engineering for large language models typically relies on external signals like reward model scores, ignoring the rich internal information encoded in model activations. The authors propose SAERL, which uses Sparse Autoencoders to extract three intrinsic data properties—diversity, difficulty, and quality—from model internals and grounds concrete data engineering operations on each. SAE-space clustering enables diversity-aware data selection, while activation norm and reconstruction error provide difficulty and quality signals. This matters because it bridges mechanistic interpretability tools directly into the RL training pipeline, potentially reducing reward hacking and improving sample efficiency by aligning data selection with what the model actually needs to learn.\n\n[2] UAV detection systems often rely on expensive radar or optical sensors, while acoustic methods suffer from noise interference and limited feature interpretability. The paper introduces rational Gaussian wavelet neural networks, where adaptive wavelet transformations are embedded into and jointly trained with a small neural network, creating an interpretable feature extraction pipeline that learns frequency-domain signatures of drone sounds. This cost-effective approach achieves competitive detection accuracy while maintaining transparency in which acoustic features drive classification decisions. The work matters because it demonstrates how embedding physically meaningful, differentiable feature extractors into neural networks can yield both performance and interpretability for safety-critical applications.\n\n## Grounding Model Outputs in Formal and Semantic Frameworks\n\n[4] Computing legal indicators from normative texts is crucial for policy evaluation but suffers from LLM hallucinations and lack of evidence grounding. N2I-RAG proposes an agentic retrieval-augmented generation framework that decomposes indicator computation into subtasks, each with dedicated retrieval and verification steps against a legal knowledge base. The system chains multiple retrieval-and-reasoning steps with explicit citation requirements, ensuring every computed indicator value is traceable to specific legal provisions. This matters because it addresses the critical reliability gap in legal AI applications, where unverified outputs could have real-world consequences, while maintaining the flexibility of generative models.\n\n[5] Psychological constructs like personality traits and emotions have been measured in incompatible instruments and isolated research traditions, preventing cross-study comparison. The paper proposes representing constructs as directions in a shared word-embedding space using Supervised Semantic Differential, estimating construct-specific semantic gradients from text-outcome associations. Using Valence, Arousal, and Dominance as a test case, the framework maps any textual measure onto these common axes, enabling mathematical comparison across datasets. This matters for interpretability because it provides an explicit, geometrically grounded representation of abstract psychological concepts, making model reasoning about human attributes more transparent and comparable across studies.\n\n[1] Temporal signed networks modeling both cooperative and adversarial relationships remain challenging for graph neural networks due to the interaction of evolving structure, signed relations, and balance-theoretic constraints. The authors propose a modular temporal enhancement framework for signed GNNs that integrates historical state information into message passing, maintaining edge-level temporal dynamics while respecting signed graph balance theory. The framework is designed as a drop-in module compatible with existing signed GNN architectures. This matters because signed relationships with temporal dynamics are ubiquitous in social media, finance, and reputation systems, yet prior work focused on static or unsigned temporal graphs, leaving a gap that this framework directly addresses.\n\n## Key Takeaways\n- Automated circuit discovery through RL agents (MechRL) represents a paradigm shift from manual mechanistic interpretability toward scalable, task-agnostic analysis of transformer internals.\n- Sparse autoencoders can serve as practical data engineering tools (SAERL), bridging the gap between interpretability research and real-world LLM training pipelines by using model internals to guide data selection.\n- The representation-readout decomposition provides a unified theoretical framework for understanding grokking and double descent, offering actionable monitoring metrics for practitioners.\n- Integrating differentiable, physically interpretable feature extractors into neural networks (as in rational Gaussian wavelets) offers a path to models that are both performant and transparent for domain-specific tasks.\n- Agentic RAG frameworks with structured verification steps (N2I-RAG) demonstrate that grounding LLM outputs in formal knowledge bases can achieve reliability comparable to traditional expert systems while maintaining generative flexibility.\n- Semantic alignment of psychological constructs in shared embedding spaces enables cross-dataset comparability, addressing a fundamental limitation in computational social science and interpretable AI for human attributes.\n- Modular temporal enhancements for signed graph networks close an important gap in modeling dynamic cooperative-adversarial relationships, with direct applications in trust and reputation systems.",
+    "papers": [
+      {
+        "title": "Dynamic Link Prediction with Temporally Enhanced Signed Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Derek Regier",
+          "Andrew Polyak",
+          "Aresh Dadlani",
+          "Khosro Salmani"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Classification and detection of multiple UAVs using rational Gaussian wavelet neural networks",
+        "url": "",
+        "authors": [
+          "Ungvári Gergő",
+          "Ferenc Braun",
+          "Attila Ámon",
+          "Péter Kackstädter",
+          "János Volk",
+          "Péter Kovács",
+          "Tamás Dózsa"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "MechRL: Reinforcement Learning Agents Perform Circuit Discovery for Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Barsat Khadka"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "From Norms to Indicators (N2I-RAG): An Agentic Retrieval-Augmented Generation Framework for Legal Indicator Computation",
+        "url": "",
+        "authors": [
+          "Youssef Al Mouatamid",
+          "Marie Bonnin",
+          "Jihad Zahir"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Psychological Constructs in Shared Semantic Space",
+        "url": "",
+        "authors": [
+          "Hubert Plisiecki"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Two Speeds of Learning: A Representation-Readout Decomposition of Grokking and Double Descent",
+        "url": "",
+        "authors": [
+          "Chi-Ning Chou",
+          "Oscar Uzdelewicz",
+          "Neng-Chun Chiu",
+          "Yao-Yuan Yang",
+          "SueYeon Chung"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Guiding LLM Post-training Data Engineering with Model Internals from Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Yi Jing",
+          "Zao Dai",
+          "Jinwu Hu",
+          "Zijun Yao",
+          "Lei Hou",
+          "Juanzi Li",
+          "Xiaozhi Wang"
+        ],
+        "date": "2026-05-27"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-27",
+    "paperCount": 2,
+    "markdown": "# Explainability in Practice: From Causal Copilots to Methane Plume Screening\n\nToday's research landscape demonstrates a growing maturity in explainability, shifting from theoretical frameworks toward practical, human-centered deployment. Two key papers explore how to make complex analytical methods—from causal inference to satellite-based methane detection—transparent and actionable for domain experts, highlighting the critical role of interactive explanation in real-world decision-making.\n\n## Bridging the Expert Gap: Interactive Causal Analysis\n\n[1] **ORCA: An End-to-End Interactive Copilot for Optimized Root Cause Analysis** addresses the critical problem that causal analysis methods remain conceptually and methodologically inaccessible to domain experts in manufacturing, social science, and medicine. The authors introduce ORCA, a copilot architecture that orchestrates multiple AI agents to understand user goals and guide them through appropriate causal analysis workflows in an end-to-end interactive manner. ORCA's key contribution is its ability to translate between natural language user intentions and formal causal inference procedures, enabling domain experts to conduct rigorous causal analysis without deep methodological expertise. This work matters because it directly tackles the adoption barrier that has prevented causal methods from reaching practitioners who need them most, potentially democratizing access to explainable causal insights across high-stakes domains.\n\n## Model Comparison Through the Lens of Explainability\n\n[2] **Explainable Comparison of Feature-Based and Deep Learning Models for TROPOMI Methane Plume Screening** tackles the problem that satellite-based methane emission detection produces numerous false positives from retrieval artifacts (elevation changes, albedo gradients, aerosols, coastlines) that visually resemble real methane plumes. The authors systematically compare feature-based models and deep learning approaches for distinguishing actual emissions from artifacts, with a strong emphasis on model explainability to build trust in automated screening. Key results include a detailed characterization of which features and learned representations most effectively discriminate real plumes from artifacts, along with explainability metrics that quantify model reliability for operational deployment. This work is significant because effective methane monitoring is crucial for climate change mitigation, and explainable models are essential for operators to trust automated screening over costly manual verification, especially when false positives dominate raw detection data.\n\n## Key Takeaways\n- Interactive copilots that bridge methodological complexity and domain expertise represent a promising direction for democratizing causal analysis, with ORCA demonstrating how agent orchestration can make advanced techniques accessible to non-specialists.\n- Real-world satellite monitoring applications reveal that explainability is not just a desirable property but a practical necessity—operators must understand why a model flags a plume as real versus artifact to trust automated screening.\n- The methane detection domain provides a compelling case study where deep learning and feature-based models each offer different explainability trade-offs, suggesting that model choice should be guided by both performance and interpretability requirements.\n- Both papers underscore that the primary barrier to adopting sophisticated analytical methods is often human-centered: experts need transparent, interactive explanations, not just accurate predictions or causal estimates.\n- The integration of natural language interfaces with formal reasoning methods (as in ORCA) points toward a future where explainability is embedded in the user workflow rather than added as a post-hoc analysis.\n- Validation of explainability methods in high-stakes environmental monitoring (methane screening) demonstrates that explanations must withstand scrutiny under conditions of high false positive rates and complex artifact patterns.\n- These works collectively suggest that the next frontier in explainability research lies not in developing new explanation techniques but in designing systems that effectively communicate uncertainty, limitations, and decision boundaries to domain experts.",
+    "papers": [
+      {
+        "title": "ORCA: An End-to-End Interactive Copilot for Optimized Root Cause Analysis",
+        "url": "",
+        "authors": [
+          "Phi Nguyen Xuan",
+          "Nicholas Tagliapietra",
+          "Lavdim Halilaj",
+          "Kristian Kersting",
+          "Juergen Luettin"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Explainable Comparison of Feature-Based and Deep Learning Models for TROPOMI Methane Plume Screening",
+        "url": "",
+        "authors": [
+          "Solomiia Kurchaba",
+          "Joannes D. Maasakkers",
+          "Berend J. Schuit",
+          "Ilse Aben"
+        ],
+        "date": "2026-05-27"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-27",
+    "paperCount": 8,
+    "markdown": "# A Multimodal Crossroads: From Embodied Agents to Scientific Discovery and Grounded Evaluation\n\nToday's research landscape reveals a multimodal community in transition: moving beyond static benchmarks and pure perception toward agents that must reason over long-term interactions, generate structured scientific outputs, and audit their own grounding in reality. A recurrent tension emerges between the power of large-scale pretraining and the fragility of models when confronted with real-world ambiguity, specialized domains, and the need to distinguish truly informative signals from incidental visual context.\n\n## Section 1: Embodied Agency and Personalization Over Time\n\n[1] POLAR addresses the critical gap that embodied MLLM agents cannot personalize assistance when user goals are communicated implicitly through prior interactions rather than explicit commands. The framework organizes multimodal memories—storing visual observations, object interactions, and user preferences—into a structured episodic memory that can be queried to resolve ambiguous referring expressions and task goals. Key contributions include a memory retrieval mechanism that balances recency and relevance, enabling the agent to reconstruct user intent from long interaction histories. This matters because as embodied agents enter homes and workplaces, the ability to build enduring models of individual users will separate truly useful assistants from generic instruction-followers.\n\n[6] QUACK tackles the problem that social deduction agents are typically evaluated only on win rates in text-only environments, making it impossible to determine whether their language is grounded in actual perceptions and actions. The framework introduces a multimodal social deduction environment with continuous visual state, plus auditing tools that compare agent utterances against ground-truth perceptual and behavioral logs. By systematically detecting failures in groundedness—such as agents lying about what they saw or falsely claiming actions they did not take—QUACK reveals that high win rates can mask severe grounding deficits. This matters because as LLM agents are deployed in mixed human-agent teams, trust requires verifiable alignment between what agents say and what they actually perceive and do.\n\n## Section 2: Creative Reasoning and Open-Ended Problem Solving\n\n[2] This paper challenges the assumption that LMMs' strong perception and reasoning abilities generalize to creative physical problem-solving, where agents must repurpose objects in non-obvious yet physically feasible ways. The authors introduce a benchmark requiring agents to identify how scene elements can serve novel functions—for example, using a shoe as a hammer—which demands both visual grounding and generative understanding of physical affordances. Key findings reveal that even top-performing LMMs struggle dramatically on this task, succeeding only on obvious affordances while failing to generate physically plausible novel solutions. This matters because creative physical intelligence is a hallmark of human cognition, and current models' failure reveals a fundamental gap between pattern completion and genuine understanding of how the physical world can be manipulated.\n\n[8] This work critically examines the assumption that visual inputs consistently improve language understanding in VLMs, using human concreteness and imagery ratings as a testbed. The authors find that providing real-image contexts does not yield consistent gains over text-only baselines and frequently hurts alignment with human judgments—especially for abstract or low-imagery words where visual evidence is least relevant. The core technical approach involves controlled comparisons between VLM judgments with and without images, isolating when visual information helps versus hurts. This matters because it challenges the multimodal community to develop models that know when to ignore visual data, rather than assuming more modalities always improve performance.\n\n## Section 3: Scientific and Specialized Domain Multimodality\n\n[3] PolyFusionAgent addresses the fragmentation in polymer AI, where structure, property, and knowledge representations are disconnected from each other and from physical experimentation. The framework couples PolyFusion, a multimodal foundation model that jointly embeds polymer chemical structures, property data, and textual knowledge, with PolyAgent, a tool-augmented agent that queries literature and performs inverse design. Key results demonstrate state-of-the-art property prediction and the ability to propose novel polymer candidates with targeted properties, grounded in retrieved scientific evidence. This matters because it shows a path toward AI-driven materials discovery that integrates the fragmented modalities of chemistry, physics, and textual domain knowledge into an actionable design loop.\n\n[4] MultiSeismo addresses the scarcity of domain-specific multimodal datasets for scientific generalist models by creating a large-scale seismic dataset spanning 16K events with waveforms, geographical imagery, and structured metadata. The authors demonstrate that a multimodal model pretrained on this dataset outperforms unimodal baselines on cross-modal seismic understanding tasks, such as event classification and magnitude estimation from heterogeneous inputs. This matters because it provides a template for building multimodal scientific datasets in domains where diverse data types (time series, imagery, metadata) must be fused, and shows that generalist multimodal architectures can be effectively adapted to specialized scientific reasoning.\n\n## Section 4: Benchmarks, Evaluation, and Long-Form Generation\n\n[5] LiveK12Bench exposes that existing K-12 examination benchmarks are static, prone to data contamination, and limited in modality coverage, creating an inflated view of LMMs' tutoring capabilities. The benchmark provides a dynamic, multi-disciplinary evaluation that is continuously updated, covers diverse modalities (text, diagrams, tables, images), and uses authentic exam formats with multi-step reasoning. Key findings reveal that current LMMs still fall significantly short of human performance on many subjects, particularly in geometry and multi-step quantitative reasoning where visual and textual information must be integrated. This matters because it provides a more honest assessment of where models truly stand for educational applications and highlights remaining gaps in grounded, multi-modal reasoning.\n\n[7] This paper identifies a fundamental limitation in token-level distillation for long-form medical report generation: standard methods treat all output tokens as equally informative, but reports are dominated by high-frequency template and grammatical tokens while critical diagnostic content is sparsely distributed. The authors propose Dynamic In-context Vector Distillation with Decisive-Token Supervision, which learns to identify and emphasize the tokens that actually determine output quality—such as measurements and pathological descriptions—while de-emphasizing structural tokens. Key results show significant improvements in clinical metrics and factuality over uniform distillation baselines. This matters because it addresses a practical bottleneck in deploying efficient model adaptation for high-stakes long-form generation domains like radiology and pathology.\n\n## Key Takeaways\n\n1. **Personalization over time is the next frontier for embodied agents**: Moving from instruction-following to agents that build enduring user models through long-term multimodal memory is critical for real-world deployment [1].\n2. **High task performance does not guarantee grounded language**: Social deduction agents can win while uttering claims disconnected from their actual perceptions, revealing the need for behavioral auditing frameworks [6].\n3. **Creative physical reasoning remains a major blind spot**: LMMs fail on tasks requiring non-obvious repurposing of objects, exposing a gap between pattern recognition and generative understanding of physical affordances [2].\n4. **More modalities are not always better**: Vision can degrade lexical judgments when visual evidence is irrelevant, challenging the assumption that multimodality inherently improves language understanding [8].\n5. **Scientific domain multimodality requires deliberate dataset construction**: Specialized datasets integrating diverse scientific data types (waveforms, images, metadata) enable effective adaptation of generalist multimodal models to scientific reasoning [3, 4].\n6. **Static benchmarks overstate model capabilities**: Dynamic, multi-modal, contamination-resistant benchmarks reveal persistent gaps in K-12 reasoning, especially for geometry and multi-step quantitative inference [5].\n7. **Not all tokens matter equally in long-form generation**: Identifying and emphasizing decisive tokens during distillation yields significant gains in medical report factuality over uniform approaches [7].",
+    "papers": [
+      {
+        "title": "Personalizing Embodied Multimodal Large Language Model Agents over Long-term User Interactions",
+        "url": "",
+        "authors": [
+          "Jeongeun Lee",
+          "Chanyoung Park",
+          "Dongha Lee"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Advancing Creative Physical Intelligence in Large Multimodal Models",
+        "url": "",
+        "authors": [
+          "Cheng Qian",
+          "Hyeonjeong Ha",
+          "Jiayu Liu",
+          "Jeonghwan Kim",
+          "Emre Can Acikgoz",
+          "Bingxuan Li",
+          "Kunlun Zhu",
+          "Jiateng Liu",
+          "Aditi Tiwari",
+          "Zhenhailong Wang",
+          "Xiusi Chen",
+          "Mahdi Namazifar",
+          "Heng Ji"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "PolyFusionAgent: A Multimodal Foundation Model and Autonomous AI Assistant for Polymer Property Prediction and Inverse Design",
+        "url": "",
+        "authors": [
+          "Manpreet Kaur",
+          "Xingying Zhang",
+          "Qian Liu"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "MULTISEISMO: A Multimodal Seismic Dataset and Model for Cross-Modal Seismic Understanding",
+        "url": "",
+        "authors": [
+          "Sai Munikoti",
+          "Ian Stewart",
+          "Chengping Chai",
+          "Lisa Linville",
+          "Scott Vasquez",
+          "Sameera Horawalavithana",
+          "Karl Pazdernik"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "LiveK12Bench: Have Large Multimodal Models Truly Conquered High School-level Examinations?",
+        "url": "",
+        "authors": [
+          "Xiaohan Wang",
+          "Mingze Yin",
+          "Yilin Zhao",
+          "Gang Liu",
+          "Dian Li"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "QUACK: Questioning, Understanding, and Auditing Communicated Knowledge in Multimodal Social Deduction Agents",
+        "url": "",
+        "authors": [
+          "Ye Yuan",
+          "Rui Song",
+          "Weien Li",
+          "Zeyu Li",
+          "Haochen Liu",
+          "Xiangyu Kong",
+          "Changjiang Han",
+          "Yonghan Yang",
+          "Zichen Zhao",
+          "Zixuan Dong",
+          "Fuyuan Lyu",
+          "Bowei He",
+          "Haolun Wu",
+          "Jikun Kang",
+          "Xue Liu"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Not All Tokens Matter Equally: Dynamic In-context Vector Distillation with Decisive-Token Supervision for Long-form Medical Report Generation",
+        "url": "",
+        "authors": [
+          "Ning Wu",
+          "Rui Liu",
+          "Xinkun Lin",
+          "Weixing Chen",
+          "Jinxi Xiang",
+          "Tao Wei",
+          "Lina Yao",
+          "Mingjie Li"
+        ],
+        "date": "2026-05-27"
+      },
+      {
+        "title": "Real Images, Worse Judgments: Evaluating Vision-Language Models on Concreteness and Imagery",
+        "url": "",
+        "authors": [
+          "Yifan Jiang",
+          "Ruoxi Ning",
+          "Sheng Yao",
+          "Freda Shi"
+        ],
+        "date": "2026-05-27"
+      }
+    ]
+  }
+]
