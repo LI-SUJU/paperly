@@ -1,0 +1,569 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-05-30",
+    "paperCount": 13,
+    "markdown": "# Interpretability Frontiers: From Mechanistic Decomposition to Representational Geometry in AI Systems\n\nToday's research landscape reveals a maturing field where mechanistic interpretability tools—particularly sparse autoencoders and probing methods—are scaling to production models while simultaneously being applied to understand fine-tuning dynamics, reasoning processes, and alignment properties. The community is moving beyond post-hoc explanation toward active intervention and extraction of latent knowledge, bridging the gap between understanding model internals and controlling model behavior.\n\n## Mechanistic Decomposition and Feature Extraction at Scale\n\n[1] MechELK addresses the problem of eliciting latent knowledge that LLMs encode internally but fail to surface in outputs. The framework leverages mechanistic interpretability techniques—specifically activation patching and causal tracing—to identify and extract knowledge representations from specific computational circuits, moving beyond contrastive methods. This enables knowledge extraction for complex multi-step reasoning tasks where previous approaches like Contrastive Consistency Search failed, offering a principled bridge between mechanistic understanding and knowledge retrieval.\n\n[8] In a landmark scaling study, Templeton et al. demonstrate that sparse autoencoders with up to 34 million features can extract interpretable features from Claude 3 Sonnet, a production-scale language model. The resulting features exhibit remarkable properties: they are multilingual and multimodal (generalizing to images despite text-only training), respond to both concrete instances and abstract discussions of concepts, and can be used to steer model behavior. This work conclusively answers whether dictionary learning methods scale beyond small transformers, establishing sparse autoencoders as a viable approach for understanding large-scale AI systems.\n\n[7] Fadnavis et al. address a fundamental puzzle in mechanistic interpretability: why linear probes can decode a representation perfectly yet be irrelevant to model computation. By measuring the *readout-mediator angle* between probe directions and causally relevant subspaces (found via Distributed Alignment Search) on calendar-date reasoning tasks, they show this angle is indistinguishable from random subspace angles. This work provides a rigorous statistical framework for distinguishing between representations that are merely present versus causally active in model computation.\n\n## Representational Geometry of Fine-Tuning and Adaptation\n\n[2] Prasanth introduces a delta activation framework that isolates adapter-specific contributions to the residual stream during LoRA fine-tuning, then applies sparse autoencoders to analyze these representations across ranks 4–32. The analysis reveals that LoRA adapters induce *representational divergence*—features that emerge or are suppressed specifically during fine-tuning—with higher ranks introducing more specialized features. This work provides the first detailed geometric characterization of how parameter-efficient fine-tuning reshapes internal representations, with implications for understanding catastrophic forgetting and task-specific adaptation.\n\n[13] Han, Chalmers, and Izmailov investigate how reinforcement learning shapes internal representations by training language models in a semantically neutral maze environment, then extracting concept vectors for rewarded and punished trajectories. They discover that RL recruits a pre-existing *functional welfare axis*—a representation of how well the system is performing relative to goals—that generalizes to unrelated settings. The punishment vector promotes failure and impossibility tokens, suggesting RL instantiates a core evaluative dimension that may underlie more complex value representations.\n\n## Interpretable Reasoning and Optimization\n\n[3] Thoughts-as-Planning formalizes reasoning chain optimization as sequential decision-making over a latent semantic space, modeling the LLM as a partially observable environment. The framework uses reinforcement planning with learned world models to optimize chain-of-thought reasoning, achieving superior sample efficiency and generalization compared to black-box heuristics. This work bridges mechanistic understanding with practical optimization, making the reasoning process both more interpretable and more controllable.\n\n[5] eXTC (eXplainable Text Classifier) introduces three progressive stages for interpretable text classification: learning a natural-language Standard Operating Procedure via structured prompt optimization, SOP-grounded reasoning distillation, and global/local interpretability. The approach achieves competitive accuracy while providing human-readable rulebooks that explain model decisions, addressing the fundamental trade-off between performance and transparency in complex text classification.\n\n[9] This work frames grounded claim factuality checking as a true/false reading comprehension task, prompting LLMs with explicit human test-taking strategies (elimination, cross-checking, source prioritization) for efficient reasoning. The method reduces reliance on dataset-specific thresholds and improves reasoning utilization compared to direct prompting, making factuality assessment more interpretable and grounded in human-like verification processes.\n\n## Interpretable Methods for Specialized Domains\n\n[4] Hoss and Klarmann address the sim-to-real gap in industrial reinforcement learning by introducing a policy-neutral execution layer that constructs decision-valid snapshots with explicit action admissibility. This layer mediates between scheduling policies and industrial environments, resolving temporal inconsistency and ambiguous error sources—key barriers to interpretability in deployed RL systems. The work demonstrates how domain-aware architectural choices can make learned policies both more reliable and more understandable.\n\n[6] The asynchronous agentic framework for Dynamic Flexible Job Shop Scheduling balances real-time constraints with long-horizon reasoning using LLM-based agents that operate on decoupled decision cycles. The system handles stochastic disturbances while maintaining interpretability through explicit reasoning traces, addressing the tension between deep reasoning and millisecond-level industrial control requirements.\n\n[10] EMAG reconstructs high-density EEG signals from sparse electrode arrays by representing brain electrical sources as mixtures of anisotropic 4D space-time Gaussians, using differentiable rendering for optimization. While primarily a signal reconstruction method, the explicit source parameterization provides inherent interpretability—each Gaussian component corresponds to a localized brain activity source with clear spatiotemporal parameters—contrasting with black-box super-resolution approaches.\n\n[11] Schlender et al. compare genetic programming approaches for interpretable survival analysis, specifically whether evolving individual features for combination versus evolving entire survival tree structures yields better accuracy-interpretability trade-offs. They demonstrate that feature evolution can maintain competitive predictive performance while producing simpler, more interpretable models than full tree evolution, addressing the practical need for transparent medical decision support.\n\n[12] ExDBSCAN extends DBSCAN clustering with counterfactual explanations, generating minimal feature perturbations that would change a point's cluster assignment or outlier status. This addresses the interpretability gap in unsupervised learning by providing instance-level explanations for why a point received its assignment and how robust that assignment is to changes, making density-based clustering transparent and actionable.\n\n## Key Takeaways\n\n- Sparse autoencoders have definitively scaled to production models (Claude 3 Sonnet) and now enable both extraction and steering of features, establishing dictionary learning as a core mechanistic interpretability tool rather than a toy method.\n- The distinction between representations that are *decodable* versus *causally active* is critical—the readout-mediator angle provides a statistical framework for distinguishing mere correlation from genuine mechanistic involvement in computation.\n- Reinforcement learning recruits a pre-existing functional welfare axis in language models, suggesting that value-like representations emerge naturally from goal-directed training and may be a universal feature of learned reward systems.\n- Interpretable fine-tuning analysis reveals that LoRA induces representational divergence with specialized features, providing a geometric basis for understanding both adaptation and forgetting in parameter-efficient methods.\n- Reasoning chain optimization is being formalized as sequential decision-making over latent spaces, enabling interpretable optimization through world models rather than black-box search.\n- Interpretability methods are expanding beyond supervised learning into clustering, survival analysis, and industrial control, with counterfactual reasoning and domain-aware execution layers providing transparency in previously opaque domains.\n- The tension between transparency and performance is being addressed through structured prompt optimization (learning interpretable rulebooks) and explicit reasoning strategies (test-taking approaches for factuality), showing that interpretability need not come at the cost of accuracy.",
+    "papers": [
+      {
+        "title": "MechELK: A Mechanistic Interpretability Framework for Eliciting Latent Knowledge in Large Language Models",
+        "url": "",
+        "authors": [
+          "Ji-jun Park",
+          "Soo-joon Choi",
+          "Jiwon Jeong",
+          "Taeyang Yoon",
+          "Ju-Wan Lee"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Feature Geometry of LoRA Adapters: A Sparse Autoencoder Analysis of Representational Divergence in Fine-Tuned Language Models",
+        "url": "",
+        "authors": [
+          "Prasanth K K"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Thoughts-as-Planning: Latent World Models for Chain-of-Thoughts Optimization via Reinforcement Planning",
+        "url": "",
+        "authors": [
+          "Dong Liu",
+          "Yanxuan Yu",
+          "Ying Nian Wu"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Bridging the Sim-to-Real Gap in Reinforcement Learning-Based Industrial Dispatching through Execution Semantics",
+        "url": "",
+        "authors": [
+          "Jonathan Hoss",
+          "Noah Klarmann"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Structured Prompt Optimization Meets Reinforcement Learning for Global and Local Interpretability over Complex Text",
+        "url": "",
+        "authors": [
+          "Tianyang Zhou",
+          "Wenbo Chen",
+          "Pierre Jinghong Liang",
+          "Leman Akoglu"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Harmonizing Real-Time Constraints and Long-Horizon Reasoning: An Asynchronous Agentic Framework for Dynamic Scheduling",
+        "url": "",
+        "authors": [
+          "Shijie Cao",
+          "Yuan Yuan",
+          "Jing Liu"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "When and How Long? The Readout-Mediator Angle in Temporal Reasoning",
+        "url": "",
+        "authors": [
+          "Shreyas Fadnavis",
+          "Praitayini Kanakaraj",
+          "Felix Wyss"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet",
+        "url": "",
+        "authors": [
+          "Adly Templeton",
+          "Tom Conerly",
+          "Jonathan Marcus",
+          "Jack Lindsey",
+          "Trenton Bricken",
+          "Brian Chen",
+          "Adam Pearce",
+          "Craig Citro",
+          "Emmanuel Ameisen",
+          "Andy Jones",
+          "Hoagy Cunningham",
+          "Nicholas L Turner",
+          "Callum McDougall",
+          "Monte MacDiarmid",
+          "Alex Tamkin",
+          "Esin Durmus",
+          "Tristan Hume",
+          "Francesco Mosconi",
+          "C. Daniel Freeman",
+          "Theodore R. Sumers",
+          "Edward Rees",
+          "Joshua Batson",
+          "Adam Jermyn",
+          "Shan Carter",
+          "Chris Olah",
+          "Tom Henighan"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Teaching Language Models to Check Grounded Claim Factuality with Human Test-Taking Strategies",
+        "url": "",
+        "authors": [
+          "Yuxuan Ye",
+          "Raul Santos-Rodriguez",
+          "Edwin Simpson"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "EMAG: Differentiable 4D Gaussian Mixture Splatting for EEG Spatial Super-Resolution",
+        "url": "",
+        "authors": [
+          "Alex Lazarovich",
+          "Ofir Itzhak Shahar",
+          "Gur Elkin",
+          "Ohad Ben-Shahar"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Evolving Features vs Evolving Entire Trees with GP for Interpretable Survival Analysis",
+        "url": "",
+        "authors": [
+          "Thalea Schlender",
+          "Peter A. N. Bosman",
+          "Tanja Alderliesten"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "ExDBSCAN: Explaining DBSCAN with Counterfactual Reasoning -- Additional Material",
+        "url": "",
+        "authors": [
+          "Pernille Matthews",
+          "Lena Krieger",
+          "Tommaso Amico",
+          "Artur Zimek",
+          "Thomas Seidl",
+          "Ira Assent"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "How's it going? Reinforcement learning in language models recruits a functional welfare axis",
+        "url": "",
+        "authors": [
+          "Andy Q Han",
+          "David J. Chalmers",
+          "Pavel Izmailov"
+        ],
+        "date": "2026-05-30"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-05-30",
+    "paperCount": 3,
+    "markdown": "# Beyond Black Boxes: Advances in Explainable AI from EEG to Clustering Robustness\n\nToday's research landscape in explainable AI spans from interpreting complex neural network decisions in clinical depression detection to ensuring robustness of attribution methods and extending counterfactual reasoning to unsupervised clustering. These works collectively push toward more reliable, computationally efficient, and domain-agnostic explainability techniques that move beyond simple feature importance toward deeper causal and robustness guarantees.\n\n## Interpreting High-Stakes Medical Decisions: EEG-Based Depression Detection\n\n[1] This paper addresses the critical challenge of interpreting deep learning models for Major Depressive Disorder (MDD) detection from electroencephalography (EEG) signals, where clinical adoption requires transparent decision-making. The authors apply five post-hoc explainability methods—DeepSHAP, Integrated Gradients, GradCAM, Occlusion, and Permutation Feature Importance—to an InceptionTime architecture trained for EEG-based MDD classification. Their analysis reveals significant disagreement across attribution methods regarding which temporal and spectral features drive classification, highlighting the reproducibility crisis in model interpretations for sensitive medical applications. This work underscores that relying on a single explainability method can be dangerously misleading in clinical contexts, advocating instead for consensus-based or multi-method validation frameworks.\n\n## Implicit Pathways to Robust Attributions\n\n[2] This work tackles the fundamental problem of attribution robustness against adversarial input perturbations, which is essential for trustworthy explainability but typically requires expensive explicit regularization. The authors demonstrate theoretically and empirically that attribution robustness emerges naturally from standard stochastic gradient descent dynamics, establishing a novel connection between parameter-space curvature and input-space attribution stability. Their approach achieves comparable robustness gains to explicit regularization methods like TRADES while incurring negligible computational overhead across multiple architectures (ResNet, VGG) and datasets (CIFAR-10, ImageNet). This result is practically significant because it suggests that practitioners can obtain robust explanations without modifying their training pipeline, democratizing access to reliable interpretability.\n\n## Counterfactual Explanations for Density-Based Clustering\n\n[3] This paper addresses the interpretability gap in unsupervised clustering, specifically for DBSCAN's inlier/outlier assignments, where traditional supervised explainability methods are not directly applicable. The authors propose ExDBSCAN, a counterfactual reasoning framework that identifies minimal perturbations needed to change a point's cluster assignment or outlier status, providing actionable explanations for individual data points. Key contributions include formal definitions of counterfactual explanations for density-based clustering and efficient algorithms that leverage DBSCAN's geometric structure rather than relying on surrogate models. This work matters because it brings causal explanation capabilities to an unsupervised domain, enabling users to understand not just why a point was assigned a label, but how robust that assignment is under realistic data variations.\n\n## Key Takeaways\n\n- Multi-method agreement (or disagreement) in explainability, as demonstrated in EEG-based depression detection [1], is critical for trustworthy clinical deployment—relying on any single attribution method risks misleading conclusions.\n- Attribution robustness can be achieved without expensive explicit regularization by leveraging the implicit regularization properties of standard SGD training dynamics [2], making robust explainability computationally accessible.\n- Counterfactual reasoning can be effectively extended to unsupervised clustering [3], providing individual-level explanations for DBSCAN assignments that reveal both causal factors and robustness to small perturbations.\n- The explainability field is moving beyond simple feature attribution toward deeper causal and robustness guarantees, with applications spanning supervised, unsupervised, and clinical domains.\n- Computational efficiency remains a central concern: implicit regularization [2] and geometric algorithms [3] demonstrate that useful explanations need not come at prohibitive computational cost.\n- There is a growing recognition that explainability methods themselves require rigorous validation, whether through cross-method consensus [1], theoretical guarantees [2], or counterfactual verification [3].\n- The integration of explainability into model training dynamics (rather than as a purely post-hoc step) represents a paradigm shift toward inherently interpretable and robust AI systems.",
+    "papers": [
+      {
+        "title": "Comparing Post-Hoc Explainable AI Methods for Interpreting Black-Box EEG Models in Depression Detection",
+        "url": "",
+        "authors": [
+          "Antonia Šarčević",
+          "Nikolina Frid"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Improving Adversarial Robustness of Attribution via Implicit Regularization",
+        "url": "",
+        "authors": [
+          "Amir Mehrpanah",
+          "Matteo Gamba",
+          "Hossein Azizpour"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "ExDBSCAN: Explaining DBSCAN with Counterfactual Reasoning -- Additional Material",
+        "url": "",
+        "authors": [
+          "Pernille Matthews",
+          "Lena Krieger",
+          "Tommaso Amico",
+          "Artur Zimek",
+          "Thomas Seidl",
+          "Ira Assent"
+        ],
+        "date": "2026-05-30"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-05-30",
+    "paperCount": 26,
+    "markdown": "# Multimodal Systems: From Foundation Models to Domain-Specific Applications\n\nToday's research landscape reveals a maturing field where multimodal systems are transitioning from general-purpose capabilities to specialized, verifiable applications across scientific, engineering, and industrial domains. A parallel thread of work addresses fundamental challenges in multimodal learning—modality imbalance, knowledge editing, and robustness—while new benchmarks and diagnostic tools emerge to evaluate these increasingly complex systems.\n\n## Advancing Multimodal Architectures and Learning Dynamics\n\n[4] This work addresses the pervasive problem of modality imbalance in multimodal learning, where dominant modalities suppress the optimization of weaker ones. The authors propose a label space reshaping approach that theoretically analyzes how learning pace discrepancies arise at the modality level, then restructures the label space to balance gradient contributions across modalities. Key results demonstrate improved performance without sacrificing the strong modality's capacity, offering a principled alternative to heuristic gradient-balancing methods. This matters because modality imbalance remains a core bottleneck preventing multimodal models from fully leveraging all available information channels.\n\n[12] TRACER tackles catastrophic forgetting during multimodal finetuning, where models lose out-of-distribution robustness. The paper develops a theoretical framework for multimodal contrastive finetuning with closed-form solutions, revealing that standard Exponential Moving Average teachers introduce an overlooked limitation in self-distillation. The proposed persistent regularization approach preserves pretrained knowledge more effectively than existing methods while maintaining finetuning performance. This contribution is significant as it provides both theoretical understanding and practical tools for deploying multimodal models in safety-critical applications requiring robust OOD performance.\n\n[14] This paper identifies and formalizes two critical failure modes in Multimodal Knowledge Editing: Causal Misalignment (edits confined to specific samples) and Feature Entanglement (unintended alterations to semantically linked information). The authors propose a localized and disentangled editing approach that corrects outdated knowledge while generalizing to logically related queries and preserving unrelated information. Results show substantial improvements over existing MKE methods. This work is important for maintaining factual accuracy in deployed MLLMs without introducing harmful side effects.\n\n## Multimodal Time-Series and Forecasting Applications\n\n[2] PrismFlow addresses the challenge of generating high-quality time-series data exhibiting multimodal patterns and multiscale dynamics. The core innovation is a residual dynamics framework for Flow Matching that decomposes the complex velocity field estimation into multiple specialized components, each handling different temporal regimes. Key results demonstrate superior generation quality on heterogeneous time-series data compared to monolithic Flow Matching approaches. This matters because industrial and scientific time-series data often contain multiple distinct dynamical regimes that single estimators cannot capture effectively.\n\n[13] PostTime bridges a critical gap between Time-Series Foundation Models (TSFMs) and Large Language Models by enabling multimodal context-guided time-series forecasting. The approach post-trains LLMs to act as context-guided revisors over strong numerical TSFM priors, combining Supervised Fine-Tuning with Reinforcement Learning using Verifiable Rewards. Results show that LLMs can effectively incorporate non-numerical multimodal context to refine numerical forecasts. This is significant because real-world time-series trajectories are often shaped by multimodal contextual information that pure numerical models cannot access.\n\n[20] KairosAgent proposes an agentic framework for cross-domain multimodal time-series forecasting that fuses numerical comprehension with semantic reasoning. The system integrates precise quantitative forecasting capabilities with cross-domain semantic understanding through a multi-agent architecture. Key contributions include demonstrating that LLM-based reasoning can meaningfully improve forecasting accuracy when properly combined with numerical TSFM components. This matters for applications where both historical numerical patterns and semantic contextual information jointly determine future outcomes.\n\n[25] This paper addresses the gap in interpretable time-series anomaly detection by constructing VisAnomBench, a curated benchmark with high-quality anomaly explanations in natural language. The authors demonstrate that compact Vision-Language Models can be effectively finetuned to produce grounded, interpretable decisions for sequential anomaly detection. Results show that smaller models can achieve competitive performance while maintaining computational efficiency. This work is important for deploying interpretable AI systems in critical infrastructure monitoring where both accuracy and explainability are required.\n\n## Multimodal Agents and Interactive Systems\n\n[3] VFEAgent addresses the complexity of Finite Element Analysis by introducing an end-to-end multi-agent system that automates FEA modeling and simulation directly from input images and problem descriptions. The system integrates multimodal vision components with specialized FEA agents to handle the complete workflow without human intervention. Results demonstrate successful automation of complex engineering analysis tasks that previously required significant domain expertise. This contribution is significant for democratizing engineering simulation and accelerating design iterations in industrial settings.\n\n[8] ReasonLight tackles zero-shot traffic signal control by integrating multimodal foundation models with reinforcement learning, leveraging IoT-enabled heterogeneous observations from roadside sensors and cameras. The framework processes structured traffic measurements, multi-view camera observations, and other modalities to adapt to open-world events absent from training data. Results show improved zero-shot generalization to novel traffic scenarios. This matters for deploying adaptive traffic management systems capable of responding to unexpected events without retraining.\n\n[10] HiKEY addresses two critical bottlenecks in retrieval-augmented generation for document-based ODQA: routing failure and evidence fragmentation. The hierarchical multimodal retrieval framework operates at document, page, and element levels, enabling precise targeting and organic integration of multimodal evidence like tables and figures. Results demonstrate significant improvements over flat retrieval baselines on large-scale industrial corpora. This work is important for building practical QA systems over complex, multimodal document collections.\n\n[11] This paper proposes a solver-free, sampling-based optimization framework for Integer Linear Programming that directly explores discrete feasible regions without training or external solvers. The approach exploits the linear structure of ILP problems using parallel tempering, avoiding the poor generalization and solver dependence of learning-based methods. Key results show competitive performance against traditional solvers while offering better scalability. This matters for combinatorial optimization problems where traditional solvers struggle with instance variability.\n\n[16] Ptah addresses the challenge of verifiable multimodal deep research by introducing a multi-agent harness for interleaved report generation. The system orchestrates planning, research, and writing stages to produce long-form reports that combine textual arguments with visual evidence while maintaining verifiability. Results demonstrate improved coherence and accuracy compared to single-agent approaches. This contribution is significant for automated research synthesis in scientific and professional settings where verification is crucial.\n\n[17] PlanAhead systematically evaluates how different natural language plan representations impact LLM web agent performance, addressing the under-explored question of planning representation impact. The framework introduces automatic task difficulty categorization and evaluates multiple plan formats across diverse web tasks. Results reveal that plan representation significantly affects agent success rates and error patterns. This matters for designing more effective planning mechanisms in autonomous web agents.\n\n## Scientific and Domain-Specific Multimodal Benchmarks\n\n[9] CrystalXRD-Bench introduces a specialized 250-sample benchmark for evaluating vision-language models on scientific curve reading and crystallographic reasoning. The benchmark requires models to extract narrow peak locations from rendered XRD patterns and perform multi-step reasoning to identify Miller indices. Results reveal significant gaps between current VLM capabilities and expert-level scientific reasoning. This work is important for identifying specific failure modes of VLMs in scientific domains where precise visual extraction and domain knowledge are required.\n\n[15] OmniMatBench provides a human-calibrated multimodal reasoning benchmark spanning 19 materials science subfields with 3,171 expert-curated QA and calculation problems. Unlike existing benchmarks focused on property prediction or characterization understanding, this benchmark evaluates the broader reasoning process from materials knowledge to application. Results establish baseline performance across diverse materials science reasoning tasks. This matters for tracking progress toward AI systems capable of meaningful scientific discovery and application.\n\n[19] MMTM introduces a modular pipeline for topic discovery in long-form video that integrates speech recognition, audio and visual embeddings, and BERTopic clustering through similarity-gated fusion. Evaluated cross-lingually on broadcast news, joint tri-modal modeling substantially improves topic quality metrics including noise reduction and temporal coherence. Results demonstrate that multimodal fusion dramatically outperforms unimodal approaches for video topic discovery. This contribution is significant for automated content analysis of the growing volume of long-form video content.\n\n## Multimodal Diagnostics and Interpretability\n\n[7] This landmark work demonstrates that sparse autoencoders can extract interpretable features from Claude 3 Sonnet, a production-scale language model, with up to 34 million features. The resulting features are multilingual, multimodal (generalizing to images despite text-only training), and can be used for model steering. Scaling laws guide hyperparameter selection for these dictionary learning methods. This matters because it provides evidence that mechanistic interpretability techniques can scale to production models, opening new possibilities for model understanding and safety.\n\n[22] MIRAGE introduces a brain encoding framework for predicting whole-brain fMRI responses to naturalistic audiovisual stimuli using multimodal fusion. The framework achieves state-of-the-art performance through native multimodal gating that jointly integrates visual, auditory, and linguistic information across subjects. Results demonstrate that omni-modal foundation models significantly outperform unimodal approaches for brain response prediction. This work is important for understanding how the brain integrates multiple sensory modalities during natural perception.\n\n[24] VLA-Trace provides a progressive diagnostic framework for understanding how Vision-Language-Action models transform multimodal knowledge into embodied control. The framework combines cross-modal kernel alignment, attention knockout interventions, and behavioral probes to trace representation evolution and identify modality-specific control pathways. Results reveal insights about how VLA models ground language instructions in visual observations for action generation. This matters for debugging and improving embodied AI systems that require reliable cross-modal reasoning.\n\n[18] MuPHI introduces a dataset and evaluation framework for multimodal pragmatic harm reasoning, where harm emerges from subtle interactions between otherwise benign image-text pairs. The work develops semantically grounded reward optimization to train VLMs capable of implicit harm detection beyond surface-level features. Results show that existing VLMs significantly lag behind human performance on these compositional harm reasoning tasks. This contribution is important for building AI systems that can detect nuanced harmful content requiring cross-modal pragmatic understanding.\n\n## Key Takeaways\n- Modality imbalance in multimodal learning can be addressed through principled label space reshaping that balances gradient contributions without sacrificing strong modality performance, offering a theoretical alternative to heuristic approaches.\n- Time-series forecasting is being revolutionized by multimodal approaches that combine numerical Time-Series Foundation Models with LLM-based semantic reasoning, enabling context-aware predictions that pure numerical models cannot achieve.\n- Scientific and engineering domains demand specialized multimodal benchmarks and evaluation frameworks that test precise visual extraction and multi-step reasoning, revealing significant gaps between current VLMs and expert-level performance.\n- Mechanistic interpretability techniques, including sparse autoencoders and diagnostic frameworks, are scaling to production models and providing actionable insights into multimodal feature learning and cross-modal control pathways.\n- Agentic multimodal systems are automating complex workflows in engineering analysis, traffic control, and document QA, but verifiability remains a critical challenge addressed through hierarchical architectures and multi-agent orchestration.\n- The transition from general-purpose multimodal capabilities to domain-specific applications requires careful attention to robustness, knowledge editing, and hallucination prevention during finetuning and deployment.\n- Cross-modal reasoning about implicit harm and pragmatic meaning remains a significant challenge for current VLMs, requiring specialized training approaches and evaluation datasets that go beyond surface-level feature matching.",
+    "papers": [
+      {
+        "title": "Lightweight Multimodal LLM-Enabled Cost-Effective Defect Grading of Power Transmission Equipment",
+        "url": "",
+        "authors": [
+          "Tao Wang",
+          "Lipeng Zhu",
+          "Jiayong Li",
+          "Feng Gao",
+          "Siwen Liang"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "PrismFlow: Residual Dynamics for Flow Matching in Time-Series Generation",
+        "url": "",
+        "authors": [
+          "Junru Zhang",
+          "Lang Feng",
+          "Jinbo Wang",
+          "Xu Guo",
+          "Yucheng Wang",
+          "Han Yu",
+          "Min Wu",
+          "Yabo Dong",
+          "Duanqing Xu"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "VFEAgent: A Multimodal Agent Framework for End-to-End Automated Finite Element Analysis",
+        "url": "",
+        "authors": [
+          "Jiachen Zhang",
+          "Junyi Lao",
+          "Chenghao Liu",
+          "Siyuan Liu",
+          "Shixin Wu",
+          "Linsen Zhang",
+          "Boyu Wang",
+          "Songfang Huang"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Balancing Multimodal Learning through Label Space Reshaping",
+        "url": "",
+        "authors": [
+          "Xiaoyu Ma",
+          "Weijie Zhang",
+          "Yuanhao Gao",
+          "Han Miao",
+          "Yongjian Deng",
+          "Hao Chen"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Analyzing Persona Effects in Generated Explanations from Multimodal LLM Agents in Urban Perception",
+        "url": "",
+        "authors": [
+          "Neemias da Silva",
+          "Myriam Delgado",
+          "Rodrigo Minetto",
+          "Daniel Silver",
+          "Thiago H Silva"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Designing Active Tether-Net Systems for Space Debris Capture with Graph-Learning-Aided Mixed-Combinatorial Optimization",
+        "url": "",
+        "authors": [
+          "Feng Liu",
+          "Achira Boonrath",
+          "Gishnu Madhu",
+          "Eleonora M. Botta",
+          "Souma Chowdhury"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet",
+        "url": "",
+        "authors": [
+          "Adly Templeton",
+          "Tom Conerly",
+          "Jonathan Marcus",
+          "Jack Lindsey",
+          "Trenton Bricken",
+          "Brian Chen",
+          "Adam Pearce",
+          "Craig Citro",
+          "Emmanuel Ameisen",
+          "Andy Jones",
+          "Hoagy Cunningham",
+          "Nicholas L Turner",
+          "Callum McDougall",
+          "Monte MacDiarmid",
+          "Alex Tamkin",
+          "Esin Durmus",
+          "Tristan Hume",
+          "Francesco Mosconi",
+          "C. Daniel Freeman",
+          "Theodore R. Sumers",
+          "Edward Rees",
+          "Joshua Batson",
+          "Adam Jermyn",
+          "Shan Carter",
+          "Chris Olah",
+          "Tom Henighan"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "ReasonLight: A Multimodal Foundation Model-Enhanced Reinforcement Learning Framework for Zero-Shot Traffic Signal Control",
+        "url": "",
+        "authors": [
+          "Aoyu Pang",
+          "Maonan Wang",
+          "Yuejiao Xie",
+          "Chung Shue Chen",
+          "Zhiwei Yang",
+          "Man-On Pun"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "CrystalXRD-Bench: Benchmarking Vision-Language Models for XRD Peak Indexing Across Diverse Crystalline Materials",
+        "url": "",
+        "authors": [
+          "Chengliang Xu",
+          "Xiaogang Li",
+          "Peiyao Xiao",
+          "Beng Wang",
+          "Hu Wei",
+          "Bing Zhao"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "HiKEY: Hierarchical Multimodal Retrieval for Open-Domain Document Question Answering",
+        "url": "",
+        "authors": [
+          "Joongmin Shin",
+          "Gyuho Shim",
+          "Jeongbae Park",
+          "Jaehyung Seo",
+          "Heuiseok Lim"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Solving Integer Linear Programming with Parallel Tempering",
+        "url": "",
+        "authors": [
+          "Kyuil Sim",
+          "Sanghyeok Choi",
+          "Jinkyoo Park"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "TRACER: Persistent Regularization for Robust Multimodal Finetuning",
+        "url": "",
+        "authors": [
+          "Hesam Asadollahzadeh",
+          "Feng Liu",
+          "Christopher Leckie",
+          "Sarah M. Erfani"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Rethinking Post-Training Recipes for Multimodal Time-Series Forecasting",
+        "url": "",
+        "authors": [
+          "Haoxin Liu",
+          "Yichen Zhou",
+          "Rajat Sen",
+          "B. Aditya Prakash",
+          "Abhimanyu Das"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Towards Localized and Disentangled Knowledge Editing for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Leijiang Gu",
+          "Zhen Zeng",
+          "Feng Li",
+          "Xinjian Gao",
+          "Zenglin Shi"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "OmniMatBench: A Human-Calibrated Multimodal Reasoning Benchmark Across 19 Materials Science Subfields",
+        "url": "",
+        "authors": [
+          "Wanhao Liu",
+          "Jiaqing Xie",
+          "Qian Tan",
+          "Weida Wang",
+          "Jue Wang",
+          "Ran Sun",
+          "Zhuo Yang",
+          "Wanli Ouyang",
+          "Lei Bai",
+          "Tianfan Fu",
+          "Lu Chen",
+          "Xin Chen",
+          "Yuqiang Li"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Towards Verifiable Multimodal Deep Research: A Multi-Agent Harness for Interleaved Report Generation",
+        "url": "",
+        "authors": [
+          "Chenghao Zhang",
+          "Guanting Dong",
+          "Yufan Liu",
+          "Tong Zhao",
+          "Zhicheng Dou"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Does The Way You Plan Matter? An Empirical Study of Planning Representations for LLM Web Agents",
+        "url": "",
+        "authors": [
+          "Alejandra Zambrano",
+          "Sara Vera Marjanovic",
+          "Imene Kerboua",
+          "Xing Han Lù",
+          "Leila Kosseim"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "MuPHI: Learning Implicit Multimodal Harm Reasoning via Semantically Grounded Reward Optimization",
+        "url": "",
+        "authors": [
+          "Anisha Saha",
+          "Varsha Suresh",
+          "Teodora Kamova",
+          "Sophia Wiedmann",
+          "Timothy Hospedales",
+          "Vera Demberg"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "MMTM: Tri-Modal Topic Modeling for Long-Form Video via Similarity-Gated Fusion",
+        "url": "",
+        "authors": [
+          "Ali Abusaleh",
+          "Bhuvanesh Verma",
+          "Alexander Mehler"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "KairosAgent: Agentic Time Series Forecasting with Fused Semantic Reasoning",
+        "url": "",
+        "authors": [
+          "Kun Feng",
+          "Ziwei Shan",
+          "Yuchen Fang",
+          "Yiyang Tan",
+          "Sihan Lu",
+          "Shuqi Gu",
+          "Lintao Ma",
+          "Xingyu Lu",
+          "Kan Ren"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "RAISE: RAG Design as an Architecture Search Problem",
+        "url": "",
+        "authors": [
+          "Zhen Chen",
+          "Yibing Liu",
+          "Weihao Xie",
+          "Yu Liang",
+          "Peilin Chen",
+          "Shiqi Wang"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "MIRAGE: Adaptive Multimodal Gating for Whole-Brain fMRI Encoding",
+        "url": "",
+        "authors": [
+          "Abdulkadir Gokce",
+          "Badr AlKhamissi",
+          "Martin Schrimpf"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "CCS: Clinical Consensus Selection for Radiology Report Generation",
+        "url": "",
+        "authors": [
+          "Xi Zhang",
+          "Yingshu Li",
+          "Zaiqiao Meng",
+          "Jake Lever",
+          "Edmond S. L. Ho"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "VLA-Trace: Diagnosing Vision-Language-Action Models through Representation and Behavior Tracing",
+        "url": "",
+        "authors": [
+          "Haoyuan Shi",
+          "Xiancong Ren",
+          "Yingji Zhang",
+          "Qinfan Zhang",
+          "Jiayu Hu",
+          "Haozhe Shan",
+          "Han Dong",
+          "Jinpeng Lu",
+          "Yinda Chen",
+          "Yi Zhang",
+          "Yong Dai",
+          "Xiaozhu Ju"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "Tiny but Trusted: Efficient Vision-Language Reasoning for Time-Series Anomaly Detection",
+        "url": "",
+        "authors": [
+          "Xiaona Zhou",
+          "Muntasir Wahed",
+          "Tianjiao Yu",
+          "Constantin Brif",
+          "Ismini Lourentzou"
+        ],
+        "date": "2026-05-30"
+      },
+      {
+        "title": "When, why, and how do diffusion posterior samplers fail? A finite-sample lens",
+        "url": "",
+        "authors": [
+          "Benjamin A. Burns",
+          "Sara Fridovich-Keil"
+        ],
+        "date": "2026-05-30"
+      }
+    ]
+  }
+]
