@@ -1,0 +1,356 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-01",
+    "paperCount": 10,
+    "markdown": "# Mechanistic Interpretability and Beyond: Unraveling Neural Representations and Enhancing Model Transparency\n\nToday's research landscape reveals a dual focus: advancing fundamental mechanistic understanding of neural network computations through techniques like sparse autoencoders and attention analysis, while simultaneously developing practical interpretability tools for critical applications in healthcare, engineering, and mathematical discovery. The field is moving beyond post-hoc explanations toward inherently interpretable architectures and real-time diagnostic frameworks that maintain predictive performance.\n\n## Structural Interpretability: From Graph Rules to Separable Representations\n\n[1] Cheng et al. address the limitation of existing rule mining methods for knowledge graph reasoning, which focus primarily on simple chain-like rules and neglect richer graph-like structures such as cycles and branches. Their core technical approach employs diffusion models to generate graph-like logical rules, overcoming the combinatorial explosion that traditionally plagues search-based methods for these complex patterns. The key contribution is a generative framework that can efficiently produce interpretable graph-structured rules, capturing relational information that chain-based methods miss. This matters because knowledge graph reasoning in domains like biomedical research and recommendation systems requires understanding complex relational patterns beyond simple linear chains.\n\n[8] Liu and Hiabu challenge the prevalent reliance on additive decompositions in interpretable machine learning (GAMs, SHAP, functional ANOVA), which suffer from signal cancellation and off-support extrapolation under strong feature interactions. They propose Tensor Separation Learning (TSL), a regression model that learns a sum of rank-1 products of univariate per-feature functions through a stagewise greedy procedure with orthogonal refitting. The method enforces separability, a structural prior that maintains faithfulness to the data while avoiding the pitfalls of additive representations. This contribution is significant because it offers a principled alternative to additive methods for settings where interpretability must not compromise the ability to capture complex interactions.\n\n[9] Bagci et al. tackle the polysemanticity problem in deep neural networks, where individual neurons encode multiple unrelated concepts, obscuring model decision processes. Their method, ELUDe (Explicit, Lossless, Unsupervised Disentanglement), improves interpretability by separating mixed signals into monosemantic features without degrading downstream predictive performance—a critical advance over sparse autoencoders that typically require performance tradeoffs. The key result is achieving interpretability improvements at equal predictive performance, challenging the assumption that transparency necessarily comes at the cost of accuracy. This matters for deploying DNNs in high-stakes domains where both performance and interpretability are non-negotiable.\n\n## Mechanistic Analysis of Learned Computations\n\n[2] Huang, Jackson, and Lee investigate how machine learning can contribute to mathematical discovery, specifically through studying the zeta map on Dyck paths—a classical bijection in q,t-Catalan combinatorics. They train a deliberately small one-layer, one-head encoder-decoder transformer on this mapping and apply mechanistic interpretability tools including decoder cross-attention analysis, linear probing, and causal intervention to understand the learned computation. The analysis reveals the internal algorithm the transformer develops for performing this mathematical transformation. This work matters because it demonstrates how mechanistic interpretability can uncover explicit, verifiable mathematical constructions from learned models, opening a new paradigm for AI-assisted mathematical discovery.\n\n[7] Singh et al. address the challenge of anomaly detection in physiological sensor data from Wireless Body Area Networks, which requires both high predictive accuracy and clinically interpretable explanations. They propose the Distilled Explanation Model (DEM), a three-stage glass-box framework that distills knowledge from a gradient-boosted model into an interpretable student model. The key contribution is providing explanations that are inherently interpretable rather than relying on post-hoc methods like SHAP or LIME, which can be unreliable. This matters for clinical decision support systems where false alarms from unexplained anomalies could lead to harmful interventions or ignored warnings.\n\n## Diagnostic and Evaluation Frameworks for Model Reliability\n\n[4] Marwah et al. formalize the degradation observed in autoregressive language models during long-horizon generation—repetitive text, loss of instruction adherence, and unstable entropy—as \"cognitive fatigue,\" a measurable generation-time state. They introduce the Fatigue Index (FI), a lightweight, model-agnostic diagnostic that aggregates three signals: decay in attention to the original prompt, representational drift, and entropy miscalibration. The core contribution is providing online diagnostics that detect degradation in real-time as it occurs, unlike existing post-hoc analyses. This matters for deploying LLMs in production settings where maintaining coherence over long generations is critical.\n\n[5] Gao et al. address the lack of suitable metrics for evaluating the reliability of conditional generative models, particularly regarding uncertainty in their outputs. They propose the reliability score, a novel metric based on conformal prediction that measures worst-case performance within a prediction set at a pre-specified confidence level. The key contribution is moving beyond single-output evaluation to capture variability and potential risks in generation. This matters for applications where generative models must provide guarantees about their output reliability, such as medical image synthesis or drug design.\n\n[3] Barry-Straume et al. investigate five major approaches for constructing prediction intervals in neural network predictions of turbine gas temperature—Delta method, Bayesian Monte Carlo Dropout, Bootstrap, Lower-Upper Bound Estimation, and Mean-Variance Estimation. They implement each within a unified experimental framework using cross-validation to benchmark uncertainty quantification methodologies. The contribution is a systematic comparison of uncertainty quantification techniques for a critical engineering application. This matters for prognostics and health management in modern engines, where reliable uncertainty estimates are essential for safety-critical decisions.\n\n## Steering and Representation Learning\n\n[6] Jorgensen and Hansen provide a partial rebuttal to findings that Sparse Autoencoders (SAEs) underperform simple baselines for steering LLM output generation on the AxBench benchmark. They demonstrate that SAEs can perform close to on par with reference methods when properly tuned, challenging the conclusion that SAEs are not viable for model steering. The key contribution is showing that SAEs remain a promising avenue for exploring LLM internals and controlling generation, contrary to earlier claims. This matters because SAEs are one of the few methods that provide interpretable access to model internals, and their viability for steering has significant implications for alignment research.\n\n[10] Dutta et al. introduce CHARM (Channel-Aware Representation Model), which incorporates channel-level textual descriptions into a Transformer encoder for heterogeneous multivariate time series. The model uses a Joint Embedding Predictive Architecture (JEPA) with a novel loss promoting informative, temporally stable embeddings, enabling latent-space prediction robust to sensor noise. The key contribution is providing semantic, interpretable time-series embeddings that leverage textual descriptions of sensor channels. This matters for applications like healthcare monitoring where understanding sensor relationships and their semantics is crucial for interpretability and trust.\n\n## Key Takeaways\n- Diffusion models and generative approaches are expanding the scope of interpretable rule mining for knowledge graphs beyond simple chain-like patterns to capture complex graph structures like cycles and branches.\n- Mechanistic interpretability techniques—cross-attention analysis, linear probing, and causal intervention—can uncover explicit mathematical algorithms learned by transformers, enabling AI-assisted mathematical discovery.\n- Sparse autoencoders remain viable for LLM steering despite recent benchmark results suggesting otherwise, though careful tuning is required to match simple baselines.\n- New diagnostic frameworks like the Fatigue Index enable real-time detection of language model degradation during long-horizon generation, addressing a critical operational challenge.\n- Conformal prediction-based metrics offer principled ways to evaluate the reliability of conditional generative models, moving beyond point estimates to capture worst-case performance.\n- Tensor separation learning provides a principled alternative to additive decomposition methods for interpretable regression, avoiding signal cancellation while maintaining faithfulness to strong interactions.\n- Effective interpretability requires balancing multiple objectives: maintaining predictive performance while achieving monosemantic representations, providing real-time diagnostics, and ensuring explanations are clinically or operationally actionable.",
+    "papers": [
+      {
+        "title": "Generating Graph-like Rules for Knowledge Graph Reasoning via Diffusion Models",
+        "url": "",
+        "authors": [
+          "Haoxiang Cheng",
+          "Yunfei Wang",
+          "Chao Chen",
+          "Kewei Cheng",
+          "Zhipeng Lin",
+          "Haoxuan Li",
+          "Changjun Fan",
+          "Shixuan Liu"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Discovering a Zeta Map Algorithm on Dyck Paths via Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Xiaoyu Huang",
+          "Blake Jackson",
+          "Kyu-Hwan Lee"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Benchmarking Machine Learning Uncertainty Quantification Methodologies for Predicting Turbine Gas Temperature Degradation",
+        "url": "",
+        "authors": [
+          "Jostein Barry-Straume",
+          "Changmin Son",
+          "Adrian Sandu",
+          "Gavan Burke",
+          "Rekha Sundararajan",
+          "Andrew Rimell",
+          "James G. Steinrock"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Cognitive Fatigue in Autoregressive Transformers: Formalization and Measurement",
+        "url": "",
+        "authors": [
+          "Riju Marwah",
+          "Ritvik Garimella",
+          "Vishal Pallagani",
+          "Atishay Jain",
+          "Michael Stewart",
+          "Amit Sheth"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Conformal Reliability: A New Evaluation Metric for Conditional Generation",
+        "url": "",
+        "authors": [
+          "Yachen Gao",
+          "Xinwei Sun",
+          "Yikai Wang",
+          "Ye Shi",
+          "Jingya Wang",
+          "Jianfeng Feng",
+          "Yanwei Fu"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Steering LLMs? Actually, Sparse Autoencoders can outperform simple baselines",
+        "url": "",
+        "authors": [
+          "Mikkel Godsk Jørgensen",
+          "Lars Kai Hansen"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "DEM: A Distilled Explanation Model for Interpretable Anomaly Detection in Physiological Sensor Networks",
+        "url": "",
+        "authors": [
+          "Jyotirmoy Singh",
+          "Anushka Roy",
+          "Shreea Bose",
+          "Chittaranjan Hota"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Beyond Additive Decompositions: Interpretability Through Separability",
+        "url": "",
+        "authors": [
+          "Jinyang Liu",
+          "Munir Eberhardt Hiabu"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Interpretability Without Tradeoffs: Disentangling Polysemanticity At Equal Predictive Performance",
+        "url": "",
+        "authors": [
+          "Doğukan Bağcı",
+          "Bernt Schiele",
+          "Simone Schaub-Meyer",
+          "Jonas Fischer",
+          "Robin Hesse"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Giving Sensors a Voice: Multimodal JEPA for Semantic Time-Series Embeddings",
+        "url": "",
+        "authors": [
+          "Utsav Dutta",
+          "Gerardo Pastrana",
+          "Sina Khoshfetrat Pakazad",
+          "Henrik Ohlsson"
+        ],
+        "date": "2026-06-01"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-01",
+    "paperCount": 5,
+    "markdown": "# The Explainability Paradox: Transparency, Vulnerability, and the Quest for Faithful Interpretations\n\nToday's research landscape reveals a fundamental tension in explainable AI: the very mechanisms designed to make models transparent can introduce new vulnerabilities and ambiguities, while simultaneously driving innovation in interpretable architectures. Researchers are grappling with how to balance faithfulness of explanations against computational efficiency, security risks, and the inherent subjectivity of human evaluation.\n\n## New Architectures for Inherent Explainability\n\nThe quest for models that are interpretable by design, rather than relying on post-hoc explanations, continues to gain momentum. Two papers propose fundamentally different approaches to building explainability into the architecture itself.\n\n[1] Granville presents a radical alternative to deep neural networks for LLMs, introducing an RBF network-based architecture that finds the global optimum of the loss function in closed form—eliminating the need for iterative training entirely. The key innovation is that this approach achieves increased explainability and higher accuracy while requiring only a single iteration, directly addressing the black-box opacity that plagues traditional DNNs. This matters because it suggests that high-performing language models need not sacrifice interpretability for performance, potentially enabling regulatory compliance and debugging without the computational overhead of backpropagation.\n\n[5] Liu and Hiabu propose Tensor Separation Learning (TSL), a regression model that addresses the fundamental limitations of additive decomposition methods like SHAP and GAMs. By learning a sum of rank-1 products of univariate functions through a stagewise greedy procedure with orthogonal refitting, TSL avoids the signal cancellation and off-support extrapolation that plague additive methods when strong feature interactions are present. The core insight is that separability—rather than additivity—provides a more faithful structural representation of complex data. This work is significant because it offers a principled alternative to the dominant additive paradigm, potentially enabling more reliable interpretability in high-dimensional settings with complex interactions.\n\n## Security Vulnerabilities in Explainability Systems\n\nAs explainability becomes mandated by regulation, a dark side emerges: the same transparency that enables accountability can be weaponized by adversaries to steal proprietary models.\n\n[2] Nimase et al. present the first model extraction attack specifically designed for graph classification under strict black-box constraints, where attackers observe only discrete class labels and binary explanation masks. Their method uses explanation outputs to guide Monte Carlo edge sensitivity estimation, enabling them to reconstruct a surrogate model without any access to probability scores, gradients, or confidence values. This is particularly alarming because GMLaaS platforms are increasingly required to implement explainability interfaces for regulatory compliance, creating a direct conflict between transparency requirements and intellectual property protection. The work reveals a critical security blind spot that the AI/ML community must urgently address.\n\n## Evaluating Explainability in Real-World Applications\n\nThe practical deployment of explainable AI requires rigorous benchmarking that goes beyond accuracy metrics, especially in high-stakes domains like healthcare and content moderation.\n\n[3] Kanamugire and Djoumessi conduct a comprehensive benchmarking study of four deep learning models for malaria diagnosis, jointly evaluating predictive performance, robustness, and post-hoc explainability on the NLM-Malaria dataset. Their key finding is that lightweight, efficient models can achieve comparable accuracy to larger architectures while offering superior robustness and more interpretable explanations—challenging the assumption that bigger models are always better. This is critical for clinical adoption in resource-constrained settings like sub-Saharan Africa, where both computational cost and diagnostic opacity have historically been barriers to deployment.\n\n[4] Muscato et al. tackle the overlooked problem of disagreement in human-generated explanations for hate speech detection, showing that variation in token-level rationales is ubiquitous yet poorly understood. They unify diverse models and training approaches to systematically evaluate how to best aggregate human rationales beyond majority vote, revealing that different annotators provide complementary signals that capture rich variation in reasoning styles, values, and interpretations. This matters because current evaluation practices for explainability often assume ground truth consensus that doesn't exist in subjective tasks, and the work provides a methodological foundation for handling this complexity. The paper also raises important questions about how to evaluate explanation quality when human annotators themselves disagree.\n\n## Key Takeaways\n- Closed-form solutions for LLM training, as demonstrated by RBF network architectures, may enable inherently interpretable models that don't require post-hoc explanation methods, fundamentally changing the trade-off between performance and transparency.\n- Explainability interfaces mandated by regulation create exploitable attack surfaces: model extraction attacks can succeed using only discrete labels and binary explanation masks, without access to gradients or confidence scores.\n- Lightweight models can outperform their larger counterparts when evaluated holistically across accuracy, robustness, and explainability metrics, challenging the dominant paradigm of scaling model size.\n- Human disagreement in explanations is not noise to be averaged away but rich signal that reveals multiple valid perspectives—current evaluation practices that rely on majority-vote ground truth are fundamentally flawed for subjective tasks.\n- Additive decomposition methods (SHAP, GAMs) suffer from fundamental mathematical limitations in the presence of strong interactions; separability-based approaches offer a more faithful alternative that avoids signal cancellation.\n- The tension between transparency requirements and model security represents an unresolved governance challenge that requires both technical solutions (e.g., differentially private explanations) and policy innovation.\n- Explainability evaluation itself requires rethinking: as explanations become more sophisticated, we need metrics that account for faithfulness, stability, and alignment with diverse human reasoning—not just accuracy proxies.",
+    "papers": [
+      {
+        "title": "LLMs Without Deep Neural Networks: New Architecture, Benefits and Case Study",
+        "url": "",
+        "authors": [
+          "Vincent Granville"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Can Subgraph Explanations Be Weaponized to Steal Graph Neural Networks?",
+        "url": "",
+        "authors": [
+          "Ojas Nimase",
+          "Jiate Li",
+          "Yue Zhao",
+          "Yushun Dong"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Beyond Accuracy: Evaluating Efficiency, Robustness and Explainability in Deep Learning for Malaria Diagnosis",
+        "url": "",
+        "authors": [
+          "Olivier Kanamugire",
+          "Kerol Djoumessi"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Disagreeing Rationales: Rethinking Classification and Explainability Evaluation in Hate Speech Detection",
+        "url": "",
+        "authors": [
+          "Benedetta Muscato",
+          "Beiduo Chen",
+          "Gizem Gezici",
+          "Barbara Plank",
+          "Fosca Giannotti"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Beyond Additive Decompositions: Interpretability Through Separability",
+        "url": "",
+        "authors": [
+          "Jinyang Liu",
+          "Munir Eberhardt Hiabu"
+        ],
+        "date": "2026-06-01"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-01",
+    "paperCount": 13,
+    "markdown": "# Multimodal Frontiers: Benchmarking, Reasoning, and Trustworthy Fusion in the Age of MLLMs\n\nToday's research landscape reveals a maturing multimodal field moving beyond static recognition toward dynamic reasoning, real-world deployment, and trustworthiness. A surge of new benchmarks—spanning physical reasoning, teaching observation, hateful content detection, and food-as-medicine—exposes critical gaps in current multimodal systems, while novel architectural approaches tackle bias evaluation, self-improving agents, and robust fusion under data degradation.\n\n## Benchmarking the Unseen: Physical Reasoning, Exploration, and Subtle Modalities\n\n**BilliardPhys-Bench** [2] addresses the fundamental weakness of multimodal LLMs in intuitive physical reasoning—predicting object motion and interaction from static images. The benchmark uses a procedural engine to generate randomized billiard scenarios with friction and elastic collisions, testing three core abilities: ball-to-ball collision prediction, wall bounce reasoning, and final position estimation after motion stops. This work is critical because it moves multimodal evaluation beyond static recognition into the domain of intuitive physics, a capability essential for robotics and autonomous systems.\n\n**MineExplorer** [6] tackles the underexplored question of whether MLLM agents can sustain exploration in dynamic open worlds like Minecraft, where existing benchmarks compress interaction into short-horizon tasks or entangle success with domain-specific game mechanics. The benchmark filters atomic tasks whose solutions depend heavily on Minecraft-specific knowledge, enabling cleaner evaluation of general exploration capabilities. This matters because open-world exploration remains a key bottleneck for deploying MLLM agents in unstructured real-world environments.\n\n**TeachObs** [4] introduces a human-validated benchmark for multimodal teaching observation, organizing 30 public lesson videos across eight countries into 5,158 fixed 15-second scenes annotated with 39 binary codes covering both visual (gesture, board work, pointing) and nonvisual (instruction, monitoring) teaching practices. The work bridges a critical gap between pedagogical research and AI evaluation, providing structured multimodal data for modeling classroom interactions. This is significant for educational AI applications where understanding multimodal teacher-student dynamics is essential.\n\n**FAM-Bench** [5] pioneers Food-as-Medicine reasoning, requiring models to decide whether a concrete food choice is appropriate for a specific health condition—going beyond dish recognition or nutrient estimation. With 2,500 nutrition-expert-verified instances across 13 diet-related health conditions and two complementary tasks, this benchmark exposes the gap between current food AI and the health-aware decision layer needed for clinical applications. The work highlights a crucial missing capability in multimodal models for healthcare.\n\n**FBHM** [7] introduces a functionality-based hateful meme benchmark constructed along orthogonal axes of 25 rhetorical functionalities and 10 target communities (5,000 memes total), enabling causal evaluation of model vulnerabilities. Benchmarking state-of-the-art VLMs reveals a severe generalization gap: models highly accurate on standard hateful meme datasets fail dramatically when rhetorical mechanisms are disentangled from target communities. This work is vital for understanding and mitigating harmful biases in multimodal content moderation systems.\n\n## Architectural Innovations: Self-Improvement, Streaming, and Robust Fusion\n\n**SCALE (Self-Cognitive-Aware Learning and Exploration)** [3] addresses web agents' reliance on handcrafted pipelines or expensive expert trajectories by introducing three adversarial roles—Selector, Predictor, and Judger—that autonomously discover agent limitations and expand cognitive boundaries through environmental exploration. The proposed SCALE-Hop mechanism further enhances this self-improving capability. This approach is significant because it reduces dependence on human demonstrations, enabling web agents to adapt to complex, dynamic environments more autonomously.\n\n**DOA** [8] tackles the fundamental challenge of simultaneous speech-to-text translation with decoder-only SpeechLLMs, which lack the cross-attention signals that encoder-decoder models provide for streaming policies. The paper investigates whether decoder self-attention contains sufficiently stable alignment signals to guide a streaming policy, proposing a training-free decoder-only attention policy. This is important because SpeechLLMs represent the emerging paradigm for speech processing, and enabling them to perform simultaneous translation without architectural modification is crucial for real-time applications.\n\n**GMF (Geometry-based Multimodal Fusion)** [11] breaks the circular dependency in trustworthy fusion methods that rely on model prediction confidence—failing when a model is confident but wrong. Instead, GMF evaluates data reliability by measuring how much transport correction the input needs in latent space, implemented through diffusion-based Schrödinger bridges. This geometry-first approach to trustworthiness is a fundamental departure from confidence-based methods and could significantly improve multimodal system robustness in safety-critical applications like autonomous driving and medical diagnosis.\n\n**CHARM (Channel-Aware Representation Model)** [13] addresses the underexplored problem of general-purpose representation learning for heterogeneous multivariate time series, incorporating channel-level textual descriptions into a Transformer encoder equivariant to channel order. The model is trained with a Joint Embedding Predictive Architecture (JEPA) and a novel loss promoting informative, temporally stable embeddings, with latent-space prediction encouraging robustness to sensor noise. This work bridges the gap between language-vision representation learning and sensor-based time series, enabling semantic embeddings for IoT and industrial monitoring applications.\n\n**UniRTL** [9] integrates multimodal representations for register transfer level (RTL) design by unifying code-based and graph-based (control data flow graph) representations, arguing that each modality captures complementary information—code encodes semantic and functional information while CDFG provides comprehensive structural representation. The unified approach enhances expressiveness and generalization for accelerating hardware design workflows. This is notable for demonstrating how multimodal fusion principles can be applied to non-traditional domains like electronic design automation, where different data modalities capture fundamentally different aspects of the same artifact.\n\n## Evaluating and Diagnosing Multimodal Systems\n\n**\"Your Multimodal Speech Model Says I Have a Face for Radio\"** [1] presents the first bias evaluation of multimodal speech recognition, creating videos pairing different faces with speech to investigate how adding visual modality affects bias in speech recognition systems. While performance and bias have been studied extensively in single-modality regimes, it is unknown how new modalities affect this, even though they produce biases in humans. This work is foundational for understanding how modality expansion introduces or mitigates social biases in multimodal systems.\n\n**DECAT** [12] introduces a model-agnostic post-hoc evaluation framework that classifies multimodal representations into four diagnostic scenarios for a given task and modality, using five null-referenced metrics and a rule-based decision procedure. The framework reveals whether a model has learned biology shared across modalities, biology confined to one modality, or spurious correlations reflecting confounders rather than genuine biology. This is critical for oncology applications where understanding whether multimodal predictions are biologically supported—versus relying on spurious correlations—determines clinical trustworthiness.\n\n**Best-Arm Identification-Based Trust Region Selection** [10] addresses performance degradation of Bayesian optimization on complex multimodal or high-dimensional problems by formulating trust region selection as a multi-armed bandit problem. The trajectory-aware framework integrates best-arm identification with trust region-based BO, extrapolating the optimization trajectory to efficiently solve multimodal optimization problems. This work demonstrates how bandit algorithms can enhance optimization in multimodal landscapes, with implications for hyperparameter tuning and experimental design.\n\n## Key Takeaways\n- A significant trend toward rigorous, domain-specific multimodal benchmarks (physical reasoning, teaching, food-as-medicine, hateful content) reveals that current MLLMs still struggle with intuitive physics, context-aware reasoning, and disentangling rhetorical mechanisms from target demographics.\n- Self-improving web agents (SCALE) and training-free streaming policies (DOA) for SpeechLLMs represent a shift toward more autonomous, adaptable multimodal systems that reduce dependence on human demonstrations and architectural modifications.\n- Trustworthy multimodal fusion is being fundamentally rethought: geometry-based approaches (GMF) that measure input reliability via transport correction in latent space offer a promising alternative to confidence-based methods that fail under model overconfidence.\n- Representation learning is expanding to non-traditional domains: sensor time series (CHARM) and hardware design (UniRTL) demonstrate how multimodal principles—channel descriptions, unified code-graph representations—can enhance learning in previously overlooked modalities.\n- Post-hoc diagnostic frameworks (DECAT) are emerging to answer critical questions about whether multimodal models learn genuine cross-modal biology versus spurious correlations, essential for high-stakes domains like oncology.\n- Bias evaluation in multimodal speech recognition reveals a new frontier: adding visual modalities can introduce or exacerbate biases in unexpected ways, requiring systematic investigation beyond single-modality regimes.\n- Bayesian optimization for multimodal functions benefits from bandit-based trust region selection, showing that optimization algorithm design can be informed by multimodal problem structure.",
+    "papers": [
+      {
+        "title": "Your Multimodal Speech Model Says I Have a Face for Radio",
+        "url": "",
+        "authors": [
+          "Maya K. Nachesa",
+          "Vlad Niculae",
+          "Vagrant Gautam"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "BilliardPhys-Bench: Benchmarking Physical Reasoning and Visual Dynamics of Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Ben Wang",
+          "Xiaogang Li",
+          "Ruochen Gao",
+          "Peiyao Xiao",
+          "Chengliang Xu",
+          "Zeyu Wang",
+          "Zichao Chen",
+          "Bing Zhao",
+          "Hu Wei"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Learning to Adapt: Self-Improving Web Agent via Cognitive-Aware Exploration",
+        "url": "",
+        "authors": [
+          "Weile Chen",
+          "Bingchen Miao",
+          "Qifan Yu",
+          "Wendong Bu",
+          "Guoming Wang",
+          "Wenqiao Zhang",
+          "Shengyu Zhang",
+          "Juncheng Li",
+          "Siliang Tang"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "TeachObs: A Human-Validated Benchmark for Multimodal Teaching Observation and Model Evaluation",
+        "url": "",
+        "authors": [
+          "Yeil Jeong",
+          "Youngjin Yoo",
+          "Seobin Sohn",
+          "Hyejin Han",
+          "Jinseo Lee",
+          "Scott Howard",
+          "Unggi Lee"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "FAM-Bench: A Multimodal Benchmark for Condition-Aware Food-as-Medicine Reasoning",
+        "url": "",
+        "authors": [
+          "Mingyang Mao",
+          "Bhargav Rishi Medisetti",
+          "Utkarsh Grover",
+          "Tanvir Ibrahim",
+          "Wenyan Li",
+          "Tingting Zhang",
+          "Xiaomin Lin"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "MineExplorer: Evaluating Open-World Exploration of MLLM Agents in Minecraft",
+        "url": "",
+        "authors": [
+          "Tianjie Ju",
+          "Yueqing Sun",
+          "Zheng Wu",
+          "Wei Zhang",
+          "Yaqi Huo",
+          "Xi Su",
+          "Qi Gu",
+          "Xunliang Cai",
+          "Gongshen Liu",
+          "Zhuosheng Zhang"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "FBHM: Functional Benchmarking and Steering of VLMs for Hateful Meme Detection",
+        "url": "",
+        "authors": [
+          "Paramananda Bhaskar",
+          "Naquee Rizwan",
+          "Daksh Jogchand",
+          "Saurabh Kumar Pandey",
+          "Animesh Mukherjee"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "DOA: Training-Free Decoder-Only Attention Policy for Long-Form Simultaneous Translation with SpeechLLMs",
+        "url": "",
+        "authors": [
+          "Sara Papi",
+          "Luisa Bentivogli"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "UniRTL: Unifying Code and Graph for Robust RTL Representation Learning",
+        "url": "",
+        "authors": [
+          "Yi Liu",
+          "Hongji Zhang",
+          "Lei Chen",
+          "Mingxuan Yuan",
+          "Qiang Xu"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Best-Arm Identification-Based Trust Region Selection for Bayesian Optimization on Multimodal Functions",
+        "url": "",
+        "authors": [
+          "Nobuo Namura",
+          "Sho Takemori"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Geometry-based Schrödinger Bridges for Trustworthy Multimodal Fusion",
+        "url": "",
+        "authors": [
+          "Jiayu Xiong",
+          "Jing Wang",
+          "Qi Zhang",
+          "Wanlong Wang",
+          "Jun Xue"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "When Are Multimodal Predictions Biologically Supported? A Diagnostic Evaluation Framework",
+        "url": "",
+        "authors": [
+          "Dylan Steiner",
+          "Gustavo Arango-Argoty",
+          "Gerald Sun",
+          "Etai Jacob"
+        ],
+        "date": "2026-06-01"
+      },
+      {
+        "title": "Giving Sensors a Voice: Multimodal JEPA for Semantic Time-Series Embeddings",
+        "url": "",
+        "authors": [
+          "Utsav Dutta",
+          "Gerardo Pastrana",
+          "Sina Khoshfetrat Pakazad",
+          "Henrik Ohlsson"
+        ],
+        "date": "2026-06-01"
+      }
+    ]
+  }
+]
