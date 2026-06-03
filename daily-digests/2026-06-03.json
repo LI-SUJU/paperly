@@ -1,0 +1,486 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-03",
+    "paperCount": 13,
+    "markdown": "# The Interpretability Frontier: From Neuron Geometry to Language Model Reasoning\n\nToday's research landscape reveals a maturing field where interpretability methods are being stress-tested against confounds, scaled to new domains, and refined through theoretical grounding. Across 13 papers, the community grapples with fundamental questions about what our probes actually measure, how to build faithful explanations, and whether interpretable features survive model compression.\n\n## Probing the Probes: What Linear Classifiers Really Capture\n\nA major theme this week is the critical re-examination of interpretability methods themselves, revealing that widely-used techniques may be measuring superficial artifacts rather than meaningful representations.\n\n[4] Linear probing of LLM hidden states has been widely used to claim that models learn distinct representations for different reasoning types. The authors test this by probing Qwen3-14B on benchmarks spanning deductive, inductive, and abductive reasoning, finding that at layer 32 of 40, linear probes achieve 100% cross-validated accuracy with well-separated geometry. However, they demonstrate that this separation is entirely driven by format confounds—residualizing source identifiers eliminates the separation, proving that linear probes detect task format, not reasoning mode. This work forces the community to reconsider the validity of countless prior probing studies and establishes a rigorous baseline for controlled probing experiments.\n\n[9] Quantization is standard for deploying LLMs, yet whether interpretable features survive weight rounding is rarely tested. The author asks whether sparse autoencoder (SAE) features extracted from a dense full-precision model remain faithful after quantization, revealing that while perplexity may stay close to the original, the interpretable features identified in the full-precision model degrade significantly. This finding has profound implications for safety audits and steering interventions that rely on SAE features, suggesting that model compression may silently corrupt the interpretable representations we depend on for alignment and control.\n\n## Building Better Interpretability Tools: Architectures and Oracles\n\nSeveral papers advance the methodological toolkit for interpretability, addressing fundamental limitations in how we extract and validate explanations.\n\n[5] Activation Oracles (AOs) for interpreting residual stream activations currently suffer from hallucinations, vagueness, and text-inversion confounds that make them hard to evaluate. The authors improve the AO training regime through four interventions: training on on-policy rollouts, improving the conversational dataset, feeding more layers, and improving the injection formula. While capability improvements are marginal, the quality-of-life improvements are substantial, and they open source the first comprehensive evaluation suite for AOs. This work provides the community with standardized tools to systematically benchmark and improve activation-based interpretability methods.\n\n[6] Deep neural networks learn representations where individual features often lack interpretable meaning; a single neuron may activate for scattered, unrelated inputs. The authors introduce \"coherence,\" a geometric property inspired by neural coding in the brain where neurons like grid cells respond to contiguous regions of state space. They prove that coherence ensures a clean column-clustered block structure in the non-negative matrix factorization framework and develop an optimization objective that provably recovers coherent representations. This topological approach provides a principled mathematical foundation for learning representations that are inherently interpretable by construction.\n\n[12] Heterogeneous graph neural networks (HGNNs) lack interpretability in high-stakes applications, with existing explanation methods failing to reflect the inherent semantic hierarchy of HGNNs. The authors propose HiSE, a lightweight hierarchical semantic explainer that generates explanations at multiple granularity levels (node, meta-path, and meta-graph) while maintaining fidelity to the model's internal decision-making. HiSE achieves computational efficiency by avoiding complex search or perturbation mechanisms, making it practical for real-world deployment. This addresses a critical gap in graph neural network interpretability where prior work could not capture the multi-level semantic structure inherent in heterogeneous graphs.\n\n## Interpretability in High-Stakes Domains: Clinical, Climate, and Brain-Computer Interfaces\n\nApplied interpretability work demonstrates how rigorous explanation methods can enable trust in domains where decisions have serious consequences.\n\n[2] Large language models exhibit strong reasoning abilities for clinical decision support but struggle to model structured longitudinal EHRs, while EHR foundation models lack interpretable language-based reasoning. ChatHealthAI bridges this gap through a multimodal reasoning framework that aligns structured EHR representations from a pretrained foundation model with the semantic space of a frozen LLM via a task-aware resampler. By integrating longitudinal patient data with natural language reasoning, it enables clinicians to understand why the model arrives at particular conclusions. This work demonstrates that interpretability in clinical AI requires fusing complementary modalities rather than relying on a single representation.\n\n[3] ESG and climate risk data remain fragmented across heterogeneous reporting environments, and conventional validation pipelines lack provenance-aware auditability and hidden drift detection. The authors propose a deterministic climate risk intelligence framework integrating single-source-of-truth orchestration, temporal anomaly detection, imbalance-aware ensemble learning, and explainability-oriented governance. By constructing and releasing a synthetic ESG validation benchmark, they enable reproducible evaluation of climate risk models. This work shows that interpretability for sustainability applications must encompass both data provenance and model behavior to satisfy audit requirements.\n\n[8] Interpretable brain-computer interface classifiers that generalize across subjects without calibration remain an open challenge. ERP-XTTN proposes a cross-attention architecture that routes input EEG patches to fixed difference-wave prototypes via query-key-only cross-attention with no value projection, making classification depend entirely on attention routing and attention faithfulness structural rather than post-hoc. This design achieves competitive ERP classification under deployment-compatible conditions while being inherently interpretable. The work demonstrates that careful architectural choices can make interpretability a structural property rather than an add-on.\n\n## Learning to Reason with Interpretable Representations\n\nSeveral papers explore how to build systems that learn interpretable reasoning processes, from mathematical capability to classical planning to neurosymbolic integration.\n\n[10] Despite numerical reasoning being crucial for LLM mathematical capabilities, few benchmarks integrate numerical processing and mathematical reasoning, hindering interpretability of failures in math tasks. PyraMathBench provides a comprehensive hierarchical benchmark with 32,505 questions spanning 4 cognitive aspects, 14 subcategories, and 2 modalities, revealing that LLMs' performance is severely compromised by inadequate numerical computation. This benchmark enables systematic diagnosis of where and why mathematical reasoning breaks down, making model failures interpretable rather than opaque.\n\n[13] Supervised fine-tuning improves end-to-end classical planning in LLMs, but whether these models learn to represent and reason about planning problems remains unclear. The authors devise interpretability experiments that holistically interrogate world model recovery by examining both internal representations and generative capabilities of fine-tuned LLMs. Their findings reveal that while SFT improves planning success, the internal representations do not faithfully encode the planning problem structure, suggesting that models may be learning shallow heuristics rather than genuine reasoning.\n\n[7] Visual Question Answering requires integrating multimodal input and reasoning, with modular approaches incorporating logic-based representations offering clear advantages in interpretability. The authors present an approach for distilling answer-set programming rules from LLMs by prompting an LLM to extract logical rules from natural language descriptions, then using these rules in a neurosymbolic VQA system. This method reduces the burden on developers to manually craft or adapt logical representations when task requirements change. The work demonstrates how LLMs can serve as bridges between neural representations and symbolic reasoning, producing interpretable logical rules from learned knowledge.\n\n[11] Neural operators for parametric PDEs face a persistent trade-off among physical interpretability, nonlocal spatial communication, mesh scalability, and computational cost. The authors propose a Light-operator that draws inspiration from light's reflection, refraction, and scattering phenomena to achieve physically interpretable nonlocal communication across spatial domains. This approach maintains mesh scalability while providing interpretable physical mechanisms for how information propagates through the solution space. The work bridges the gap between physically motivated PDE solvers and data-driven neural operators, offering interpretability through physical analogy.\n\n[1] Idiomatic expressions remain a persistent challenge for NLP because their meanings are non-compositional, context-dependent, and difficult to align across languages. IdiomX introduces a large-scale multilingual benchmark constructed through a reproducible multi-stage pipeline combining lexical resource extraction and large-scale normalization. By providing controlled evaluation across multiple languages, this benchmark enables systematic analysis of how well models handle the non-compositional meaning that makes idioms a test case for genuine language understanding versus surface-level pattern matching.\n\n## Key Takeaways\n- Linear probes of LLM hidden states are highly susceptible to format confounds, and claims about distinct reasoning representations must be validated by controlling for superficial task features [4].\n- Quantization degrades sparse autoencoder features significantly more than it affects perplexity or accuracy, meaning interpretability-based safety audits on compressed models may be unreliable [9].\n- Topological approaches to representation learning, including coherence and prototype-based attention, can make interpretability a structural property of the architecture rather than a post-hoc analysis [6, 8].\n- In high-stakes domains like clinical decision support and climate risk assessment, interpretability must encompass multimodal fusion, provenance tracking, and auditability—not just attention visualization [2, 3].\n- LLMs trained via supervised fine-tuning for planning tasks may learn shallow heuristics rather than genuine world models, as internal representations often fail to faithfully encode problem structure [13].\n- Neurosymbolic approaches that distill logical rules from LLMs offer a promising path to combining neural flexibility with interpretable symbolic reasoning [7].\n- The field requires standardized evaluation suites for interpretability methods, including benchmarks for activation oracles, mathematical reasoning decomposition, and idiom understanding [5, 1, 10].",
+    "papers": [
+      {
+        "title": "IdiomX A Multilingual Benchmark for Idiom Understanding, Retrieval, and Interpretation",
+        "url": "",
+        "authors": [
+          "Ayman Ali Sharara"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "ChatHealthAI: Aligning Electronic Health Record Representations with Large Language Models for Grounded Clinical Reasoning",
+        "url": "",
+        "authors": [
+          "Bo-Hong Wang",
+          "Baicheng Peng",
+          "Ruilin Wang",
+          "Jun Bai",
+          "Ziyang Song",
+          "Yue Li"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Auditable Climate Risk Intelligence from Fragmented ESG Data: Deterministic Orchestration and Imbalance-Aware Learning for Scope 1-3 Validation",
+        "url": "",
+        "authors": [
+          "Karan Sehgal",
+          "Khawar Naveed Bhatti"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Linear Probes Detect Task Format, Not Reasoning Mode in Language Model Hidden States",
+        "url": "",
+        "authors": [
+          "Subramanyam Sahoo",
+          "Vinija Jain",
+          "Aman Chadha",
+          "Divya Chaudhary"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Building Better Activation Oracles",
+        "url": "",
+        "authors": [
+          "Jan Bauer",
+          "Celeste De Schamphelaere",
+          "Adam Karvonen",
+          "Niclas Luick",
+          "Neel Nanda"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Learning Coherent Representations: A Topological Approach to Interpretability",
+        "url": "",
+        "authors": [
+          "Sigurd Gaukstad",
+          "Melvin Vaupel",
+          "Valdemar Kargård Olsen",
+          "Erik Hermansen",
+          "Benjamin Dunn"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Distilling Answer-Set Programming Rules from LLMs for Neurosymbolic Visual Question Answering",
+        "url": "",
+        "authors": [
+          "Thomas Eiter",
+          "Nelson Higuera Ruiz",
+          "Johannes Oetsch"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "ERP-XTTN: Interpretable Prototype-Guided Cross-Attention for Cross-Subject ERP Classification",
+        "url": "",
+        "authors": [
+          "Charlotte Genevier Wyman",
+          "Leanne Hirshfield"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "How Quantization Changes Interpretable Features: A Sparse Autoencoder Analysis of Language Models",
+        "url": "",
+        "authors": [
+          "Evan Duan"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "PyraMathBench: Evaluating and Improving Mathematical Capability in Large Language Models",
+        "url": "",
+        "authors": [
+          "Zetian Ouyang",
+          "Linlin Wang",
+          "Gerard de Melo",
+          "Liang He"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Let There Be Light: Reflection, Refraction and Scattering for Neural Operators",
+        "url": "",
+        "authors": [
+          "Keke Wu",
+          "Yixuan Zhang",
+          "Jingrun Chen"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "HiSE: A Lightweight Hierarchical Semantic Explainer for Heterogeneous Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Zongrui Li",
+          "Yuhang Zhao",
+          "Ying Zhao",
+          "Yuanzhao Guo",
+          "Qiang Huang",
+          "Yuan Tian"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "A Close Look At World Model Recovery In Supervised Fine-Tuned LLM Planners",
+        "url": "",
+        "authors": [
+          "Patrick Emami",
+          "Nan Qiang",
+          "Peter Graf"
+        ],
+        "date": "2026-06-03"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-03",
+    "paperCount": 3,
+    "markdown": "# Explainability in Practice: From Dynamic Pricing to Climate Risk and Legal NLP\n\nToday's research landscape reveals a growing emphasis on making AI/ML systems not just accurate, but auditable, interpretable, and aligned with human decision-making. Across pricing, climate risk, and legal domains, researchers are developing frameworks that embed explainability directly into model architectures and governance pipelines, moving beyond post-hoc explanations toward inherently transparent systems.\n\n## Human-in-the-Loop and Explainable Decision Systems\n\n**Paper 1** addresses the challenge of deploying contextual bandits for short-term rental dynamic pricing, where pricing decisions carry significant financial risk and operators require explainability. The authors introduce the Human-in-the-Loop Gated Bandit (HITL-GB) framework, in which a contextual bandit generates price recommendations but a human agent retains authority to accept, modify, or reject each recommendation before application. A key technical contribution is showing that under this approval constraint, historical pricing data collected during \"warm-up\" phases can be structurally equivalent to data generated during live learning with human gating, enabling safe offline evaluation before deployment. This work matters because it provides a principled bridge between fully automated RL systems and the practical need for human oversight, offering a path toward explainable, risk-aware pricing without sacrificing learning efficiency.\n\n**Paper 2** tackles the fragmentation of ESG and climate risk data across heterogeneous Scope 1, 2, and 3 reporting environments, where conventional validation pipelines lack provenance-aware auditability, hidden drift detection, and reproducibility. The authors propose a deterministic climate risk intelligence framework integrating single-source-of-truth orchestration, temporal anomaly detection, imbalance-aware ensemble learning, and explainability-oriented governance for auditable ESG validation. The framework ensures that every prediction can be traced back to its source data and model component, addressing regulatory demands for transparency in climate risk reporting. This matters because as ESG reporting becomes mandatory across jurisdictions, auditable and explainable AI systems are necessary to prevent greenwashing and maintain stakeholder trust.\n\n## Domain-Specific Benchmarking and Evaluation\n\n**Paper 3** addresses the critical problem of extracting reporting obligations from EU legislation, where distinguishing reporting requirements from structurally similar non-obligatory provisions requires specialized legal understanding. The authors curate EURO-5K, a corpus of sentence-level reporting obligations and challenging negative examples from 136 EU legislative acts, and train discriminative token-classification models alongside generative approaches. The core technical contribution is a systematic comparison of domain adaptation strategies—including continued pretraining on legal corpora—to determine when domain-specific pretraining actually improves extraction performance. This benchmark is significant because it provides the NLP community with a standardized evaluation framework for legal obligation extraction, enabling reproducible comparisons and progress toward automated regulatory compliance.\n\n## Key Takeaways\n\n- Human-in-the-loop architectures (Paper 1) offer a promising path to explainable RL by embedding human approval as a structural constraint rather than an afterthought, with theoretical guarantees on learning equivalence.\n- Explainability and auditability are becoming first-class requirements in high-stakes domains like climate risk (Paper 2), where deterministic orchestration and provenance tracking are necessary for regulatory acceptance.\n- Domain-specific benchmarking (Paper 3) reveals that specialized legal NLP tasks require careful evaluation of when domain pretraining provides tangible benefits, challenging the assumption that more domain data always helps.\n- The papers collectively demonstrate a shift from \"black box plus explanation\" toward inherently interpretable system designs, where governance, human oversight, and model architecture are inseparable.\n- Sparse feedback environments (Paper 1) and fragmented data sources (Paper 2) both benefit from frameworks that separate model recommendations from final decisions, creating natural audit trails.\n- Reproducibility and open data release emerge as cross-cutting themes, with synthetic data (Paper 2) and curated benchmarks (Paper 3) enabling community progress toward explainable AI systems.\n- The integration of imbalance-aware learning with explainability (Paper 2) highlights that fairness and interpretability are converging concerns, particularly in domains with skewed class distributions.",
+    "papers": [
+      {
+        "title": "Human-in-the-Loop Contextual Bandits for Short-Term Rental Dynamic Pricing: Structural Equivalence of Historical Warm-Up and Approval-Gated Live Learning",
+        "url": "",
+        "authors": [
+          "Oleg Miroshnichenko"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Auditable Climate Risk Intelligence from Fragmented ESG Data: Deterministic Orchestration and Imbalance-Aware Learning for Scope 1-3 Validation",
+        "url": "",
+        "authors": [
+          "Karan Sehgal",
+          "Khawar Naveed Bhatti"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "EURO-5K: When Does Domain Pretraining Matter? Benchmarking Transformers for EU Reporting Obligation Extraction",
+        "url": "",
+        "authors": [
+          "Marios Koniaris",
+          "Vasileios Kotronis",
+          "Eugenia Giannini",
+          "Panayiotis Tsanakas"
+        ],
+        "date": "2026-06-03"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-03",
+    "paperCount": 22,
+    "markdown": "# Multimodal Reasoning and Alignment: From Clinical Systems to Visual Understanding\n\nToday's research landscape reveals a fundamental shift from monolithic multimodal models toward specialized, context-aware systems that carefully calibrate when and how to integrate information across modalities. A parallel trend emerges in the evaluation of reasoning quality itself, moving beyond answer correctness to examine the dynamics of intermediate reasoning traces and the robustness of model behavior under diverse conditions.\n\n## Clinical and Biomedical Multimodal Systems\n\n[1] ChatHealthAI addresses the gap between LLMs' natural-language reasoning and EHR foundation models' predictive capabilities by proposing a multimodal reasoning framework that aligns structured EHR representations with a frozen LLM's semantic space through a task-aware resampler. The approach leverages a pretrained EHR foundation model to encode longitudinal patient data, then uses a learnable resampling mechanism to project these representations into the LLM's embedding space for grounded clinical reasoning. By preserving the EHR model's temporal understanding while enabling interpretable language-based reasoning, ChatHealthAI enables clinicians to query patient histories in natural language without sacrificing predictive performance. This represents a critical step toward clinically deployable AI that combines the best of structured and unstructured medical data.\n\n[2] Traj-Evolve tackles the challenge of modeling patient trajectories from sparse, noisy, long-context EHR sequences through a self-evolving multi-agent system with two complementary mechanisms. The system introduces an Experience Pool (ExPool) that functions as non-parametric memory, indexing rejection-sampled reasoning traces from similar prior cases to inform current patient trajectory predictions. Unlike existing LLM-based approaches that process patients in isolation, Traj-Evolve mirrors clinical practice by accumulating and transferring experience across cases, enabling more accurate early detection of lung cancer from longitudinal data. This work demonstrates how multi-agent architectures can overcome the context-length limitations of individual LLMs while introducing case-based reasoning capabilities essential for medical applications.\n\n[4] This comprehensive systematic review examines three distinct categories of large AI models in dental healthcare: language-generative models, discriminative vision foundation models, and dental-specific foundation models. Following PRISMA-ScR guidelines across four databases, the review reveals that general-purpose models often fail to capture domain-specific dental characteristics, while dental-specific models remain limited in scope and generalizability. The authors identify critical gaps in multimodal integration for oral healthcare, particularly the lack of unified frameworks that combine radiographic imaging, clinical notes, and patient histories. This work provides a roadmap for developing domain-specific foundation models that can address the unique challenges of dental diagnostics and treatment planning.\n\n[12] DMT-CBT reframes Cognitive Behavioral Therapy counseling from local response generation to longitudinal therapeutic state modeling, recognizing that real psychotherapy involves continuous inference and intervention across multiple sessions. The approach introduces multimodal inference capabilities that integrate textual dialogue, acoustic features, and visual cues from therapy sessions, moving beyond the text-only, single-session formulations common in existing LLM-based counseling systems. By modeling the evolving therapeutic state across sessions, DMT-CBT enables more clinically meaningful interventions that account for patient progress and regression over time. This work represents a crucial step toward AI systems that can participate in long-term therapeutic relationships rather than simply generating empathetic one-off responses.\n\n[14] CP-Agent introduces context-aware multimodal reasoning for cellular morphological profiling under chemical perturbations, addressing the limitations of existing drug screening approaches that neglect experimental context. The system integrates Cell Painting image data with molecular representations and experimental metadata (cell line, dosing schedule) to enable mechanism-of-action inference and toxicity prediction. By explicitly modeling the experimental context alongside phenotypic readouts, CP-Agent achieves improved generalization and resolution for distinguishing subtle differences in drug mechanisms. This work demonstrates how multimodal reasoning can accelerate drug discovery by providing interpretable, context-aware analysis of high-content screening data.\n\n## Multimodal Reasoning and Perception\n\n[10] SpecFlow proposes a lightweight multimodal spatial reasoning framework that represents intermediate visual thoughts in a fixed-size discrete cosine space, dramatically reducing computational and memory overhead. By exploiting energy compaction properties of the DCT, the framework preserves global layout and relational structure while introducing high-frequency details only when incrementally needed for reasoning. This spectral-progressive approach enables efficient reasoning over visual scenes without the token accumulation and dense cross-modal attention that plague existing methods. SpecFlow demonstrates that spatial reasoning can be significantly accelerated through frequency-domain representations, making multimodal reasoning viable for resource-constrained deployments.\n\n[16] SagaQA introduces a challenging benchmark for multi-hop reasoning over full-length TV series, requiring models to connect information across completely different episodes to answer narrative questions. Unlike existing video benchmarks that focus on adjacent frames or short clips, SagaQA demands high-level comprehension of extended multimodal narratives spanning hours of content. The dataset's reasoning steps require long-range hops across episodes, testing models' ability to reason over entire events and actions within a coherent narrative structure. This benchmark pushes the boundaries of multimodal understanding by evaluating whether models can maintain and integrate context across temporal gaps that far exceed current context windows.\n\n[18] Intent Projection tackles the fundamental problem of pragmatic intent understanding in multimodal memes, where LVLMs tend to describe literal content rather than communicative intent. The framework separates literal and pragmatic signals at the representation, output, and objective levels within a single LVLM backbone, preventing surface-level details from contaminating the final response. By decomposing meme understanding into literal-pragmatic decomposition, Intent Projection enables models to distinguish between what an image shows and what the author is trying to communicate through sarcasm, humor, or social commentary. This work addresses a critical limitation in current vision-language models that lack the pragmatic reasoning abilities essential for understanding human communication.\n\n[20] This paper reveals that token-level entropy, effective for credit assignment in text-only reinforcement learning, collapses in visual reasoning due to the omission of vision-sensitive tokens with naturally low entropy. The authors propose vision-anchored token selection for reinforcement learning with verifiable rewards, ensuring that visual tokens contributing to reasoning receive appropriate credit despite their low entropy. Through controlled studies, they demonstrate that existing multimodal RL methods struggle to satisfy the demand for interleaving precise perceptual grounding with semantic reasoning. This work provides a principled solution for training visual reasoning models through reinforcement learning, addressing a fundamental limitation in current approaches.\n\n[21] Imaginative Perception Tokens (IPT) are introduced as intermediate perceptual representations that externalize what a VLM would perceive under alternative spatial configurations while remaining consistent with observed input. The approach addresses spatial reasoning problems where critical information is not directly observable, such as inferring views from unseen viewpoints or tracing paths through occluded spaces. By augmenting VLMs with these externalized perceptual tokens, IPT enables models to perform implicit spatial transformations without requiring explicit 3D reconstruction. This work advances spatial reasoning in multimodal models by providing a mechanism for imaginative perception that bridges the gap between partial observations and coherent spatial understanding.\n\n[22] This systematic study examines adversarial robustness and multimodal safety across 12 diverse languages in Multimodal Large Language Models, revealing that adversarial images optimized against English-centric models transfer effectively to other languages. The authors evaluate open-source MLLMs that acquire multilingual capability through instruction tuning, finding gradient-based attacks produce cross-lingual vulnerabilities that compromise safety alignment. This work exposes a critical blind spot in current safety research, which has focused predominantly on English and overlooked the multilingual attack surface. The findings have substantial implications for deploying multimodal AI systems in linguistically diverse settings where safety alignment must generalize across languages.\n\n## Multimodal Fusion and Calibration\n\n[5] CL-DMDF proposes a dynamic multimodal data fusion model based on contrastive learning that addresses the challenge of uncertain or missing modality inputs in real-world applications. The framework leverages contrastive objectives to learn robust representations that capture both local interactions and global complementary cues across modalities, overcoming the limitations of models that overemphasize missing modalities. By learning to dynamically weight and fuse available modalities based on their informativeness, CL-DMDF maintains performance even when certain modalities are entirely absent. This approach is particularly relevant for deployment scenarios where sensor failures or data quality issues lead to incomplete multimodal inputs.\n\n[6] CORE presents a conflict-oriented reasoning framework for general multimodal manipulation detection, based on the observation that manipulated misinformation inherently contains semantic or physical inconsistencies across modalities or with world knowledge. Instead of training manipulation-specific detectors that generalize poorly to emerging manipulation types, CORE explicitly reasons about cross-modal conflicts as indicators of manipulation. By framing detection as conflict identification rather than manipulation classification, the approach achieves robust generalization across diverse manipulation techniques. This work shifts the paradigm from detecting specific manipulation artifacts to identifying the fundamental inconsistencies that characterize all forms of multimodal misinformation.\n\n[7] This work investigates how to adjust multimodal representations before fusion by developing a compact calibration module that compares each modality with others at the summary level. The module extracts cues of cross-source support and conflict and converts them into calibrated representations that suppress distracting modalities while amplifying informative ones. Unlike post-hoc fusion weighting, contextual calibration operates before the downstream predictor, enabling more principled integration of multimodal signals. The approach addresses the critical observation that a modality useful for one input may become distracting for another, providing dynamic, context-dependent calibration.\n\n[8] QUIVER introduces a paradigm that enriches classical data-driven features with quantum Fisher information, providing a geometrically motivated, basis-independent summary of higher-order correlations captured by a variational quantum circuit. The quantum Fisher information matrix encodes the intrinsic geometry of the learned quantum state manifold, offering complementary information to classical features derived from multimodal inputs. This quantum-informed view enhances large ML models by providing access to higher-order statistical correlations that classical feature engineering may miss. While quantum computing resources remain limited, this work demonstrates how quantum-inspired geometric insights can improve multimodal representation learning.\n\n[9] PhotoCraft addresses the limitations of stateless, reactive LLM-based agents for deep image search by introducing a training-free hierarchical memory system inspired by human cognition. The system equips multimodal LLMs with working, episodic, and semantic memory that are dynamically invoked during multi-step reasoning over rich contextual cues such as time, location, and event relations. By distinguishing between short-term working memory, long-term episodic memory of specific experiences, and semantic memory of general knowledge, PhotoCraft prevents execution drift and enables experience transfer across search tasks. This memory architecture represents a practical approach to enabling persistent, context-aware reasoning in multimodal agent systems without requiring additional fine-tuning.\n\n[11] PRPF proposes a Pre-Reasoning Perception Framework for proactive mobile agents that separates the decision of *when* to intervene from *how* to assist, addressing the goal misalignment and redundant inference in unified MLLM-based pipelines. The framework introduces a lightweight perception module that monitors user behavior and determines appropriate intervention timing before invoking the full reasoning pipeline. By decoupling perception from reasoning, PRPF enables efficient proactive assistance that avoids unnecessary computation when the agent should remain silent. This design is crucial for mobile deployment where computational resources are constrained and inappropriate interventions could harm user experience.\n\n[15] This paper presents an SLM-based Agent Orchestration Gateway that decouples virtual world systems from AI backend services, enabling lightweight runtime coordination of multimodal user requests across distributed edge and cloud infrastructure. The gateway uses small language models to route and orchestrate requests to appropriate specialized models and computational resources, maintaining extensibility and simplifying maintenance. By providing a unified interface for diverse AI capabilities while managing resource allocation, this architecture addresses the fundamental challenge of integrating generative AI into interactive virtual environments. The approach enables virtual worlds to leverage heterogeneous AI models without coupling system architecture to any specific backend implementation.\n\n## Neuro-Symbolic and Formal Reasoning\n\n[13] This work presents an approach for distilling Answer-Set Programming rules from LLMs for neurosymbolic Visual Question Answering, enabling automatic generation of logical reasoning components from multimodal inputs. The method prompts an LLM to extract structured rules from VQA examples, which are then transformed into ASP programs that provide interpretable, verifiable reasoning over images. By automating the traditionally manual process of creating logic-based representations, this approach significantly reduces the development burden when task requirements change. The neurosymbolic integration combines the flexibility of neural perception with the interpretability and correctness guarantees of formal logical reasoning, offering a compelling alternative to fully end-to-end trained systems.\n\n[17] The See-Infer-Intervene (SII) framework with the Proactive Intent World Model (PIWM) addresses the challenge of multimodal retail agents that must recognize customer behavior, infer latent intent, and decide whether and how to assist before explicit requests. PIWM represents customer state using AIDA (Attention, Interest, Desire, Action) purchasing phases combined with BDI (belief, desire, intention) psychological frameworks, enabling nuanced understanding of pre-interaction behavior. By explicitly modeling the transition between behavioral observation and intent inference, the framework enables agents to choose appropriate interventions or decide to wait. This work advances social intelligence in multimodal AI by formalizing the proactive reasoning process that underlies effective human-robot interaction in service settings.\n\n[19] IndoRad-VQA introduces an Indonesian adaptation of the VQA-RAD benchmark to evaluate whether medical VLMs retain radiology reasoning ability when questions shift from English to Bahasa Indonesia. Through self-evaluation-based quality control for translation, the dataset preserves clinical meaning, terminology consistency, and answer equivalence while testing language robustness. Evaluation of general-purpose and Southeast Asian-specific VLMs reveals significant performance degradation under language shift, exposing the linguistic fragility of current medical vision-language models. This work highlights the critical need for multilingual evaluation and adaptation of medical AI systems before deployment in non-English clinical settings.\n\n## Key Takeaways\n- Clinical multimodal systems are moving from general LLMs toward specialized frameworks that align structured medical data (EHRs, imaging, experimental metadata) with language reasoning, enabling interpretable yet powerful clinical decision support.\n- The evaluation of multimodal reasoning is maturing beyond answer accuracy to examine reasoning dynamics, including the point at which additional reasoning becomes harmful and the need for pragmatic understanding that distinguishes literal content from communicative intent.\n- Multimodal fusion is being reimagined through context-aware calibration, conflict-based detection, and quantum-inspired representations, moving beyond simple concatenation toward principled integration that accounts for modality reliability and cross-modal consistency.\n- Memory architectures for multimodal agents are evolving toward hierarchical, human-inspired designs that separate working, episodic, and semantic memory, enabling long-horizon reasoning and experience transfer across tasks without additional training.\n- Adversarial robustness and safety alignment in multimodal systems exhibit critical blind spots under language shift, with transferable vulnerabilities across 12 languages revealing that current safety measures are insufficient for multilingual deployment.\n- Lightweight and efficient multimodal reasoning is advancing through spectral representations, pre-reasoning perception filtering, and SLM-based orchestration, making sophisticated multimodal capabilities viable for resource-constrained and real-time applications.\n- Neurosymbolic approaches continue to gain traction, with automated rule distillation from LLMs enabling interpretable, verifiable reasoning that combines neural perception with formal logical guarantees for multimodal question answering.",
+    "papers": [
+      {
+        "title": "ChatHealthAI: Aligning Electronic Health Record Representations with Large Language Models for Grounded Clinical Reasoning",
+        "url": "",
+        "authors": [
+          "Bo-Hong Wang",
+          "Baicheng Peng",
+          "Ruilin Wang",
+          "Jun Bai",
+          "Ziyang Song",
+          "Yue Li"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Traj-Evolve: A Self-Evolving Multi-Agent System for Patient Trajectory Modeling in Lung Cancer Early Detection",
+        "url": "",
+        "authors": [
+          "Sihang Zeng",
+          "Matthew Thompson",
+          "Ruth Etzioni",
+          "Meliha Yetisgen"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Thinking Past the Answer: Evaluating Harmful Overthinking in Large Reasoning Models",
+        "url": "",
+        "authors": [
+          "Simone Caldarella",
+          "Davide Talon",
+          "Rahaf Aljundi",
+          "Elisa Ricci",
+          "Massimiliano Mancini"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Large AI Models in Dental Healthcare: From General-Purpose Systems to Domain-Specific Foundation Models",
+        "url": "",
+        "authors": [
+          "Sema Helali",
+          "Lina Abu Nadab",
+          "Sausan Alqawas",
+          "Alaa Abd-Alrazaq",
+          "Faleh Tamimi",
+          "Rafat Damseh"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "CL-DMDF:Dynamic Multimodal Data Fusion Model Based on Contrastive Learning",
+        "url": "",
+        "authors": [
+          "Dong Li",
+          "Lingling Zhang",
+          "Binghao Han",
+          "Linlin Ding",
+          "Yue Kou"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "CORE: Conflict-Oriented Reasoning for General Multimodal Manipulation Detection",
+        "url": "",
+        "authors": [
+          "Jinjie Shen",
+          "Yaxiong Wang",
+          "Yujiao Wu",
+          "Lechao Cheng",
+          "Tianrui Hui",
+          "Nan Pu",
+          "Zhihui Li",
+          "Zhun Zhong"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Before Fusion, Ask What to Keep: Contextual Calibration of Multimodal Signals",
+        "url": "",
+        "authors": [
+          "Jiyuan Liu",
+          "Liangwei Nathan Zheng",
+          "Wei Emma Zhang",
+          "Xinpei Wang",
+          "Weitong Chen"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "QUIVER: Quantum-Informed Views for Enhanced Representations in Large ML Models",
+        "url": "",
+        "authors": [
+          "Aritra Bal",
+          "Michael Binder",
+          "Markus Klute",
+          "Benedikt Maier",
+          "Michael Spannowsky"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "PhotoCraft: Agentic Reasoning with Hierarchical Self-Evolving Memory for Deep Image Search",
+        "url": "",
+        "authors": [
+          "Kailin Lyu",
+          "Zhiqiang Yuan",
+          "Jianwei He",
+          "Qiwei Yan",
+          "Xuanbo Su",
+          "Nanxing Hu",
+          "Yang Liu",
+          "Ce Hao",
+          "Shengqian Qin",
+          "Lianyu Hu",
+          "Jinchao Zhang",
+          "Jie Zhou"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Spectral-Progressive Thought Flow for Lightweight Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Yixian Shen",
+          "Zhiheng Yang",
+          "Qi Bi",
+          "Changshuo Wang",
+          "Shuai Wang",
+          "Jia-Hong Huang",
+          "George Floros",
+          "Prayag Tiwari",
+          "Anuj Pathania"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Perceive Before Reasoning: A Pre-Reasoning Perception Framework for Efficient and Reliable Proactive Mobile Agents",
+        "url": "",
+        "authors": [
+          "Zhijie Ding",
+          "Weinan Hong",
+          "Zicheng Zhu",
+          "Lei Li",
+          "Dezhi Kong",
+          "Hao Wang",
+          "Peng Zhou",
+          "Xuchu Jiang",
+          "Jiaming Xu"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "DMT-CBT: Longitudinal Therapeutic State Modeling for CBT Counseling",
+        "url": "",
+        "authors": [
+          "Chang Liu",
+          "Shuyi Zhang",
+          "Changsheng Ma",
+          "Yongfeng Tao",
+          "Minqiang Yang",
+          "Bin Hu"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Distilling Answer-Set Programming Rules from LLMs for Neurosymbolic Visual Question Answering",
+        "url": "",
+        "authors": [
+          "Thomas Eiter",
+          "Nelson Higuera Ruiz",
+          "Johannes Oetsch"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "CP-Agent: Context-Aware Multimodal Reasoning for Cellular Morphological Profiling under Chemical Perturbations",
+        "url": "",
+        "authors": [
+          "Yuxin Zhang",
+          "Yiyao Li",
+          "Ping Shu Ho",
+          "Simon See",
+          "Zhenqin Wu",
+          "Kevin Tsia"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "From Prompt to Service: An SLM-Based Agent Orchestration Gateway for AI-Driven Virtual Worlds",
+        "url": "",
+        "authors": [
+          "Louis Nisiotis",
+          "Aimilios Hadjiliasi"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "SagaQA: A Multi-hop Reasoning Benchmark for Long-form Narrative Understanding in TV Series",
+        "url": "",
+        "authors": [
+          "Galann Pennec",
+          "Zhengyuan Liu",
+          "Nicholas Asher",
+          "Philippe Muller",
+          "Nancy F. Chen"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "See, Infer, Intervene: Proactive World Modeling for Goal-Oriented Social Intelligence",
+        "url": "",
+        "authors": [
+          "Honghui Zhang",
+          "Chenmeinian Guo",
+          "Yichen Yu",
+          "Guanyu Liu",
+          "Yongming Qin",
+          "Chongguo Song",
+          "Mengyue Yang",
+          "Lei Yu",
+          "Tianyu Shi"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Beyond the Literal: Decomposing Pragmatic Intent in Multimodal Meme Understanding",
+        "url": "",
+        "authors": [
+          "Zhengyi Zhao",
+          "Shubo Zhang",
+          "Zezhong Wang",
+          "Luyao Ye",
+          "Huimin Wang",
+          "Hanqi Yan",
+          "Binyang Li",
+          "Kam-Fai Wong",
+          "Yulan He"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Does Language Shift Break Medical Vision-Language Models? Indonesian Radiology Visual Question Answering Case Study",
+        "url": "",
+        "authors": [
+          "Pieter Christy Yan Yudhistira",
+          "Dzaki Rafif Malik",
+          "Novanto Yudistira"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Entropy Is Not Enough: Unlocking Effective Reinforcement Learning for Visual Reasoning via Vision-Anchored Token Selection",
+        "url": "",
+        "authors": [
+          "Senjie Jin",
+          "Peixin Wang",
+          "Boyang Liu",
+          "Xiaoran Fan",
+          "Shuo Li",
+          "Zhiheng Xi",
+          "Jiazheng Zhang",
+          "Yuhao Zhou",
+          "Tao Gui",
+          "Qi Zhang",
+          "Xuanjing Huang"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Imaginative Perception Tokens Enhance Spatial Reasoning in Multimodal Language Models",
+        "url": "",
+        "authors": [
+          "Mahtab Bigverdi",
+          "Lindsey Li",
+          "Weikai Huang",
+          "Yiming Liu",
+          "Jaemin Cho",
+          "Jieyu Zhang",
+          "Tuhin Kundu",
+          "Chris Dangjoo Kim",
+          "Zelun Luo",
+          "Linda Shapiro",
+          "Ranjay Krishna"
+        ],
+        "date": "2026-06-03"
+      },
+      {
+        "title": "Exploring Adversarial Robustness and Safety Alignment in Multilingual Multi-Modal Large Language Models",
+        "url": "",
+        "authors": [
+          "Hashmat Shadab Malik",
+          "Muzammal Naseer",
+          "Salman Khan"
+        ],
+        "date": "2026-06-03"
+      }
+    ]
+  }
+]
