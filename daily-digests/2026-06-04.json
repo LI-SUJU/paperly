@@ -1,0 +1,308 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-04",
+    "paperCount": 10,
+    "markdown": "# Interpretability Across Scales: From Causal Attribution to Hybrid Architectures in AI Systems\n\nToday's research landscape reveals a growing convergence between interpretability and practical deployment, with papers spanning from fine-grained data attribution in large language models to physics-encoded architectures for control systems. The field is moving beyond post-hoc explanations toward inherently interpretable designs, while simultaneously developing rigorous theoretical frameworks for measuring and validating model transparency.\n\n## Causality, Attribution, and Disentanglement in Model Understanding\n\n[1] **\"Using Text-Based Causal Inference to Disentangle Factors Influencing Online Review Ratings\"** addresses the challenge of isolating the causal impact of individual product aspects on overall review ratings when aspects are naturally correlated. The authors extend CausalBERT, adapting it for text-based causal inference to estimate the average treatment effect of mentioning specific aspects (e.g., \"service\" vs. \"food\") on a review's star rating. Key results demonstrate that this approach successfully disentangles correlated factors, revealing that certain aspects have notably different causal impacts than their correlational associations suggest. This matters because it provides a principled framework for moving beyond aspect-based sentiment analysis into causal understanding of preference formation.\n\n[8] **\"Data Attribution in Large Language Models via Bidirectional Gradient Optimization\"** tackles the fundamental open problem of identifying which training examples most influence a given LLM output. The method, TraclInBERT, perturbs the base model using bidirectional gradient optimization—applying both gradient ascent and descent—to invert the training objective and estimate training data influence. The approach achieves state-of-the-art attribution accuracy on autoregressive LLMs while requiring only a single forward-backward pass per query. This contribution is critical for model governance, data provenance, and accountability in deployed LLMs, offering a practical tool for understanding training data influence without full retraining.\n\n[9] **\"Measuring Model Robustness via Fisher Information: Spectral Bounds, Theoretical Guarantees, and Practical Algorithms\"** proposes an attack-agnostic robustness metric grounded in the spectral norm of the Fisher Information Matrix (FIM), which quantifies worst-case output sensitivity to input perturbations. The authors theoretically establish that the FIM equals the variance of the input Jacobian and derive closed-form spectral bounds for common architectures including VGG, ResNet, DenseNet, and Transformers. Practically, they provide efficient algorithms for computing these bounds, demonstrating strong correlation with empirical adversarial robustness across multiple benchmarks. This work matters because it offers a theoretically sound, interpretable robustness metric that does not depend on specific attack methods.\n\n## Interpretable Architectures for Specialized AI Systems\n\n[4] **\"Sparse Mixture-of-Experts Reward Models Learn Interpretable and Specialized Experts for Personalized Preference Modeling\"** addresses the limitation of universal reward functions in RLHF by proposing a sparse mixture-of-experts (MoE) reward model where each expert specializes in distinct preference dimensions (e.g., helpfulness, safety, style). The key technical innovation is that sparse routing ensures each expert activates only for relevant inputs, producing naturally disentangled and interpretable preference components without additional annotation costs. Results show that the learned experts capture coherent, semantically meaningful preference patterns that enable effective personalization across diverse user groups. This is significant for aligning LLMs with heterogeneous human values while maintaining interpretability of the reward signal.\n\n[5] **\"PE-MHL: Physics-Encoded Modular Hybrid Layers for Scalable Learning of Complex Systems\"** proposes a framework where a baseline physics-based model is incrementally refined through modular hybrid layers, with each new component adding complexity while preserving prior knowledge. The approach addresses key challenges in hybrid modeling—scalability, noise robustness, and complexity control—by encoding physical priors directly into the architecture's modular structure. Key results demonstrate superior accuracy and interpretability compared to both pure physics-based and pure data-driven approaches, with graceful degradation under noisy conditions. This matters for safety-critical control applications where model transparency and physical consistency are paramount.\n\n[2] **\"Stepwise Reasoning Enhancement for LLMs via External Subgraph Generation\"** addresses LLM limitations in logical consistency and interpretability during complex multi-step reasoning by integrating external knowledge graphs. The SGR framework first extracts key entities, relations, and constraints from the question to construct a structured schema, then retrieves compact subgraphs from a knowledge graph to guide stepwise reasoning. Results show significant improvements on multi-hop reasoning benchmarks compared to standard prompting and retrieval-augmented generation baselines. The work's importance lies in demonstrating how structured knowledge integration can enhance both reasoning accuracy and the interpretability of the reasoning chain.\n\n## Practical Interpretability for Decision Support and Control\n\n[6] **\"Measuring What Matters: Synthetic Benchmarks for Concept Bottleneck Models\"** addresses the critical lack of suitable evaluation datasets for concept bottleneck models (CBMs), which predict outcomes from interpretable high-level concepts. The authors develop synthetic benchmarks specifically designed for the two main CBM use cases: decision support (assisting human decision-making) and decision delegation (autonomous prediction). These benchmarks enable controlled experiments to isolate factors driving CBM performance and failure modes, revealing that concept quality and concept-outcome relationships significantly impact performance. This contribution is essential for rigorous empirical research on inherently interpretable models and for determining which real-world problems are suitable for CBM approaches.\n\n[3] **\"Smart Transportation Without Neurons — Fair Metro Network Expansion with Tabular Reinforcement Learning\"** tackles the Metro Network Expansion Problem using tabular reinforcement learning, arguing that many real-world planning problems are small enough to avoid deep RL complexity. The approach uses interpretable tabular methods with explicit state-action representations, enabling transparent decision-making about station placement and network topology. Key results show competitive performance with deep RL approaches while requiring significantly less computational resources and providing full interpretability of the decision process. This matters because it demonstrates that for appropriately sized problems, simpler, interpretable methods can match or exceed deep learning performance.\n\n[7] **\"VentAgent: When LLMs Learn to Breathe — Multi-Objective Arbitration for ARDS Ventilation\"** addresses the challenge of balancing competing physiological goals in mechanical ventilation for ARDS patients, where imitation learning from EHR data suffers from confounding bias. The framework formulates ventilation as a multi-objective optimization problem arbitrated by an LLM-based agent that can explain its reasoning for each ventilator setting recommendation. Results demonstrate superior generalization to out-of-distribution patient states compared to imitation learning baselines, with the added benefit of interpretable reasoning chains for each clinical decision. This is significant for high-stakes medical AI where both performance and interpretability are critical for clinical adoption.\n\n[10] **\"Towards Efficient and Evidence-grounded Mobility Prediction with LLM-Driven Agent\"** proposes a training-free LLM-driven agent framework that formulates next-location prediction as adaptive evidence-controlled decision-making. Unlike static prompt approaches, this method dynamically seeks additional evidence when mobility signals are weak or conflicting, generating interpretable reasoning chains for each prediction. Results show competitive accuracy with supervised sequence models while providing full decision-level transparency and zero-shot generalization to new cities. The work matters for urban planning and policy analysis applications where understanding *why* a prediction is made is as important as the prediction itself.\n\n## Key Takeaways\n- Causal inference methods (CausalBERT, bidirectional gradient optimization) are enabling fine-grained attribution of model outputs to specific inputs or features, moving beyond correlation-based interpretability.\n- Sparse mixture-of-experts architectures offer a natural path to disentangled, interpretable representations in reward modeling and preference learning without sacrificing performance.\n- Hybrid physics-ML architectures and modular design principles are proving effective for achieving both interpretability and scalability in safety-critical control and medical applications.\n- Theoretical frameworks based on Fisher Information provide attack-agnostic, architecture-aware metrics for model robustness that are both interpretable and empirically validated.\n- For appropriately sized problems, tabular and simpler interpretable methods can match deep learning performance while offering full transparency, challenging the assumption that complexity is always necessary.\n- LLM-driven agents with adaptive evidence gathering demonstrate that interpretability and strong performance are not mutually exclusive in domains requiring sequential reasoning.\n- Synthetic benchmarks and controlled evaluation frameworks are essential for rigorous empirical research on interpretable models, enabling systematic isolation of performance drivers and failure modes.",
+    "papers": [
+      {
+        "title": "Using Text-Based Causal Inference to Disentangle Factors Influencing Online Review Ratings",
+        "url": "",
+        "authors": [
+          "Linsen Li",
+          "Aron Culotta",
+          "Nicholas Mattei"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Stepwise Reasoning Enhancement for LLMs via External Subgraph Generation",
+        "url": "",
+        "authors": [
+          "Xin Zhang",
+          "Yang Cao",
+          "Baoxing Wu",
+          "Kai Song",
+          "Siying Li"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Smart Transportation Without Neurons -- Fair Metro Network Expansion with Tabular Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Dimitris Michailidis",
+          "Sennay Ghebreab",
+          "Fernando P. Santos"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Sparse Mixture-of-Experts Reward Models Learn Interpretable and Specialized Experts for Personalized Preference Modeling",
+        "url": "",
+        "authors": [
+          "Yifan Wang",
+          "Jinyi Mu",
+          "Mayank Jobanputra",
+          "Yu Wang",
+          "Ji-Ung Lee",
+          "Soyoung Oh",
+          "Isabel Valera",
+          "Vera Demberg"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "PE-MHL: Physics-Encoded Modular Hybrid Layers for Scalable Learning of Complex Systems",
+        "url": "",
+        "authors": [
+          "Ismail Hassaballa",
+          "Mircea Lazar"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Measuring What Matters: Synthetic Benchmarks for Concept Bottleneck Models",
+        "url": "",
+        "authors": [
+          "Julian Skirzynski",
+          "Harry Cheon",
+          "Shreyas Kadekodi",
+          "Meredith Stewart",
+          "Berk Ustun"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "VentAgent: When LLMs Learn to Breathe -- Multi-Objective Arbitration for ARDS Ventilation",
+        "url": "",
+        "authors": [
+          "Teqi Hao",
+          "Yuxuan Fu",
+          "Xiaoyu Tan",
+          "Shaojie Shi",
+          "Bohao Lv",
+          "Yinghui Xu",
+          "Xihe Qiu"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Data Attribution in Large Language Models via Bidirectional Gradient Optimization",
+        "url": "",
+        "authors": [
+          "Frédéric Berdoz",
+          "Luca A. Lanzendörfer",
+          "Kaan Bayraktar",
+          "Roger Wattenhofer"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Measuring Model Robustness via Fisher Information: Spectral Bounds, Theoretical Guarantees, and Practical Algorithms",
+        "url": "",
+        "authors": [
+          "Chong Zhang",
+          "Xiang Li",
+          "Jia Wang",
+          "Qiufeng Wang",
+          "Xiaobo Jin"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Towards Efficient and Evidence-grounded Mobility Prediction with LLM-Driven Agent",
+        "url": "",
+        "authors": [
+          "Linyao Chen",
+          "Qinlao Zhao",
+          "Zechen Li",
+          "Mingming Li",
+          "Likun Ni",
+          "Jinyu Chen",
+          "Yuhao Yao",
+          "Xuan Song",
+          "Noboru Koshizuka",
+          "Hiroki Kobayashi"
+        ],
+        "date": "2026-06-04"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-04",
+    "paperCount": 2,
+    "markdown": "# Explainability in Focus: From Clinical Diagnostics to Verifiable Safe AI\n\nToday's research landscape reveals a dual imperative: the need for machine learning models that not only perform accurately but also provide transparent, interpretable reasoning for their decisions. Across clinical diagnostics and autonomous decision-making, explainability is evolving from a desirable feature to a fundamental requirement for trust and safety certification.\n\n## Explainable AI for Clinical Alzheimer's Detection\n\n**Paper [1] \"Early Detection of Alzheimer's Disease Using Explainable Machine Learning on Clinical Biomarkers\"** addresses the critical need for interpretable, non-invasive screening tools for Alzheimer's disease (AD) across three cognitive states: normal cognition (NC), mild cognitive impairment (MCI), and AD. The authors develop a multi-class XGBoost classifier trained on just eight routine clinical features from the ADNI dataset (MMSE, CDR Global, CDR-SB, MoCA, FAQ, age, sex, education), with hyperparameter optimization via Optuna and class imbalance handled through SMOTE. While the abstract is truncated, this work matters because it demonstrates that high-accuracy, multi-class AD detection is achievable with a small, clinically accessible feature set—and critically, XGBoost offers inherent feature importance explainability, enabling clinicians to understand *why* a classification was made rather than relying on a black-box prediction.\n\n## Explainable Safety Guarantees in Reinforcement Learning\n\n**Paper [2] \"Explainably Safe Reinforcement Learning\"** tackles the fundamental tension between formal safety guarantees and human interpretability in learned decision-making systems. The authors identify that existing shielding techniques, while providing rigorous safety guarantees through formal methods, produce opaque decision boundaries that are difficult for humans to understand. Their core technical approach proposes representing shields—the safety-enforcing components—using decision trees, which are inherently interpretable and have become standard for representing controllers and policies. This contribution is significant because it bridges the gap between provable safety and explainability: by rendering the shield's reasoning process transparent through decision tree representations, the system can both guarantee safe operation and allow human operators to inspect, validate, and potentially improve the safety logic. This work directly addresses the \"why should I trust this safe system?\" problem, which is crucial for deploying RL in high-stakes domains like autonomous driving, healthcare robotics, and industrial automation.\n\n## Key Takeaways\n- Explainability is not a single technique but a spectrum—from feature importance in tree-based models (XGBoost) to structural representations in formal methods (decision tree shields)—each suited to different problem domains and stakeholder needs.\n- Clinical AI applications increasingly demand models that combine competitive accuracy with interpretable feature attribution, enabling domain experts (clinicians) to validate and trust model outputs before acting on them.\n- In safety-critical reinforcement learning, formal guarantees alone are insufficient for trust; the reasoning behind safety decisions must be human-readable, pointing to a convergence of formal verification and interpretable machine learning.\n- Decision trees emerge as a unifying representational language for explainability, offering both strong predictive performance in clinical settings (via gradient boosting) and transparent logic for safety policies in autonomous systems.\n- The Alzheimer's detection work highlights that explainable AI can succeed with remarkably small feature sets (8 clinical variables), suggesting that interpretability does not require sacrificing model simplicity or clinical practicality.\n- Safe RL research is moving beyond \"black-box shield\" approaches toward architecting interpretability directly into safety mechanisms, representing a paradigm shift in how we design trustworthy autonomous systems.\n- Both papers underscore that explainability is not an afterthought but a design constraint that, when addressed proactively, can enhance rather than degrade model performance and safety properties.",
+    "papers": [
+      {
+        "title": "Early Detection of Alzheimer's Disease Using Explainable Machine Learning on Clinical Biomarkers: A Multi-Class Classification Study Using the Alzheimer's Disease Neuroimaging Initiative (ADNI) Dataset",
+        "url": "",
+        "authors": [
+          "Afshan Hashmi"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Explainably Safe Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Sabine Rieder",
+          "Stefan Pranger",
+          "Debraj Chakraborty",
+          "Jan Křetínský",
+          "Bettina Könighofer"
+        ],
+        "date": "2026-06-04"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-04",
+    "paperCount": 12,
+    "markdown": "# Multimodal Reasoning and Representation: From Clinical Diagnostics to Video Understanding\n\nToday's research landscape spans the full spectrum of multimodal AI—from foundational representation analysis and disentanglement to applied benchmarks for mathematical reasoning, enterprise document understanding, and video comprehension. A unifying theme is the move beyond simple alignment toward structured reasoning, geometric interpretability, and systematic evaluation of failure modes in vision-language models.\n\n## Advancing Multimodal Representation Learning and Analysis\n\nA critical challenge in multimodal learning is understanding how vision-language models actually represent information and whether these representations capture the full richness of multi-sensory data. [4] proposes **KODA (Kernel Optimization for Discrepancy Analysis)** , a kernel-based framework that identifies which subsets of samples are well-clustered under one representation but poorly under another, enabling principled comparison of CLIP and SigLIP embeddings beyond simple downstream performance metrics. By using a contrastive embedding clustering approach, KODA reveals structural differences in how these foundation models organize multimodal data, providing researchers with a diagnostic tool for understanding representation quality. [12] tackles the scalability bottleneck in disentangled representation learning with **RePercENT**, which extends the popular Contrastive Mixture of Posteriors (CMP) framework from two modalities to an arbitrary number. The key contribution is an efficient sampling procedure based on Poisson random measures that avoids the quadratic computational cost of pairwise contrastive losses, enabling the separation of shared and modality-specific factors across text, image, and audio simultaneously—a necessary capability for real-world multimodal applications with more than two input types.\n\n## Structured Reasoning in Multimodal Systems\n\nSeveral papers push multimodal models toward genuine reasoning rather than pattern matching, with a particular focus on spatial, mathematical, and planning capabilities. [11] introduces the **Spatial Language Model (SLM)** , which treats continuous location information as a first-class modality through a novel geometric encoder and spatial operator module, enabling LLMs to perform genuine geometric computations rather than relying on symbolic spatial language patterns. This is a fundamental architectural contribution that bridges the gap between discrete token-based LLMs and continuous spatial representations. [2] presents **VAMPS (Visual-Assisted Mathematical Problem Solving)** , a bilingual benchmark of 1,168 multimodal cases designed to test whether multimodal LLMs can externalize mathematical problems to visual tools and then reason over the resulting graphs. The benchmark targets a critical gap: while models perform well on purely textual math, their performance degrades when they must use visualization tools and interpret their output, mimicking real engineering workflows. [10] introduces the **Agent Planning Benchmark (APB)** , a comprehensive diagnostic framework with 4,209 multimodal cases across 22 domains that isolates planning failures from execution failures in LLM agents. By covering holistic planning, feedback-conditioned step-wise planning, and robustness to broken or extraneous tools, APB provides the first systematic way to diagnose whether agent failures stem from planning deficits or execution errors.\n\n## Clinical and Enterprise Applications of Multimodal AI\n\nThe practical deployment of multimodal models in high-stakes domains demands both accuracy and interpretability, which [1] and [3] address from different angles. [1] develops an XGBoost classifier for three-class Alzheimer's disease detection (NC, MCI, AD) using only eight clinical features from the ADNI dataset, achieving strong performance with SMOTE-based handling of class imbalance and Optuna hyperparameter optimization. While not a traditional vision-language system, this work demonstrates how explainable machine learning on multimodal clinical biomarkers can provide interpretable, deployable screening tools for neurological conditions affecting 55 million people worldwide. [3] presents **MM-BizRAG**, a multimodal retrieval-augmented generation system designed specifically for enterprise document Q&A. Unlike recent trends toward minimal parsing with page-level image embeddings, MM-BizRAG proactively extracts and represents document structure through a document structure-aware splitting strategy, explicitly handling tables, charts, and complex layouts that typical vision-language models fail to capture. This approach directly addresses the gap between efficient MM-RAG systems and the practical requirements of enterprise applications with richly structured documents.\n\n## Video Understanding: Complex Instructions and Positional Biases\n\nAs multimodal LLMs are increasingly applied to video tasks, two papers from the same group systematically evaluate emerging failure modes. [5] introduces **VCIFBench**, a benchmark for evaluating complex instruction following in video understanding, with 306 constraint-rich instructions covering content, format, style, and structure requirements. By constructing instructions from both adapted benchmarks and directly video-grounded prompts, VCIFBench reveals whether models can satisfy explicit output constraints—a capability absent from existing video benchmarks that use simple prompts. [7] investigates **positional bias in multi-video summarization**, constructing a benchmark from ActivityNet and News videos and evaluating nine open-source and proprietary MLLMs with three complementary metrics. The finding that the quality of a per-video summary changes depending on its input slot position, even with identical content, reveals a fundamental reliability issue for multi-video applications and provides a systematic framework for measuring and mitigating such biases.\n\n## Architectural Innovations and Theoretical Foundations\n\nSeveral papers advance the architectural and theoretical foundations of multimodal systems. [9] explores a **query-based cross-modal projector** for Mamba-based multimodal LLMs, using cross-attention to compress visual tokens based on input while eliminating the need for manually designed 2D scan orders of image features. This addresses both the computational inefficiency of Transformer-based multimodal LLMs and the architectural awkwardness of adapting Mamba's 1D scanning to 2D visual data. [6] provides a **geometric view of counterfactual behavior**, analyzing how boundary proximity and local support interact in the representation spaces of pretrained encoders. The work reveals that models with similar predictive performance can differ substantially in whether semantically meaningful counterfactual changes are achievable, with direct implications for interpretability and auditing of multimodal systems. [8] presents **Folded Transport MCMC (FolT-MCMC)** , a theoretical contribution addressing the redundant multimodality that plagues posterior inference in symmetric Bayesian models, including those used in multimodal mixture modeling. By performing inference directly on the quotient posterior through symmetrized normalizing flows, the method provides certifiable convergence guarantees for models where label permutations create degenerate modes.\n\n## Key Takeaways\n- **Systematic evaluation is outpacing model development**: Benchmarks like VAMPS, APB, and VCIFBench reveal that current multimodal LLMs fail on structured reasoning tasks involving tool use, planning diagnostics, and complex instruction following—capabilities that existing simple-prompt evaluations miss entirely.\n- **Representation analysis becomes a first-class research area**: KODA and RePercENT represent a shift from building better multimodal models to understanding and diagnosing the representations they learn, with direct implications for model selection and debugging.\n- **Geometric and structural thinking is replacing brute-force alignment**: Whether through SLM's explicit spatial reasoning, FolT-MCMC's quotient posterior inference, or MM-BizRAG's document structure awareness, the field is moving toward architectures that explicitly model the structure of multimodal data rather than relying on implicit learning.\n- **Positional biases in video models demand attention**: The discovery that multi-video summarization quality depends on input slot position [7] reveals a systemic reliability issue that must be addressed before video MLLMs can be deployed in real-world applications.\n- **Clinical and enterprise deployment requires both accuracy and interpretability**: While foundation models push performance boundaries, practical systems like the ADNI XGBoost classifier and MM-BizRAG demonstrate that structured feature engineering and explicit document parsing remain essential for high-stakes applications.\n- **Multimodal reasoning extends beyond vision-language pairs**: RePercENT's scaling to arbitrary numbers of modalities and APB's coverage of 22 domains signal that the field is moving toward truly general-purpose multimodal systems that must handle diverse input types and task requirements.\n- **Mamba-based architectures offer a promising alternative to Transformers**: The query-based cross-modal projector for Mamba [9] shows that state-space models can match or exceed Transformer efficiency for multimodal tasks while avoiding quadratic complexity, though the architectural challenge of handling 2D visual data remains.",
+    "papers": [
+      {
+        "title": "Early Detection of Alzheimer's Disease Using Explainable Machine Learning on Clinical Biomarkers: A Multi-Class Classification Study Using the Alzheimer's Disease Neuroimaging Initiative (ADNI) Dataset",
+        "url": "",
+        "authors": [
+          "Afshan Hashmi"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "VAMPS: Visual-Assisted Mathematical Problem Solving Benchmark",
+        "url": "",
+        "authors": [
+          "Amirhossein Dabiriaghdam",
+          "Shayan Vassef",
+          "Mohammadreza Bakhtiari",
+          "Yasamin Medghalchi",
+          "Ilker Hacihaliloglu",
+          "Mesrob Ohannessian",
+          "Lele Wang",
+          "Giuseppe Carenini"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "MM-BizRAG: Rethinking Multimodal Retrieval-Augmented Generation for General Purpose Enterprise Q&A",
+        "url": "",
+        "authors": [
+          "Hanoz Bhathena",
+          "Parin Rajesh Jhaveri",
+          "Rohan Mittal",
+          "Prateek Singh",
+          "Aymen Kallala",
+          "Rachneet Kaur",
+          "Yiqiao Jin",
+          "Zhen Zeng",
+          "Adwait Ratnaparkhi",
+          "Denis Kochedykov"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "KODA: Contrastive Representation Comparison and Alignment for Vision-Language Foundation Models",
+        "url": "",
+        "authors": [
+          "Youqi Wu",
+          "Mohammad Jalali",
+          "Farzan Farnia"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "VCIFBench: Evaluating Complex Instruction Following for Video Understanding",
+        "url": "",
+        "authors": [
+          "Huangchen Xu",
+          "Yuan Wu",
+          "Yi Chang"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "A Geometric View of Counterfactual Behavior: Interaction of Boundary Proximity and Local Support",
+        "url": "",
+        "authors": [
+          "Ioanna Gemou",
+          "Matteo Gamba",
+          "Randall Balestriero",
+          "Ritambhara Singh"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "A Systematic Evaluation of Positional Bias in Multi-Video Summarization with MLLMs",
+        "url": "",
+        "authors": [
+          "Huangchen Xu",
+          "Yuan Wu",
+          "Yi Chang"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Folded Transport MCMC: Certifiable Quotient Posterior Computation for Symmetric Bayesian Models",
+        "url": "",
+        "authors": [
+          "Jun Hu"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Query-based Cross-Modal Projector Bolstering Mamba Multimodal LLM",
+        "url": "",
+        "authors": [
+          "SooHwan Eom",
+          "Jay Shim",
+          "Gwanhyeong Koo",
+          "Haebin Na",
+          "Mark A. Hasegawa-Johnson",
+          "Sungwoong Kim",
+          "Chang D. Yoo"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "Agent Planning Benchmark: A Diagnostic Framework for Planning Capabilities in LLM Agents",
+        "url": "",
+        "authors": [
+          "Haoyu Sun",
+          "Wenxuan Wang",
+          "Mingyang Song",
+          "Jujie He",
+          "Weinan Zhang",
+          "Yang Liu",
+          "Yang Yang",
+          "Yu Cheng"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "From Symbolic to Geometric: Enabling Spatial Reasoning in Large Language Models",
+        "url": "",
+        "authors": [
+          "Chen Chu",
+          "Bita Azarijoo",
+          "Li Xiong",
+          "Khurram Shafique",
+          "Cyrus Shahabi"
+        ],
+        "date": "2026-06-04"
+      },
+      {
+        "title": "RePercENT: Scaling Disentangled Representation Learning Beyond Two Modalities",
+        "url": "",
+        "authors": [
+          "Vasiliki Rizou",
+          "Pascal Frossard",
+          "Dorina Thanou"
+        ],
+        "date": "2026-06-04"
+      }
+    ]
+  }
+]
