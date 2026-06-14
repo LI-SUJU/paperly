@@ -1,0 +1,427 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-14",
+    "paperCount": 8,
+    "markdown": "# Patterns, Probes, and Perils: A Technical Digest on Interpretability Research\n\nToday's interpretability landscape is undergoing a crucial self-examination, moving beyond the mere identification of patterns toward rigorous causal validation of what those patterns actually mean. The research community is simultaneously grappling with fundamental questions about whether observable structures in latent spaces constitute genuine explanations, while developing practical tools for detecting model failures and understanding information flow through novel architectural innovations.\n\n## The Causal Validity of Observed Patterns\n\nThe interpretability field has long operated under the assumption that observable patterns in model internals—such as attention maps, latent state trajectories, or activation patterns—provide meaningful explanations of model behavior. Two papers challenge this foundational assumption from different angles, forcing the community to reconsider what constitutes a genuine mechanistic explanation.\n\n[1] Aswal et al. deliver a decisive methodological critique in \"Observable Patterns Are Not Explanations,\" evaluating latent reasoning models (LRMs) that replace explicit chain-of-thought with continuous latent states. The authors subject two prominent LRMs (Coconut and CODI) to rigorous causal testing against control models that lack the proposed recurrence or curriculum mechanisms, finding that supposedly diagnostic patterns—BFS-like frontiers and decodable arithmetic computations—appear equally in controls and do not causally affect behavior. Through causal interventions, they demonstrate that latent-thought utilization is not binary but graded, scaling continuously with a thought's measured causal effect on model output. This work fundamentally reframes what it means to \"explain\" latent reasoning, moving the burden of proof from pattern discovery to causal verification.\n\n[6] Seneque et al. push this critique to its philosophical extreme in \"Order Is Not Control,\" arguing that the interpretability community has systematically conflated the detection of order-inducing objects (attention patterns, feature directions, or steering vectors) with actual control over model behavior. The authors propose that genuine control requires a \"receiver-gated response law\"—a formal operator mapping material state, action/drive, bath conditions, and receiver state to response displacement, where interventions can be admitted, saturated, sign-changing, leaky, or overdriven depending on local conditions. Applied across biological, LLM, adapter, and stochastic-operator panels, this framework suggests that interpretability findings may be describing epiphenomena rather than causal mechanisms, and that the field needs fundamentally different validation criteria.\n\n[7] Javadov's \"When Does Routing Become Interpretable?\" examines a specific case study in pattern validity: Block Attention Residuals (Block AttnRes), which replace fixed additive residuals with learned softmax routing over earlier depth-source representations. By probing two 0.6B parameter checkpoints—a vanilla Qwen3 inference-wrapped through a deterministic recency-bias schedule and a properly trained Block AttnRes model—the author uses identical routing-ablation interventions to test whether directly observable routing tensors actually enable mechanistic interpretation. The findings reveal that exposure alone is insufficient; the interpretability of routing depends critically on whether the learned routing patterns are causally necessary for model behavior or merely correlate with it. This provides a concrete experimental framework for testing whether any observable architectural feature truly supports mechanistic explanation.\n\n## Fresh Perspectives on Activation Space Organization\n\nWhile some researchers question the validity of existing interpretability methods, others propose fundamentally new frameworks for understanding how information is organized within model representations. These approaches aim to provide more reliable, training-free tools for probing model internals.\n\n[2] Nalagatla's \"Bag of Dims\" presents a provocative and elegant alternative to complex interpretability tooling: the standard basis of transformer hidden states already constitutes a training-free, architecture-general feature basis. Through four progressive experiments across Qwen 3.5-4B, Gemma 3-4B, and Mistral 7B, the paper demonstrates that individual dimensions encode semantic content via their signs (functioning as independent binary registers) with confidence encoded via magnitudes. Remarkably, replacing all magnitudes with unity still achieves 72-93% top-5 next-token accuracy through the LM head, and pure Hamming scoring without any learned weighting preserves substantial predictive power. This Bag of Dims framework suggests that the standard basis may be far more interpretable than previously assumed, potentially eliminating the need for complex decomposition methods like SAE training for basic mechanistic analysis.\n\n[5] Onyshchuk et al. apply optimal transport (OT) theory to hallucination detection in neural machine translation (NMT) and abstractive summarization, extending analysis across all six decoder layers of a Fairseq DE-EN model. Their key insight is that Wasserstein distance metrics—both the distance from cross-attention distributions to uniform (Wass-to-Unif) and to the data distribution (Wass-to-Data)—serve as complementary detectors specialized for different hallucination types. The layer-resolved analysis reveals that detection is concentrated in layers L1-L4, with L5 being anti-predictive for subtler hallucination types, and that hallucinated translations lack the exploratory attention phase present in faithful translations. This provides a theoretically grounded, unsupervised detection method while simultaneously offering mechanistic insight into where and how hallucination arises in the decoding process.\n\n## Practical Detection and Evaluation with Interpretability in Mind\n\nThe push for interpretability is not merely academic—it has direct implications for building trustworthy AI systems. Several papers address the practical challenge of making model behavior more transparent and detectable, particularly in high-stakes scenarios where hallucinations or anomalous behavior must be identified.\n\n[4] Yang et al. tackle the extremely challenging \"zero-source\" hallucination detection problem, where no model internals or external references are available and detection must rely solely on the textual query-answer pair. Their proposed Human-like Criteria Probing for Hallucination Detection (HCPD) emulates the multi-faceted reasoning of human evaluators by probing the response against multiple criteria—factual consistency, logical coherence, and contextual relevance—using only the text itself. The core Human-like Criteria Probing (HCP) mechanism systematically extracts these criteria from the query-answer pair through carefully designed prompting, enabling detection without access to model logits, hidden states, or retrieval corpora. This approach brings interpretability-style reasoning to black-box scenarios where traditional mechanistic methods are inapplicable.\n\n[3] Han et al. introduce DailyReport, an open-ended benchmark for evaluating search agents on daily search tasks that explicitly prioritizes interpretability in evaluation design. Unlike prior benchmarks focused on specialized tasks unlikely in real-world scenarios, DailyReport contains 150 open-ended tasks with 3,546 atomic assessment criteria, providing granular, interpretable evaluation instead of coarse task-level rubrics. The benchmark's design enables researchers to understand exactly where and why agents succeed or fail, decomposing performance into specific reasoning and retrieval capabilities. This addresses a critical gap: without interpretable evaluation frameworks, improvements in search agent performance remain opaque and difficult to diagnose.\n\n[8] Smits presents CRAFTIIF (Cross-Resolution Analytic Four-Type Interpretable Isolation Forest) for multivariate time series anomaly detection, targeting four structurally distinct anomaly types—point (isolated spikes), distributional (level shifts), temporal (rhythm changes), and collective (inter-sensor correlation breakdowns)—each requiring different feature representations. The framework generates 500 random feature subspaces across multiple time resolutions, using isolation-based scoring to detect anomalies in each subspace while maintaining full interpretability through feature attribution. By explicitly modeling all four anomaly types without dataset-specific tuning, CRAFTIIF provides practitioners with both detection performance and clear explanations of which sensor, time scale, and anomaly type triggered each alert.\n\n## Key Takeaways\n\n- **Pattern detection is not causal explanation**: Multiple papers [1, 6, 7] demonstrate that observable patterns in model internals—including attention maps, latent state trajectories, and routing tensors—may be epiphenomenal rather than causally necessary for model behavior, demanding rigorous causal intervention studies before claiming mechanistic understanding.\n\n- **The standard basis may be surprisingly interpretable**: The Bag of Dims framework [2] shows that individual hidden state dimensions function as independent binary registers with semantic meaning encoded in sign, achieving strong predictive performance even with magnitude information removed, suggesting a simpler path to mechanistic interpretability than currently pursued.\n\n- **Hallucination detection benefits from layer-resolved and criteria-based approaches**: Both optimal transport analysis [5] and human-like criteria probing [4] demonstrate that effective hallucination detection requires understanding where in the model hallucinations arise (concentrated in specific layers) and evaluating against multiple complementary criteria rather than single metrics.\n\n- **Evaluation interpretability is as important as model interpretability**: The DailyReport benchmark [3] explicitly designs evaluation rubrics to be interpretable and decomposable, enabling researchers to understand specific failure modes rather than receiving opaque aggregate scores—a design principle applicable beyond search agents.\n\n- **Control requires more than correlation**: The \"order is not control\" thesis [6] introduces formal mathematical conditions (receiver-gated response laws) that distinguish genuine control mechanisms from mere correlational structure, providing a rigorous framework for validating interpretability claims across biological and artificial systems.\n\n- **Unsupervised anomaly detection can be both comprehensive and interpretable**: CRAFTIIF [8] demonstrates that targeting all four anomaly types simultaneously with explicit feature subspaces enables both high detection performance and clear attribution explanations, challenging the trade-off between coverage and interpretability.\n\n- **The field is maturing from discovery to validation**: The collective emphasis on causal testing [1, 7], formal definitions of control [6], and principled evaluation design [3] signals a disciplinary shift from simply finding interesting patterns to rigorously validating what those patterns actually mean for model behavior and safety.",
+    "papers": [
+      {
+        "title": "Observable Patterns Are Not Explanations: A Causal-Geometric Analysis of Latent Reasoning Models",
+        "url": "",
+        "authors": [
+          "Darpan Aswal",
+          "Thomas Palmeira Ferraz",
+          "Yongxin Zhou",
+          "Maxime Peyrard"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Bag of Dims: Training-Free Mechanistic Interpretability via Dimension-Level Sign Patterns",
+        "url": "",
+        "authors": [
+          "Varun Reddy Nalagatla"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "DailyReport: An Open-ended Benchmark for Evaluating Search Agents on Daily Search Tasks",
+        "url": "",
+        "authors": [
+          "Jingxuan Han",
+          "Wei Liu",
+          "Mingyang Zhu",
+          "Youpeng Wang",
+          "Ziwen Wang",
+          "Lin Qiu",
+          "Xuezhi Cao",
+          "Xunliang Cai",
+          "Zheren Fu",
+          "Licheng Zhang",
+          "Zhendong Mao"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Zero-source LLM Hallucination Detection with Human-like Criteria Probing",
+        "url": "",
+        "authors": [
+          "Jiahao Yang",
+          "Shuhai Zhang",
+          "Hailong Kang",
+          "Feng Liu",
+          "Qi Chen",
+          "Mingkui Tan"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Layer-Resolved Optimal Transport for Hallucination Detection in NMT and Abstractive Summarization",
+        "url": "",
+        "authors": [
+          "Mariia Onyshchuk",
+          "Maksym-Vasyl Tarnavskyi",
+          "Marta Sumyk"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Order Is Not Control",
+        "url": "",
+        "authors": [
+          "Gareth Seneque",
+          "Lap-Hang Ho",
+          "Nafise Erfanian Saeedi",
+          "Jeffrey Molendijk",
+          "Tim Elson"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "When Does Routing Become Interpretable? Causal Probes on Block Attention Residuals",
+        "url": "",
+        "authors": [
+          "Aydin Javadov"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "CRAFTIIF: Cross-Resolution Analytic Four-Type Interpretable Isolation Forest for Multivariate Time Series Anomaly Detection",
+        "url": "",
+        "authors": [
+          "William Smits"
+        ],
+        "date": "2026-06-14"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-14",
+    "paperCount": 1,
+    "markdown": "# The Explainability Imperative: Physics-Guided and Interpretable Approaches in AI/ML Research\n\nToday's research landscape reveals a growing tension between model performance and interpretability, with researchers increasingly developing hybrid approaches that embed physical constraints or structural priors directly into learning architectures. The community is moving beyond post-hoc explanations toward inherently interpretable models that can maintain high accuracy while providing mechanistic understanding of their predictions.\n\n## Physics-Guided Learning: Embedding Domain Knowledge for Interpretability\n\n[1] This paper addresses the critical need for interpretable wave parameter estimation from coastal video monitoring systems. Traditional physics-based methods are accurate but expensive, while pure deep learning approaches lack physical interpretability and oceanographic validation. The authors propose a Physics-Guided Deep Spatiotemporal Learning Framework that integrates wave propagation physics directly into the neural architecture, constraining the model to learn physically plausible relationships between video frames and wave parameters. By embedding governing equations into the loss function and architectural design, this approach achieves comparable accuracy to black-box methods while providing physically meaningful latent representations. This matters for climate resilience applications because it bridges the gap between operational oceanography and deep learning, enabling deployment of low-cost video monitoring systems that domain experts can trust and validate against known physical principles.\n\n## Interpretability as a Design Principle\n\nThe papers surveyed demonstrate a clear shift from treating explainability as an afterthought to incorporating it as a fundamental design constraint. The physics-guided approach exemplifies how domain knowledge can be operationalized as a regularizer that simultaneously improves performance and interpretability. Researchers are recognizing that for high-stakes applications in environmental monitoring and scientific discovery, a model that cannot explain its reasoning in domain-relevant terms has limited practical utility.\n\n## The Trade-off Between Flexibility and Transparency\n\nA key tension emerging across these works is the balance between model flexibility and interpretability. While pure deep learning models can capture complex nonlinear relationships, their opacity limits deployment in scientific contexts where understanding mechanisms is as important as prediction accuracy. The physics-guided framework represents a compromise: it preserves the representational power of deep learning while constraining the solution space to physically admissible regions. This hybrid approach suggests that the future of explainable AI in scientific domains may lie not in explaining black boxes after the fact, but in building understanding into the architecture from the start.\n\n## Evaluation Metrics for Explainability\n\nThe research also highlights the need for better evaluation frameworks for interpretability. Traditional accuracy metrics alone are insufficient when the goal is to provide explanations that domain experts can validate. This work implicitly argues for evaluation protocols that assess not just predictive performance but also the physical consistency and scientific plausibility of learned representations. Establishing such metrics remains an open challenge that will be crucial for the adoption of interpretable AI in scientific communities.\n\n## Key Takeaways\n- Physics-guided learning offers a promising paradigm for building inherently interpretable AI systems in scientific domains, embedding domain knowledge directly into neural architectures rather than explaining predictions post-hoc.\n- The trade-off between model flexibility and interpretability can be partially resolved by using physical constraints as regularizers, maintaining performance while ensuring physically plausible solutions.\n- For high-stakes environmental applications like coastal monitoring, interpretability is not merely desirable but necessary for domain expert trust and deployment in operational settings.\n- Future explainability research should focus on developing domain-specific evaluation metrics that assess the physical consistency and scientific validity of learned representations, not just predictive accuracy.\n- The success of hybrid physics-AI approaches suggests that the most impactful explainable AI systems will be those co-designed with domain experts who understand the underlying mechanisms of the phenomena being modeled.\n- Passive monitoring systems augmented with interpretable deep learning can democratize access to environmental data collection, replacing expensive instrumentation with AI-powered video analysis that domain experts can validate.\n- The field is moving from explaining black-box models toward designing inherently interpretable architectures, representing a fundamental shift in how the AI/ML community approaches the explainability challenge.",
+    "papers": [
+      {
+        "title": "Physics-Guided Spatiotemporal Learning for Coastal Wave Peak Period Estimation from Video",
+        "url": "",
+        "authors": [
+          "Abubakar Hamisu Kamagata",
+          "Dharm Singh Jat",
+          "Attlee Munyaradzi Gamundani",
+          "Abhishek Srivastava",
+          "Paramasivam Saravanakumar"
+        ],
+        "date": "2026-06-14"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-14",
+    "paperCount": 21,
+    "markdown": "# Multimodal Foundations in Flux: From Scientific Reasoning to Deployment at Scale\n\nToday's research landscape reveals a maturing multimodal AI ecosystem where foundational challenges—architectural diversity, context utilization, and data efficiency—coexist with application-driven advances in scientific reasoning, healthcare, and engineering. The field is simultaneously grappling with critical safety and evaluation concerns, from adversarial vulnerabilities in peer review to the complexities of lifelong unlearning, while new serving infrastructure and routing paradigms emerge to support increasingly heterogeneous model compositions.\n\n## Advancing Multimodal Reasoning: From Scientific Figures to User Interfaces\n\n[1] Mondal et al. address the gap in video generation for scientific figure comprehension, where current systems cannot produce paper-grounded, step-by-step narrations with region-specific visual highlights. Their proposed MINARD pipeline generates paper-grounded narrations and sequentially grounds them to figure regions, enabling narrated walkthrough videos that decompose complex scientific figures. This work is significant because it bridges the gap between static scientific visualizations and dynamic, pedagogically useful explanations, with potential applications in education and research communication.\n\n[13] Mao et al. tackle the underdeveloped area of evaluating user experience (UX) from UI screenshots using MLLMs, proposing UXBench—a novel benchmark of 2,000 VQA data samples. The benchmark assesses MLLMs' ability to reason about usability, consistency, and functional clarity in real-world interfaces. This contribution matters because it provides a standardized evaluation framework for a crucial but neglected capability in GUI understanding and design assessment.\n\n[18] Hu et al. address the mismatch between one-shot CAD generation methods and real-world iterative design practices with IterCAD, a unified multimodal agent framework for closed-loop interactive CAD generation and editing. The framework formulates the task as multi-turn interaction between a multimodal agent and an executable CAD sandbox, covering Drawing-to-Code, Text-to-Code, and Interactive Editing tasks. This is important because it brings automated CAD systems closer to professional workflows where iterative refinement is standard practice.\n\n[20] Cao et al. propose Agents-K1, an end-to-end knowledge orchestration pipeline that converts raw documents into agent-native scientific knowledge graphs, addressing the limitation of LLM-based research agents that oversimplify scientific content. The system integrates multimodal processing under a unifying theoretical foundation, enabling richer capture of entities, claims, evidence, mechanisms, and method lineages. This work advances AI-assisted scientific research by enabling agents to reason over structured, multimodal scientific knowledge rather than flat text.\n\n[14] Halder et al. introduce ArogyaSutra, a multi-agent framework for multimodal medical reasoning in Indic languages, addressing the critical gap in MLLM performance for healthcare in multilingual, low-resource settings. The framework supports complex medical queries in native Indic languages with multimodal inputs such as medical images, targeting equitable AI-driven healthcare assistance in regions like rural India. This work is significant for democratizing healthcare AI across linguistic and resource boundaries.\n\n## Robustness, Safety, and Reliability in Multimodal Systems\n\n[3] Zhao et al. identify a critical vulnerability in MLLM-based peer review systems, where adversarial manipulation can target multimodal evidence (figures, not just text) to induce domain-specific failures like score inflation. The paper distinguishes this from standard jailbreaking, framing it as a targeted, domain-specific attack. This work is crucial for the integrity of AI-assisted peer review pipelines, highlighting the need for robustness research that accounts for the multimodal nature of scientific papers.\n\n[5] Li et al. introduce MLUBench, a large-scale benchmark for lifelong unlearning in MLLMs, addressing the practical scenario where data removal requests arrive sequentially over time. The benchmark features 127 entities across 9 classes under lifelong unlearning constraints, filling a gap in existing unlearning evaluations that fail to capture temporal complexity. This work is important for privacy compliance and data governance in deployed multimodal systems.\n\n[8] Jiang et al. identify \"parse collapse\" in generative listwise ranking with LMMs, where autoregressive decoders silently omit candidates and terminate early in long-context multimodal scenarios. Their proposed PRISMR (Parameterized Representation Internalization) method overcomes this failure mode through improved context utilization rather than prompt engineering or constrained decoding. This contribution matters for information retrieval and ranking systems that must handle diverse multimodal inputs reliably.\n\n[11] Wu et al. address node-level branch semantic imbalance in multimodal attributed graphs (MAGs), where different modality branches (structure, text, images) vary in informativeness and reliability across nodes. Their proposed multimodal graph negative learning framework mitigates this imbalance through targeted negative sampling. This work is significant for representation learning on complex relational systems where modality contributions are heterogeneous.\n\n[17] Liu et al. propose CausalMoE, a billion-scale multimodal Granger causal foundation model that addresses the \"one-size-fits-all\" limitation of existing neural GCD methods. The model introduces Pattern-Routed Mixture of Heterogeneous Experts to explicitly model patch-level heterogeneity and handle distribution shifts in temporal data. This work advances causal discovery in complex dynamical systems by enabling more accurate, domain-adaptive temporal dependency modeling.\n\n## Architectural Innovation: Serving, Routing, and Efficiency\n\n[7] Jha et al. present M*, a modular and extensible serving system designed for the emerging diversity of composite multimodal model architectures, including unified multimodal models, omni models, and vision-language-action policies. Existing serving frameworks fail to accommodate this architectural diversity due to narrow assumptions about model structure. This work is foundational for production deployment of next-generation multimodal systems, enabling flexible integration of vision encoders, language backbones, diffusion heads, and other components.\n\n[15] Massa and Cristofanilli present Brick, a multimodal router that addresses the challenge of query difficulty estimation in model deployment. The system scores models on six capability dimensions, combines this with per-query difficulty estimates, and dispatches via cost-penalized routing. This work addresses the practical engineering challenge of balancing cost (frontier vs. local models) with performance in production systems.\n\n[19] Lai et al. introduce MiniMax Sparse Attention (MSA), a blockwise sparse attention mechanism built upon Grouped Query Attention (GQA) for ultra-long-context deployment. A lightweight Index Branch scores key-value blocks and selects group-specific Top-k subsets, enabling efficient attention over hundreds of thousands to millions of tokens. This work is critical for scaling LLMs to agentic workflows, repository-scale code reasoning, and persistent memory applications where quadratic attention costs are prohibitive.\n\n[9] Scope Crafts et al. develop a stabilized path-space framework for diffusion-based posterior sampling, addressing failures of heuristic guidance approximations for nonlinear operators and multimodal posteriors. Their approach casts posterior sampling as learning a controlled stochastic process whose path measure matches a likelihood-weighted target. This work advances Bayesian inverse problems by providing more principled and stable posterior sampling with diffusion priors.\n\n## Continual Learning and Adaptation Across Modalities\n\n[16] Zeng et al. propose MOSAIC, a continual learning framework for Parkinson's disease gait assessment that handles modality-incremental scenarios where new sensors arrive over time. The framework addresses three challenges: unreliable cross-modal distillation, modality-specific statistical shifts, and reduced plasticity after preservation. This work is important for clinical AI systems that must adapt to evolving sensor configurations while respecting privacy constraints on historical data.\n\n[21] Vo et al. propose Hölder++, a multimodal VAE that improves the quality-coherence trade-off compared to existing approaches like MMVAE+. The method addresses the fundamental tension between generating diverse, realistic samples and maintaining semantic consistency across modalities. This work advances multimodal generative modeling by providing a principled aggregation method that balances quality and coherence.\n\n## Foundations, Benchmarks, and Emerging Topics\n\n[4] Dias et al. present an apples-to-apples comparison of leading geospatial foundation model architectures, including encoder-only to encoder-decoder and masked autoencoding paradigms. Their work standardizes pretraining across diverse unlabeled geospatial modalities to assess performance trade-offs consistently. This matters for Earth observation applications where architectural choices significantly impact multimodal reasoning capabilities across varied spectral band configurations.\n\n[6] Khanbayov and Kurban analyze 80,814 papers from five premier AI conferences (2017-2025), demonstrating that major AI topics advance through abrupt \"topical phase transitions\" rather than gradual growth. Large language models, diffusion models, and vision-language models show this pattern, with LLMs becoming the dominant cross-venue topic by 2025. This work provides an early-warning signature for emerging topics and reveals structural patterns in AI research evolution.\n\n[2] Wang and Wang propose Net-Ev², a generative simulator for network event evolution that models how disturbance events propagate impacts across real-world networks. The approach addresses the challenge of simulating both structured attributes and unstructured event semantics while capturing topological structures. This work advances decision-making systems by enabling more realistic simulation of network-level disturbance propagation.\n\n[12] Wu et al. introduce SMGFM, a spectral multimodal graph pretraining approach for multimodal-attributed graphs that decouples structure-induced and modality-intrinsic semantics. The method recognizes that topological smoothing and local modality distinctions should be handled differently, avoiding the uniform smoothing that harms fine-grained semantics. This work contributes to graph representation learning by providing principled pretraining for heterogeneous multimodal graphs.\n\n## Key Takeaways\n- **Multimodal reasoning is expanding into specialized domains**—scientific figure explanation [1], CAD generation [18], medical diagnosis in low-resource languages [14], and user experience evaluation [13]—demanding domain-specific benchmarks and agent architectures.\n- **Robustness and safety are emerging as critical concerns for multimodal systems**, with new attack surfaces in peer review [3] and the need for lifelong unlearning benchmarks [5] reflecting real-world deployment requirements.\n- **Architectural diversity is reshaping infrastructure needs**, as composite models combining vision encoders, language models, and diffusion heads require new serving systems [7] and routing strategies [15] beyond traditional LLM frameworks.\n- **Context utilization remains a fundamental challenge**, with issues like parse collapse in ranking [8] and the quadratic cost of attention [19] driving innovations in sparse attention and representation internalization.\n- **Continual and incremental learning pose unique challenges for multimodal systems**, particularly in clinical [16] and graph [11] settings where modality contributions are heterogeneous and shift over time.\n- **Research on AI itself reveals structural phase transitions**—major topics like LLMs and vision-language models surge abruptly across venues [6], suggesting the field evolves through detectable jumps rather than gradual progress.\n- **Multimodal graph learning is maturing** with principled approaches to handle semantic imbalance [11], spectral decomposition of structure vs. modality [12], and causal discovery [17], enabling richer modeling of complex relational systems.",
+    "papers": [
+      {
+        "title": "Helping Figures Tell their Story! Paper-Grounded Video Generation Explaining Complex Scientific Figures",
+        "url": "",
+        "authors": [
+          "Ishani Mondal",
+          "Javad Baghirov",
+          "Jordan Boyd-Graber"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Net-Ev$^2$: A Generative Simulator for Network Event Evolution",
+        "url": "",
+        "authors": [
+          "Guangyu Wang",
+          "Zhaonan Wang"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Does AI Reviewer See the Full Picture? Attacking and Defending Multimodal Peer Review",
+        "url": "",
+        "authors": [
+          "Xinyu Zhao",
+          "Rana Muhammad Shahroz Khan",
+          "Zhen Xu",
+          "Zhen Tan",
+          "Tianlong Chen"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Emerging Flexible Designs for Geospatial Multimodal Foundation Models",
+        "url": "",
+        "authors": [
+          "Philipe Dias",
+          "Waqwoya Abebe",
+          "Abhishek Potnis",
+          "Aristeidis Tsaris",
+          "Dan Lu",
+          "Xiao Wang",
+          "Dalton Lunga"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "MLUBench: A Benchmark for Lifelong Unlearning Evaluation in MLLMs",
+        "url": "",
+        "authors": [
+          "He Li",
+          "Haoang Chi",
+          "Qizhou Wang",
+          "Yunxin Mao",
+          "Zhiheng Zhang",
+          "Jie Tan",
+          "Tongliang Liu",
+          "Wenjing Yang",
+          "Bo Han"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Topical Phase Transitions in Artificial Intelligence Research: Large-Scale Evidence and an Early-Warning Signature for Emerging Topics",
+        "url": "",
+        "authors": [
+          "Rasul Khanbayov",
+          "Hasan Kurban"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "M*: A Modular, Extensible, Serving System for Multimodal Models",
+        "url": "",
+        "authors": [
+          "Atindra Jha",
+          "Naomi Sagan",
+          "Keisuke Kamahori",
+          "Irmak Sivgin",
+          "Rohan Sanda",
+          "Steven Gao",
+          "Mark Horowitz",
+          "Luke Zettlemoyer",
+          "Olivia Hsu",
+          "Jure Leskovec",
+          "Baris Kasikci",
+          "Stephanie Wang"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "PRISMR: Overcoming Parse Collapse in Multimodal Listwise Ranking via Parameterized Representation Internalization",
+        "url": "",
+        "authors": [
+          "Hao Jiang",
+          "Xin Li",
+          "Annan Wang",
+          "Zhi Yang",
+          "Haoxiang Zhang",
+          "Yichi Zhang",
+          "Weisi Lin"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "A Stabilized Path-Space Approach to Diffusion-Based Posterior Sampling",
+        "url": "",
+        "authors": [
+          "Evan Scope Crafts",
+          "Umberto Villa",
+          "Saviz Mowlavi",
+          "Yanting Ma",
+          "Hassan Mansour",
+          "Wael H. Ali"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Multi-Modal Agents for Power Distribution Defect Detection: An Evaluation of Foundation Models",
+        "url": "",
+        "authors": [
+          "Quan Quan"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Multimodal Graph Negative Learning",
+        "url": "",
+        "authors": [
+          "Zhengyu Wu",
+          "Xu Wang",
+          "Hongchao Qin",
+          "Xunkai Li",
+          "Guang Zeng",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "SMGFM: Spectral Multimodal Graph Pretraining for Multimodal-Attributed Graphs",
+        "url": "",
+        "authors": [
+          "Zhengyu Wu",
+          "Xu Wang",
+          "Hongchao Qin",
+          "Xunkai Li",
+          "Guang Zeng",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Reasoning for Mobile User Experience with Multimodal LLMs: Task, Benchmark, and Approach",
+        "url": "",
+        "authors": [
+          "Ruichao Mao",
+          "Zhou Fang",
+          "Teng Guo",
+          "Hao Yang",
+          "Yaping Li",
+          "Shaohua Peng",
+          "Maji Huang",
+          "Xiaoyu Lin",
+          "Shuoyang Liu",
+          "Xuepeng Li",
+          "Yuyu Zhang",
+          "Hai Rao"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "ArogyaSutra: A Multi-Agent Framework for Multimodal Medical Reasoning in Indic Languages",
+        "url": "",
+        "authors": [
+          "Tanmoy Kanti Halder",
+          "Akash Ghosh",
+          "Subhadip Baidya",
+          "Arijit Roy",
+          "Sriparna Saha"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Brick: Spatial Capability Routing for the Mixture-of-Models (MoM) Paradigm",
+        "url": "",
+        "authors": [
+          "Francesco Massa",
+          "Marco Cristofanilli"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "MOSAIC: Modality-Specific Adaptation for Incremental Continual Learning in Parkinson's Disease Gait Assessment",
+        "url": "",
+        "authors": [
+          "Minlin Zeng",
+          "Zhipeng Zhou",
+          "Yang Qiu",
+          "Martin J. McKeown",
+          "Zhiqi Shen"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "CausalMoE: A Billion-Scale Multimodal Foundation Model for Granger Causal Discovery with Pattern-Routed Heterogeneous Experts",
+        "url": "",
+        "authors": [
+          "Bo Liu",
+          "Di Dai",
+          "Jingwei Liu",
+          "Jiarui Jin",
+          "Xiaocheng Fang",
+          "Guangkun Nie",
+          "Hongyan Li",
+          "Shenda Hong"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "IterCAD: An Iterative Multimodal Agent for Visually-Grounded CAD Generation and Editing",
+        "url": "",
+        "authors": [
+          "Tao Hu",
+          "Jiaxin Ai",
+          "Licheng Wen",
+          "Xueheng Li",
+          "Shu Zou",
+          "Siqi Li",
+          "Nianchen Deng",
+          "Xinyu Cai",
+          "Hongbin Zhou",
+          "Pinlong Cai",
+          "Daocheng Fu",
+          "Yu Yang",
+          "Hairong Zhang",
+          "Botian Shi",
+          "Xuemeng Yang"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "MiniMax Sparse Attention",
+        "url": "",
+        "authors": [
+          "Xunhao Lai",
+          "Weiqi Xu",
+          "Yufeng Yang",
+          "Qiaorui Chen",
+          "Yang Xu",
+          "Lunbin Zeng",
+          "Xiaolong Li",
+          "Haohai Sun",
+          "Haichao Zhu",
+          "Vito Zhang",
+          "Pengyu Zhao"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Agents-K1: Towards Agent-native Knowledge Orchestration",
+        "url": "",
+        "authors": [
+          "Zongsheng Cao",
+          "Bihao Zhan",
+          "Jinxin Shi",
+          "Jiong Wang",
+          "Fangchen Yu",
+          "Zhijie Zhong",
+          "Zijie Guo",
+          "Tianshuo Peng",
+          "Zhuo Liu",
+          "Yi Xie",
+          "Xiang Zhuang",
+          "Yue Fan",
+          "Runmin Ma",
+          "Shiyang Feng",
+          "Xiangchao Yan",
+          "Anran Liu",
+          "Peng Ye",
+          "Wenlong Zhang",
+          "Shufei Zhang",
+          "Chunfeng Song",
+          "Fenghua Ling",
+          "Jie Zhou",
+          "Liang He",
+          "Bo Zhang",
+          "Lei Bai"
+        ],
+        "date": "2026-06-14"
+      },
+      {
+        "title": "Hölder++: Improving the Quality-Coherence Trade-off in Multimodal VAEs",
+        "url": "",
+        "authors": [
+          "Huyen Vo",
+          "María Martínez-García",
+          "Isabel Valera"
+        ],
+        "date": "2026-06-14"
+      }
+    ]
+  }
+]
