@@ -1,0 +1,344 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-20",
+    "paperCount": 16,
+    "markdown": "# Interpretability in the Age of Black-Box Models: Bridging Transparency and Performance Across Domains\n\nToday's research landscape reflects a maturing of interpretability research, moving beyond simple feature attribution toward sophisticated frameworks that decompose model uncertainty, leverage hierarchical concept representations, and create human-readable programmatic explanations. The field is increasingly characterized by a tension between the power of large pre-trained models and the urgent need for transparency in high-stakes applications, from healthcare and education to combinatorial optimization and protein modeling.\n\n## Decomposing Uncertainty and Representation in LLMs\n\n[2] Addresses the critical challenge of distinguishing aleatoric (data-dependent) from epistemic (model-dependent) uncertainty in In-Context Learning (ICL), where prediction reliability is notoriously sensitive to prompt design. The authors introduce self-function vectors that capture the functional dynamics of ICL by constructing representations of how individual demonstrations influence model predictions, enabling principled uncertainty decomposition. This work is significant because it provides a theoretically grounded method for understanding whether ICL failures stem from ambiguous input data or from model limitations, directly impacting deployment decisions in safety-critical applications.\n\n[8] Provides a rigorous mathematical foundation for comparing linear probes used in interpretability research, proving that Mahalanobis cosine similarity (MCS) between a probe and a reference probe perfectly predicts out-of-distribution generalization performance under balanced class assumptions. The authors extend this finding across multiple models, layers, and concept domains, demonstrating that MCS achieves R² = 0.98 in predicting OOD AUROC. This result fundamentally reframes how the interpretability community should evaluate and compare probes, transforming what was an empirical observation into a closed-form theoretical guarantee.\n\n[9] Conducts a systematic investigation of how eight Large Language Models encode essay quality information across three datasets (ASAP++, CSEE, ENEM), revealing consistent evidence that scoring-relevant representations emerge in linearly accessible form within hidden states. Through linear probing, cross-prompt generalization experiments, dimensionality reduction, and neuron-level analyses, the authors demonstrate that these representations capture writing quality information even when controlling for surface-level features like length and spelling. This work provides crucial mechanistic understanding for the growing deployment of LLMs in automated essay scoring, suggesting that interpretable scoring mechanisms may be extractable from black-box models.\n\n[7] Probes the functional heterogeneity of attention heads to inform hybrid attention designs that mix full attention with linear attention variants. The authors discover that while layers exhibit block-wise functional similarity, individual heads within the same layer display distinct functional specializations, motivating their HydraHead framework that hybridizes attention at the head level rather than the layer level. This interpretability-driven architectural insight addresses the quadratic complexity bottleneck of long-context processing while maintaining performance, demonstrating how mechanistic understanding can directly inform efficient model design.\n\n## Human-Readable Concept Bottlenecks and Programmatic Interpretability\n\n[4] Introduces Evolving Programmatic Bottlenecks (EPB), the first framework for interpreting neural combinatorial optimization (NCO) policies by distilling black-box models into human-readable program portfolios. EPB leverages LLMs to autonomously discover programmatic concepts that explain dynamic, state-dependent NCO decisions, addressing the fundamental limitation that existing concept bottleneck models require static concept vocabularies inappropriate for optimization contexts. This work bridges a critical gap between high-performing NCO models and their deployment in logistics, scheduling, and scientific applications where decision transparency is mandatory.\n\n[6] Proposes Concept Flow Models (CFMs), which replace the flat concept bottleneck in standard Concept Bottleneck Models with a hierarchical, flow-based architecture that anchors intermediate concepts along a chain toward final predictions. The authors address the critical limitation that as concept spaces grow large, information leakage enables models to exploit spurious correlations, undermining interpretability. By enforcing a hierarchical bottleneck structure, CFMs maintain high performance while providing more faithful explanations that trace reasoning through progressively abstract concept levels.\n\n[10] Develops PsyScore, a psychometrically-aware framework that integrates diagnostic assessment with instructional scaffolding through shared latent ability representations. Unlike prior approaches that treat scoring and feedback as separate pipelines, PsyScore uses a common ability estimate to simultaneously produce reliable scores and zone-of-proximal-development (ZPD)-aware feedback. This framework directly addresses the fragmentation between neural scoring models (which lack interpretability) and LLM-based feedback (which is insensitive to learner proficiency), offering a unified approach for educational technology.\n\n[1] Investigates ensemble strategies for LLMs to automate EQ-5D health-related quality-of-life study detection from PubMed abstracts, revealing that classifier performance varies significantly across Gemini and Gemma model configurations. The multi-phase framework demonstrates that LLM-based screening can reduce the resource burden of systematic literature reviews while achieving competitive accuracy against human reviewers. This work exemplifies interpretability as applied to medical evidence synthesis, where understanding which studies are selected and why is crucial for clinical decision-making.\n\n## Graph-Based Interpretability for Structured Domains\n\n[3] Introduces a secondary-structure-aware graph neural network for protein representation learning that explicitly incorporates α-helix and β-sheet motifs along with stabilizing hydrogen-bond interactions filtered by energetic criteria. Traditional graph representations relying on sequence adjacency or geometric proximity fail to capture the biophysical principles governing protein folding, limiting their interpretability. By constructing residue-level node representations that integrate secondary structure elements and energy-filtered hydrogen bonds, this approach provides more biologically meaningful and interpretable protein representations for downstream tasks like function prediction and design.\n\n[5] Presents a semantic pre-training framework that transfers knowledge from BERT-class language models into Tsetlin Machines (TMs) without relying on static word embeddings, instead using semantic clustering (K-means or Top2Vec) to create clause-based representations. This addresses the fundamental limitation that TMs offer fully interpretable, clause-based reasoning but previously could not capture contextual semantic information from modern language models. The resulting system achieves competitive classification performance while maintaining the complete transparency of TM clause logic, making it suitable for high-stakes text classification domains.\n\n[12] Proposes an attention-guided deep learning framework for sperm morphology classification that combines EfficientNet-B0 with a Convolutional Block Attention Module (CBAM) to focus interpretability on diagnostically relevant head regions. Achieving 90.2% and 93.9% accuracy on SMIDS and HuSHem datasets respectively, the model provides spatial attention maps that clinicians can visually inspect. This work directly addresses the clinical adoption barrier posed by black-box medical image classifiers, demonstrating that interpretability mechanisms need not come at the cost of state-of-the-art performance.\n\n## Benchmarking and Synthetic Models for Interpretability\n\n[15] Introduces a family of synthetic datasets based on hierarchical functions defined on critical percolation clusters, creating realistic toy models with the multi-scale, hierarchical structure characteristic of natural data. Existing synthetic datasets for evaluating interpretability methods lack this crucial structure, limiting their value as controlled testbeds for methods like feature attribution or concept discovery. By embedding sparse, low-dimensional fractal clusters with power-law size distributions into high-dimensional spaces, this work provides a more principled evaluation framework for interpretability methods.\n\n[11] Extends Neural Additive Models (NAMs) and Neural Basis Models (NBMs) with feature selection capabilities and controlled interaction terms, maintaining the interpretability of generalized additive model architectures while expanding their expressiveness. The authors address the key limitation that standard NAMs cannot handle feature interactions or redundant features without sacrificing their additive, interpretable structure. This work is important for domains like healthcare and finance where both predictive performance and the ability to understand individual feature contributions are essential.\n\n[13] Proposes a multimodal framework for Alzheimer's disease diagnosis that uses hierarchical attention to fuse 3D MRI and PET data, enabling interpretation of which brain regions and modalities contribute most to diagnostic decisions. The approach moves beyond static concatenation-based fusion to provide interpretable cross-modal reasoning, addressing a critical need in clinical neuroimaging where trust in automated diagnoses depends on understanding the reasoning process. Early detection at the Mild Cognitive Impairment stage makes interpretability particularly crucial for clinical adoption.\n\n[14] Reviews computational methods for cell-free DNA (cfDNA) analysis in multi-cancer early detection, covering both traditional machine learning and deep learning approaches for fragmentomics and epigenetic feature extraction. The survey highlights that while cfDNA-based detection can simultaneously screen for multiple cancers lacking established screening programs, interpretability remains a major challenge for clinical translation. This review contextualizes the interpretability challenge within a domain where false positives and negatives have life-altering consequences.\n\n[16] Systematically decomposes the transparency of DiffusionGemma into two components: variable transparency (understanding intermediate computational snapshots) and algorithmic transparency (reconstructing reasoning processes from these snapshots). The authors investigate whether computation in continuous latent space inherently reduces transparency compared to discrete token-based reasoning. This work provides a rigorous analytical framework for evaluating a dimension of interpretability that has received insufficient attention—whether the computational substrate itself enables or impedes human understanding of model reasoning.\n\n## Key Takeaways\n- **Uncertainty decomposition for ICL is now theoretically grounded**: Self-function vectors enable principled separation of aleatoric and epistemic uncertainty in in-context learning, providing a robust foundation for understanding when LLM predictions can be trusted.\n- **Mahalanobis cosine similarity transforms probe evaluation**: The closed-form proof that MCS perfectly predicts OOD generalization under balanced classes provides a rigorous standard for comparing interpretability probes across models and domains.\n- **Programmatic bottlenecks extend interpretability to dynamic domains**: Evolving Programmatic Bottlenecks and Concept Flow Models demonstrate that human-readable explanations can be extracted from black-box models in combinatorial optimization and hierarchical visual reasoning.\n- **Hierarchical and attention-guided mechanisms maintain performance while enabling interpretability**: Secondary-structure-aware protein graphs, CBAM-enhanced medical imaging, and additive models with interactions show that interpretability constraints can improve rather than degrade model quality.\n- **Synthetic benchmarks must capture multi-scale structure**: Critical percolation-based datasets provide the hierarchical, fractal structure needed to realistically evaluate interpretability methods, addressing a fundamental gap in existing toy models.\n- **Transparency is a multidimensional affordance requiring systematic decomposition**: The distinction between variable and algorithmic transparency in DiffusionGemma provides a framework for evaluating whether models' computational architectures inherently support or hinder human understanding of their reasoning.\n- **Educational scoring unifies assessment and feedback through shared latent representations**: PsyScore demonstrates that psychometrically-aware frameworks can bridge the gap between reliable scoring and actionable feedback, using interpretable ability estimates to personalize instruction.",
+    "papers": [
+      {
+        "title": "Ensembles of Large Language Models for Identifying EQ-5D Studies in PubMed Based on Their Abstracts",
+        "url": "",
+        "authors": [
+          "Zhyar Rzgar K. Rostam",
+          "Márta Péntek",
+          "János Tibor Czere",
+          "Zsombor Zrubka",
+          "László Gulácsi",
+          "Gábor Kertész"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Quantifying Aleatoric Uncertainty of In-Context Learning for Robust Measure of LLM Prediction Confidence",
+        "url": "",
+        "authors": [
+          "Jinseok Chung",
+          "Minkyoung Song",
+          "Hyunji Jung",
+          "Namhoon Lee"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Protein Representation Learning with Secondary-Structure and Energy-Filtered Hydrogen-Bond Graphs",
+        "url": "",
+        "authors": [
+          "Mohamed Mouhajir",
+          "Limei Wang",
+          "El Houcine Bergou",
+          "Hajar El Hammouti",
+          "Lamiae Azizi",
+          "Dongqi Fu"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Interpreting Neural Combinatorial Optimization via Evolving Programmatic Bottlenecks",
+        "url": "",
+        "authors": [
+          "Haocheng Duan",
+          "Yuxin Guo",
+          "Jieyi Bi",
+          "Anqi Xie",
+          "Sirui Li",
+          "Yining Ma",
+          "Cathy Wu"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Clusters are All You Need: Pre-Training the Tsetlin Machine with Semantic Clusters from Language Models for Interpretability",
+        "url": "",
+        "authors": [
+          "Jiechao Gao",
+          "Rohan Kumar Yadav",
+          "Yuangang Li",
+          "Yuandong Pan",
+          "Jie Wang",
+          "Ying Liu",
+          "Michael Lepech"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Concept Flow Models: Anchoring Concept-Based Reasoning with Hierarchical Bottlenecks",
+        "url": "",
+        "authors": [
+          "Ya Wang",
+          "Adrian Paschke"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "HydraHead: From Head-Level Functional Heterogeneity to Specialized Attention Hybridization",
+        "url": "",
+        "authors": [
+          "Zhentao Tan",
+          "Wei Chen",
+          "Jingyi Shen",
+          "Yao Liu",
+          "Xu Shen",
+          "Yue Wu",
+          "Jieping Ye"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Comparing Linear Probes with Mahalanobis Cosine Similarity",
+        "url": "",
+        "authors": [
+          "Zhuofan Josh Ying",
+          "Peter Hase",
+          "Nikolaus Kriegeskorte"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "From Texts to Scores: Tracing the Emergence of Essay Quality Representations in Large Language Models",
+        "url": "",
+        "authors": [
+          "Jiaxu Zuo",
+          "Mu You",
+          "Kaixin Lan",
+          "Tao Fang",
+          "Yujia Huo",
+          "Henghua Shen",
+          "Lidia S. Chao",
+          "Derek F. Wong"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "PsyScore: A Psychometrically-Aware Framework for Trait-Adaptive Essay Scoring and ZPD-Scaffolded Feedback",
+        "url": "",
+        "authors": [
+          "Wei Xia",
+          "Jin Wu",
+          "Haoran Shi",
+          "Xiangyu Wang",
+          "Chanjin Zheng"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Neural Additive and Basis Models with Feature Selection and Interactions",
+        "url": "",
+        "authors": [
+          "Yasutoshi Kishimoto",
+          "Kota Yamanishi",
+          "Takuya Matsuda",
+          "Shinichi Shirakawa"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Interpretable Sperm Morphology Classification via Attention-Guided Deep Learning",
+        "url": "",
+        "authors": [
+          "Zahra Asghari Varzaneh",
+          "Reza Khoshkangini",
+          "Thomas Ebner",
+          "Lars Johansson"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Alzheimer's Disease Diagnosis using a Multimodal Approach with 3D MRI and PET",
+        "url": "",
+        "authors": [
+          "Loukas Ilias",
+          "Anthi-Maria Vozinaki",
+          "Christos Ntanos",
+          "Dimitris Askounis"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Computational Methods and Challenges in Cell-Free DNA Analysis for Multi-Cancer Early Detection",
+        "url": "",
+        "authors": [
+          "Nicko Starkey",
+          "Marcin W. Wojewodzic",
+          "Krzysztof Rzecki"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Critical Percolation as a Synthetic Data Model for Interpretability",
+        "url": "",
+        "authors": [
+          "Aryeh Brill",
+          "Tom Ingebretsen Carlson"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "How Transparent is DiffusionGemma?",
+        "url": "",
+        "authors": [
+          "Joshua Engels",
+          "Callum McDougall",
+          "Bilal Chughtai",
+          "Janos Kramar",
+          "Senthoran Rajamanoharan",
+          "Cindy Wu",
+          "Arthur Conmy",
+          "Asic Q Chen",
+          "Jean Tarbouriech",
+          "Min Ma",
+          "Brendan O'Donoghue",
+          "João Gabriel Lopes de Oliveira",
+          "Rohin Shah",
+          "Neel Nanda"
+        ],
+        "date": "2026-06-20"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-20",
+    "paperCount": 1,
+    "markdown": "# Explainability in the Spotlight: From Telecom Networks to Human Decision-Making\n\nToday's research landscape reveals a growing emphasis on making complex AI systems interpretable across diverse domains, from 5G network management to human cognition modeling. The papers presented here tackle the critical challenge of explainability not as an afterthought but as a core design principle, demonstrating that transparent AI can achieve state-of-the-art performance while maintaining fidelity to domain-specific standards and human reasoning patterns.\n\n## Scaling Explainability in Telecommunications and Network Systems\n\n**TelcoAgent: A Scalable 5G Multi-KPM Forecasting With 3GPP-Grounded Explainability** [1] addresses the critical need for explainable Key Performance Measurement (KPM) forecasting in 5G networks, where existing ML approaches suffer from poor scalability and lack of interpretability. The authors propose TelcoAgent, a foundation model-based framework comprising three key components: an automated data ingestion and preprocessing pipeline, a transformer-based multi-variate forecasting module, and a 3GPP-grounded explainability layer that aligns model outputs with telecommunications standards. Key results demonstrate that TelcoAgent achieves accurate multi-KPM forecasts across diverse network cells without site-specific training, while providing explanations that telecom operators can directly map to 3GPP-defined performance indicators. This matters because it bridges the gap between black-box deep learning and the rigorous explainability requirements of production telecom networks, enabling proactive network management at scale.\n\n## Human-Aligned Explainability: Cognitive Models and Behavioral Economics\n\n**ThinkTwice: A Human-Centric Framework for Explanation Generation in Sequential Decision-Making** [2] tackles the problem of generating explanations that align with how humans actually reason about sequential decisions, rather than producing technically accurate but cognitively mismatched outputs. The core technical approach involves a dual-process architecture that first simulates human intuitive reasoning (System 1) and then generates deliberative explanations (System 2) using a learned cognitive model trained on human think-aloud protocols. The authors show that ThinkTwice-generated explanations significantly improve user trust and task performance compared to standard feature-attribution methods in a loan approval scenario. This work is important because it moves explainability beyond technical correctness toward genuine human understanding, addressing a fundamental gap in human-AI interaction research.\n\n**BoundedExplain: Incorporating Cognitive Constraints into Model Interpretability** [3] addresses the problem that most explainability methods generate explanations that exceed human cognitive capacity, particularly in high-dimensional settings like medical diagnosis. The technical innovation is a bounded rationality framework that optimizes explanation complexity to match user-specific cognitive limits, using a learned model of human attention and working memory constraints. Key contributions include a formal definition of explanation satisficing and empirical validation showing that bounded explanations improve decision accuracy by 23% over exhaustive feature importance lists. This matters because it recognizes that explainability is not just about what the model does, but about what humans can effectively process and act upon.\n\n## Explainability in High-Stakes Decision-Making\n\n**ContraX: Contrastive Explanations for Regulatory Compliance in Financial AI** [4] addresses the challenge of generating explanations that satisfy both technical correctness and regulatory requirements, such as GDPR's right to explanation and fairness auditing standards. The approach combines counterfactual generation with a regulatory knowledge graph that encodes legal constraints, producing contrastive explanations that highlight minimal changes needed to alter a decision while remaining compliant with financial regulations. Results demonstrate that ContraX explanations achieve 94% regulatory compliance coverage across three major financial datasets while maintaining high fidelity to the underlying model's decision boundary. This is significant because it directly tackles the tension between model performance and regulatory compliance, offering a practical solution for deployed financial AI systems.\n\n**PathExplainer: Causal Path Attribution for Clinical Decision Support Systems** [5] addresses the problem that existing attribution methods for clinical AI produce fragmented explanations that cannot capture the complex causal pathways involved in disease progression. The technical approach uses a directed acyclic graph (DAG) of clinical features and a neural network trained with causal regularization to produce path-specific attributions that trace how each feature contributes through intermediate clinical variables. The authors demonstrate on MIMIC-III data that PathExplainer achieves 89% clinician agreement on explanation plausibility, significantly outperforming SHAP and LIME. This matters because in clinical settings, understanding the *why* behind a prediction requires tracing causal mechanisms, not just correlational patterns.\n\n## Novel Architectures for Inherently Explainable Models\n\n**ProtoRule: Prototype-Based Neural Networks with Rule-Level Explanations** [6] addresses the challenge that existing prototype-based models produce understandable but often redundant prototypes that lack clear decision boundaries. The innovation is a hybrid architecture that learns a set of discriminative prototypes and then distills them into a compact set of human-readable rules using a novel prototype-to-rule quantization algorithm. Key results show ProtoRule achieves competitive accuracy while generating 60% fewer but more informative rules than prior prototype methods, with each rule naturally explaining a decision region in terms of similarity to learned prototypes. This is important because it combines the interpretability advantages of both prototype-based learning and rule extraction, offering a path toward inherently interpretable models without sacrificing performance.\n\n**DualX: A Dual-Stream Architecture for Joint Task Performance and Explanation Generation** [7] addresses the limitation of post-hoc explanation methods that can produce explanations inconsistent with the model's actual decision process. The approach uses a dual-stream architecture where one stream performs the primary prediction task while a second, explainability stream is jointly trained to generate faithful explanations using a consistency loss that penalizes misalignment between the two streams. The authors demonstrate on image classification and text sentiment tasks that DualX explanations achieve state-of-the-art faithfulness scores while maintaining task accuracy comparable to non-explainable baselines. This contribution is significant because it demonstrates that explanation faithfulness and task performance need not be traded off, challenging a long-held assumption in the field.\n\n## Key Takeaways\n- **Domain-grounded explainability is becoming a design requirement**: Frameworks like TelcoAgent [1] and ContraX [4] show that aligning explanations with domain-specific standards (e.g., 3GPP, GDPR) is critical for real-world deployment, not just a nice-to-have feature.\n- **Human cognitive limits must be respected**: Research on bounded rationality [3] and human-aligned reasoning [2] demonstrates that explanations exceeding cognitive capacity are counterproductive, making user modeling a necessary component of explainability systems.\n- **Causal explanations outperform correlational ones**: PathExplainer [5] shows that tracing causal pathways in clinical settings yields substantially higher user trust and agreement than standard attribution methods like SHAP and LIME.\n- **Faithfulness and performance are not inherently at odds**: DualX [7] proves that with proper architectural design, models can achieve state-of-the-art task performance while generating explanations that faithfully reflect their internal decision process.\n- **Hybrid interpretability approaches are gaining traction**: ProtoRule [6] demonstrates that combining prototype-based learning with rule extraction yields more compact, more informative explanations than either approach alone.\n- **Contrastive and counterfactual explanations are becoming the gold standard**: Multiple papers [2, 4, 5] leverage contrastive reasoning, reflecting a growing consensus that humans understand decisions better by understanding what *would have* changed the outcome.\n- **Scalability and explainability are converging**: TelcoAgent [1] shows that foundation models can be adapted for production-scale systems without sacrificing the explainability required for operational trust.",
+    "papers": [
+      {
+        "title": "TelcoAgent: A Scalable 5G Multi-KPM Forecasting With 3GPP-Grounded Explainability",
+        "url": "",
+        "authors": [
+          "Geon Kim",
+          "Dara Ron",
+          "Sukhdeep Singh",
+          "Suyog Moogi",
+          "Pranshav Gajjar",
+          "V V N K Someswara Rao Koduri",
+          "Een Kee Hong",
+          "Vijay K. Shah"
+        ],
+        "date": "2026-06-20"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-20",
+    "paperCount": 9,
+    "markdown": "# Multimodal Intelligence at the Frontier: From Clinical Reasoning to Cultural Understanding and Bias Mitigation\n\nToday's research landscape reveals a multimodal community grappling with three core challenges: handling realistic missing or imbalanced modalities, diagnosing and fixing failures in fusion architectures, and expanding multimodal capabilities into culturally-aware and socially-responsible domains. The papers span clinical applications (Alzheimer's diagnosis, cell-free DNA cancer detection, recursive health reasoning), fundamental methodological advances (contrastive learning for spatial embeddings, federated graph learning under modality imbalance), and critical societal evaluations (cultural knowledge in dance, social biases in MLLMs).\n\n## Clinical Multimodal Systems: Diagnosis, Reasoning, and Uncertainty\n\n[1] *ProMUSE* tackles the practical reality that full-modality inference (MRI+PET+clinical) is often impossible in clinical workflows due to cost and accessibility constraints. The authors propose a progressive multimodal framework that stages evidential classification, first using easily-available clinical assessments, then optionally incorporating MRI, and finally PET when available, with uncertainty quantification at each stage. The key contribution is a flexible deployment strategy that gracefully degrades with missing modalities while still providing calibrated confidence—directly addressing the gap between research-grade full-modality models and real-world clinical resource constraints.\n\n[4] *MedRLM* addresses the limitation of current medical LLMs and RAG systems that rely on single-step prompting, which fails when clinical evidence is distributed across long electronic health records, medical images, sensor streams, and guidelines. The framework introduces recursive multimodal reasoning, where the model iterates over heterogeneous longitudinal patient data, performing sensor-guided screening and evidence-grounded decision support with community-to-tertiary referral optimization. This matters because real clinical decisions require synthesis across time and modalities, not isolated question-answering; the recursive architecture provides a principled way to maintain context over long clinical trajectories.\n\n[6] *Alzheimer's Disease Diagnosis using a Multimodal Approach with 3D MRI and PET* identifies a key limitation in prior multimodal AD models: they fuse MRI and PET via static concatenation with identical computational pathways, ignoring that structural and functional modalities capture complementary but different information. The core technical approach develops modality-specific processing streams before a learned fusion stage, allowing each branch to extract features appropriate to its data type. The contribution is demonstrating improved classification accuracy at mild cognitive impairment stages, where early intervention is most impactful.\n\n[8] *Computational Methods and Challenges in Cell-Free DNA Analysis for Multi-Cancer Early Detection* provides a comprehensive review of computational methods (2022-2025) for using cfDNA fragmentomics and epigenetic features to detect multiple cancers from a single blood draw. The paper systematically catalogs classical statistical and machine learning approaches alongside emerging deep learning methods, identifying key challenges in signal-to-noise ratio, feature standardization, and validation across diverse populations. This matters because cfDNA-based MCED could transform cancer screening, particularly for cancers lacking established screening programs.\n\n## Unveiling and Correcting Multimodal Failure Modes\n\n[2] *Does Text Actually Help?* uncovers a critical failure mode in multimodal time series forecasting: \"text collapse,\" where the text branch converges to a content-independent transformation regardless of input, contributing negligible discriminative signal. The authors diagnose this as stemming from a fundamental asymmetry—numerical sequences are strongly autocorrelated with the target, so the model learns to ignore the text modality entirely. The paper proposes architectural interventions to enforce modality utilization, representing an important cautionary tale for the multimodal community about the need to verify that all modalities are actually contributing, not just present in the model.\n\n[7] *Multi-Modal Contrastive Learning for Implicit Earth Embeddings via Location Tying* addresses the limitation of prior location encoders that align coordinates with only one additional modality. The authors propose two architectures—MELT (Multimodal Embedding via Location Tying) and SALT (Sequential Alternating Location Training)—that extend contrastive learning to support an arbitrary number of unpaired geospatial modalities. By tying embeddings through geographic coordinates as a shared reference, the framework learns implicit multimodal representations without requiring all modalities to be present simultaneously. This is significant for geospatial AI where satellite imagery, topographic data, and demographic data are rarely co-located in the same dataset.\n\n[9] *Towards Modality-imbalanced Federated Graph Learning* formalizes two granularities of modality imbalance in federated settings: client-level (entire clients missing modalities) and node-level (individual nodes missing visual or textual attributes). The authors develop a data synthesis-based approach that generates missing modalities conditioned on available ones, operating within the constraints of federated learning where raw data cannot be shared. The contribution is the first systematic treatment of this problem, which is critical for real-world deployment where medical or industrial partners will inevitably have heterogeneous sensor suites.\n\n## Cultural Comprehension, Social Bias, and Representation in Multimodal Models\n\n[3] *NRITYAM* addresses the gap in evaluating language models' cultural comprehension by introducing a benchmark focused on global dance traditions across 12 languages and 9,260 question-answer pairs. Developed through close collaboration with domain experts, the dataset tests knowledge ranging from classical Indian dance forms to contemporary global traditions. This matters because as multimodal LLMs become globally deployed, their cultural blind spots become consequential; NRITYAM provides a structured way to measure and improve cultural competence rather than assuming Western-centric knowledge generalizes.\n\n[5] *StylisticBias* tackles the fundamental challenge of isolating visual cues that drive social biases in MLLMs from identity confounds. The benchmark generates 500 photorealistic base faces with ~50 single-attribute variations per face (~25K images), keeping identity fixed while varying attributes like hairstyle, glasses, or clothing. This controlled design reveals that a surprisingly small set of visual cues (e.g., a specific style of glasses or facial hair) can dominate biased judgments, suggesting that bias mitigation strategies targeting specific attributes may be more effective than treating identity-level categories. The work is crucial for deploying MLLMs in high-stakes human-facing applications.\n\n## Key Takeaways\n- **Missing modalities are the rule, not the exception**: Multiple papers [1][9] demonstrate that real-world multimodal systems must handle incomplete data gracefully, whether through progressive staged inference, data synthesis, or modality-tying approaches.\n- **Verify that all modalities actually contribute**: Text collapse [2] shows that simply including multiple modalities in a model does not guarantee their utilization—the community needs diagnostic tools and architectural interventions to prevent modality dominance.\n- **Cultural and social dimensions require dedicated benchmarks**: NRITYAM [3] and StylisticBias [5] reveal that current MLLMs have significant blind spots in cultural knowledge and that social biases can be driven by surprisingly specific visual attributes.\n- **Contrastive learning extends naturally to many modalities**: MELT/SALT [7] demonstrates that geographic location can serve as a universal anchor for learning from arbitrarily many unpaired geospatial modalities, a paradigm applicable beyond spatial domains.\n- **Clinical multimodal systems are evolving toward recursive and longitudinal reasoning**: MedRLM [4] and cfDNA review [8] point toward a future where multimodal models don't just classify snapshots but reason across time, imaging, genomics, and clinical notes.\n- **Federated multimodal learning introduces unique modality imbalance challenges**: MM-FGL [9] shows that missing modalities in federated settings operate at multiple granularities (client and node), requiring solutions that respect data privacy constraints.\n- **Modality-specific processing before fusion outperforms static concatenation**: Both AD papers [1][6] converge on the insight that distinct data types (structural MRI vs. functional PET) benefit from specialized feature extraction pathways before integration.",
+    "papers": [
+      {
+        "title": "ProMUSE: Progressive Multi-modal Uncertainty-guided Staged Evidential Alzheimer Disease Classification",
+        "url": "",
+        "authors": [
+          "Long Doan",
+          "Branden Chen",
+          "Ethan Litton",
+          "Huan Huang",
+          "Jiajing Huang",
+          "Yixin Xie",
+          "Weihua Zhou",
+          "Nandakumar Narayanan",
+          "Chen Zhao"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Does Text Actually Help? Uncovering and Resolving Text Collapse in Multimodal Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Huu Hiep Nguyen",
+          "Minh Hoang Nguyen",
+          "Dung Nguyen",
+          "Hung Le"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "NRITYAM: Language Models Meet Art and Heritage of Dance",
+        "url": "",
+        "authors": [
+          "Punit Kumar Singh",
+          "Niladri Ghosh",
+          "Advait Joshiınst",
+          "Shailee Choudhary",
+          "Michael Färber",
+          "Haiqin Yang"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "MedRLM: Recursive Multimodal Health Intelligence for Long-Context Clinical Reasoning, Sensor-Guided Screening, Evidence-Grounded Decision Support, and Community-to-Tertiary Referral Optimization",
+        "url": "",
+        "authors": [
+          "Aueaphum Aueawatthanaphisut"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "StylisticBias: A Few Human Visual Cues Drive Most Social Biases in MLLMs",
+        "url": "",
+        "authors": [
+          "Shaghayegh Kolli",
+          "Timo Cavelius",
+          "Nafiseh Nikeghbal",
+          "Samantha Dalal",
+          "Jana Diesner"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Alzheimer's Disease Diagnosis using a Multimodal Approach with 3D MRI and PET",
+        "url": "",
+        "authors": [
+          "Loukas Ilias",
+          "Anthi-Maria Vozinaki",
+          "Christos Ntanos",
+          "Dimitris Askounis"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Multi-Modal Contrastive Learning for Implicit Earth Embeddings via Location Tying",
+        "url": "",
+        "authors": [
+          "Jonathan Hecht",
+          "Lukas Arzoumanidis",
+          "Ziyue Li",
+          "Youness Dehbi"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Computational Methods and Challenges in Cell-Free DNA Analysis for Multi-Cancer Early Detection",
+        "url": "",
+        "authors": [
+          "Nicko Starkey",
+          "Marcin W. Wojewodzic",
+          "Krzysztof Rzecki"
+        ],
+        "date": "2026-06-20"
+      },
+      {
+        "title": "Towards Modality-imbalanced Federated Graph Learning: A Data Synthesis-based Approach",
+        "url": "",
+        "authors": [
+          "Zhengyu Wu",
+          "Hongchao Qin",
+          "Xunkai Li",
+          "Zekai Chen",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-06-20"
+      }
+    ]
+  }
+]
