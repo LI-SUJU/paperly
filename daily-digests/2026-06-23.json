@@ -1,0 +1,803 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-23",
+    "paperCount": 18,
+    "markdown": "# From Black Box to Transparent Reasoning: Advances in Interpretable AI Across Domains\n\nToday's research landscape reveals a decisive shift from merely improving model performance to building inherently interpretable systems that can explain their reasoning, especially in high-stakes domains like healthcare, scientific discovery, and safety-critical applications. The papers surveyed demonstrate that interpretability is no longer an afterthought but a core architectural constraint, with innovations spanning causal explanation methods, multi-agent verification frameworks, physics-informed modeling, and mechanistic interpretability for safety.\n\n## Causal and Mechanistic Interpretability for Graph and Language Models\n\n[1] **CIExplainer++: Generating Causal and Interpretable Explanations for Graph Neural Networks** — This paper addresses the critical need for faithful explanations of GNN predictions by moving beyond correlation-based approaches. The authors propose CIExplainer, a perturbation-based method grounded in causal inference that identifies the subgraph with the highest causal effects on GNN outputs. By leveraging do-calculus and intervention-based perturbations, the method distinguishes genuine causal influences from spurious correlations. This work matters because it provides principled, causally-sound explanations for graph-structured data, which is essential for trust in applications like molecular property prediction and social network analysis.\n\n[9] **AgentLens: Interpretable Safety Steering via Mechanistic Subspaces for Multi-Turn Coding Agent** — This work tackles the critical safety challenge of multi-turn coding agents, where existing safety guardrails fail to provide fine-grained behavioral control during execution. The authors introduce mechanistic subspaces—latent directions in the model's representation space that correspond to unsafe behaviors—and demonstrate that steering these subspaces can prevent harmful code generation. Unlike prior mechanistic interpretability work confined to single-turn jailbreak settings, AgentLens captures the evolving risk dynamics of multi-turn interactions. This is significant because it shows that mechanistic interpretability can be operationalized for real-time safety steering in autonomous coding systems.\n\n[17] **TROPT: An Open Framework for Unifying and Advancing Discrete Text Optimization** — This paper addresses the fragmented landscape of discrete text-trigger optimization, which underpins model red-teaming and interpretability but suffers from scattered implementations tied to specific models and objectives. TROPT provides a unified, modular framework that standardizes optimizer implementations, enabling fair comparison, easy extension, and reproducible research. The framework supports diverse optimization objectives including jailbreak discovery, prompt injection, and attention steering. This matters because it lowers the barrier to entry for researchers studying model vulnerabilities and interpretability through adversarial triggers.\n\n## Multi-Agent Frameworks for Interpretable Reasoning in Healthcare\n\n[3] **A Multi-Agent Audit Framework for High-Stakes Reasoning: Evaluation and Interpretability in Clinical Mental Health Screening** — This paper confronts the hallucination and low interpretability of single-model LLMs in high-stakes clinical settings by proposing a Multi-Agent Audit Framework. The architecture decomposes reasoning into specialized agents—a Perception Agent, Knowledge Retrieval Agent, and Decision Agent—that collaborate through a modular LangChain workflow. Each agent's contribution is independently auditable, providing step-level transparency for clinical decision verification. Validated on mental health screening tasks, this framework demonstrates that decomposing reasoning across agents yields both higher accuracy and greater interpretability than monolithic approaches.\n\n[4] **Dementia-Agents: A Multi-Modal Multi-Agent System for Dementia Staging and Phenotyping** — This work addresses the limitation of existing AI-driven dementia diagnosis, which remains Alzheimer's-centric and fails to capture the broader syndrome-level nature of dementia. Dementia-Agents integrates multi-modal clinical assessments from diverse informants under incomplete and heterogeneous data conditions through a coordinated multi-agent architecture. Each agent specializes in processing specific data modalities (cognitive tests, neuroimaging, clinical notes) and collaborates to produce staged, phenotyped diagnoses with audit trails. This matters clinically because real-world dementia diagnosis requires integrating heterogeneous evidence across multiple stages and etiologies.\n\n[7] **Cohort-Anchored Foundation Models for Electronic Health Records: From Risk Scores to Auditable Peer Cohorts** — This paper identifies a fundamental limitation of EHR foundation models: they prioritize representation learning while treating patient comparison as an emergent property rather than a primary source of clinical evidence. CAFM inverts this paradigm by making patient cohort comparison the central architectural mechanism, generating auditable peer cohorts alongside risk predictions. The framework explicitly retrieves and compares similar patients, providing clinicians with interpretable evidence for each prediction. This is a paradigm shift because it aligns AI reasoning with the case-based reasoning clinicians naturally employ, improving trust and enabling verification.\n\n[13] **PsyBridge: A Hybrid Intelligent Framework for Multi-Dimensional Mental Health Assessment and Decision Support** — This work addresses the fragmentation of mental health assessment tools that focus on individual indicators like depression or anxiety without comprehensive integration. PsyBridge integrates clinically validated screening instruments, cognitive evaluations, and personalized risk factors through a hybrid intelligent framework that produces explainable multi-dimensional assessments. The framework provides transparent decision support by mapping assessment components to specific clinical criteria. This is important for clinical deployment because it bridges the gap between data-driven predictions and established clinical practice.\n\n[14] **Explainable AI for Mental Health Prediction in Drug-Affected Populations with Dragonfly Algorithm and GAN Oversampling** — This paper tackles the underexplored domain of AI-based mental health analysis in drug-affected populations, where class imbalance, low interpretability, and suboptimal hyperparameter tuning degrade predictive quality. The authors combine hybrid PCA for dimensionality reduction, GAN-based oversampling to address class imbalance, and Dragonfly Algorithm for optimal hyperparameter selection, all wrapped in an explainable ML framework. The approach produces interpretable predictions for multiclass mental health conditions in this vulnerable population. This matters because it demonstrates that interpretability can be achieved alongside performance improvements in challenging real-world data conditions.\n\n## Physics-Informed and Function-Based Interpretable Models\n\n[15] **Physics-Informed Modeling for Wood Thermal Analysis and Prediction** — This paper addresses the uninterpretable nature of purely data-driven approaches for predicting wood thermal responses, which absorb experimental noise rather than thermodynamic plausibility. The authors present physics-informed deep learning frameworks that integrate partial differential equations (PDEs) governing heat transfer to predict pixel-level thermal responses from RGB images. By constraining predictions to satisfy thermodynamic laws, the model produces physically plausible explanations that disentangle material properties from experimental artifacts. This work demonstrates that physics-informed learning can simultaneously improve both predictive accuracy and interpretability in materials science.\n\n[16] **Interpretable Kolmogorov-Arnold Network with Feature-Isolated Temporal Attention Mechanism for Electricity Load Forecasting** — This paper tackles the black-box nature of deep learning models for electricity load forecasting by leveraging Kolmogorov-Arnold Networks (KANs), which offer learnable activation functions with inherent interpretability. The authors propose a Feature-Isolated Temporal Attention mechanism that processes each input feature independently before cross-feature integration, enabling clear attribution of predictions to specific temporal patterns and features. The architecture achieves competitive forecasting performance while providing transparent explanations of which historical patterns drive each prediction. This matters for power grid operations where operators need to understand and trust automated load forecasts.\n\n[6] **ARCO: Adaptive Rubric with Co-Evolution for Multi-Step LLM-Based Agents** — This work addresses the interpretability gap in reinforcement learning for LLM agents, where scalar rewards indicate success but cannot explain why a trajectory is good or bad. ARCO introduces a rubric-based reward framework where a same-scale model shares two heads: one generating per-step natural-language criteria and another scoring agent actions against those criteria. The rubric co-evolves with the agent, adapting its criteria as the agent's behavior improves. This is significant because it provides step-level interpretability for agent learning, enabling researchers and practitioners to understand *how* and *why* agent behavior improves during training.\n\n[18] **Discovering Latent Groups for Robust Classification** — This paper confronts the problem of spurious correlations in classification models, where high average accuracy masks failures on underrepresented subgroups. The authors propose Neural Classification Trees (NCT), a framework that encodes subgroup structure directly in its tree-shaped architecture. By routing each sample to \"easy\" or \"hard\" nodes, NCT provides interpretable insight into a sample's latent subgroup membership while maintaining robust classification. Unlike prior methods that only produce class predictions, NCT surfaces the subgroup assignment as an interpretable intermediate representation. This matters because understanding which samples are \"hard\" or belong to specific subgroups enables targeted data collection and model improvement.\n\n## Interpretability for Scientific Discovery and Multimodal Verification\n\n[2] **SciLens: Multi-modal Scientific Claim Verification with Agentic Entailment and Grounding** — This paper identifies that scientific claim verification is poorly served by asking vision-language models for direct binary judgments, as claims combine numerical results, comparisons, and contextual qualifiers with evidence in tables and figures. SciLens decomposes each claim into atomic entailment units and verifies each against structured evidence extracted from multimodal sources. The framework uses agentic grounding to align textual claims with specific cells in tables or regions in figures. This is important for scientific integrity because it provides granular, verifiable evidence for each component of a scientific claim rather than a single opaque judgment.\n\n[5] **Beyond Hooking Onto the World: Referential Profiles and the Numerical Structure of LLM Grounding** — This paper revisits the grounding problem for LLMs, arguing that the shift from classical symbol grounding to vector grounding remains incomplete. The author proposes that reference is profile-based, context-sensitive, discourse-level, affectively shaped, and norm-governed—even in the human case—rather than a fixed link between expression and object. The paper develops a numerical structure for characterizing these referential profiles in LLM representations. This theoretical contribution matters because it reframes grounding not as a binary property but as a multidimensional phenomenon that can be formally analyzed and potentially verified.\n\n[8] **AgroSense 2.0: Cross-Modal Transformer Fusion with Geospatial Raster Integration and Interpretable Multi-Task Learning for Precision Crop Recommendation** — This paper addresses the modality gap in precision agriculture, where visual soil characterization and chemical nutrient profiling are treated as independent problems with late-stage fusion. AgroSense 2.0 introduces continental-scale geospatial integration via seven-band soil rasters, cross-modal transformer fusion that captures fine-grained interactions between modalities, and interpretable multi-task learning that predicts both crop recommendations and intermediate soil properties. The interpretability mechanism allows farmers and agronomists to understand which soil characteristics drive specific recommendations. This is significant because it demonstrates that interpretable multimodal fusion can be achieved at continental scale.\n\n[10] **AI Scientists as Engines of Discovery: A Case for Development within Reformed Institutions** — This paper argues that multi-agent AI systems may evolve from passive computational tools into \"AI scientists\" capable of hypothesis generation and verification, but only if developed within reformed scientific ecosystems. The authors argue for transparent, interpretable workflows where each step of the scientific process—from literature synthesis to model criticism—is auditable and reproducible. This perspective matters because it frames interpretability not as a technical add-on but as a fundamental requirement for AI systems to be accepted as legitimate participants in scientific discovery.\n\n[11] **Beyond Time Series: Spatial Reasoning for Epidemic Forecasting via Multimodal Learning** — This paper addresses the limitation of epidemic forecasting models that treat administrative regions as atomic units, obscuring sub-regional spatial structure. M-SPICE integrates region-level temporal surveillance data with spatially localized auxiliary signals through a multimodal architecture that preserves spatial resolution mismatches. The model provides interpretable spatial attributions showing which geographic features drive epidemic dynamics. This is important for public health because it enables policymakers to understand *where* interventions should be targeted based on local spatial features.\n\n[12] **From Handcrafted Features to Functional Edge Learning: Evolution of EEG Seizure Detection Frameworks** — This paper systematically analyzes the evolution of EEG seizure detection frameworks, identifying fundamental architectural flaws in standard DL models including lack of clinical interpretability, massive data requirements, and computational costs incompatible with wearable devices. The authors propose a Functional Edge Learning paradigm that learns graph-based representations of EEG channel relationships, providing interpretable connectivity patterns that correspond to clinical seizure propagation pathways. This matters for clinical deployment because it shows that moving from opaque deep learning to interpretable functional connectivity models can address the deployment bottlenecks in resource-constrained neuromodulation devices.\n\n## Key Takeaways\n\n- **Causal and mechanistic interpretability is moving from analysis to intervention**: Papers like CIExplainer++ [1] and AgentLens [9] demonstrate that understanding internal mechanisms enables active safety steering and causally-sound explanations, not just post-hoc analysis.\n\n- **Multi-agent architectures are emerging as the dominant paradigm for interpretable high-stakes reasoning**: Multiple papers [3, 4, 13] show that decomposing complex reasoning across specialized agents with independent audit trails provides both better accuracy and greater transparency than monolithic models.\n\n- **Physics-informed and function-based models offer inherent interpretability without sacrificing performance**: KAN-based forecasting [16] and PDE-constrained thermal analysis [15] demonstrate that architectural choices favoring interpretability can match or exceed black-box models when properly designed.\n\n- **Interpretability in healthcare requires alignment with clinical reasoning workflows**: CAFM's cohort-anchored approach [7] and PsyBridge's hybrid framework [13] show that making models produce explanations in formats clinicians already use (peer comparisons, diagnostic criteria mapping) is more effective than generic feature attribution.\n\n- **The grounding problem for LLMs requires richer theoretical frameworks**: The referential profiles framework [5] challenges simplistic vector-grounding accounts and suggests that interpretability must engage with the context-sensitive, discourse-level nature of reference.\n\n- **Step-level interpretability is becoming a design requirement for agent training**: ARCO [6] shows that rubric-based rewards with evolving natural-language criteria can provide fine-grained understanding of why agent behavior improves, replacing opaque scalar rewards.\n\n- **Multimodal fusion benefits significantly from interpretable intermediate representations**: SciLens [2] and AgroSense 2.0 [8] demonstrate that decomposing claims or predictions into atomic, verifiable components across modalities provides both better accuracy and actionable interpretability.",
+    "papers": [
+      {
+        "title": "CIExplainer++: Generating Causal and Interpretable Explanations for Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Francisco Caldas",
+          "Sahil Satish Kumar",
+          "Ruben Belo",
+          "Cláudia Soares"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "SciLens: Multi-modal Scientific Claim Verification with Agentic Entailment and Grounding",
+        "url": "",
+        "authors": [
+          "Yueming Wang",
+          "Tianshi Zheng",
+          "Jiaxin Bai",
+          "Yangqiu Song",
+          "Ginny Wong",
+          "Simon See"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "A Multi-Agent Audit Framework for High-Stakes Reasoning: Evaluation and Interpretability in Clinical Mental Health Screening",
+        "url": "",
+        "authors": [
+          "Jingchen Ye",
+          "Yanpei Yu",
+          "Luyao Zhang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Dementia-Agents: A Multi-Modal Multi-Agent System for Dementia Staging and Phenotyping",
+        "url": "",
+        "authors": [
+          "Yaling Shen",
+          "Maja Christensen",
+          "Yiwen Jiang",
+          "Jenna Dennison",
+          "David Darby",
+          "Amy Brodtmann",
+          "Zongyuan Ge"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Beyond Hooking Onto the World: Referential Profiles and the Numerical Structure of LLM Grounding",
+        "url": "",
+        "authors": [
+          "Joo Yull Rhee"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "ARCO: Adaptive Rubric with Co-Evolution for Multi-Step LLM-Based Agents",
+        "url": "",
+        "authors": [
+          "Zihang Tian",
+          "Jingsen Zhang",
+          "Rui Li",
+          "Xiaohe Bo",
+          "Yuanzi Li",
+          "Xu Chen"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Cohort-Anchored Foundation Models for Electronic Health Records: From Risk Scores to Auditable Peer Cohorts",
+        "url": "",
+        "authors": [
+          "Kaiping Zheng"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "AgroSense 2.0: Cross-Modal Transformer Fusion with Geospatial Raster Integration and Interpretable Multi-Task Learning for Precision Crop Recommendation",
+        "url": "",
+        "authors": [
+          "Vishal Pandey",
+          "Rishav Tewari",
+          "Ruzina Haque Laskar"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "AgentLens: Interpretable Safety Steering via Mechanistic Subspaces for Multi-Turn Coding Agent",
+        "url": "",
+        "authors": [
+          "Weidi Luo",
+          "Qiming Zhang",
+          "Yihao Quan",
+          "Mingyu Jin",
+          "Jie Cai",
+          "Chaowei Xiao",
+          "Jingcheng Niu",
+          "Zhen Xiang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "AI Scientists as Engines of Discovery: A Case for Development within Reformed Institutions",
+        "url": "",
+        "authors": [
+          "Raul Jimenez",
+          "Boris Bolliet",
+          "Francisco Villaescusa-Navarro",
+          "Rabih Zbib",
+          "Benjamin Wandelt",
+          "David N. Spergel",
+          "Thomas Meier",
+          "Jessica Montgomery",
+          "Hana Aliee",
+          "Licia Verde"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Beyond Time Series: Spatial Reasoning for Epidemic Forecasting via Multimodal Learning",
+        "url": "",
+        "authors": [
+          "Diana Guadalupe Gomez",
+          "Chenwei Wu",
+          "Zhiyi Wang",
+          "Liyue Shen",
+          "Alexander Rodríguez"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "From Handcrafted Features to Functional Edge Learning: Evolution of EEG Seizure Detection Frameworks",
+        "url": "",
+        "authors": [
+          "Sepideh Kheirollahi",
+          "Mohammad Rasoul Roshanshah"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "PsyBridge: A Hybrid Intelligent Framework for Multi-Dimensional Mental Health Assessment and Decision Support",
+        "url": "",
+        "authors": [
+          "Sunil Wanjari",
+          "Manish Thakre",
+          "Aayushi Asole",
+          "Sharwari Raut",
+          "Kwabena Adu-Duodu",
+          "Yinhao Li",
+          "Stanly Wilson"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Explainable AI for Mental Health Prediction in Drug-Affected Populations with Dragonfly Algorithm and GAN Oversampling",
+        "url": "",
+        "authors": [
+          "Ahnaf Atef Choudhury",
+          "Shahriar Siddique Ayon",
+          "Md. Ebrahim Hossain",
+          "Abdullah Al Mamun"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Physics-Informed Modeling for Wood Thermal Analysis and Prediction",
+        "url": "",
+        "authors": [
+          "Jingren Xie",
+          "Alex John Buckthal",
+          "Ryan Anthony O'Connor",
+          "Isak Worre Foged",
+          "Dim P. Papadopoulos"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Interpretable Kolmogorov-Arnold Network with Feature-Isolated Temporal Attention Mechanism for Electricity Load Forecasting",
+        "url": "",
+        "authors": [
+          "Jinhao Li",
+          "Hao Wang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "TROPT: An Open Framework for Unifying and Advancing Discrete Text Optimization",
+        "url": "",
+        "authors": [
+          "Matan Ben-Tov",
+          "Mahmood Sharif"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Discovering Latent Groups for Robust Classification",
+        "url": "",
+        "authors": [
+          "Ankur Garg",
+          "Ulrich Aïvodji",
+          "Samira Ebrahimi Kahou",
+          "Vincent Michalski"
+        ],
+        "date": "2026-06-23"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-23",
+    "paperCount": 8,
+    "markdown": "# Explainability at the Crossroads: From Autonomous Driving to Clinical AI and Adversarial Robustness\n\nToday's research landscape reveals a decisive shift from treating explainability as a post-hoc add-on to embedding it as a first-class architectural constraint, while simultaneously exposing fundamental vulnerabilities in our explanation methods themselves. The field grapples with two parallel challenges: building explanations that are both faithful to model behavior and interpretable to domain experts, while defending against emerging adversarial attacks that exploit the very mechanisms designed to ensure transparency.\n\n## Explainability for Autonomous and Agentic Systems\n\n[1] Braoui et al. address the critical trust gap in autonomous driving by combining Dueling Double Deep Q-Network (D3QN) for adaptive driving control with LLM-based explainability modules that translate agent behavior into natural language explanations for passengers. The DRL agents were trained to follow distinct driving requests—fast, comfort, and stop—demonstrating stable learning while the LLM component generates human-readable justifications for each driving decision. This work matters because it tackles the fundamental barrier to autonomous vehicle adoption: passengers need to understand *why* their vehicle makes specific maneuvers, not just trust that it will arrive safely.\n\n[6] Baldazzi et al. introduce VADAOrchestra, a neurosymbolic framework that bridges the gap between rigid Business Process Management systems and opaque LLM-based agentic systems by embedding reasoning traceability into adaptive workflows. The system combines symbolic reasoning for auditability with LLM-driven flexibility, maintaining deterministic guarantees where needed while leveraging neural components for context-sensitive adaptation. This contribution is significant for enterprise AI deployment, where organizations require both the adaptability of LLMs and the auditability required for regulatory compliance.\n\n[7] Villia et al. propose a novel pipeline for counterfactual explainability in Graph Neural Networks (GNNs) that couples factual explainability methods with link prediction techniques to generate both edge additions and removals in explanations. Their multi-faceted evaluation framework addresses the unmet need for generic, model-agnostic solutions that produce qualitatively intuitive explanations rather than merely technically valid ones. This work advances GNN explainability by recognizing that counterfactual reasoning—showing how a prediction would change with minimal graph perturbations—provides more actionable insights than static feature attribution.\n\n## Faithful Evaluation of Explanation Methods\n\n[2] Chen et al. introduce MedHal-Loc, a benchmark specifically designed to measure localization faithfulness in medical hallucination detectors—whether the top-ranked error unit from an \"explainable-by-architecture\" system actually corresponds to the erroneous span in clinical text. Using 300 controlled PubMedQA-derived statements, they demonstrate that architectures built around knowledge-graph triple decomposition, which are marketed for their inherent auditability, often fail to localize hallucinations faithfully when rigorously evaluated. This work is critical because it exposes the dangerous gap between claimed and measured explainability, particularly in high-stakes clinical settings where mis-localized hallucinations could mislead medical decision-making.\n\n[8] Khan and Khan present a novel attack family called Targeted Identity Re-Association (TIRA) that exploits vulnerabilities in SHAP-based explainability to manipulate both model fairness metrics and explanation outputs simultaneously. Unlike prior data-agnostic attacks that leave detectable artifacts, TIRA iteratively and probabilistically re-associates protected feature identities to mask unfairness while maintaining model performance. This work sounds an alarm for the explainability community: our auditing mechanisms for fairness and transparency are themselves attack surfaces that can be exploited to create a false sense of algorithmic accountability.\n\n## Explainability for Healthcare and Speech Applications\n\n[3] Wu et al. propose an influence-based, instance-level explainability framework for dysarthria severity assessment that explains each classification decision through supportive and competing training samples rather than opaque acoustic feature importance scores. Using gradient-based influence estimation, their approach identifies which training examples most strongly support or oppose a given prediction, providing clinicians with case-based reasoning that aligns with medical decision-making patterns. This matters because existing speech explainability methods provide feature importance scores that speech therapists find difficult to interpret, whereas example-based explanations mirror how clinicians learn from patient comparisons.\n\n[4] Haider et al. present the Lightweight Digital Twin and Federated Reinforcement Learning (LDT-FRL) framework for cyber-resilient Internet of Medical Things (IoMT), integrating a Temporal Attention Encoder with GRU backbone for flow-level threat classification. The framework combines lightweight digital twins for privacy-preserving simulation with PPO-driven honeypot deception, enabling proactive threat detection while adhering to strict healthcare data-privacy regulations. While not explicitly an explainability paper, the temporal attention mechanism provides interpretable time-series attribution for detected anomalies, addressing the critical need for transparent security decisions in medical environments.\n\n[5] Haider et al. extend their IoMT defense work with the Federated Temporal Graph Convolutional Network with Advantage Actor-Critic (Federated TGCN-A2C), which models device communication as temporal graphs for more nuanced threat detection. The integration of PyG-based temporal GCN with learned anomaly gates and LSTM-based digital twins provides interpretable graph-structured explanations of attack propagation patterns. This approach is notable for combining federated learning with graph-based explainability, enabling hospitals to collaboratively train threat detection models without sharing sensitive patient data while still understanding the structural reasoning behind security alerts.\n\n## Key Takeaways\n\n- **Faithfulness remains the central challenge**: MedHal-Loc [2] demonstrates that even architectures designed for \"explainability-by-design\" can fail at faithful localization, highlighting the urgent need for rigorous evaluation benchmarks that measure whether explanations actually correspond to model behavior.\n\n- **LLM-based explainability bridges the interpretability gap**: By translating technical model outputs into natural language justifications [1] and enabling case-based reasoning through training sample influence [3], LLMs offer a path toward explanations that domain experts can actually use in practice.\n\n- **Explainability creates new attack surfaces**: TIRA attacks [8] reveal that SHAP-based explanations and fairness metrics can be simultaneously manipulated, meaning our trust in explanation systems must be earned through adversarial robustness testing, not assumed.\n\n- **Neurosymbolic approaches offer a middle ground**: VADAOrchestra [6] shows that combining symbolic auditability with neural flexibility can satisfy both the adaptability requirements of modern AI and the transparency demands of regulated industries.\n\n- **Counterfactual reasoning provides more actionable explanations**: For graph neural networks [7], explanations showing how predictions change under minimal perturbations offer more intuitive and useful insights than static feature attribution.\n\n- **Healthcare applications demand domain-appropriate explanation formats**: Influence-based explanations [3] that mirror clinical reasoning patterns are more effective than generic feature importance scores, suggesting that explainability methods must be tailored to end-user cognitive frameworks.\n\n- **Security applications implicitly benefit from attention-based explainability**: Temporal attention mechanisms in IoMT defense frameworks [4, 5] provide interpretable anomaly attribution as a byproduct of their architectural design, demonstrating that explainability and performance need not be competing objectives.",
+    "papers": [
+      {
+        "title": "An LLM-Explainable DRL Framework for Passenger-Directed Autonomous Driving",
+        "url": "",
+        "authors": [
+          "Ouided Braoui",
+          "Meriem Bouali",
+          "Nadir Farhi"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "MedHal-Loc: Are \"Explainable-by-Architecture\" Medical Hallucination Detectors Faithful Localizers? A Localization Benchmark",
+        "url": "",
+        "authors": [
+          "Minmin Chen",
+          "Daojian Lu",
+          "Yining Dai",
+          "Jvyu Cai",
+          "Fengdan Chen"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Towards Dys-XAI: Influence-Based Explanations for Dysarthria Severity Assessment",
+        "url": "",
+        "authors": [
+          "Xiaoliang Wu",
+          "Qiyang Sun",
+          "Yupei Li",
+          "Erfan Loweimi",
+          "Jennifer Williams",
+          "Zhengjun Yue"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Federated Temporal Attention Intelligence for Cyber-Resilient IoMT: Lightweight Digital Twins and PPO-Driven Honeypot Deception",
+        "url": "",
+        "authors": [
+          "Syed Zeeshan Haider",
+          "Anwar Shah",
+          "Muneeb Arif",
+          "Hamza Iftikhar",
+          "Waqas Ali"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Privacy-Preserving Federated Temporal Graph Learning with Digital Twin--Guided Adaptive Deception for Cyber-Resilient IoMT",
+        "url": "",
+        "authors": [
+          "Syed Zeeshan Haider",
+          "Anwar Shah",
+          "Muneeb Arif",
+          "Hamza Iftikhar",
+          "Waqas Ali"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "VADAOrchestra: Neurosymbolic Orchestration of Adaptive Reasoning Workflows",
+        "url": "",
+        "authors": [
+          "Teodoro Baldazzi",
+          "Luigi Bellomarini",
+          "Andrea Coletta",
+          "Michela Iezzi",
+          "Carsten Maple",
+          "Alessandro Pesare",
+          "Emanuel Sallinger"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "A Completion-Aware Framework for Impactful Counterfactual Explainability in Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Maria Myrto Villia",
+          "Filippos Gouidis",
+          "Theodore Patkos",
+          "Panos Trahanias"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "The Unseen Hand: Manipulating Model Fairness and SHAP with Targeted Identity Re-Association Attacks",
+        "url": "",
+        "authors": [
+          "Sannaan Khan",
+          "Muhammad U. S. Khan"
+        ],
+        "date": "2026-06-23"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-23",
+    "paperCount": 39,
+    "markdown": "# Multimodal Foundation Models: From Brain Decoding to Scientific Discovery and Clinical Reasoning\n\nToday's research landscape reveals a decisive shift toward multimodal systems that move beyond simple perception into structured reasoning, generative assimilation, and agentic workflows. Across 39 papers, the community is grappling with fundamental challenges in data efficiency, missing modalities, cultural and orthographic bias, and the integration of physical simulations with neural representations, while pushing the boundaries of what multimodal models can achieve in scientific discovery, healthcare, and human-computer interaction.\n\n## Neural Decoding, Brain-Computer Interfaces, and Physiological Signal Understanding\n\nMindAlign [1] addresses the challenge of decoding inner speech from fMRI signals without requiring task-specific decoder fine-tuning. The authors propose a decoupled two-stage brain-to-language framework that learns a subject-specific neural-semantic alignment, enabling open-ended text generation from fMRI signals without modifying the underlying language model. This approach overcomes fundamental barriers in limited training data and inter-subject variability, offering a scalable pathway toward brain-computer interfaces that respect individual neural architectures.\n\nEpiiSLM [30] introduces a dual foundation model system for identifying the epileptogenic zone (EZ) from stereo-electroencephalography (sEEG) recordings in drug-resistant epilepsy patients. By training a signal foundation model on over 104,990 minutes of sEEG data and anchoring EZ biomarker extraction on non-epileptic signals, the system integrates a language foundation model that synthesizes multimodal clinical evidence. This work addresses the critical clinical need for more accurate EZ identification, where current seizure freedom rates remain below 50%, by leveraging all available recordings regardless of surgical outcome.\n\nPhysiology-Aware CNN and Zero-Shot Multimodal LLMs for ECG Image Classification [33] provides a comparative study investigating whether zero-shot multimodal LLMs can reliably distinguish normal and abnormal ECG images. The authors find that while multimodal LLMs are increasingly adopted for ECG interpretation, their performance lacks validation compared to clinically-grounded CNN-based models that explicitly model waveform morphology, lead relationships, and interval measurements. This work serves as an important cautionary tale about the gap between general-purpose multimodal models and physiologically-informed specialized architectures.\n\nDeep learning-based detection of cessation of breathing in pre-term infants [34] tackles apnoea of prematurity detection using routinely monitored physiological signals in the NICU. The authors evaluate deep learning approaches against existing bedside monitors that rely primarily on respiratory rate and oxygen saturation thresholds, which generate high false-positive alarm rates. By improving automated detection using routinely acquired clinical signals, this work demonstrates the potential to enhance identification of clinically meaningful events without requiring additional sensing hardware.\n\n## Multimodal Reasoning, Benchmarks, and Evaluation Frameworks\n\nPuMVR [3] introduces the first benchmark designed to quantify orthographic bias in Vision-Language Models, specifically targeting Punjabi's three active scripts (Gurmukhi, Shahmukhi, Devanagari). The authors provide 375 culturally grounded image-reasoning tasks that reveal how VLMs operate under the flawed assumption that one language corresponds to a single writing system, overlooking billions of users of multi-script languages. This work forces the community to confront the orthographic fractures in supposedly \"multilingual\" models and provides a methodological template for diagnosing similar biases across other multi-script languages.\n\nCulMind and CulMind-R [11] present a high-quality benchmark for multimodal Chinese Cultural Heritage (CCH) understanding, covering 50 tasks from collections of more than 100 museums, with a 24-task reasoning subset for evaluating reasoning process quality. While existing CCH benchmarks mainly emphasize final-answer accuracy, this work addresses the underexplored dimensions of reasoning accuracy and completeness by adaptively defining task-specific dimensions for reasoning process evaluation. This benchmark pushes MLLMs toward fine-grained reasoning over visual, textual, stylistic, and historical clues in culturally rich domains.\n\nPIVOTSBench [23] introduces the first benchmark built from Social-IQ 2.0 and YouTube data to evaluate MLLMs' ability to predict fine-grained interpersonal relationship dimensions grounded in established psychology research. By including auxiliary tasks that assess models' ability to identify and reason about bidirectional relationship dimensions, this work addresses the largely unexplored territory of multimodal social intelligence. This benchmark challenges the community to bridge the gap between human innate social reasoning capabilities and current MLLM limitations.\n\nTSCognition [16] introduces a multimodal benchmark for multi-dimensional time series reasoning that moves beyond curve-fitting formulations. The authors identify a fundamental mismatch between existing task formulations and LLM strengths, where most settings reduce time series understanding to low-level prediction while ignoring semantic, contextual, and reasoning-intensive temporal decision-making. By framing time series analysis as a reasoning task rather than a prediction task, this work unlocks the potential for LLMs to leverage their world knowledge capabilities in temporal domains.\n\n## Multimodal Scientific Discovery, Verification, and Materials Understanding\n\nSciLens [4] presents an evidence-conditioned atomic entailment framework for multimodal scientific claim verification that decomposes each claim into atomic units for fine-grained verification against multimodal evidence. Rather than asking a vision-language model for a direct binary judgment, SciLens handles claims that combine numerical results, comparisons, scope qualifiers, and explanatory context with evidence encoded in tables and figures. This agentic approach addresses the fundamental challenge that scientific claim verification requires structured reasoning over heterogeneous evidence modalities.\n\nBeaver [12] introduces an agent harness that extracts structured information from scientific papers while preserving provenance to supporting evidence across long text, dense tables, and figures. The system combines a frontier agent with multimodal evidence tooling to address the challenge that key evidence in scientific curation is scattered across multiple fragments requiring reasoning rather than simple span copying. This work directly enables scalable scientific discovery workflows by automating the structured curation that currently bottlenecks literature-based knowledge extraction.\n\nAtomistic Language Models (ALMs) [14] pursue native multimodality by unifying a pretrained atomistic encoder, large language model, and denoising diffusion model through purely continuous projectors within a single language backbone. The system understands atomistic structures, generates materials from natural language, and optimizes crystal structures as instructed by text, breaking the traditional separation between atomistic structure and natural language modeling. This work represents a paradigm shift toward truly multimodal scientific models that can reason across symbolic and structural representations of matter.\n\nBioMatrix [17] presents the first multimodal foundation model that natively integrates sequences, structures, and natural language for both molecules and proteins within a single decoder-only architecture. While existing biological foundation models either fuse multiple modalities within a single entity type or span multiple entity types without explicit structural modeling, BioMatrix achieves both native multimodality and broad entity coverage. This unified architecture enables generative capabilities across the modality matrix of biological sequences, 3D structures, and natural language descriptions.\n\n## Missing Modalities, Data Efficiency, and Robust Multimodal Learning\n\nEMMS [2] proposes the Evidential Missing Modality Survival Fusion model for multimodal survival prediction under missing modalities, offering a straightforward, computationally effective approach without requiring a generative phase. While recent multimodal survival prediction models demonstrate strong performance by leveraging complementary information, they assume data completeness and exhibit limited robustness toward missing modalities frequently encountered in clinical settings. This work directly addresses a critical deployment barrier for multimodal clinical models in real-world scenarios where complete data is the exception rather than the rule.\n\nRAMMESI [31] introduces a retrieval-augmented multimodal framework for enzyme-substrate interaction prediction that explicitly handles low-homology distribution shift. By learning explicit pairwise enzyme-substrate representations through directional cross-modal interaction modules and retrieving relevant training examples, the system addresses the fundamental challenge that test enzymes often share limited sequence identity with training examples. This retrieval-augmented approach provides a template for robust biomolecular prediction under realistic distribution shifts.\n\nFederated Self-Contextualization (FSC) [35] proposes a multimodal language model framework for in-context clinical audio diagnosis across federated hospital clients, bypassing scarce real diagnostic labels through unsupervised clustering. The progressive three-stage pipeline first aligns audio embeddings with the language model via caption generation before enabling contextual reasoning from support-query pairs. This work demonstrates how in-context learning can be unlocked from decentralized, label-scarce medical audio data while preserving patient privacy through federated learning.\n\nDemographic Metadata as Construct-Irrelevant Noise [7] investigates the impact of naive metadata concatenation on predictive accuracy, training convergence, and score parity of a DistilBERT-based Automated Essay Scoring system. While human grading is frequently influenced by students' demographic characteristics, this study reveals how specific multimodal fusion strategies can introduce construct-irrelevant noise that degrades both fairness and model performance. This work provides crucial insights for the responsible deployment of multimodal AES systems in educational assessment.\n\n## Multimodal Agents, Robotics, and Interactive Systems\n\nSignVLA [9] presents a real-time sign-language-guided VLA framework for accessible human-robot interaction, introducing a modular sign-to-text interface that converts visual sign gestures into semantic instructions compatible with downstream VLA policies. While existing VLA interfaces primarily rely on speech or text input, limiting accessibility for deaf, hard-of-hearing, and speech-impaired users, SignVLA demonstrates real-time sign language recognition integrated with robotic manipulation. This work expands the accessibility frontier of multimodal robotics and challenges assumptions about the modalities through which humans should interact with autonomous systems.\n\nSPARC [6] introduces a multi-agent system that answers questions over circuit diagrams by grounding reasoning in executable physics-based simulations. The system uses LLM agents to synthesize, execute, and analyze simulation programs, achieving 83% accuracy with up to 58% absolute improvement over baselines while enabling systematic error diagnosis. This work demonstrates how grounding multimodal reasoning in executable simulations rather than learned correlations can dramatically improve reliability in domain-specific QA.\n\nHolmes [18] presents a multi-agent system that automates root cause analysis for mobile crashes by synthesizing multimodal runtime signals including stack traces, logs, and thread states to reconstruct failure contexts without reproduction. Traditional static analysis struggles with the scale and complexity of ultra-large-scale industrial applications, while existing LLM-based agents often rely on reproducible environments unavailable in post-mortem scenarios. This work demonstrates how multimodal agentic diagnosis can operate at industrial scale in the challenging mixed-language mobile environment.\n\nENVS [26] proposes Environment-Native Verified Search (ENVS), a training-time search-and-filter pipeline that uses the environment to construct verified supervision before policy optimization for long-horizon GUI agents. By branching over behaviorally distinct GUI actions in live OSWorld VMs, verifying successful task completion, and filtering trajectories for policy training, ENVS addresses the challenge of sparse, delayed feedback in desktop automation. This work provides a practical approach to training multimodal agents that can execute precise mouse and keyboard sequences in live environments.\n\n## Theory, Robustness, and Limitations of Multimodal Models\n\nMultimodal Chain-of-Thought Reasoning [21] systematically investigates what multimodal CoT reasoning can and cannot do across 12 multimodal tasks using 14 non-reasoning models and 8 reasoning models. The analysis reveals that CoT is not a free lunch and its effectiveness varies significantly across perception and reasoning categories, with important findings about where and why it falls short. This work provides essential guidance for practitioners deciding when to deploy CoT reasoning in multimodal applications.\n\nWhen Does a Video-Language Model Stop Watching? [19] characterizes the formation and reversal dynamics of visual shortcuts in multimodal RLVR, treating the strength of a grounding penalty as a control knob. The study reveals that outcome-only optimization can drive a model to stop attending to the video and instead exploit linguistic priors, documenting how this failure forms, whether it can be undone, and when intervention still helps. This mechanistic understanding of reward hacking in multimodal RLVR is crucial for developing more reliable training procedures.\n\nHidden-State Probing for Indirect Prompt Injection [32] argues, through a cautionary case study, that a high probing AUC on a clean-vs-attack split is not sufficient evidence of malicious-content detection in multimodal computer-use agents. The authors introduce two post-hoc diagnostics—a paired-construction scalar baseline on text-side injections and same-step nuisance controls—that reveal how probing can conflate superficial feature differences with genuine safety detection. This work provides critical methodological guidance for evaluating safety mechanisms in multimodal agents.\n\nOn the Limits of Prompt-Conditioned Language Models as General-Purpose Learners [39] argues that the portrayal of LLMs as general-purpose solvers overlooks a fundamental constraint: language is a compressed and capacity-limited interface for conveying task information. By modelling user-system interaction as a bilevel cheap-talk game and deriving PAC-Bayes bounds, the authors decompose the fundamental limitations of prompt-conditioned learning. This theoretical analysis provides a principled framework for understanding what multimodal models can and cannot learn through prompting alone.\n\n## Key Takeaways\n- **Multimodal models are transitioning from perception to structured reasoning and generative assimilation**, with frameworks like atomistic language models and biological foundation models unifying sequences, structures, and language within single architectures for scientific discovery.\n\n- **Missing modalities and data efficiency remain critical deployment barriers**, with approaches like evidential fusion, retrieval augmentation, and federated self-contextualization offering practical solutions for real-world clinical and scientific settings where complete data is the exception.\n\n- **Benchmarking is expanding to capture cultural, orthographic, and social dimensions previously ignored**, revealing significant biases in supposedly multilingual VLMs and challenging the community to develop more inclusive evaluation frameworks.\n\n- **Grounding in executable simulations and physical models dramatically improves reliability** for domain-specific tasks, as demonstrated by SPARC for circuit analysis and physics-informed frameworks for wood thermal analysis, moving beyond purely correlational learning.\n\n- **Agentic systems are enabling automated scientific workflows at scale**, from structured literature curation with provenance tracking to root cause analysis of software crashes, demonstrating the maturity of multimodal agents for real-world deployment.\n\n- **Theoretical understanding of multimodal model limitations is advancing**, with rigorous analyses of visual shortcuts in RLVR, the limits of prompt-conditioned learning, and the fragility of probing-based safety evaluation providing essential guidance for responsible development.\n\n- **Accessibility and inclusivity are emerging as first-class design considerations**, with sign-language-guided robotics and culturally-grounded benchmarks pushing multimodal systems to serve diverse user populations beyond traditional text-and-speech interfaces.",
+    "papers": [
+      {
+        "title": "MindAlign: Decoding Inner Speech from fMRI Signals via Multimodal Embedding Alignment under Limited Data",
+        "url": "",
+        "authors": [
+          "Muxuan Liu",
+          "Ichiro Kobayashi",
+          "Satoshi Nishida"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Evidential Fusion Network for Multimodal Survival Prediction under Missing Modalities",
+        "url": "",
+        "authors": [
+          "Yucheng Xing",
+          "Hailan Mo",
+          "Zi Wang",
+          "Ling Huang",
+          "Mengling Feng"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Beyond 'One Language, One Script': Quantifying Orthographic Bias in Multilingual VLMs with PuMVR",
+        "url": "",
+        "authors": [
+          "Prabhjot Singh",
+          "Bhushan Pawar",
+          "Madhu Reddiboina"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "SciLens: Multi-modal Scientific Claim Verification with Agentic Entailment and Grounding",
+        "url": "",
+        "authors": [
+          "Yueming Wang",
+          "Tianshi Zheng",
+          "Jiaxin Bai",
+          "Yangqiu Song",
+          "Ginny Wong",
+          "Simon See"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "$Ω$: Operator-based Mixture Ensemble for Generative Assimilation",
+        "url": "",
+        "authors": [
+          "Pouria Behnoudfar",
+          "Nan Chen"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "SPARC: A Multi-Agent System for Electrical Circuit Question Answering",
+        "url": "",
+        "authors": [
+          "Mushtari Sadia",
+          "Zhenning Yang",
+          "Umme Habiba Lamia",
+          "Nishat Shawrin",
+          "Ang Chen",
+          "Amrita Roy Chowdhury"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Demographic Metadata as Construct-Irrelevant Noise in DistilBERT-Based Automated Essay Scoring",
+        "url": "",
+        "authors": [
+          "Teik Peng Ch'ng",
+          "Hui Na Chua"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Is Our Benchmark Enough? An Analysis of Continual Learning for MLLMs",
+        "url": "",
+        "authors": [
+          "Van-Tuan Tran",
+          "Shruthi Gowda",
+          "Merim Dzaferagic",
+          "Marco Ruffini"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "SignVLA: Real-Time Sign Language-Guided Robotic Manipulation via Attention LSTM and Vision-Language-Action Models",
+        "url": "",
+        "authors": [
+          "Ningwei Bai",
+          "Xinyu Tan",
+          "Harry Gardner",
+          "Zhengyang Zhong",
+          "Liuhaichen Yang",
+          "Luoyu Zhang",
+          "Zhekai Duan",
+          "Monkgogi Galeitsiwe",
+          "Zezhi Tang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Intrinsic Flow Matching on Quantum Pure-State Manifolds with Phase-Aligned Transport",
+        "url": "",
+        "authors": [
+          "Jian Xu",
+          "Delu Zeng",
+          "John Paisley",
+          "Qibin Zhao"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "CulMind: Benchmarking Multimodal Understanding and Reasoning in Chinese Cultural Heritage",
+        "url": "",
+        "authors": [
+          "Zhangwei Cao",
+          "Shuhan Fan",
+          "Yuting Wei",
+          "Jiajun Zhang",
+          "Yihang Peng",
+          "Qi Meng",
+          "Yangfu Zhu",
+          "Liangbin Yang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Building Agent Harnesses for Scientific Curation from Multimodal Sources",
+        "url": "",
+        "authors": [
+          "Sheng Zhang",
+          "Qin Liu",
+          "Renqian Luo",
+          "Shufang Xie",
+          "Reuben Tan",
+          "Sean Hayes",
+          "Gregory Bryman",
+          "Wendong Ge",
+          "Roxy Zhang",
+          "Oluwaseun Egbelowo",
+          "Kelly Yee",
+          "Hoifung Poon"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "DataClaw0: Agentic Tailoring Multimodal Data from Raw Streams",
+        "url": "",
+        "authors": [
+          "Cong Wan",
+          "Zeyu Guo",
+          "Zijian Cai",
+          "Jiangyang Li",
+          "SongLin Dong",
+          "Lin Peng",
+          "Xiangyang Luo",
+          "Zhiheng Ma",
+          "Yihong Gong"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Atomistic Language Models Understand and Generate Materials",
+        "url": "",
+        "authors": [
+          "Sathya Edamadaka",
+          "Krithik Ramesh",
+          "Ju Li",
+          "Rafael Gómez-Bombarelli"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Towards Transparent Mental Health Insights: An Explainable AI Model for Career-Related Depression and Anxiety Among University Students Using Structured Data",
+        "url": "",
+        "authors": [
+          "Arsham Azam",
+          "Rasikh Ali",
+          "Tayyaba Farhat",
+          "Sheeraz Akram"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "From Recognition to Understanding: Unlocking Cognitive Time Series Reasoning with LLMs",
+        "url": "",
+        "authors": [
+          "Xin Qiu",
+          "Junlong Tong",
+          "Yao Zhang",
+          "Yunpu Ma",
+          "Wei Zhang",
+          "Xiaoyu Shen"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "BioMatrix: Towards a Comprehensive Biological Foundation Model Spanning the Modality Matrix of Sequences, Structures, and Language",
+        "url": "",
+        "authors": [
+          "Qizhi Pei",
+          "Zhimeng Zhou",
+          "Yi Duan",
+          "Yiyang Zhao",
+          "Wei Li",
+          "Han Guo",
+          "Liang He",
+          "Chengping Li",
+          "Chang-Yu Hsieh",
+          "Conghui He",
+          "Rui Yan",
+          "Lijun Wu"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Holmes: Multimodal Agentic Diagnosis for Mixed-Language Mobile Crashes at Industrial Scale",
+        "url": "",
+        "authors": [
+          "Jia Li",
+          "Wenyuan Ma",
+          "Ting Peng",
+          "Haibin Zheng",
+          "Yuetang Deng"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "When Does a Video-Language Model Stop Watching? Reward Strength Controls the Formation and Reversal of Visual Shortcuts in Multimodal RLVR",
+        "url": "",
+        "authors": [
+          "Zekun Xu"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Efficient Multimodal Clinical Question Answering for Pulmonary Embolism Risk Assessment",
+        "url": "",
+        "authors": [
+          "Xiangyuan Xue",
+          "Yang Yu",
+          "Yan Gao",
+          "Junyan Wang",
+          "Bin Chen",
+          "Lingyan Ruan",
+          "Ting Dang",
+          "Hong Jia"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Look Light, Think Heavy: What Multimodal Chain-of-Thought Reasoning Can and Cannot Do",
+        "url": "",
+        "authors": [
+          "Zhuoran Jin",
+          "Kejian Zhu",
+          "Hongbang Yuan",
+          "Yupu Hao",
+          "Pengfei Cao",
+          "Yubo Chen",
+          "Kang Liu",
+          "Jun Zhao"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Cohort-Anchored Foundation Models for Electronic Health Records: From Risk Scores to Auditable Peer Cohorts",
+        "url": "",
+        "authors": [
+          "Kaiping Zheng"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "PIVOTSBench: Evaluating Fine-Grained Interpersonal Relationship Reasoning in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Shuxiang Zhang",
+          "Yiting Yin",
+          "Wenxuan Song",
+          "Yuhang Wu",
+          "Miao Liu"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "OphthaDT: Generative Digital Twins for Forecasting Visual Acuity Trajectories in Ophthalmology",
+        "url": "",
+        "authors": [
+          "Pietro Belligoli",
+          "Nikita Makarov",
+          "Sayedali Shetab Boushehri",
+          "Fabian Schmich",
+          "Raul Rodriguez-Esteban",
+          "Michael Menden"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Beyond Time Series: Spatial Reasoning for Epidemic Forecasting via Multimodal Learning",
+        "url": "",
+        "authors": [
+          "Diana Guadalupe Gomez",
+          "Chenwei Wu",
+          "Zhiyi Wang",
+          "Liyue Shen",
+          "Alexander Rodríguez"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "ENVS: Environment-Native Verified Search for Long-Horizon GUI Agents",
+        "url": "",
+        "authors": [
+          "Yincheng Zhou",
+          "Athena Zhuoming Zhong",
+          "Shijie Zhang",
+          "Kevin Zhang",
+          "Teresa Xiaotao Shang",
+          "Shanghang Zhang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "VeriEvol: Scaling Multimodal Mathematical Reasoning via Verifiable Evol-Instruct",
+        "url": "",
+        "authors": [
+          "Haoling Li",
+          "Kai Zheng",
+          "Jie Wu",
+          "Can Xu",
+          "Qingfeng Sun",
+          "Han Hu",
+          "Yujiu Yang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Generative Robust Optimisation",
+        "url": "",
+        "authors": [
+          "Yuhui Yin",
+          "Vassilis M. Charitopoulos"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "TailorMind: Towards Preference-Aligned Multimodal Content Generation",
+        "url": "",
+        "authors": [
+          "Hengji Zhou",
+          "Ye Liu",
+          "Yufeng Liu",
+          "Si Wu",
+          "Lianghao Xia",
+          "Liqiang Nie"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Foundation Models for Epileptogenic Zone Identification in Drug-Resistant Epilepsy",
+        "url": "",
+        "authors": [
+          "Thi Kieu Khanh Ho",
+          "Thomas Lai",
+          "Petr Klimes",
+          "Jan Cimbalnik",
+          "Martin Pail",
+          "Milan Brazdil",
+          "Birgit Frauscher",
+          "Narges Armanfard"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Retrieval-Augmented Multimodal Learning for Enzyme-Substrate Interaction Prediction Under Low-Homology Shift",
+        "url": "",
+        "authors": [
+          "Chen Liu",
+          "Bingxin Zhou",
+          "Xinyuan Wang",
+          "Ming Li",
+          "Guisheng Fan",
+          "Liang Hong"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "When AUC 0.998 Is Not Enough: A Candidate Evaluation Protocol for Hidden-State Probes of Indirect Prompt Injection in Multimodal Computer-Use Agents",
+        "url": "",
+        "authors": [
+          "Yanhang Li",
+          "Zhichao Fan",
+          "Zexin Zhuang"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Physiology-Aware CNN and Zero-Shot Multimodal LLMs for ECG Image Classification: A Comparative Study",
+        "url": "",
+        "authors": [
+          "Khalil Ahammad",
+          "Derek Abbott",
+          "Mohsen Dorraki"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Deep learning-based detection of cessation of breathing in pre-term infants",
+        "url": "",
+        "authors": [
+          "Dineo Serame",
+          "Lionel Tarassenko",
+          "Mauricio Villarroel"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Unlocking In-Context Learning in Audio-Language Models from Decentralized Medical Audio",
+        "url": "",
+        "authors": [
+          "Ran Piao",
+          "Tsai-Ning Wang",
+          "Martijn den Dekker",
+          "Linda Moonen",
+          "Hareld Kemps",
+          "Yuan Lu",
+          "Aaqib Saeed"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Dynamic multi-agent deep reinforcement learning-based pricing and incentivization approach in multimodal transportation networks",
+        "url": "",
+        "authors": [
+          "Khadidja Kadem",
+          "Mostafa Ameli",
+          "Carlos Lima Azevedo",
+          "Mahdi Zargayouna",
+          "Latifa Oukhellou"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Distribution-Aware Diffusion-LLM for Robust Ultra-Long-Term Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Falguni Ghosh",
+          "Vahid Hashemi",
+          "Bernhard Kainz"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "Physics-Informed Modeling for Wood Thermal Analysis and Prediction",
+        "url": "",
+        "authors": [
+          "Jingren Xie",
+          "Alex John Buckthal",
+          "Ryan Anthony O'Connor",
+          "Isak Worre Foged",
+          "Dim P. Papadopoulos"
+        ],
+        "date": "2026-06-23"
+      },
+      {
+        "title": "On the Limits of Prompt-Conditioned Language Models as General-Purpose Learners",
+        "url": "",
+        "authors": [
+          "David Mguni",
+          "Julian Ma",
+          "Jun Wang"
+        ],
+        "date": "2026-06-23"
+      }
+    ]
+  }
+]
