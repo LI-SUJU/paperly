@@ -1,0 +1,307 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-28",
+    "paperCount": 7,
+    "markdown": "# Interpretability in the Age of Agentic AI: From Mechanistic Steering to Causal Grounding\n\nToday's research landscape reveals a maturing field where interpretability is no longer just about understanding model internals, but actively steering behavior, ensuring factual consistency, and grounding outputs in causal structures. The community is moving beyond post-hoc analysis toward proactive, interventionist frameworks that treat interpretability as a first-class engineering concern for safety-critical and high-stakes deployments.\n\n## Mechanistic Steering and Behavior Control\n\n[1] **Bohacek et al.** address the fundamental bottleneck in activation steering: the need for high-quality contrastive data pairs to isolate behavioral features. Their key innovation is an **iterative data generation pipeline** that uncovers \"cascading linear features\"—hierarchically structured representations that mediate sycophantic behavior in language models. By moving beyond simple binary contrastive pairs, they demonstrate that steering vectors derived from cascading features achieve more targeted and less disruptive behavioral modification than single-vector approaches. This work matters because it provides a practical methodology for detecting and controlling subtle social biases (like sycophancy) without requiring exhaustive manual curation of training examples.\n\n[2] **Herrmann and Levinstein** bridge mechanistic interpretability with the philosophical tradition of radical interpretation to answer a foundational question: given a model's computational facts, how do we solve for its beliefs, desires, and meanings? Their framework treats this as an inference problem where interpretability tools must reconstruct an agent's intentional states from internal representations, drawing formal parallels to Quinean interpretation. The key contribution is a principled methodology for distinguishing genuine goal-directed behavior from mere pattern matching, which has direct implications for deception detection in deployed AI systems. This matters because as models become more capable, the ability to reliably attribute beliefs and intentions to their internals becomes crucial for trust and safety.\n\n[3] **Lu et al.** tackle the critical problem of diagnostic hallucinations in multimodal medical report generation for Transcatheter Aortic Valve Replacement (TAVR) planning. Their **TAVR-VLM** framework introduces **Risk-Conditioned Causal Grounding Attention (R-CGA)**, which instantiates a model-internal causal pathway: Risk → Region → Word. This structural grounding mechanism compresses multimodal inputs through a causal risk bottleneck, ensuring that generated text is anatomically grounded in specific risk regions rather than hallucinated. The approach achieves significant reductions in hallucination rates compared to standard MLLMs while maintaining competitive clinical accuracy. This matters because it demonstrates how causal structure can be embedded directly into attention mechanisms to enforce interpretability by design in high-stakes medical applications.\n\n## Factual Consistency and Task-Specific Knowledge\n\n[5] **Elhelo, Globerson, and Geva** investigate a fundamental assumption underlying the view of language models as knowledge bases: that factual knowledge should be consistently accessible across different query formulations. Through systematic behavioral and mechanistic analyses, they demonstrate that LMs encode knowledge in a **task-specific manner**, where facts acquired on one task frequently fail to co-emerge on others during training. Their parameter localization analysis reveals that knowledge about the same entity is distributed across different circuit configurations depending on the task context. This finding has profound implications for reliability: it explains why models exhibit inconsistent factual recall across different prompts and suggests that building truly consistent knowledge bases from LMs requires task-agnostic representation learning.\n\n[6] **Ma et al.** address the triple challenge of interpretability, unstructured information utilization, and long-term objective alignment in e-commerce dynamic pricing. Their **AIGP** framework leverages LLMs prompted with domain knowledge, structured sales data, and textual product context to generate **interpretable, knowledge-aware pricing decisions**. The core technical innovation is a supervised fine-tuning pipeline that aligns short-term pricing actions with cumulative business metrics (GMV, ROI, milestone achievement) while maintaining human-readable explanations for each decision. This matters because it demonstrates that interpretability can be engineered into a production system without sacrificing performance, bridging the gap between black-box optimization and business stakeholder trust.\n\n## Robust Explainability Under Distribution Shift\n\n[4] **Babor et al.** tackle batch-to-batch variation in near-infrared spectroscopy for edible insect authentication—a concrete domain where interpretability must survive real-world distribution shifts. Their **Batch-Invariant Spectral Network (BISN)** incorporates a novel spectral alignment mechanism that learns batch-invariant features while maintaining explainability through attention-based wavelength attribution. The key contribution is demonstrating that spectral fingerprints responsible for species classification remain stable across production batches when properly regularized, enabling both high accuracy (>95%) and faithful explanations in deployed settings. This matters for AI safety in regulated industries where models must not only perform well on training distributions but also provide reliable attribution under operational drift.\n\n[7] **Mhapsekar et al.** address a meta-level challenge: how to dynamically allocate computational resources to maintain interpretability, fairness, and predictive performance under non-stationary deployment conditions. Their **AURORA-AI** framework unifies Hamilton-Jacobi-Bellman optimal control theory with Lyapunov-based stability monitoring to continuously redistribute computational budgets across model components. The framework incorporates a **fairness-aware composite utility function** that explicitly trades off accuracy, explanation fidelity, and demographic parity during resource allocation. This matters because it provides a principled mathematical framework for ensuring that interpretability is not sacrificed when systems must adapt to changing computational constraints or data distributions.\n\n## Key Takeaways\n- **Activation steering is maturing from ad-hoc to principled**: Iterative data generation pipelines [1] and intentional agent frameworks [2] are providing systematic methodologies for controlling and attributing model behavior, moving beyond simple feature visualization.\n- **Causal grounding emerges as a dominant paradigm**: Embedding explicit causal pathways (Risk→Region→Word) into attention mechanisms [3] represents a new approach to enforcing interpretability by architectural design rather than post-hoc analysis.\n- **Task-specific knowledge encoding challenges the \"model-as-knowledge-base\" view**: Facts are not stored uniformly [5]; the same entity knowledge is distributed across different circuits depending on the task context, explaining inconsistent factual recall.\n- **Interpretability can be engineered into production systems without sacrificing performance**: Both AIGP [6] and BISN [4] demonstrate that domain-knowledge-guided LLMs and spectral bottleneck architectures can simultaneously achieve high accuracy and faithful explanations in real-world deployments.\n- **Dynamic resource orchestration is necessary for sustained interpretability**: Maintaining explanation quality under distribution shift requires explicit control-theoretic frameworks [7] that treat interpretability as a resource to be optimally allocated, not a static property.\n- **The gap between mechanistic interpretability and practical deployment is narrowing**: Research is increasingly addressing concrete failure modes (hallucination, distribution shift, inconsistent knowledge) with engineering-grounded solutions.\n- **Intentional attribution remains the hardest open problem**: While we can steer behavior [1] and enforce causal structure [3], reliably determining whether a model \"believes\" something [2] vs. merely producing it as a statistical pattern remains a foundational challenge requiring further philosophical and technical integration.",
+    "papers": [
+      {
+        "title": "Detecting and Controlling Sycophancy with Cascading Linear Features",
+        "url": "",
+        "authors": [
+          "Maty Bohacek",
+          "Rishub Jain",
+          "Nicholas Dufour",
+          "Thomas Leung",
+          "Chris Bregler",
+          "Roma Patel"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Radical AI Interpretability",
+        "url": "",
+        "authors": [
+          "Daniel A. Herrmann",
+          "Benjamin A. Levinstein"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "TAVR-VLM: Risk-Conditioned Causal Grounding for Hallucination-Resistant Report Generation",
+        "url": "",
+        "authors": [
+          "Zhixiang Lu",
+          "Xiwei Liu",
+          "Sifan Song",
+          "Changkai Ji",
+          "Anh Nguyen",
+          "Jionglong Su",
+          "Imran Razzak",
+          "Jinfeng Wang"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Batch-Invariant Spectral Intelligence for Robust and Explainable Insect Authentication",
+        "url": "",
+        "authors": [
+          "Majharulislam Babor",
+          "Giacomo Rossi",
+          "Annalisa Altavilla",
+          "Oliver Schlüter",
+          "Marina M. -C. Höhne"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "LMs as Task-Specific Knowledge Bases: An Interpretability Analysis",
+        "url": "",
+        "authors": [
+          "Amit Elhelo",
+          "Amir Globerson",
+          "Mor Geva"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "AIGP: An LLM-Based Framework for Long-Term Value Alignment in E-Commerce Pricing",
+        "url": "",
+        "authors": [
+          "Chennan Ma",
+          "Yanning Zhang",
+          "Siqi Hong",
+          "Xiuchong Wang",
+          "Fei Xiao",
+          "Keping Yang"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Adaptive Utility driven Resource Orchestration for Resilient AI (AURORA-AI)",
+        "url": "",
+        "authors": [
+          "Rahul Umesh Mhapsekar",
+          "Ilias Cherkaoui",
+          "Lizy Abraham",
+          "Indrakshi Dey"
+        ],
+        "date": "2026-06-28"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-28",
+    "paperCount": 5,
+    "markdown": "# Explaining the Unexplainable: Advances in Interpretability, Grounding, and Resource-Aware Transparency in AI\n\nToday's research landscape reveals a growing maturity in explainability research, moving from post-hoc attribution methods toward integrated frameworks that bake transparency into model architecture and resource allocation. The community is tackling three interconnected challenges: retrofitting explainability onto complex neural architectures like temporal GNNs and diffusion models, grounding LLM outputs in verifiable knowledge bases, and dynamically balancing explainability with other desiderata like fairness and computational efficiency under non-stationary conditions.\n\n## Decomposing and Diagnosing Inference Pathways\n\n[1] The paper \"Retrieval-Warmed Energy-Based Reasoning\" addresses the critical problem of understanding which components contribute to performance gains in warm-started diffusion samplers for structured reasoning. The authors propose RW-EBR, augmenting an IRED energy-based diffusion model with a Modern Hopfield trajectory memory, and contribute a five-arm ablation methodology—oracle, best-constant, per-query-random, shuffled, and aligned—that disentangles three confounded effects: class-prior bias shift, stochastic warm-starting, and graph-aligned value reuse. This diagnostic decomposition, adapted from LLM research, reveals that much of the apparent benefit from retrieval-warming stems from bias shifts rather than genuine reasoning improvements, a finding that forces the community to re-examine prior claims about retrieval-augmented diffusion inference. The methodology itself is a significant contribution, providing a rigorous framework for isolating causal mechanisms in complex inference pipelines.\n\n[4] \"Explaining Temporal Graph Neural Networks via Feature-induced Information Flow\" tackles the opacity of Event-based Temporal Graph Neural Networks (ETGNNs), which have become dominant in social network analysis, epidemic tracing, and political event forecasting. The authors identify a critical gap: existing explanation methods only trace contributions from event-related embeddings to the output, completely overlooking information pathways that flow through event-induced variables. Their approach explicitly models these mediated interactions, providing a more complete information flow map that captures how temporal dynamics propagate through the network's internal state. This matters because temporal graphs are increasingly deployed in high-stakes domains like disease surveillance and financial fraud detection, where incomplete explanations can mask dangerous model failures.\n\n## Grounding and Verifiability in Language Models\n\n[2] KARLA proposes a novel method for allowing LLMs to automatically pull factual knowledge from a knowledge base during token generation, addressing the fundamental tension between parametric memory and verifiable grounding. The core technical approach trains the model to produce special tokens that trigger queries to an external knowledge base, enabling three crucial properties: factual updates without retraining, full traceability of facts to their source, and a leveling effect where smaller models achieve the factual accuracy of much larger ones. The method improves factual grounding in both short and extended generation contexts, with the transparency mechanism being particularly notable—every factual claim can be traced back to its knowledge base entry, providing a built-in audit trail. This represents a practical step toward trustworthy AI systems where outputs are not just accurate but demonstrably grounded in verifiable sources.\n\n## Dynamic Resource Orchestration for Explainability\n\n[3] AURORA-AI addresses the practical reality that modern AI systems operate under non-stationary conditions where static resource allocation degrades not just performance but also human-centric properties like fairness and explainability. The framework unifies Hamilton-Jacobi-Bellman feedback control, Lyapunov-based stability monitoring, and a fairness-aware composite utility into a single closed-loop policy that continuously redistributes computational budgets across multiple objectives. This is significant because it formalizes explainability not as a static attribute to be maximized but as a resource-dependent property that must be dynamically traded off against accuracy, fairness, and latency as operating conditions shift. The Lyapunov monitoring component provides theoretical guarantees on system stability, ensuring that the constant reallocation of resources toward explainability doesn't trigger oscillatory or divergent behavior.\n\n## Foundational Perspectives on Graph Neural Network Explainability\n\n[5] While primarily a survey, \"Graph Neural Networks Applications Across Domains\" provides crucial context for explainability by systematically mapping the design space where graph structure earns its computational cost versus where it does not. The survey derives spectral and spatial GNN formulations from shared first principles and connects expressive power to the Weisfeiler-Lehman hierarchy with explicit statements of what current architectures can and cannot separate. This foundational analysis directly informs explainability research by clarifying the precise computational and representational limits that explanation methods must contend with—understanding what a model cannot distinguish is as important as explaining what it can.\n\n## Key Takeaways\n- The five-arm ablation methodology [1] provides a template for rigorously decomposing confounded effects in complex inference pipelines, revealing that retrieval-warming benefits are often misattributed to genuine reasoning improvements rather than simpler bias shifts.\n- Feature-induced information flow explanations [4] demonstrate that temporal GNN explainability requires modeling not just embedding pathways but also event-induced variable interactions, a finding that generalizes to any temporal neural architecture.\n- Token-triggered knowledge base queries [2] offer a practical path to simultaneously achieving factual accuracy, updateability, and full traceability in LLMs, with smaller models benefiting disproportionately from the external grounding.\n- Explainability must be treated as a dynamic, resource-constrained objective that trades off against accuracy and fairness under non-stationary conditions, as formalized by the AURORA-AI control framework [3].\n- The Weisfeiler-Lehman hierarchy [5] provides a rigorous upper bound on GNN explainability: no explanation method can reveal distinctions that the underlying architecture cannot computationally separate.\n- Closed-loop resource orchestration [3] with stability guarantees suggests that explainability interventions should be continuous and adaptive rather than one-time static configurations.\n- Across all papers, a convergent insight emerges: effective explainability requires moving beyond simple attribution methods toward systems-level approaches that account for confounded mechanisms, resource constraints, and architectural limitations simultaneously.",
+    "papers": [
+      {
+        "title": "Retrieval-Warmed Energy-Based Reasoning: A Five-Arm Ablation Methodology for Diffusion-as-Inference on Structured Reasoning Tasks",
+        "url": "",
+        "authors": [
+          "Libo Sun",
+          "Po-Wei Harn",
+          "Zewei Zhang",
+          "Peixiong He",
+          "Xiao Qin"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "KARLA: Knowledge-base Augmented Retrieval for Language Models",
+        "url": "",
+        "authors": [
+          "Francois Crespin",
+          "Fabian M. Suchanek",
+          "Nils Holzenberger"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Adaptive Utility driven Resource Orchestration for Resilient AI (AURORA-AI)",
+        "url": "",
+        "authors": [
+          "Rahul Umesh Mhapsekar",
+          "Ilias Cherkaoui",
+          "Lizy Abraham",
+          "Indrakshi Dey"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Explaining Temporal Graph Neural Networks via Feature-induced Information Flow",
+        "url": "",
+        "authors": [
+          "Ping Xiong",
+          "Thomas Schnake",
+          "Klaus-Robert Müller",
+          "Shinichi Nakajima"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Graph Neural Networks Applications Across Domains: All Insights You Need",
+        "url": "",
+        "authors": [
+          "Abderaouf Bahi"
+        ],
+        "date": "2026-06-28"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-28",
+    "paperCount": 12,
+    "markdown": "# Multimodal AI: From Foundational Benchmarks to GPU-Native Optimization and High-Stakes Applications\n\nToday's research landscape reveals a multimodal AI field that is rapidly maturing across three axes: the development of principled optimization algorithms that leverage GPU parallelism for black-box problems, a critical reexamination of evaluation frameworks for multimodal LLMs, and the extension of multimodal capabilities into high-stakes domains like medical imaging and sign language translation while addressing fundamental challenges in hallucination, calibration, and token efficiency.\n\n## GPU-Native Optimization and Token Efficiency for Multimodal Systems\n\n[1] introduces CHISAO (Convergence-Halt-Invert-Stick-And-Oscillate), a GPU-native population optimizer that addresses the fundamental challenge of finding all modes of a multimodal black-box function. Unlike sequential approaches like basin-hopping or CMA-ES, CHISAO runs an entire sample batch simultaneously on GPU hardware and exploits a deliberate convergence-anticonvergence oscillation cycle to escape local optima. This work matters because it opens the door to massively parallel optimization for problems in Bayesian inference and scientific computing where identifying multiple modes is essential, potentially enabling optimization at scales previously infeasible.\n\n[11] tackles the computational bottleneck of visual token pruning in multimodal LLMs, where the large number of visual tokens introduces substantial overhead during inference. The paper proposes TOPS, which constructs Token Optimal Preservation Sets by returning to first principles and formulating a principled objective for token pruning, addressing limitations of both attention-based criteria (which retain redundant tokens) and diversity-based criteria (which ignore user instructions). This contribution is significant because efficient token pruning directly impacts the practical deployment of MLLMs in resource-constrained environments while maintaining reasoning quality.\n\n## Benchmarking and Evaluation: What We're Missing and How to Fix It\n\n[4] provides a critical examination of current MLLM evaluation practices, arguing that most existing benchmarks are limited to isolated tasks and fail to reveal whether models truly integrate information across modalities. The authors review the existing benchmark taxonomy and identify specific gaps including temporal-spatial coherence, physical world understanding, multimodal consistency, and selective attention—capabilities that are essential for genuine multimodal reasoning. This paper serves as an important wake-up call for the community, suggesting that current evaluation practices may be giving us an inflated sense of progress.\n\n[6] introduces MKG-RAG-Bench, a cross-domain benchmark explicitly designed to evaluate retrieval in multimodal knowledge graph-augmented generation (MKG-RAG). The paper identifies a critical bottleneck: multimodal knowledge is heterogeneous, difficult to align across modalities, and poorly served by retrievers designed for unstructured corpora. By constructing a benchmark specifically focused on retrieval quality in multimodal knowledge graphs, this work fills a crucial gap in evaluating RAG systems that must navigate structured multimodal knowledge.\n\n[7] presents SocialPersona, a benchmark for evaluating whether multimodal LLMs can recover revealed preferences from longitudinal social-media timelines and use them in dialogue. Built from the actual timelines of 171 everyday social-media users, this benchmark moves beyond simple memory-based personalization (recalling explicitly stated preferences) to test whether models can infer what users care about from the multimodal traces they naturally leave behind. This work is important for developing truly personalized AI assistants that understand users holistically rather than through explicit declarations.\n\n## High-Stakes Applications: Medical Imaging, Sign Language, and GUI Agents\n\n[2] presents NEST-V1, a proof-of-concept multimodal framework for generating emotion-conditioned Nepali Sign Language avatars from spoken input, focusing on four common words across three emotional states. This pilot study addresses the underexplored problem of integrating emotional expression into sign language communication systems for low-resource languages. While preliminary, this work demonstrates feasibility and opens a pathway toward more expressive and culturally appropriate assistive technologies.\n\n[9] introduces TAVR-VLM, a framework for Transcatheter Aortic Valve Replacement planning that features Risk-Conditioned Causal Grounding Attention (R-CGA). The key innovation is instantiating a model-internal \"Risk → Region → Word\" structural grounding pathway that compresses multimodal inputs into a causal risk bottleneck, purifying dense visual representations to combat diagnostic hallucinations in high-stakes medical contexts. This work matters because it addresses the critical challenge of hallucinations in medical AI—where ungrounded text generation could have serious consequences—by enforcing causal reasoning chains.\n\n[10] proposes the Planning Experience Exploration and Utilization (PEEU) method for empowering small open-source MLLMs to serve as GUI agents. The method autonomously explores environments to discover experiences and utilizes hindsight experience to synthesize strictly aligned, high-quality planning trajectories. This is significant because it addresses the practical need for cost-efficient, privacy-preserving GUI agents that can operate across diverse websites, overcoming the weak planning and limited generalization that currently plagues small models.\n\n## Cognitive Signals and Multimodal Calibration\n\n[5] investigates whether electroencephalogram (EEG) signals can complement eye-tracking signals for automatic keyphrase extraction from microblogs. Using the ZuCo cognitive language processing corpus, the authors demonstrate that EEG signals—which reflect readers' neural responses to salient words—can enhance keyphrase extraction beyond what eye-tracking alone provides, addressing limitations related to physiological constraints and feature-decoding challenges. This work bridges cognitive neuroscience and multimodal NLP, suggesting that brain signals could serve as a rich additional modality for text understanding.\n\n[12] addresses the critical problem of overconfidence in multimodal LLMs applied to Medical Visual Question Answering, where models tend to produce overconfident outputs regardless of actual correctness. The paper proposes a training-based framework that finetunes MLLMs using a composite loss function combining a Brier-style calibration term, an anchor regularizer to prevent confidence collapse, and a contrastive image loss. This work is important because reliable confidence estimation is essential for deploying medical AI systems where the cost of overconfidence is potentially life-threatening.\n\n## Understanding Multimodal Architectures and Fusion\n\n[3] provides a systematic survey of vision-language perception paradigm evolution in multimodal large language models, examining the field from a truly unified vision-language perspective that treats vision and language as an inseparable modality. The survey covers the paradigm shift toward perception-centric intelligence driven by models like OpenAI's O-series and DeepSeek's R-series, and identifies fragmentation in existing reviews that focus separately on vision or language. This work serves as an essential reference for researchers navigating the rapidly evolving MLLM landscape.\n\n[8] proposes a simple but powerful diagnostic test for determining whether multimodal fusion systems actually use reliability information during inference. By permuting reliability scores across test examples while keeping the model and inputs fixed, the authors can detect whether predictions depend on these scores or whether they merely correlate with performance. Experiments on StressID and CMU-MOSEI reveal that many systems' quality-aware fusion mechanisms may not truly influence decisions—a finding with profound implications for how we design and evaluate multimodal fusion architectures.\n\n## Key Takeaways\n- GPU-native parallel optimization (CHISAO [1]) and principled visual token pruning (TOPS [11]) address fundamental efficiency bottlenecks in multimodal systems, enabling scaling to larger problems and practical deployment.\n- Current MLLM evaluation is insufficient, with critical gaps in temporal-spatial coherence, multimodal consistency, and selective attention [4]; new benchmarks for multimodal knowledge graph retrieval [6] and social-media-based personalization [7] are beginning to fill these gaps.\n- High-stakes multimodal applications—medical report generation [9], sign language translation [2], and GUI agents [10]—demand domain-specific innovations in causal grounding, emotional expression, and experience-driven planning.\n- Cognitive signals from EEG can enhance text understanding beyond traditional eye-tracking [5], opening new frontiers in multimodal NLP that leverage neural responses as an additional modality.\n- Verbalized uncertainty calibration in medical VQA [12] and leakage-safe diagnostics for multimodal fusion [8] reveal critical reliability issues: many systems are either overconfident or not genuinely using their fusion mechanisms.\n- The survey [3] identifies a paradigm shift toward perception-centric intelligence in MLLMs, but emphasizes that unified vision-language perspectives remain underdeveloped in the literature.\n- Small open-source MLLMs can be empowered for practical tasks through autonomous experience exploration and hindsight utilization [10], offering a viable path toward privacy-preserving, cost-efficient AI assistants.",
+    "papers": [
+      {
+        "title": "\\chisao{}: A GPU-Native Parallel Optimizer for Multimodal Black-Box Functions via Convergence-Anticonvergence Oscillation",
+        "url": "",
+        "authors": [
+          "Ira Wolfson"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Low Resource Multimodal Translation of Nepali Spoken Words into Emotion-Conditioned Sign Language Avatars",
+        "url": "",
+        "authors": [
+          "Jatin Bhusal",
+          "Salma Tamang"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "From Structure to Synergy: A Survey of Vision-Language Perception Paradigm Evolution in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Haoxiang Sun",
+          "Tao Wang",
+          "Li Yuan",
+          "Jian Zhao",
+          "Jiancheng Lv"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "What We are Missing in Multimodal LLM Evaluation?",
+        "url": "",
+        "authors": [
+          "Po-han Li",
+          "Shenghui Chen",
+          "Sandeep Chinchali",
+          "Ufuk Topcu"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Utilizing Cognitive Signals Generated during Human Reading to Enhance Keyphrase Extraction from Microblogs",
+        "url": "",
+        "authors": [
+          "Xinyi Yan",
+          "Yingyi Zhang",
+          "Chengzhi Zhang"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "MKG-RAG-Bench: Benchmarking Retrieval in Multimodal Knowledge Graph-Augmented Generation",
+        "url": "",
+        "authors": [
+          "Xiaochen Wang",
+          "Bao Hoang",
+          "Han Liu",
+          "Ting Wang",
+          "Fenglong Ma"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "SocialPersona: Benchmarking Personalized Profiling and Response with Multimodal Social-Media Context",
+        "url": "",
+        "authors": [
+          "Qinkai Zhang",
+          "Yanyan Zhao",
+          "Xin Lu",
+          "Yulin Hu",
+          "Pengtao Han",
+          "Bing Qin"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "When Does Quality-Aware Multimodal Fusion Matter? A Leakage-Safe Diagnostic for Decision-Level Dependence",
+        "url": "",
+        "authors": [
+          "Jaden Moon",
+          "Arvind Pillai",
+          "Andrew Campbell"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "TAVR-VLM: Risk-Conditioned Causal Grounding for Hallucination-Resistant Report Generation",
+        "url": "",
+        "authors": [
+          "Zhixiang Lu",
+          "Xiwei Liu",
+          "Sifan Song",
+          "Changkai Ji",
+          "Anh Nguyen",
+          "Jionglong Su",
+          "Imran Razzak",
+          "Jinfeng Wang"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Empowering GUI Agents via Autonomous Experience Exploration and Hindsight Experience Utilization for Task Planning",
+        "url": "",
+        "authors": [
+          "Tianyi Men",
+          "Zhuoran Jin",
+          "Pengfei Cao",
+          "Yubo Chen",
+          "Kang Liu",
+          "Jun Zhao"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "TOPS: First-Principles Visual Token Pruning via Constructing Token Optimal Preservation Sets for Efficient MLLM Inference",
+        "url": "",
+        "authors": [
+          "Tinghao Wang",
+          "Yichen Guo",
+          "Rui Huang",
+          "Zheng Lu",
+          "Qizhe Zhang",
+          "Chenxi Li",
+          "Yuan Zhang",
+          "Jiajun Cao",
+          "Zhirong Shen",
+          "Yaosong Du",
+          "Guangyan Gan",
+          "Wenya Wang",
+          "Lin William Cong",
+          "Shanghang Zhang"
+        ],
+        "date": "2026-06-28"
+      },
+      {
+        "title": "Just how sure are you? Improving Verbalized Uncertainty Calibration in Medical VQA",
+        "url": "",
+        "authors": [
+          "Eren Senoglu",
+          "Federico Toschi",
+          "Nicolo Brunello",
+          "Andrea Sassella",
+          "Mark James Carman"
+        ],
+        "date": "2026-06-28"
+      }
+    ]
+  }
+]
