@@ -1,0 +1,565 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-06-30",
+    "paperCount": 15,
+    "markdown": "# Interpretability Frontiers: From Mechanistic Attribution to Cross-Modal Feature Discovery\n\nToday's research landscape in interpretability is defined by two converging trends: the maturation of sparse autoencoders (SAEs) as a core tool for mechanistic analysis, and a growing recognition that interpretability must bridge multiple scales—from individual neurons to high-level behavioral policies, and from single modalities to cross-modal representations. This digest covers fifteen papers that collectively push the boundaries of how we extract, validate, and deploy interpretable representations in language models, multimodal systems, and specialized domains.\n\n## Sparse Autoencoders: New Architectures and Fundamental Challenges\n\nSparse autoencoders have become the dominant paradigm for feature discovery in neural networks, but several papers reveal both their limitations and promising architectural innovations.\n\nDer et al. [1] address the scalability problem of standard SAEs on long contexts, where active features grow linearly with sequence length. They introduce turn-averaged SAEs that reconstruct the *average* model activation across an entire Human or Assistant turn, producing a fixed-size feature representation per turn that captures high-level semantic characteristics. This enables studying long model transcripts—such as multi-turn conversations—where individual token-level SAEs become unwieldy, and the authors demonstrate that turn-averaged features maintain interpretability while compressing the representation space dramatically.\n\nLee et al. [13] challenge a fundamental assumption underlying SAE applications to vision-language models: that semantically corresponding features share the same directions across modalities. Their systematic investigation reveals pervasive cross-modal feature heterogeneity, where the same concept activates different SAE feature directions in image vs. text embeddings. This finding has profound implications for multimodal interpretability, suggesting that naive joint-space SAE training may conflate modality-specific and shared semantic structure, and that cross-modal feature alignment requires explicit modeling rather than implicit assumption.\n\nJin et al. [15] diagnose two critical pathologies in large-scale SAE training: feature splitting, where coherent concepts fragment into multiple latents, and feature absorption, where general features accumulate arbitrary exceptions. They propose cross-sample consistency regularization (C²R) that enforces stable latent assignment across different input contexts, demonstrating that these pathologies stem from per-sample optimization lacking cross-sample constraints. Their regularization significantly improves feature monosemy and reduces the dictionary size needed to cover a concept space, addressing a core reliability issue in SAE-based interpretability.\n\n## Mechanistic Intervention and Behavioral Attribution\n\nFour papers extend interpretability from passive feature discovery to active intervention and causal attribution, connecting latent representations to model behavior and training data.\n\nCourtis and Hu [2] propose a mechanistic approach to steering LLM personality by identifying latent directions in the residual stream corresponding to OCEAN personality traits using SAEs and contrastive activation analysis. They formalize additive steering vectors that, when applied during inference, shift model outputs toward target personality profiles—demonstrating that personality is not merely a prompt-engineering artifact but a manipulable property of the model's internal representations. This work bridges personality psychology and mechanistic interpretability, offering a principled alternative to fine-tuning for behavioral control.\n\nHabibi et al. [5] tackle the fundamental question of how training data shapes model behavior at the mechanistic level. Their Symbolic Mechanistic Data Attribution (SMDA) framework fits a closed-form Ridge regression over SAE features to model target behaviors, then analytically decomposes how each supervised fine-tuning example shifts that policy. Unlike prior data attribution methods that identify which examples build specific circuits, SMDA explains *how* examples shape high-level behavioral policies, providing granular traceability from training data to mechanistic circuits to output behavior.\n\nClifford et al. [8] identify three open problems in reconstructing interpretable preference models from pairwise comparison data. They argue that existing Inverse Constitutional AI (ICAI) approaches, which compress preference datasets into natural-language \"constitutions,\" are under-specified because flat principle lists leave principle composition implicit. Their empirical characterization reveals that preference reconstruction requires solving challenges in principle discovery, weighting, and conflict resolution—fundamental problems for making RLHF-style training transparent and verifiable.\n\nUluırmak and Kurban [9] present a hybrid survey and conceptual framework examining the measurement gap in LLM evaluation and safety: benchmarks, reward-model signals, and safety metrics can improve while latent properties remain unverified. Their synthesis spans eight evidence streams including benchmark validity, dynamic evaluation, and reward hacking, culminating in a structured ten-model audit that reveals systematic disconnects between surface metrics and underlying model properties. This framework provides a roadmap for developing interpretability methods that can actually validate the properties these metrics claim to measure.\n\n## Interpretability in Specialized Domains and Architectures\n\nSeveral papers demonstrate that interpretability challenges and solutions take domain-specific forms, from investment decisions to molecular structure elucidation to game AI.\n\nTan et al. [3] introduce FinInvest-GTCN, a Graph-Temporal-Causal Network for venture capital investment decisions that explicitly prioritizes explainability. Their architecture combines a relational graph encoder for investment ecosystem topology, a multi-scale temporal fusion module for handling non-stationary time series, and causal reasoning components that provide attribution for each risk-return assessment. The key contribution is redefining VC from a content recommendation task to a quantitative risk-return assessment with interpretable intermediate representations, addressing the high-stakes, low-data nature of investment decisions.\n\nLi et al. [4] propose MOSAIC, a framework for knowledge tracing that replaces shallow ID-based representations with LLM-driven semantic alignment. Unlike prior work that uses LLMs solely as predictors, MOSAIC leverages a frozen LLM to generate semantic representations of knowledge components and student responses, then combines these with sequential modeling for multi-granularity mastery estimation. This enables both deeper interpretability (understanding *what* knowledge is being traced) and improved prediction through hierarchical knowledge dependencies that traditional ID-based approaches miss.\n\nBai et al. [6] present SAT-RTS, a systematic framework for tactical knowledge extraction and visualization in real-time strategy games. Their state-action-tactic analysis pipeline decouples high-dimensional, coupled state-action data into interpretable tactical patterns, providing hierarchical visualization-based attribution from raw game states to tactical decisions. This addresses the black-box problem in RTS micromanagement by making the decision-making process transparent through data decoupling and abstraction at multiple temporal and strategic scales.\n\nBai et al. [7] propose a hierarchical reinforcement learning approach for StarCraft micromanagement that combines influence maps and cluster-based scripts to maintain interpretability while managing complex multi-unit coordination. Their decomposition into tactical modules (e.g., formation control, target selection) preserves interpretable intermediate representations, showing that hierarchical structure can simultaneously improve sample efficiency and explainability in domains with sparse delayed rewards.\n\nFang et al. [12] tackle NMR spectroscopy interpretation, where black-box deep learning models lack the atom-level interpretability required for scientific validation. Their NMRAgent uses an LLM-powered evidential reasoning framework that generates step-by-step molecular structure elucidation with confidence estimates and explicit reasoning chains. This demonstrates how LLM agents can serve as interpretable scientific reasoning tools, providing traceable logic that domain experts can verify—a critical requirement in scientific applications where models must be auditable.\n\n## Architectural Interpretability: Faithfulness and Regularization\n\nThree papers examine how architectural choices affect interpretability at the level of model components and their interactions.\n\nKim et al. [11] investigate whether role-based expert specialization in Mixture-of-Experts architectures preserves explanation faithfulness. They hypothesize that inter-expert representation overlap weakens effective role separation (e.g., synergy, redundancy, uniqueness roles) and degrades attribution-based faithfulness. Their empirical results show that explicit role assignment does not guarantee faithful explanations when experts share substantial representation space, raising important questions about the interpretability promises of role-based MoE designs.\n\nHammer et al. [14] identify a critical paradox in Interpretable Mesomorphic Neural Networks (IMNs), which combine deep network power with linear model interpretability. They show that the network can concentrate explanatory variance into a single weight to achieve strong prediction while producing meaningless interpretations, and that the L1 penalty designed to encourage sparsity exacerbates this problem. Their proposed local fidelity regularization enforces that the linear interpretation layer actually reflects local model behavior, demonstrating that interpretable architectures require explicit faithfulness constraints beyond architectural design.\n\nChen et al. [10] introduce DAIN, a Dynamic Agent-based Interaction Network that reconceptualizes multimodal fusion as a multi-agent collaborative process. The framework uses a context-aware Meta-Controller to dynamically schedule specialized interaction agents and orchestrate compressed inter-agent communication, with explicit consensus-building mechanisms. By making inter-agent communication and decision boundaries transparent, DAIN provides interpretability through its architectural design—each agent's role and contribution can be inspected, unlike monolithic MoE approaches.\n\n## Key Takeaways\n\n- **Turn-averaged SAEs** [1] and **cross-sample consistency regularization** [15] address fundamental scaling and reliability challenges in SAE-based interpretability, enabling long-context analysis and reducing feature fragmentation that undermines latent monosemy.\n\n- **Cross-modal feature heterogeneity** [13] is a previously unexamined challenge for multimodal interpretability: the same concept activates different SAE directions across modalities, requiring explicit alignment methods rather than assuming shared feature spaces.\n\n- **Mechanistic intervention** methods for personality steering [2] and **symbolic data attribution** frameworks [5] move interpretability beyond passive observation, enabling causal manipulation of model behavior and granular traceability from training data to output.\n\n- **Constitutional preference reconstruction** [8] and **evaluation-safety gap analysis** [9] reveal fundamental limitations in current approaches to making RLHF and safety metrics interpretable, framing open problems in principle discovery, composition, and verification.\n\n- **Domain-specific interpretability** frameworks [3, 4, 6, 12] demonstrate that the right level of abstraction for explanation varies by application—relational graphs for finance, semantic knowledge components for education, tactical patterns for games, and evidential reasoning chains for scientific discovery.\n\n- **Architectural interpretability** is not guaranteed by design choices like role specialization [11] or linear-explanatory components [14]; explicit faithfulness constraints (local fidelity regularization) and dynamic interaction patterns (DAIN [10]) are necessary to ensure architectural interpretability claims hold in practice.\n\n- The field is converging on a **multi-scale view of interpretability** that spans individual features (SAEs), circuit-level mechanisms, behavioral policies, and training data attribution, with each scale requiring different tools and validation criteria.",
+    "papers": [
+      {
+        "title": "Turn-Averaged SAEs for Feature Discovery and Long-Context Attribution",
+        "url": "",
+        "authors": [
+          "Kevin Der",
+          "Harish Kamath",
+          "Ben Thompson"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Mechanistic Personality Analysis of LLMs Steering Personality via Latent Feature Interventions",
+        "url": "",
+        "authors": [
+          "David Courtis",
+          "Ting Hu"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "FinInvest-GTCN: Explainable Graph-Temporal-Causal Modeling for Risk-Aware Investment Decision Optimization",
+        "url": "",
+        "authors": [
+          "Junyan Tan",
+          "Yifan Li",
+          "Minghao Wang",
+          "Zihan Chen",
+          "Haoyu Zhang"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "MOSAIC: Orchestrating Collaborative Knowledge Tracing with Hierarchical Semantic Alignment",
+        "url": "",
+        "authors": [
+          "Xinjin Li",
+          "Mengyue Wang",
+          "Yuzhen Lin",
+          "Pengbin Feng",
+          "Ziqi Sha",
+          "Yeyang Zhou",
+          "Yu Ma"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Symbolic Mechanistic Data Attribution: Tracing Training Influence to Learned Behavioral Policies",
+        "url": "",
+        "authors": [
+          "Reza Habibi",
+          "Darian Lee",
+          "Magy Seif El-Nasr"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "SAT-RTS: A systematic framework for tactical knowledge extraction and visualization-based analysis in real-time strategy games",
+        "url": "",
+        "authors": [
+          "Chunhui Bai",
+          "Changhe Li",
+          "Yuqiang Li",
+          "Lei Liu",
+          "Shoufei Han"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Hierarchical Reinforcement Learning in StarCraft Micromanagement with Influence Maps and Cluster-based Scripts",
+        "url": "",
+        "authors": [
+          "Chunhui Bai",
+          "Changhe Li",
+          "Dequan Li",
+          "Xinye Cai",
+          "Shengxiang Yang"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Open Problems in Constitutional Preference Reconstruction",
+        "url": "",
+        "authors": [
+          "Eleanor Clifford",
+          "Michael Amir",
+          "Arduin Findeis",
+          "Aaron Zhao",
+          "Robert Mullins"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures",
+        "url": "",
+        "authors": [
+          "Buğra Alperen Uluırmak",
+          "Rifat Kurban"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "DAIN: Dynamic Agent-Based Interaction Network for Efficient and Collaborative Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Xinxin Chen",
+          "Yuchen Li",
+          "Zihan Wang",
+          "Haoyu Zhang",
+          "Ruixin Liu",
+          "Mingyuan Zhao"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Does Role Specialization Matter for Explanation Faithfulness in Mixture-of-Experts?",
+        "url": "",
+        "authors": [
+          "Yeji Kim",
+          "Housam Babiker",
+          "Mi-Young Kim",
+          "Randy Goebel"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Towards Generalizable and Evidential Nuclear Magnetic Resonance-Based Molecular Structure Elucidation via Large Language Model Agent",
+        "url": "",
+        "authors": [
+          "Zheng Fang",
+          "Chen Yang",
+          "Yusen Tan",
+          "Yunpeng Zhao",
+          "Fanjie Xu",
+          "Hongxin Xiang",
+          "Hanyu Sun",
+          "Hanyu Gao",
+          "Xiaojian Wang",
+          "Wenjie Du",
+          "Yuqiang Li",
+          "Jun Xia"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Same Concept, Different Directions: Cross-Modal Feature Heterogeneity in Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Chungpa Lee",
+          "Jihoon Kwon",
+          "Kyle Min",
+          "Jy-yong Sohn"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Improved Predictive Performance and Interpretability for Mesomorphic Neural Networks Using Local Fidelity Regularization",
+        "url": "",
+        "authors": [
+          "Hugo L. Hammer",
+          "Vajira Thambawita",
+          "Kristoffer Herland Hellton",
+          "Pål Halvorsen"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "C$^{2}$R: Cross-sample Consistency Regularization Mitigates Feature Splitting and Absorption in Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Haoran Jin",
+          "Xiting Wang",
+          "Shijie Ren",
+          "Hong Xie",
+          "Defu Lian"
+        ],
+        "date": "2026-06-30"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-06-30",
+    "paperCount": 3,
+    "markdown": "# Explainability in Focus: Interpretability, Security, and Adaptive Trust in AI Systems\n\nToday's research landscape reveals a growing tension between model interpretability and performance, with new approaches emerging to reconcile these competing demands. The papers span critical areas including adversarial robustness against latent-class attacks, adaptive financial transformers with regime-aware attention, and regularization techniques to ensure that interpretable neural networks produce genuinely faithful explanations.\n\n## Security and Interpretability: Defending Against Novel Threats\n\n[1] introduces a **Latent-Class Attack**, a novel data poisoning method where all poisoned examples originate from a class unknown to the classification domain but are mislabeled to a target known class. The attack forces the model to treat the novel class as a subclass of the target, enabling covert access control bypass. The paper proposes **Class Subspace Orthogonalization** as a defense, which projects feature representations to be orthogonal to the subspace of known classes, thereby detecting latent-class anomalies. This work is critical for AI-based security systems, demonstrating that even well-trained classifiers are vulnerable to attacks exploiting the model's inability to distinguish between known and unknown classes.\n\n## Adaptive Financial Models with Regime-Gated Attention\n\n[2] presents the **Adaptive Financial Transformer (AFT)** for stock return prediction under non-stationary market conditions, tackling the problem that conventional Transformers treat all input features uniformly. The model introduces a **Market Regime Encoder**, an **Adaptive Gate Network**, and an **Adaptive Financial Context module** to dynamically bias self-attention based on semantic relationships among 95 engineered financial features grouped into 11 categories. By adapting attention weights according to latent market regimes, AFT improves predictive accuracy while providing interpretability through regime-specific feature importance. This matters because financial models must remain trustworthy and explainable to regulators and traders, and AFT's adaptive mechanism offers a path to both performance and transparency.\n\n## Ensuring Faithful Interpretations via Local Fidelity Regularization\n\n[3] addresses a fundamental flaw in **Interpretable Mesomorphic Neural Networks (IMNs)** : the original formulation allows the network to concentrate all explanatory variance into a single linear weight, yielding strong predictions but meaningless interpretations. The authors propose **Local Fidelity Regularization**, which penalizes discrepancies between the full model's local behavior and that of its interpretable linear component, explicitly preventing the network from producing high-fidelity predictions while ignoring its own explanation mechanism. The key contribution is a theoretically grounded loss term that forces the interpretable part to faithfully represent the neural network's decisions. This is significant because it directly tackles the \"paradox of interpretable models\"—where interpretability and predictive power can become decoupled—ensuring that explanations are not just available but actually trustworthy.\n\n## Key Takeaways\n\n- Novel latent-class attacks [1] reveal a critical vulnerability in deep classifiers: models can be poisoned to recognize unknown classes as subclasses of known ones, bypassing access control systems.\n- Class Subspace Orthogonalization [1] provides a principled defense by detecting out-of-distribution latent classes through geometric projection of feature representations.\n- Adaptive Financial Transformers [2] demonstrate that grouping engineered features into semantic categories and conditioning attention on market regimes can improve both prediction accuracy and model interpretability.\n- Local Fidelity Regularization [3] solves the fundamental issue in interpretable neural networks where high predictive accuracy can coexist with completely meaningless explanations.\n- The regularization approach [3] directly penalizes divergence between the full model and its interpretable surrogate at the local level, ensuring explanations are faithful to actual model behavior.\n- Across all papers, a unifying theme emerges: interpretability cannot be taken at face value—it must be actively enforced through architectural design or explicit regularization against \"interpretability fraud.\"\n- The research community is moving toward adaptive, context-aware interpretability mechanisms that dynamically adjust explanation fidelity based on data characteristics and threat models.",
+    "papers": [
+      {
+        "title": "A Novel Latent-Class Attack and its Detection by Class Subspace Orthogonalization",
+        "url": "",
+        "authors": [
+          "Guangmingmei Yang",
+          "David J. Miller",
+          "George Kesidis"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Adaptive Financial Transformer with Regime-Gated Attention for Stock Return Prediction",
+        "url": "",
+        "authors": [
+          "Dishan Sarkar"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Improved Predictive Performance and Interpretability for Mesomorphic Neural Networks Using Local Fidelity Regularization",
+        "url": "",
+        "authors": [
+          "Hugo L. Hammer",
+          "Vajira Thambawita",
+          "Kristoffer Herland Hellton",
+          "Pål Halvorsen"
+        ],
+        "date": "2026-06-30"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-06-30",
+    "paperCount": 27,
+    "markdown": "# Multimodal Intelligence at the Frontier: From Collaborative Agents to Grounded Reasoning and Self-Evolving Systems\n\nToday's research landscape reveals a multimodal field in rapid transition, moving beyond static benchmark evaluations toward dynamic, real-world scenarios involving time pressure, information asymmetry, clinical reasoning, and autonomous decision-making. A unifying theme across these 27 papers is the growing tension between model capability and reliability—where advances in multimodal perception, generation, and agentic reasoning are simultaneously exposing critical vulnerabilities in grounding, memory, evaluation, and compositional understanding.\n\n## Collaborative Agents and Multi-Agent Reasoning\n\n[1] introduces GPTNT, a benchmark built on the cooperative video game *Keep Talking and Nobody Explodes*, where two agents must coordinate under time pressure with asymmetric information. The benchmark uniquely combines procedural bomb generation with a live countdown, testing real-time collaboration capabilities that existing benchmarks study only in isolation. This work matters because it exposes whether multimodal agents can maintain coherent collaboration when communication is imperfect and stakes are temporal, filling a critical gap in evaluating deployed multi-agent systems.\n\n[11] addresses multi-hop reasoning over nuclear regulatory documents (NuScale FSAR), framing the task as an LLM-based planning problem. The agent operates over a vectorless document tree using browse, read, and search tools while maintaining a dynamic knowledge graph as state, reaching strong performance on a 200-question benchmark. This is significant for demonstrating that structured planning over hierarchical documents—without dense retrieval—can enable reliable evidence assembly in high-stakes regulatory domains.\n\n[12] proposes Mixture of Debaters (MoD), a framework enabling dynamic self-debate within a single model using Mixture-of-Experts. MoD addresses static architecture limitations in existing multi-agent debate systems by introducing dual-routing that decouples role allocation from process flow, dramatically reducing computational overhead. The work is important because it reimagines multi-agent debate as an architectural property rather than a system-level orchestration problem, potentially democratizing dialectical reasoning capabilities.\n\n[13] investigates whether retrieval orchestration itself can be learned as part of multimodal document reasoning. The failure-driven evolution framework has a meta-agent autonomously discover how a tool-using task agent should coordinate diverse retrievers (lexical, semantic, multimodal) during multi-step QA. This contribution is notable for treating retrieval strategy as learnable rather than fixed, enabling adaptive information gathering that responds to each reasoning step's unique demands.\n\n[19] introduces the Dynamic Agent-based Interaction Network (DAIN), reconceptualizing multimodal fusion as a dynamic, multi-agent collaborative process. A context-aware Meta-Controller schedules sparse activation of specialized interaction agents and orchestrates compressed inter-agent communication for consensus-building. This matters because it moves beyond static MoE architectures to enable truly adaptive collaborative reasoning that scales with task complexity.\n\n[18] presents ManimAgent, a self-evolving multimodal agent that carries reflection experience across tasks through a dual-channel Episodic Memory Bank. The agent learns from its own task executions to write Python code rendering mathematical animations from scientific paper sections, improving across repeated episodes rather than treating each task as isolated. This work is significant for addressing the fundamental limitation where agents discard lessons learned across reflection rounds, enabling cumulative skill acquisition.\n\n## Benchmarks and Evaluation Frameworks\n\n[2] introduces IMCBench, an image-grounded, multi-turn medical conversation benchmark that pairs real clinical images with synthetic patient profiles. The benchmark addresses fragmentation in medical AI evaluation—where existing benchmarks either lack images or support only single-turn QA—by providing multi-turn dialogues grounded in visual diagnostic evidence. This matters for advancing clinically deployable multimodal systems that must sustain coherent conversations while reasoning over imaging data.\n\n[3] evaluates scientific figure generation by text-to-image and multimodal models, finding that existing benchmarks measure natural-image properties (photorealism, compositionality) but not what makes scientific figures usable: correct text labels, faithful entity depictions, coherent diagrammatic structure, and disciplinary conventions. This work fills a critical evaluation gap as researchers increasingly use generative AI for mechanism diagrams, experimental schematics, and graphical abstracts.\n\n[10] stress-tests OCR systems on Devanagari (Hindi) across ten systems including classical OCR, open VLMs, specialized OCR-VLMs, and frontier closed models. The benchmark covers four synthetic degradation conditions and 300 real printed scans, revealing substantial performance gaps compared to English/Chinese benchmarks. This is important for exposing the language bias in current OCR evaluation and motivating better multilingual support in vision-language models.\n\n[14] tests whether multimodal LLMs can serve as zero-shot judges of visual creativity without any fine-tuning or human rating examples. The study evaluates six models on their ability to score image originality while providing interpretable reasoning output, finding that models can approximate human creativity judgments. This contributes to automated creativity assessment and offers a window into how models conceptualize creative value.\n\n[15] evaluates open-ended aesthetic critique in MLLMs against ranked human references using the Reddit Photo Critique Dataset. Unlike multiple-choice benchmarks, this task has no single correct answer, and the study finds that model critiques diverge from human judgments in systematic ways. This matters because aesthetic reasoning is a uniquely human skill that tests whether models can produce nuanced, context-aware evaluations rather than numeric scores.\n\n[23] introduces the EPC diagnostic framework (Multimodal Preference Collapse Index, evaluator-indexed coupling matrix, Jensen-Shannon divergence) to detect when proprietary LLM evaluators become invalid within weeks. Documenting one such case across 122 experimental conditions, the work reveals that coupling coefficients vary dramatically and that evaluator drift can silently degrade self-adapting agent systems. This is critical for any research community relying on LLM-as-judge paradigms.\n\n## Grounding, Memory, and Faithfulness\n\n[16] addresses instability in reinforcement learning for vision-language models, where direct RL can exploit language priors and neglect visual evidence. The Faithful Warm-Start (FWS) strategy curates samples to initially steer policy toward visually grounded reasoning before applying RL, preventing the generation of fluent but ungrounded reasoning traces. This matters for ensuring that RL-based VLM improvement actually enhances visual reasoning rather than surface-level fluency.\n\n[24] diagnoses information leaks in multimodal agent memory systems, finding that deleted text entries can remain recoverable from retained user images through implicit visual cues. The Information Provenance Graph (IPG) taxonomy classifies memory representations by deletion affordance, and the MemLeak benchmark measures leaks across a deletion cascade. This is a crucial safety contribution, revealing that current \"forget\" operations in multimodal agents are fundamentally unreliable.\n\n[4] presents COMPASS, the first unified multimodal framework grounding composition-intent control in a single system spanning both composition perception and generation. Using a shared expert token τ_c as the central intent anchor with MoE-based composition expertise injection, the system achieves fine-grained composition recognition and controllable generation. This matters because composition—where subjects are placed and how scenes are organized—remains a persistent failure mode in unified multimodal models.\n\n[9] proposes Duplicated Latent Residual (DLR), a training-only, parameter-free plug-in for low-rank pre-training that augments standard low-rank factorization with structured residuals. The approach bridges the quality gap between low-rank and full-rank training without adding inference cost, achieving competitive performance while reducing both parameters and FLOPs. This is significant for making large-scale multimodal pre-training more accessible and computationally efficient.\n\n[20] analyzes non-sequential multimodal sentence-level embeddings (SONAR), demonstrating that certain embedding dimensions are sensitive to perturbations and can serve as indicators of decoding anomalies. By leveraging encoding-decoding consistency, the authors build an accurate anomaly detector without requiring external supervision. This work underscores the importance of understanding embedding internals for enhancing multimodal system reliability.\n\n[22] investigates whether explicit role specialization (e.g., synergy, redundancy, uniqueness) in MoE architectures preserves explanation faithfulness. The hypothesis that inter-expert representation overlap weakens effective role separation is tested, revealing that even when semantic roles are explicitly assigned, attribution faithfulness can degrade. This challenges assumptions about interpretability in structurally decomposed multimodal models.\n\n## Domain-Specific Multimodal Systems\n\n[5] introduces NIVA, a multimodal foundation model for Earth system intelligence that learns unified representations across atmosphere and ocean components. While focusing on a two-modality proof-of-concept, the framework targets coupled Earth system dynamics required for extending predictability beyond the ~2-week weather forecast horizon. This is significant for climate science, where modeling cross-component interactions is essential but computationally prohibitive.\n\n[6] evaluates whether frozen medical LLM representations can serve as a shared embedding space for multimodal primary diagnosis category prediction from both clinical narratives and structured EHR variables. Using a MIMIC-IV cohort of 13,645 admissions, the study demonstrates that LLM-based probing can integrate heterogeneous clinical data modalities without fine-tuning. This matters for practical clinical decision support where labeled data is scarce.\n\n[8] presents the Electro-Visual-Language Assistant (EVLA), combining multi-modal scene understanding with real-time perception of electrified powertrain state (motor torque, battery SOC). The Unified Co-State Encoder (UCSE) fuses visual, textual, and vehicle-state inputs for physically-grounded driving reasoning and control. This is novel for integrating vehicle electro-mechanical state into VLM-based driving assistants, bridging the gap between perception and physical awareness.\n\n[17] addresses multimodal speaker identification under challenging real-world conditions: missing modalities, language mismatch, ambient noise, and overlapping speech. The Adaptive Modality Routing (AMR) module dynamically assesses per-sample input quality to prioritize reliable modalities, built for the POLY-SIM 2026 Grand Challenge. This work matters for deploying robust speaker identification in uncontrolled acoustic environments.\n\n[26] provides a diagnostic methodology for industry-scale video and live-streaming moderation, moving from failure taxonomy to intervention. The work addresses the gap between public research (focused on architectures and benchmarks) and platform-specific requirements (data distributions, policy objectives, safety constraints). This is valuable for practitioners building internal moderation systems that must adapt public model advances to production constraints.\n\n[27] presents DreamForge-World 0.1 Preview, a low-compute world model for real-time interactive simulation on consumer GPUs. The system adapts autoregressive video generation with a residual action pathway, supporting live keyboard/mouse control, multimodal initialization, mid-stream reprompting, and dual-view operation. This matters for democratizing interactive world simulation, which has been limited to frontier-scale models with prohibitive compute requirements.\n\n## Reasoning, Routing, and Efficiency\n\n[7] evaluates whether mid-scale MLLMs can perform localized concept naming under strict zero-shot conditions by assigning labels to bounding-box regions at object and part levels. The proposed CoNa protocol includes closed-set and open-set (embedding-similarity-based) evaluation, revealing the limitations of training-free concept attribution. This is important for concept-based XAI, where fine-grained annotations are scarce and zero-shot capability is essential for practical deployment.\n\n[21] tackles inference efficiency in large multimodal models by proposing proactive routing: a small draft model paired with a large target model, where a routing signal adaptively directs queries based on difficulty. The key innovation is establishing reliable query difficulty signals under multimodal settings, where existing language-only approaches fail. This matters for deploying powerful multimodal reasoning in latency-sensitive applications without sacrificing accuracy.\n\n[25] proposes Dual-Flow RL, a unified actor-critic framework for continuous control that jointly models continuous actions and multimodal optimal actions using normalizing flows. The approach addresses the challenge where multimodal optimal actions coincide with uncertain, multimodal return distributions, enabling better exploration of high-value action regions. This is significant for reinforcement learning in complex physical domains where single-mode policies underperform.\n\n[26] (also listed above) demonstrates that adaptive routing in multimodal systems must be learned rather than designed, with failure-driven evolution enabling discovery of retriever coordination strategies that outperform fixed pipelines. This contributes to the broader theme that dynamic, context-aware resource allocation is becoming essential for multimodal system efficiency.\n\n## Key Takeaways\n\n1. **Collaborative and agentic multimodal systems are moving beyond static benchmarks** toward real-world conditions involving time pressure, information asymmetry, and multi-step reasoning, with frameworks like GPTNT [1] and planning-based agents [11] exposing new failure modes not captured by standard evaluations.\n\n2. **Memory and deletion in multimodal agents are fundamentally unreliable**—retained visual information can leak \"forgotten\" text facts through implicit visual cues [24], and current memory systems lack the architectural affordances to guarantee information removal.\n\n3. **Compositional understanding and generation remain persistent failure modes** for unified multimodal models, with COMPASS [4] representing the first attempt to bridge composition perception and generation through shared intent anchoring, while scientific figure generation [3] reveals that existing benchmarks miss domain-specific usability criteria.\n\n4. **Evaluation infrastructure is in crisis mode**—proprietary LLM evaluators can become invalid within weeks [23], aesthetic and creativity benchmarks reveal systematic divergences from human judgment [14,15], and Indic script OCR lags dramatically behind English/Chinese [10], demanding more robust, diverse, and temporally stable evaluation frameworks.\n\n5. **Efficiency through routing and low-compute adaptation is a dominant theme**, with proactive routing for visual reasoning [21], low-rank pre-training via latent residuals [9], and consumer-GPU world models [27] enabling multimodal capabilities at fractions of traditional costs.\n\n6. **Grounding reasoning in physical state is emerging as a critical modality**—driving assistants must understand vehicle electro-mechanical state [8], Earth system models must couple atmosphere-ocean dynamics [5], and clinical systems must integrate structured EHR data with narratives [6] to produce faithful, actionable outputs.\n\n7. **The boundary between training and inference is blurring** through self-evolving agents that accumulate cross-task experience [18], failure-driven retriever orchestration [13], and architectural debate mechanisms [12], suggesting that future multimodal systems will continuously adapt rather than execute fixed inference pipelines.",
+    "papers": [
+      {
+        "title": "GPTNT: Benchmarking Real-Time Collaboration Between Multimodal Agents on Keep Talking And Nobody Explodes",
+        "url": "",
+        "authors": [
+          "Amit Parekh",
+          "Sabrina McCallum",
+          "Kareem Al-Hasan",
+          "Malvina Nikandrou",
+          "Alessandro Suglia",
+          "Ioannis Konstas"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "IMCBench: A benchmark for multimodal LLMs in Image-grounded Medical Conversations",
+        "url": "",
+        "authors": [
+          "Maria Xenochristou",
+          "Ashutosh Joshi",
+          "Korosh Vatanparvar",
+          "Mohammad Abuzar Hashemi",
+          "Prasad Kasu",
+          "Deepak Bansal",
+          "Anchal Nema",
+          "Nivedita Wadhwa",
+          "Prashams S Jain",
+          "Rebecca Abraham",
+          "Will Kimbrough",
+          "Dilek Hakkani-Tur",
+          "Wilko Schulz-Mahlendorf"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Can AI Draw Science? A Benchmark for Evaluating Scientific Figure Generation by Text-to-Image and Multimodal Models",
+        "url": "",
+        "authors": [
+          "Davie Chen"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "COMPASS: Grounding Composition-Intent Guidance in Unified Multimodal Models",
+        "url": "",
+        "authors": [
+          "Ziqi Zhou",
+          "Weize Quan",
+          "Mining Tan",
+          "Zhihan Chen",
+          "Dandan Zheng",
+          "Jingdong Chen",
+          "Jun Zhou",
+          "Weiming Dong",
+          "Dong-Ming Yan"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "NIVA: A Multimodal Foundation Model for Actionable Earth System Intelligence",
+        "url": "",
+        "authors": [
+          "Anisha Pal",
+          "Aodhan Sweeney",
+          "Kyle Heyblom",
+          "Kalai Ramea"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Primary ICD Category Prediction using LLM-based Probing",
+        "url": "",
+        "authors": [
+          "Chengyuan Liu",
+          "Xinyue Zhang",
+          "Yao Li",
+          "Guanting Chen"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Low-cost concept-based localized explanations: How far can we get with training-free approaches?",
+        "url": "",
+        "authors": [
+          "Darian Fernández-Gutiérrez",
+          "Rafael Bello",
+          "Marilyn Bello",
+          "Natalia Díaz-Rodríguez"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "EVLA: An Electro-Aware Multimodal Assistant for Physically-Grounded Driving Reasoning and Control",
+        "url": "",
+        "authors": [
+          "Yuxin Liu",
+          "Zihan Chen",
+          "Haoyu Wang",
+          "Mingxuan Zhang",
+          "Ruijie Lin",
+          "Siyuan Zhao"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "DLR: Zero-Inference-Cost Latent Residuals for Low-Rank Pre-Training",
+        "url": "",
+        "authors": [
+          "Dong Wang",
+          "Wenwu Tang",
+          "Yun Cheng",
+          "Olga Saukh"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Can OCR-VLMs Read Devanagari? A Stress-Test Benchmark and Post-Correction Study",
+        "url": "",
+        "authors": [
+          "Aditya Pratap Singh"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "LLM-Guided Planning for Multi-hop Reasoning over Multimodal Nuclear Regulatory Documents",
+        "url": "",
+        "authors": [
+          "Mingyu Jeon",
+          "Bokyeong Kim",
+          "Suwan Cho",
+          "Jae Young Suh",
+          "Yonggyun Yu"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Mixture of Debaters: Learn to Debate at Architectural Level in Multi-Agent Reasoning",
+        "url": "",
+        "authors": [
+          "Dayong Liang",
+          "Kaisong Gong",
+          "Yi Cai",
+          "Changmeng Zheng",
+          "Xiao-Yong Wei"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Hybrid Retriever Evolution for Multimodal Document Reasoning Agents",
+        "url": "",
+        "authors": [
+          "Bohan Yao",
+          "Shruthan Radhakrishna",
+          "Vikas Yadav"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "How LLMs See Creativity: Zero-Shot Scoring of Visual Creativity with Interpretable Reasoning",
+        "url": "",
+        "authors": [
+          "William Orwig",
+          "Roger E. Beaty"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Can MLLMs Critique Like Humans? Evaluating Open-Ended Aesthetic Reasoning in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Sajjad Ghiasvand",
+          "Maryam Amirizaniani",
+          "Haniyeh Ehsani Oskouie",
+          "Mahnoosh Alizadeh",
+          "Ramtin Pedarsani"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Be Faithful When Response: Returning Fluent and Grounded Answers for Vision-Language Models Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Peng",
+          "Lee",
+          "Yin Zhang",
+          "Yanglin Zhang",
+          "Haonan Wu",
+          "Zishan Liu",
+          "Ruoxi Zang",
+          "Xin Zhu",
+          "Jiayin Zheng",
+          "Jian Yao",
+          "Zefeng Ji",
+          "Fei Ma"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "AMR: Adaptive Modality Routing for Multimodal Polyglot Speaker Identification",
+        "url": "",
+        "authors": [
+          "Chuxiao Zuo",
+          "Yao Zhu",
+          "Minqiang Xu",
+          "Manhong Wang",
+          "Yunke Zhang",
+          "Fei Huang"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "ManimAgent: Self-Evolving Multimodal Agents for Visual Education",
+        "url": "",
+        "authors": [
+          "Wenjia Jiang",
+          "Zongyuan Cai",
+          "Yuanhang Shao",
+          "Chenru Wang",
+          "Boyan Han",
+          "Zhixue Song",
+          "Keyu Chen",
+          "Shengwei An",
+          "Xu Yang",
+          "Zhou Yang"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "DAIN: Dynamic Agent-Based Interaction Network for Efficient and Collaborative Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Xinxin Chen",
+          "Yuchen Li",
+          "Zihan Wang",
+          "Haoyu Zhang",
+          "Ruixin Liu",
+          "Mingyuan Zhao"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Forewarned is Forearmed: When Non-Sequential Embedding Turns Into an Anomaly Detector",
+        "url": "",
+        "authors": [
+          "Elys Allesiardo",
+          "Antoine Caubrière",
+          "Valentin Vielzeuf"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Before Thinking, Learn to Decide: Proactive Routing for Efficient Visual Reasoning",
+        "url": "",
+        "authors": [
+          "Yinan Zhou",
+          "Haokun Lin",
+          "Yichen Wu",
+          "Caifeng Shan",
+          "Zhenan Sun",
+          "Yuxin Chen",
+          "Teng Wang",
+          "Chen Ma",
+          "Li Zhu",
+          "Ying Shan"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Does Role Specialization Matter for Explanation Faithfulness in Mixture-of-Experts?",
+        "url": "",
+        "authors": [
+          "Yeji Kim",
+          "Housam Babiker",
+          "Mi-Young Kim",
+          "Randy Goebel"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "A Diagnostic Framework and Multi-Evaluator Audit of Evaluator-Driven Preference Dynamics in Self-Adapting LLM Agents",
+        "url": "",
+        "authors": [
+          "Liu Zewen"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "MemLeak: Diagnosing Information Leaks in Multimodal Agent Memory",
+        "url": "",
+        "authors": [
+          "Kuan Wang",
+          "Chao Zhang"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "Dual-Flow Reinforcement Learning with State-Aware Exploration",
+        "url": "",
+        "authors": [
+          "Qijun Li",
+          "Zheng Fu",
+          "Qi Song",
+          "Yifei He",
+          "Weitao Zhou",
+          "Kun Jiang",
+          "Diange Yang"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "From Failure Taxonomy to Intervention: A Diagnostic Methodology for Industry-Scale AVLM in Video and Live-Streaming Platform Moderation",
+        "url": "",
+        "authors": [
+          "Shuchang Ye",
+          "Jinqiang Yu",
+          "Zhujun Xiao",
+          "Yajing Kong",
+          "Yist Y. Lin",
+          "Yang Ma",
+          "Jiaxi Liu",
+          "Xiaolei Xu",
+          "Zheng Yu"
+        ],
+        "date": "2026-06-30"
+      },
+      {
+        "title": "DreamForge-World 0.1 Preview: A Low-Compute Real-Time Controllable World Model",
+        "url": "",
+        "authors": [
+          "Daniyel Ayupov",
+          "Artur Markov-Tsoy"
+        ],
+        "date": "2026-06-30"
+      }
+    ]
+  }
+]
