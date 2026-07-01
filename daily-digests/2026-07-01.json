@@ -1,0 +1,341 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-01",
+    "paperCount": 8,
+    "markdown": "# Interpretability Research Digest: July 1, 2026\n\nToday's landscape advances three critical frontiers: architectural innovations that encode interpretability as hard constraints rather than post-hoc analysis, frameworks for resolving the superposition problem in latent spaces, and principled methods for transferring mechanistic insights across model families. These works demonstrate that interpretability is maturing from a descriptive discipline into a prescriptive engineering paradigm with rigorous mathematical foundations.\n\n## Architectures for Inherent Interpretability\n\n[1] The Neuro-Bayesian-Symbolic Residual Attention Shallow Network (NBS-RASN) addresses the fundamental tension between deep learning accuracy and explainability in cybersecurity risk assessment. Its core innovation is a shallow architecture with only 80 interpretable neurons across 12 layers, where a gatekeeper layer enforces five epistemological axioms—precision, causality, falsifiability, transparency, and completeness—as hard differentiable constraints before information propagates. By encoding domain knowledge and causal reasoning as differentiable components, the model achieves transparency without the typical accuracy penalties of shallow networks.\n\n[3] Multistage Defer Trees (MDTs) tackle the accuracy-interpretability tradeoff by asking whether all samples truly require the same model complexity. The approach builds a cascade of decision trees, where simpler trees classify \"easy\" samples early, and only challenging cases are deferred to more complex ensembles. This yields interpretability for the majority of predictions (via single or few trees) while matching state-of-the-art accuracy, demonstrating that the binary choice between interpretable models and powerful black boxes is a false dichotomy.\n\n[7] TreeAgent introduces a multi-agent framework that combines expert-crafted decision trees with Vision-Language Models (VLMs) for automated bias labeling in forestry remote sensing. The decision tree serves as a structural prior, providing transparent, rule-based reasoning, while VLMs perform localized semantic perception at individual nodes. Multi-agent voting mitigates VLM stochasticity, achieving human-competitive annotation quality with full explainability of every labeling decision.\n\n## Resolving Representations: Superposition and Latent Space Geometry\n\n[4] This work addresses superposition—the forced entanglement of distinct concepts in low-dimensional latent spaces—which critically corrupts interpretability in high-dimensional biological data analysis. The authors train sparse autoencoders (SAEs) on over 100,000 multiplexed images of patient-derived Parkinson's disease and healthy neurons to explicitly resolve superposition in the latent representations. This enables both interpretable feature discovery and cross-modal alignment between neuronal imaging modalities, directly linking AI-discovered features to biological mechanisms.\n\n[2] Partition-Guided Distance Saliency (PGDS) bridges the interpretability gap in Many-Objective Optimization (MaO), where high-dimensional Pareto fronts create a \"cognitive drought\" for decision-makers. The framework introduces a novel XAI approach that maps relationships between high-dimensional decision variables and objective outcomes through partition-based saliency scores. This allows practitioners to identify which decision variables drive specific trade-offs without requiring a priori knowledge of target regions.\n\n## Cross-Model and Cross-Setting Interpretability Transfer\n\n[6] This paper addresses a critical but overlooked problem in modern LLM interpretability workflows: moving coordinate-indexed objects (steering vectors, SAEs, attribution lists) across checkpoints requires fixing the model's residual-stream gauge. The author demonstrates that LayerNorm and RMSNorm architectures have fundamentally different gauge symmetries—$S_d$ (permutation) versus $B_d = S_d \\ltimes \\{\\pm 1\\}^d$ (signed permutation)—making permutation-only alignment symmetry-incomplete for RMSNorm models. The introduced sign-marginalized Hungarian alignment method ensures that interpretability measurements (e.g., neuron attributions) are properly comparable across checkpoints.\n\n[5] FedXDS demonstrates the first application of XAI methods to counteract data heterogeneity in federated learning, moving beyond transparency to active performance improvement. The approach uses model attribution methods to identify which input features drive client-specific model decisions, then leverages these attributions to align representations across heterogeneous clients without sharing raw data. This shows that XAI can serve as a bridge mechanism for distributed learning, improving both accuracy and interpretability simultaneously.\n\n[8] This work formalizes the surrogate problem in mechanistic interpretability: when can measurements on open models inform claims about closed, API-accessible models? The authors evaluate surrogate fidelity across prediction, attribution, and representation levels on binary classification tasks. They demonstrate that log-odds provide an API-compatible scalar readout of representation space, and leave-one-out attributions offer transferable behavioral insights. This establishes principled boundaries for when open-model mechanistic analysis can reliably proxy closed-model understanding.\n\n## Key Takeaways\n\n- **Interpretability as hard constraint**: The field is shifting from post-hoc explanation to architecting interpretability through differentiable constraints (epistemological axioms in NBS-RASN) and structural priors (decision trees in TreeAgent), proving that transparency need not sacrifice performance.\n\n- **The superposition problem is tractable**: Sparse autoencoders applied to biological imaging [4] demonstrate that superposition can be explicitly resolved, enabling both interpretable feature discovery and cross-modal alignment in high-dimensional regimes.\n\n- **Accuracy-interpretability is a false dichotomy**: Multistage Defer Trees [3] show that adaptive model complexity—using simple trees for most samples and complex ensembles only when needed—achieves both state-of-the-art accuracy and sample-level interpretability.\n\n- **Gauge symmetry matters for LLM interpretability**: The architecture-dependent gauge structure of residual streams (LayerNorm vs. RMSNorm) determines whether interpretability objects can be meaningfully compared across checkpoints, with signed-permutation alignment required for modern models.\n\n- **XAI enables new ML paradigms**: Beyond transparency, attribution methods can actively improve federated learning [5] by aligning client representations, opening a new role for interpretability in distributed model training.\n\n- **Surrogate fidelity has formal limits**: Not all open-model insights transfer to closed models [8]; log-odds and leave-one-out attributions provide API-compatible surrogates, but caveats must be rigorously characterized before drawing conclusions about proprietary systems.\n\n- **Human-AI collaboration via interpretable scaffolding**: Multi-agent systems that decompose tasks into transparent rule-based components and targeted VLM perception [7] achieve both scalability and explainability in expert-driven domains like forestry.",
+    "papers": [
+      {
+        "title": "Neuro-Bayesian-Symbolic Residual Attention Shallow Network: Explainable Deep Learning for Cybersecurity Risk Assessment",
+        "url": "",
+        "authors": [
+          "Nicolaie Popescu-Bodorin",
+          "Madeleine Togher"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Partition-Guided Distance Saliency: Bridging Decision and Objective Spaces in Many-Objective Optimization",
+        "url": "",
+        "authors": [
+          "Cláudio Lúcio do Val Lopes",
+          "Flávio Vinícius Cruzeiro Martins",
+          "Elizabeth Fialho Wanner"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Multistage Defer Trees for Hybrid Interpretability: If at First You Can't Succeed, Tree Again",
+        "url": "",
+        "authors": [
+          "Zakk Heile",
+          "Hayden McTavish",
+          "Margo Seltzer",
+          "Cynthia Rudin"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Resolving superposition in AI for interpretability and cross-modal alignment in patient-neuronal images",
+        "url": "",
+        "authors": [
+          "Jisung Park",
+          "Seohyeon Kang",
+          "Daeun Yoo",
+          "Eunsu Lee",
+          "Seoin Cho",
+          "Wooyeop Choi",
+          "Ian Choi",
+          "James R. Evan",
+          "Daesoo Kim",
+          "Sonia Gandhi",
+          "Minee L. Choi"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "FedXDS: Leveraging Model Attribution Methods to counteract Data Heterogeneity in Federated Learning",
+        "url": "",
+        "authors": [
+          "Maximilian Andreas Hoefler",
+          "Karsten Mueller",
+          "Wojciech Samek"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Signed-Permutation Coordinate Transport for RMSNorm Transformers",
+        "url": "",
+        "authors": [
+          "John Sweeney"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "TreeAgent: A Generalizable Multi-Agent Framework for Automated Bias Labeling in Forestry via Compiled Expert Rules and Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Shiyi Chen",
+          "Nicholas Saban",
+          "Collin Hargreaves",
+          "Huiqi Wang"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Surrogate Fidelity: When Can Open LLMs Explain Closed Ones?",
+        "url": "",
+        "authors": [
+          "Philippe Chlenski",
+          "Zachariah Carmichael",
+          "Ayush Warikoo",
+          "Chia-Tse Shao",
+          "Yingxiao Ye",
+          "Aobo Yang",
+          "Vivek Miglani",
+          "Nehal Bandi"
+        ],
+        "date": "2026-07-01"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-01",
+    "paperCount": 3,
+    "markdown": "# Neuro-Symbolic Bridges and Epistemic Foundations: The Expanding Frontier of Explainable AI\n\nToday's research landscape reveals a dual movement in explainability: a push toward architecturally-grounded interpretability through hybrid neuro-symbolic systems, and a parallel effort to ground explanation frameworks in philosophical and cognitive science foundations. Two papers advance novel technical architectures for domain-specific explainability in cybersecurity and optimization, while a third paper argues that the AI community must engage more deeply with the philosophy of science to achieve truly adequate explanations, particularly in high-stakes medical contexts.\n\n## Hardware-Architected Interpretability in Domain-Specific AI\n\nThe Neuro-Bayesian-Symbolic Residual Attention Shallow Network (NBS-RASN) [1] addresses the fundamental tension between deep learning accuracy and interpretability in cybersecurity risk assessment for open-source ecosystems. Rather than building deeper models and attempting post-hoc explanation, the authors construct a shallow network of only 80 interpretable neurons across 12 layers, encoding domain knowledge, causal reasoning, and expert judgment as differentiable components. The architecture's key innovation is a \"gatekeeper\" mechanism that enforces five epistemological axioms—precision, causality, falsifiability, transparency, and completeness—as hard constraints before information propagation, ensuring that every learned representation satisfies these criteria by design. This work matters because it demonstrates that domain-specific interpretability can be achieved through architectural choices rather than post-hoc approximation, potentially serving as a template for high-stakes applications where regulatory compliance demands both accuracy and auditable reasoning.\n\nThe Partition-Guided Distance Saliency (PGDS) framework [2] tackles the underexplored problem of explainability in Many-Objective Optimization (MaO), where Pareto fronts with high-dimensional objectives create a \"cognitive drought\" for decision-makers trying to understand trade-offs. PGDS bridges the gap between decision space (variables) and objective space (outcomes) by introducing a saliency mechanism that identifies which decision variables most influence proximity to preferred regions of the Pareto front. The framework operates by partitioning the objective space into regions of interest, then computing distance-based saliency scores that trace back through the optimization landscape to highlight critical variables. This contribution is significant because it extends XAI principles to a domain—evolutionary multi-objective optimization—where traditional visualization breaks down, providing practitioners with actionable insights about which levers to adjust for desired trade-off outcomes.\n\n## Philosophical Grounding for Medical AI Explanations\n\nThe paper on scientific explanations in health sciences [3] argues that current AI explainability research has largely ignored centuries of philosophical work on the nature of explanation, particularly in medicine and science. The authors systematically examine how concepts from philosophy of science—including causal models, mechanistic explanations, and criteria for epistemic adequacy—can inform what constitutes a genuinely satisfactory medical AI explanation. Rather than proposing a new algorithm, this work provides a critical framework for evaluating existing explanation methods by asking whether they satisfy epistemic standards that philosophers have developed for scientific explanations in general and medical explanations in particular. This matters because, as the paper notes, debates about what makes a medical explanation \"good enough\" remain unsettled in the AI community, and engaging with established philosophical scholarship may prevent reinventing flawed conceptual wheels in high-stakes clinical deployment.\n\n## Key Takeaways\n\n- Architectural interpretability through shallow, constraint-enforcing networks (as in NBS-RASN [1]) offers a viable alternative to black-box models with post-hoc explanations, particularly when domain knowledge can be formalized as differentiable components.\n- Explainability in optimization domains requires bridging two distinct spaces—decision variables and objective outcomes—as demonstrated by PGDS [2], which extends XAI beyond the standard classification and regression paradigm.\n- The epistemological axioms proposed in NBS-RASN (precision, causality, falsifiability, transparency, completeness) provide a concrete checklist against which to evaluate whether an explanation system is truly interpretable by design rather than by approximation.\n- Current AI explainability research risks conceptual shallowness by ignoring philosophy of science [3], especially in medical contexts where the stakes demand explanations that satisfy epistemic adequacy criteria developed over centuries.\n- Domain-specific interpretability architectures, whether for cybersecurity [1] or optimization [2], may be more productive than one-size-fits-all explanation methods, as they encode task-relevant structure and constraints.\n- The PGDS framework [2] opens a new research direction in explainable optimization, suggesting that saliency methods can be adapted to help decision-makers understand trade-offs in problems with many objectives.\n- A critical gap persists between technical XAI development and philosophical foundations [3], suggesting that interdisciplinary collaboration between AI researchers and philosophers of science could yield more principled and trustworthy explanation systems.",
+    "papers": [
+      {
+        "title": "Neuro-Bayesian-Symbolic Residual Attention Shallow Network: Explainable Deep Learning for Cybersecurity Risk Assessment",
+        "url": "",
+        "authors": [
+          "Nicolaie Popescu-Bodorin",
+          "Madeleine Togher"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Partition-Guided Distance Saliency: Bridging Decision and Objective Spaces in Many-Objective Optimization",
+        "url": "",
+        "authors": [
+          "Cláudio Lúcio do Val Lopes",
+          "Flávio Vinícius Cruzeiro Martins",
+          "Elizabeth Fialho Wanner"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Scientific Explanations in Health Sciences: Causality, Trust, and Epistemic Adequacy",
+        "url": "",
+        "authors": [
+          "Martina Mattioli",
+          "Marcello Pelillo"
+        ],
+        "date": "2026-07-01"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-01",
+    "paperCount": 14,
+    "markdown": "# Multimodal Frontiers: From Agent Orchestration to Uncertainty Estimation, Safety, and Scientific Discovery\n\nToday's research landscape reveals a field in rapid maturation, where multimodal systems are no longer merely integrating vision and language but are being deployed as team managers, scientific tools, and pedagogical coaches. A unifying theme across these papers is the tension between raw capability and practical reliability—whether through uncertainty quantification, safety alignment, reflection after failure, or principled reasoning.\n\n## Agentic Systems: From Static Benchmarks to Dynamic Real-World Interaction\n\nA major thrust in the current literature is moving multimodal agents beyond controlled environments into the messy reality of production systems. [3] introduces **ClawArena-Team**, a benchmark of 41 multi-turn, multimodal, multi-directory scenarios that isolates a single LLM's ability to act as a \"team leader\"—creating specialized subagents, delegating work, and orchestrating parallel asynchronous returns through dynamic workflows. This addresses a critical gap: existing benchmarks measure either a policy's own task-solving or a fixed multi-agent system's emergent behavior, but none isolate the management ability of a single LLM acting as orchestrator. The work is significant because it reframes the evaluation question from \"can this model solve a task?\" to \"can this model run a team that solves tasks?\"\n\nOn the practical deployment front, [9] presents **Xiaomi-GUI**, a technical report detailing a GUI agent trained and evaluated specifically for real-world mobile applications, moving beyond the offline trajectories and simulated environments that dominate existing benchmarks. The system confronts the \"abnormal-state distribution\" problem—account states, permission dialogs, payment authentication—that standardized benchmarks cannot faithfully characterize. This matters because it suggests that the path from research prototype to consumer product requires fundamentally different evaluation protocols that stress execution stability over isolated task completion.\n\n[5] contributes **PPT-Eval**, a benchmark of 120 PowerPoint tasks across 12 files covering both content creation and presentation editing, organized by difficulty, as a testbed for computer-use agents. The central challenge identified is evaluation itself: tasks are complex, multimodal, and often admit many valid solutions. This work highlights that the evaluation bottleneck is becoming as important as the algorithmic bottleneck for real-world agent deployment.\n\n[10] takes an intriguingly human-centric perspective with **DigitalCoach**, a multimodal dataset of 72 human expert-novice computer use coaching sessions across five software applications. By evaluating whether state-of-the-art models can teach humans how to use computers, the paper reveals a surprising finding: models provide more direct instructions but fewer explanations than human coaches. This work reframes the agent's role from task-completion to skill-transfer, opening a new axis for evaluating multimodal systems.\n\n## Beyond Static Training: Adaptive Reasoning and Self-Correction\n\nSeveral papers tackle the fundamental limitation of static supervision in multimodal systems. [11] proposes **Evo-PI**, a principle-centric learning framework that treats reasoning principles as explicit, language-based supervision signals that evolve during training, rather than relying on fixed prompts, rules, or reward models. This addresses the brittleness of current MLLMs in complex decision-making tasks where static signals fail to shape the underlying reasoning process. The approach matters because it suggests a path beyond the saturation of performance that occurs when models memorize output formats without internalizing reasoning strategies.\n\n[8] introduces **ReGRPO** (Reflection-augmented Group Relative Policy Optimization), a framework that addresses a critical gap in tool-augmented vision-language models: they are trained primarily on successful trajectories and lack recovery mechanisms after tool failures. By learning reflection-guided correction, ReGRPO moves beyond the limitations of both supervised fine-tuning (which offers little signal for recovery) and sparse trajectory-level RL rewards (which provide limited step-level guidance). This is practically important because real-world tool use inevitably involves failures, and the ability to detect, reflect upon, and recover from errors is a prerequisite for reliable deployment.\n\n[4] presents **LOPA** (Latent Ordinal Prototype Alignment) for spoken language assessment, introducing a prototype-based regularizer that enforces an ordinal geometric prior directly on the latent space. Coupled with Semantic-Anchored Layer Routing (SALR), which adaptively harvests multi-depth representations, this work circumvents the need for large-scale MLLMs while respecting the intrinsic ordinal structure of language acquisition. The contribution is notable for demonstrating that domain-specific inductive biases can substitute for model scale in multimodal tasks.\n\n## Safety, Uncertainty, and Representation Learning\n\nSafety alignment receives novel treatment in [12], which investigates whether textual refusal directions extracted from the LLM backbone of multimodal systems generalize across modalities (image, video). The preliminary finding—that this cross-modal transfer is possible, though conditioned by layer selection and steering strength—offers a practical pathway to improve MLLM safety without requiring unsafe multimodal data, which is harder to collect than unimodal data. This relaxes a major engineering constraint in multimodal safety research.\n\n[13] proposes **CoMet** (Context and Multiplicity Decomposition), a framework for uncertainty estimation in multimodal large language models that explicitly decomposes uncertainty across diverse modal sources and their relationships, as well as the unbounded answer space in open-ended settings. Given that uncertainty estimation remains challenging even in simple classification systems, tackling it in MLLMs is increasingly critical as these models are deployed in high-stakes applications. CoMet's decompositional approach provides a principled foundation for knowing when to trust a model's output.\n\n[7] presents **CryoACE**, an atom-centric framework for automated protein model building from cryo-EM density maps. The method features two key innovations: directly sampling density features at atomic coordinates with iterative refinement, and replacing traditional convolution-based density encoding with atom-centric representations. This work bridges multimodal representation learning with structural biology, addressing the unique challenges of enforcing physicochemical validity and managing conformational heterogeneity in protein structure determination.\n\n## Federated and Foundational Multimodal Learning\n\n[14] tackles the practical constraints of privacy in multimodal graph foundation learning with **FedLAB**, a federated learning framework that enables traceable semantic codebooks across decentralized clients. This addresses the critical problem that multimodal graphs—enriched with text, images, attributes, and relational topology—are often distributed across clients where raw contents and local structures cannot be centrally shared. The emphasis on intrinsic semantic traceability under data isolation is crucial for applications in healthcare, finance, and other regulated domains.\n\n[6] investigates a fundamental cognitive question: whether grounding multi-hop textual-spatial stories into geometry-aware modalities (layouts or grids) improves reasoning compared to natural language-based inference, and whether a model can learn when to switch between modalities. This work directly engages with the premise that human reasoning is inherently multimodal—we externalize thinking through diagrams and sketches—and asks whether AI systems should do the same. The question of modality-switching has implications for both model architecture design and interpretability.\n\n## Key Takeaways\n- **From solo performers to team managers**: Multimodal agents are being redesigned as orchestrators that create, delegate to, and coordinate specialized subagents, requiring fundamentally new benchmarks like ClawArena-Team to evaluate management ability rather than task-solving alone.\n- **Static supervision is a bottleneck**: Multiple works (Evo-PI, ReGRPO) demonstrate that fixed prompts, rules, or reward models limit reasoning quality and recovery from failure, driving interest in evolving, principle-guided, or reflection-augmented training paradigms.\n- **Safety can transfer across modalities**: Textual refusal directions extracted from LLM backbones generalize to multimodal settings, offering a practical safety pathway that avoids the data collection challenges of unsafe multimodal training data.\n- **Uncertainty quantification is becoming tractable**: CoMet's decomposition of uncertainty across modal sources and their relationships provides a principled framework for knowing when multimodal systems can be trusted, a critical enabler for deployment.\n- **Real-world deployment reveals new evaluation axes**: From coaching (DigitalCoach) to abnormal-state handling (Xiaomi-GUI) to creative open-ended tasks (PPT-Eval), the field is recognizing that standardized benchmarks miss critical failure modes in production environments.\n- **Domain-specific inductive biases can substitute for scale**: LOPA's ordinal prototype alignment and CryoACE's atom-centric paradigm show that incorporating domain structure often outperforms scaling generic architectures for specialized multimodal tasks.\n- **Privacy-preserving multimodal learning is advancing**: FedLAB's traceable semantic codebooks demonstrate that federated multimodal learning can achieve both transferability and traceability under strict data isolation constraints.",
+    "papers": [
+      {
+        "title": "Building a Multimodal Dataset of Academic Paper for Keyword Extraction",
+        "url": "",
+        "authors": [
+          "Jingyu Zhang",
+          "Xinyi Yan",
+          "Yi Xiang",
+          "Yingyi Zhang",
+          "Chengzhi Zhang"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Physics-informed Conditional Normalizing Flows for Angles-only Cislunar Orbit Determination",
+        "url": "",
+        "authors": [
+          "Walther Litteri",
+          "Massimiliano Vasile"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "ClawArena-Team: Benchmarking Subagent Orchestration and Dynamic Workflows in Language-Model Agents",
+        "url": "",
+        "authors": [
+          "Kaiwen Xiong",
+          "Haonian Ji",
+          "Shi Qiu",
+          "Zeyu Zheng",
+          "Cihang Xie",
+          "Xinyu Ye",
+          "Huaxiu Yao"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "LOPA: Enhancing Spoken Language Assessment via Latent Ordinal Prototype Alignment",
+        "url": "",
+        "authors": [
+          "Hong-Yun Lin",
+          "Fu-An Chao",
+          "Bi-Cheng Yan",
+          "Berlin Chen"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "PPT-Eval: A Benchmark for Computer-Use Agents on PowerPoint Tasks",
+        "url": "",
+        "authors": [
+          "Apurva Gandhi",
+          "Vishwas Suryanarayanan",
+          "Raja Hasnain Anwar",
+          "Firoz Shaik",
+          "Shubhang Desai",
+          "Thong Q. Nguyen",
+          "Muhammad Taqi Raza",
+          "Vishal Chowdhary",
+          "Graham Neubig"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Spatial Reasoning via Modality Switching Between Language and Symbolic Representation",
+        "url": "",
+        "authors": [
+          "Shreya Rajpal",
+          "Tanawan Premsri",
+          "Parisa Kordjamshidi"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "CryoACE: An Atom-centric Framework for Accurate and Automated Model Building in Cryo-EM",
+        "url": "",
+        "authors": [
+          "Minzhang Li",
+          "Mingrui Li",
+          "Weichen Qin",
+          "Qihe Chen",
+          "Sixian Shen",
+          "Yuan Pei",
+          "Jiakai Zhang",
+          "Jingyi Yu"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "ReGRPO: Reflection-Augmented Policy Optimization for Tool-Using Agents",
+        "url": "",
+        "authors": [
+          "Binjie Zhang",
+          "Mike Zheng Shou"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Xiaomi-GUI-0 Technical Report",
+        "url": "",
+        "authors": [
+          "Wanxia Cao",
+          "Chengzhen Duan",
+          "Pei Fu",
+          "Pengzhi Gao",
+          "Niu Lian",
+          "Fazhan Liu",
+          "Hui Liu",
+          "Heng Qu",
+          "Qinzhuo Wu",
+          "Zhehao Yu",
+          "Tongbo Chen",
+          "Shiqi Cui",
+          "Anan Du",
+          "Shukai Jia",
+          "Yuanfa Li",
+          "Yike Liu",
+          "Wenchao Lu",
+          "Haoyuan Sun",
+          "Jiatong Sun",
+          "Cheng Tan",
+          "Yajie Wang",
+          "Changqiao Wu",
+          "Tao Xiong",
+          "Jiahui Yang",
+          "Yuxuan Yuan",
+          "Ruoceng Zhang",
+          "Shaojie Zhang",
+          "Jian Zhu",
+          "Jian Luan",
+          "Cong Zou"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "DigitalCoach: Communication and Grounding Gaps in Human and Agentic Computer Use Coaching",
+        "url": "",
+        "authors": [
+          "Meng Chen",
+          "Anya Ji",
+          "Tsung-Han Wu",
+          "Tobias Maringgele",
+          "David M. Chan",
+          "Alane Suhr",
+          "Amy Pavel"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Evo-PI: Aligning Medical Reasoning via Evolving Principle-Guided Supervision",
+        "url": "",
+        "authors": [
+          "Xianda Zheng",
+          "Huan Gao",
+          "Meng-Fen Chiang",
+          "Michael Witbrock",
+          "Kaiqi Zhao",
+          "Shangyang Li"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "Harnessing Textual Refusal Directions for Multimodal Safety",
+        "url": "",
+        "authors": [
+          "Moreno D'Incà",
+          "Massimiliano Mancini",
+          "Nicu Sebe"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "CoMet: Context and Multiplicity Decomposition for Multimodal Uncertainty Estimation",
+        "url": "",
+        "authors": [
+          "Sanghyuk Chun",
+          "William Yang",
+          "Amaya Dharmasiri",
+          "Olga Russakovsky"
+        ],
+        "date": "2026-07-01"
+      },
+      {
+        "title": "FedLAB: Traceable Semantic Codebooks for Federated Multimodal Graph Foundation Learning",
+        "url": "",
+        "authors": [
+          "Zekai Chen",
+          "Kairui Yang",
+          "Xuaner Chen",
+          "Xunkai Li",
+          "Xun Wu",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-07-01"
+      }
+    ]
+  }
+]
