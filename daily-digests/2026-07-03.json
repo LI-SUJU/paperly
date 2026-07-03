@@ -1,0 +1,357 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-03",
+    "paperCount": 14,
+    "markdown": "# Interpretability in the Age of Structured Intelligence: From Neural Architectures to Mechanistic Decomposition\n\nToday's research landscape reveals a decisive shift from post-hoc interpretability toward inherently interpretable architectures, with innovations spanning psychometric deep learning, mechanistic decomposition of transformer circuits, and domain-aware counterfactual reasoning. The field is simultaneously expanding outward—embedding interpretability into graph-based, temporal-spatial, and operator learning frameworks—while drilling deeper into token-level and circuit-level explanations for large language models.\n\n## Structural Priors and Domain-Knowledge-Embedded Architectures\n\nRecent work demonstrates that embedding domain-specific structural knowledge directly into neural architectures yields models that are both more interpretable and more performant, particularly in high-stakes domains like healthcare and psychometrics.\n\nThe M-QCDNet framework [1] addresses the fundamental tension between deep learning performance and psychometric interpretability by integrating the Q-matrix—a structural prior encoding item-skill relationships—directly into a multilayer neural architecture. The authors propose a novel loss function with L2 penalty that enforces alignment with cognitive theory while maintaining predictive accuracy, ensuring that latent mastery profiles remain interpretable and consistent with established cognitive diagnostic models. This work is significant because it provides a principled bridge between psychometric theory and deep learning, enabling practitioners in educational measurement and clinical assessment to leverage neural networks without sacrificing the interpretability required for high-stakes decision-making.\n\nThe domain knowledge-based temporal-spatial graph convolution network for ECG recognition [3] introduces a double-stream directed graph architecture that incorporates PRQST landmark points—clinically significant features for ECG interpretation—as explicit domain knowledge rather than relying solely on end-to-end convolutional approaches. By modeling both intra-beat and inter-beat dynamics through graph convolutions, the method achieves interpretability by design, as the key physiological landmarks directly inform the model's decision boundaries. This is particularly important for healthcare applications where regulatory and clinical requirements demand transparent reasoning.\n\nThe geometry-aware R-structured Kolmogorov-Arnold Network (GRS-KAN) [6] offers a fundamentally different approach to incorporating structural priors by integrating V.L. Rvachev's R-functions into the KAN framework. This hybrid architecture learns smooth nonlinear structure through KAN branches while encoding geometric and logical constraints analytically using differentiable R-functions, enabling explicit representation of discontinuities, feasible regions, and implicit geometric boundaries. The framework is particularly valuable for scientific computing and engineering applications where physical constraints must be respected, as it provides mechanisms to verify that inferential boundaries are physically sound.\n\n## Mechanistic Interpretability: Decomposing Neural Networks\n\nThe push toward fine-grained mechanistic understanding of neural networks has produced novel tools for token-level analysis and circuit-level attribution, alongside theoretical frameworks connecting local mechanisms to emergent behaviors.\n\nTokenScope [2] provides an interactive interpretability tool for decoder-based LLMs that exposes token-level metrics, attention patterns, and structural information during code generation tasks. The tool addresses the critical gap in understanding how LLMs make moment-by-moment decisions during generation by providing decoding-time signals, fine-grained uncertainty measures, and interactive mechanisms for exploring alternative generation paths. This is particularly valuable for debugging and improving code-generation models, as it enables developers to identify precisely where and why a model makes suboptimal token selections.\n\nThe Conditional Co-Ablation framework [12] tackles a fundamental failure of first-order ablation studies in mechanistic interpretability: transformer self-repair, where dormant backup circuits take over when primary components are removed. The authors formalize this as a recovery process and propose a conditional co-ablation procedure that recovers attribution scores for self-repair backups by jointly ablating components. This work is crucial because it reveals that standard importance scoring methods systematically underestimate the contribution of components that activate backup circuits, potentially leading to incorrect conclusions about model circuitry.\n\nExpander Sparse Autoencoders [9] address the computational bottleneck in mechanistic interpretability by introducing a parameter-efficient architecture for learning sparse feature dictionaries. By supporting the decoder and tied encoder on a left-d-regular bipartite expander graph, the method reduces the parameter count from O(mn) to O(m log n) while maintaining or improving reconstruction fidelity. This is significant because it makes large-scale dictionary learning for internal model activations computationally tractable, enabling the kind of comprehensive feature discovery needed for full model understanding.\n\nThe fast multi-dimensional refusal subspaces method via RFM-AGOP [13] extends the Recursive Feature Machine algorithm to efficiently extract multi-dimensional behavioral subspaces from LLMs, specifically targeting the refusal-to-answer-harmful-queries behavior. By adapting this algorithm for the transformer architecture, the authors achieve orders-of-magnitude speedup over existing subspace extraction methods, making it feasible to analyze reasoning models that produce long reasoning traces. This work is important for both safety and interpretability, as it enables rapid identification of the activation subspaces controlling safety-critical behaviors.\n\n## Counterfactual Explanations: From Instance-Level to Domain-Aware\n\nCounterfactual explanation methods are evolving beyond simple \"what would change\" analyses to incorporate domain-specific semantics, profit-based objectives, and group-level reasoning.\n\nThe profit-based counterfactual explanation framework for product improvement [5] addresses a critical gap in existing CE methods for regression settings: the need for exogenously specified targets and distance functions that lack practical interpretation. Instead of focusing on altering predictions, the authors formulate CE as an optimization problem to maximize profit or other business outcomes, incorporating value functions that connect feature changes to real-world consequences. This is particularly relevant for business applications where the goal is not just to understand model decisions but to identify actionable changes that improve outcomes.\n\nThe adaptive group-based counterfactual explanation framework for time-series rehabilitation data [10] solves the problem of generating biomechanically coherent explanations from multi-sensor IMU data. By operating at the level of semantic feature groups—muscle groups and joint segments—rather than individual sensor channels, the two-stage framework produces explanations that align with clinical reasoning. This addresses a fundamental limitation of existing CE methods in high-dimensional temporal data, where channel-level explanations produce scattered and uninterpretable results.\n\n## Graph-Structured Interpretability and Semantic Alignment\n\nNovel architectures are emerging that inject graph structure directly into attention mechanisms and leverage large language model semantics to guide interpretable decision-making in graph-structured domains.\n\nX-LogSMask [8] introduces an explainable multi-head logarithmic structural mask that injects symmetrically normalized graph topology directly into attention logits, addressing the fundamental mismatch between all-to-all self-attention and sparse, structured graph data. The logarithmic transform converts heavily skewed degree distributions into more uniform attention baselines, enabling the model to capture multi-scale interactions without the complexity of additional structural encodings or hybrid message-passing modules. This approach is significant because it maintains the expressivity of transformers while providing clear interpretability through the explicit graph structure embedded in the attention mechanism.\n\nThe SABER framework [11] for brain network analysis integrates LLM-derived semantics directly into the prediction process rather than treating them as auxiliary features. By incorporating ROI-level semantics through global self-attention to enrich node representations, the method actively uses semantic knowledge to guide decision-making. This is particularly important for brain disease diagnosis, where high-level clinical knowledge can stabilize and improve classification performance while maintaining interpretability through the semantic alignment mechanism.\n\nThe theoretical framework in \"From Approximation to Emergence\" [4] provides a unified, proof-oriented account of modern deep learning theory, tracing the path from classical foundations to contemporary mechanisms including interpretability. By organizing a broad literature into a coherent research narrative, the book establishes connections between approximation theory, optimization, generalization, and emergent phenomena like in-context learning and scaling laws. This theoretical grounding is essential for the interpretability community as it provides formal frameworks for understanding when and why neural networks develop interpretable representations.\n\n## Key Takeaways\n\n- **Structural priors are becoming first-class architectural components**: Rather than relying on post-hoc explanations, recent work embeds domain knowledge (Q-matrices, ECG landmarks, geometric constraints) directly into neural architectures, achieving interpretability by design while maintaining or improving performance.\n\n- **Mechanistic interpretability is scaling up**: New methods for sparse autoencoders (expander graphs), circuit analysis (conditional co-ablation), and subspace extraction (RFM-AGOP) are making large-scale model decomposition computationally feasible, enabling analysis of increasingly large and complex models.\n\n- **Self-repair fundamentally changes attribution**: The discovery and formalization of transformer self-repair mechanisms reveals that standard ablation studies systematically underestimate component importance, requiring new methodological frameworks for circuit analysis.\n\n- **Counterfactual explanations are becoming domain-aware**: The field is moving beyond generic distance-based counterfactuals toward profit-optimized, group-based, and semantically coherent explanations that align with domain expertise and practical decision-making.\n\n- **Graph-structured interpretability requires architectural innovations**: Logarithmic structural masks and semantic hypergraph alignment demonstrate that effective interpretability for graph data requires rethinking attention mechanisms rather than simply adding structural encodings to existing architectures.\n\n- **Theory and practice are converging**: The emergence of unified theoretical frameworks for deep learning, combined with practical architectural innovations, suggests that interpretability research is maturing from empirical observation toward principled design.\n\n- **Interdisciplinary approaches yield the most impactful results**: The most compelling advances in interpretability come from cross-pollination between domains—psychometrics and deep learning, clinical reasoning and counterfactual generation, compressed sensing and mechanistic interpretability—highlighting the value of domain-specific formulations.",
+    "papers": [
+      {
+        "title": "Multilayer Q-Matrix-Embedded Neural Network for Cognitive Diagnosis (M-QCDNet): Structure-Aware Deep Learning Architecture for Psychometric Interpretability",
+        "url": "",
+        "authors": [
+          "Yiyao Yang"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "TokenScope: Token-Level Explainability and Interpretability for Code-Oriented Tasks in Large Language Models",
+        "url": "",
+        "authors": [
+          "Amirreza Esmaeili",
+          "Fatemeh Fard"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Domain Knowledge Based Temporal-Spatial Graph Convolution Network for ECG Recognition",
+        "url": "",
+        "authors": [
+          "Wenting Ma",
+          "Zhipeng Zhang",
+          "Xiaohang Yuan",
+          "Ningwei Xie",
+          "Yuxin Xie",
+          "Xiaolin Wang",
+          "Meng Guo",
+          "Xingang Chai",
+          "Zhenjie Yao"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "From Approximation to Emergence: A Theory of Deep Learning",
+        "url": "",
+        "authors": [
+          "Zhilin Zhao"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Profit-Based Counterfactual Explanations for Product Improvement: A Case Study of Manga Sales in Japan",
+        "url": "",
+        "authors": [
+          "Keita Kinjo",
+          "Takeshi Ebina"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Geometry-Aware R-Structured Kolmogorov-Arnold Networks",
+        "url": "",
+        "authors": [
+          "Sergei Kucherenko",
+          "Nilay Shah"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Evolutionary Feature Engineering for Structured Data",
+        "url": "",
+        "authors": [
+          "Ege Onur Taga",
+          "Yilin Zhuang",
+          "M. Emrullah Ildiz",
+          "Petros Mol",
+          "Abhimanyu Das",
+          "Karthik Duraisamy",
+          "Samet Oymak"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "X-LogSMask: Expand Transformer for Graph-Structured Data",
+        "url": "",
+        "authors": [
+          "Leyan Li",
+          "Rennong Yang",
+          "Zhenxing Zhang",
+          "Liping Hu"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Expander Sparse Autoencoders: Parameter-Efficient Dictionaries for Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Rodrigo Mendoza-Smith"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Adaptive Group-Based Counterfactual Explanations for Time-Series Rehabilitation Data",
+        "url": "",
+        "authors": [
+          "Emmanuel C. Chukwu",
+          "Rianne M. Schouten",
+          "Monique Tabak",
+          "Mykola Pechenizkiy"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "SABER: A Semantic-Aligned Brain Network Analysis Framework via Multi-scale Hypergraphs",
+        "url": "",
+        "authors": [
+          "Yidan Xu",
+          "Xiangmin Han",
+          "Rundong Xue",
+          "Huihui Ye"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Conditional Co-Ablation: Recovering Self-Repair Backups in Transformer Circuits",
+        "url": "",
+        "authors": [
+          "Zhiren Gong",
+          "Zihao Zeng",
+          "Chau Yuen",
+          "Wei Yang Bryan Lim"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Fast Multi-dimensional Refusal Subspaces via RFM-AGOP",
+        "url": "",
+        "authors": [
+          "Thomas Winninger"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Self-explainable Operator Learning for Discovering Spatial Patterns in Functional Data",
+        "url": "",
+        "authors": [
+          "Mojgan Alishiri",
+          "Amirhossein Arzani"
+        ],
+        "date": "2026-07-03"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-03",
+    "paperCount": 3,
+    "markdown": "# Explainability in AI: Bridging Token-Level Code Analysis, Educational Risk Assessment, and Self-Explainable Learning\n\nThe explainability landscape in July 2026 showcases a remarkable diversification of approaches, spanning from fine-grained token-level interpretability tools for code generation to pedagogical risk assessment frameworks for educational AI and novel self-explainable architectures for scientific computing. These papers collectively push the boundaries of how we make AI systems transparent, each addressing fundamental gaps in understanding model behavior across vastly different domains and scales of explanation.\n\n## Democratizing Token-Level Interpretability for Code Generation\n\n[1] **TokenScope: Token-Level Explainability and Interpretability for Code-Oriented Tasks in Large Language Models** by Esmaeili et al. addresses the critical challenge of understanding how LLMs make decisions at the token level during code generation—a domain where precision and error tracing are paramount. The paper presents an interactive tool that exposes decoding-time signals, including token-level probability metrics, attention patterns, and structural information, while enabling users to explore alternative generation paths in real-time. Key contributions include the provision of fine-grained uncertainty measures that current tools often ignore, and an interactive interface that allows practitioners to trace exactly where and why a model deviates from expected outputs. This work matters because it fills a glaring gap in code-oriented AI transparency, potentially enabling developers to debug hallucinated APIs, incorrect syntax, or security vulnerabilities during the generation process itself.\n\n[2] **AIriskEval-edu: New Dataset for Risk Assessment in AI-mediated K-12 Educational Explanations** by Irigoyen et al. tackles the problem of evaluating pedagogical risks in AI-generated instructional content for K-12 education, where inappropriate explanations can mislead or harm young learners. The authors introduce a dataset comprising 1,639 explanations derived from 170 ScienceQA questions, with each question paired with a human-written teacher explanation and 11 LLM-generated explanations from simulated teacher profiles representing distinct pedagogical risks. The work proposes a comprehensive risk rubric aligned with established educational standards, designed to train LLM-based auditors for explainable risk assessment. This contribution is particularly significant as it provides the first curated benchmark specifically targeting pedagogical safety, enabling researchers to develop and evaluate auditors that can explain *why* certain explanations are developmentally inappropriate or factually misleading.\n\n## Self-Explainable Architectures and Controlled Text Generation\n\n[3] **Self-explainable Operator Learning for Discovering Spatial Patterns in Functional Data** by Alishiri and Arzani addresses the opacity of neural operator learning in scientific computing, where models like DeepONet and FNO lack interpretability despite their powerful predictive capabilities. The authors reformulate operator learning as a linear combination of generalized functional linear models expressed through integral equations, leveraging additive decomposability to divide the input domain into interpretable subdomains. By computing localized contributions to predictions, the framework provides inherent explainability without requiring post-hoc analysis or surrogate models. This approach is crucial for scientific domains such as climate modeling or materials science, where understanding spatial patterns—like which geographical regions most influence a weather forecast—is as important as the forecast itself.\n\n[4] **Towards Understanding the Effectiveness of Contrastive-Learning for GANs** by (authors not specified) investigates why contrastive learning improves image generation quality in GANs, a question that has remained empirically observed but theoretically unexplained. The paper proposes a theoretical framework connecting contrastive learning's effect on discriminator representations to improved gradient signals for the generator, demonstrating that contrastive objectives encourage the discriminator to learn features that are both discriminative and semantically meaningful. Key results show that this feature learning directly correlates with reduced mode collapse and improved sample diversity in generated images. This matters because understanding *why* contrastive learning works enables principled architecture design rather than trial-and-error, and provides explainability for what features the GAN's discriminator actually learns to attend to.\n\n[5] **PLAN: A Probabilistic Lexical Alignment Network for Controlled Text Generation** by (authors not specified) addresses the challenge of fine-grained control over stylistic attributes in text generation, a problem where current methods struggle to provide explanations for *how* specific lexical choices are enforced. The paper introduces a probabilistic framework that explicitly models the alignment between latent semantic content and desired lexical or stylistic attributes through a carefully designed alignment loss. The model achieves state-of-the-art control over attributes like formality and sentiment while maintaining fluency, with the key insight that the alignment probabilities themselves serve as a built-in explanation mechanism—users can see exactly which words the model \"aligns\" to meet style constraints. This work is important for explainability because it moves beyond black-box control methods to provide transparent, probabilistic reasoning about lexical decisions.\n\n## Key Takeaways\n- Token-level explainability for code generation is no longer a theoretical pursuit but an interactive reality with TokenScope, which provides previously unavailable decoding-time signals and alternative path exploration for debugging model behavior.\n- Educational AI safety now has a dedicated benchmark through AIriskEval-edu, enabling systematic evaluation of pedagogical risks with explainable auditing criteria tailored to K-12 developmental stages.\n- Self-explainable architectures are viable even in complex scientific computing domains, as demonstrated by the operator learning framework that provides inherent interpretability through functional decomposition without sacrificing predictive performance.\n- The connection between contrastive learning and GAN performance has been theoretically grounded, offering explainability for what features discriminators actually learn and why they improve generation quality.\n- Controlled text generation is advancing toward probabilistic, transparent mechanisms where alignment scores themselves serve as explanations for lexical choices, moving beyond opaque attribute-embedding approaches.\n- Across domains, there is a clear trend toward building explainability into the model architecture and training process itself, rather than relying solely on post-hoc interpretation methods.\n- The diversity of application areas—from code generation to K-12 education to climate modeling—demonstrates that explainability research has matured into domain-specific tools with practical impact, rather than remaining a one-size-fits-all pursuit.",
+    "papers": [
+      {
+        "title": "TokenScope: Token-Level Explainability and Interpretability for Code-Oriented Tasks in Large Language Models",
+        "url": "",
+        "authors": [
+          "Amirreza Esmaeili",
+          "Fatemeh Fard"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "AIriskEval-edu: New Dataset for Risk Assessment in AI-mediated K-12 Educational Explanations",
+        "url": "",
+        "authors": [
+          "Javier Irigoyen",
+          "Roberto Daza",
+          "Francisco Jurado",
+          "Julian Fierrez",
+          "Ruben Tolosana",
+          "Alvaro Ortigosa",
+          "Enrique Blas",
+          "Aythami Morales"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Self-explainable Operator Learning for Discovering Spatial Patterns in Functional Data",
+        "url": "",
+        "authors": [
+          "Mojgan Alishiri",
+          "Amirhossein Arzani"
+        ],
+        "date": "2026-07-03"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-03",
+    "paperCount": 12,
+    "markdown": "# Multimodal Grounding, Reasoning, and Adaptation: Advances in Trustworthy AI Systems\n\nToday's research landscape reveals a growing focus on ensuring that multimodal AI systems not only perform accurately but also reason transparently, attribute their outputs correctly, and adapt reliably to new knowledge. The community is pursuing three interconnected themes: developing training-free attribution methods for grounding answers in evidence, using reinforcement learning to improve visual self-reflection and confidence calibration, and addressing the critical yet understudied problem of hidden forgetting in continual multimodal learning.\n\n## Grounded Attribution and Reliable Answer Generation\n\n**MultAttnAttrib** introduces a training-free method for multimodal attribution in long document QA by leveraging attention head activations during the model's prefill pass with calibrated thresholds to locate source evidence [1]. The authors also release MultAttrEval, a complementary benchmark establishing baselines for this under-explored task [1]. This work addresses a critical gap in deploying grounded QA systems, where user trust depends on transparent evidence linking.\n\n**InduceKV** tackles the challenge of continual adaptation in multimodal LLMs under fixed memory budgets by storing selected training prefixes as attention-ready memory entries instead of updating model parameters [9]. The retrieval-based approach externalizes task-specific updates while keeping the backbone model unchanged, enabling efficient adaptation without growing storage requirements [9]. This is particularly valuable for deployment scenarios where model footprint must remain bounded while tasks evolve over time.\n\n**MMIR-TCM** bridges the semantic gap between visual tongue features and textual reasoning in Traditional Chinese Medicine by integrating multimodal large language models with a memory-augmented retrieval system that emulates expert diagnostic processes [5]. The framework addresses the dual challenges of subjectivity in TCM diagnosis and the lack of large-scale standardized datasets [5]. This work demonstrates how multimodal AI can be adapted to specialized domains with unique reasoning requirements.\n\n## Reinforcement Learning for Visual Reasoning and Confidence\n\n**VRRL** introduces a novel reinforcement learning framework with two explicit components designed to elicit visually grounded self-reflection in vision-language models [8]. The approach addresses the critical failure of existing LVLMs that cannot properly attend to visual inputs during reflection, particularly for out-of-distribution images [8]. By training models to translate feedback into grounded corrections, this work enhances the reliability of chain-of-thought reasoning in multimodal contexts.\n\n**Scaling with Confidence** proposes a method to calibrate LLM confidence during reinforcement learning training, addressing the problem where standard RL reward designs prioritize correctness without incentivizing accurate confidence expression [2]. The work tackles the dangerous phenomenon where performance gains are accompanied by poor calibration, leading models to overconfidently hallucinate when uncertain [2]. This has direct implications for deploying LLMs in high-stakes applications where confidence estimation is as important as correctness.\n\n**PairCoder++** reframes structured artifact generation as a pair programming paradigm where a Driver agent writes code and a Navigator agent reviews it against toolchain verification evidence including diagnostics and execution results [3]. By grounding review in the actual compiler, renderer, or simulator feedback, the approach addresses the brittleness of single-pass inference for generating charts, figures, and CAD models [3]. This universal paradigm enhances reliability for any code-mediated multimodal output.\n\n## Multimodal Knowledge Editing and Continual Learning Challenges\n\n**Multimodal Knowledge Edit-Scoped Generalization** reveals a critical \"scope gap\" in online multimodal knowledge editing, where instance-level edit success neither guarantees transfer to valid cross-modal variants nor prevents leakage to unrelated inputs [7]. The analysis of post-edit behaviors and internal neuronal activities demonstrates that existing editors lack control over the semantic boundary of each edit [7]. This work identifies a fundamental limitation in current editing approaches that must be addressed for reliable knowledge updates.\n\n**Hidden Forgetting in Continual Multimodal Learning** uncovers a dangerous failure mode where answer accuracy is preserved but models silently shift toward different or less grounded evidence channels during continual adaptation [11]. The study shows that standard continual learning metrics are insufficient because they only measure whether old answers remain correct, not how models use multimodal evidence [11]. This finding has profound implications for evaluating continually adapted MLLMs in real-world applications.\n\n**MKGR** proposes a multimodal representation framework for cold-start protein-protein interaction prediction that combines region-aware protein sequence encoding with four protein-centered biomedical knowledge graphs [4]. The approach addresses the challenging setting where candidate interactions involve proteins with no observed PPI edges during training [4]. This demonstrates how multimodal learning can advance biological discovery in sparse data regimes.\n\n**EduArt** provides an educational-level benchmark for evaluating art-historical knowledge and visual reasoning in multimodal LLMs, comprising 871 human-authored questions spanning two languages and seven formats [6]. Unlike existing art-focused evaluations that rely on synthetic questions, EduArt uses actual secondary-school and Advanced Placement exam materials [6]. This benchmark enables more nuanced assessment of how models perform within a single discipline at educational levels.\n\n**QFedAgent** integrates quantum-enhanced personalized federated learning with multimodal sensor fusion for multi-agent activity recognition [12]. The hybrid quantum-classical approach addresses the challenges of heterogeneous non-IID sensor streams and parameter overhead in classical fusion modules [12]. This work explores the frontier of quantum computing for improving privacy-preserving multimodal learning across distributed devices.\n\n**DramaSR-532K** introduces a large-scale benchmark comprising 532K annotated dialogue lines across more than 900 unique characters for speaker recognition in long-form TV dramas [10]. The task requires integrating auditory, linguistic, and visual cues, advancing comprehensive video understanding [10]. This work demonstrates how reasoning capabilities in LLMs can be applied to complex multimodal recognition tasks.\n\n## Key Takeaways\n\n- Training-free attribution methods using attention head activations offer a practical path toward transparent and trustworthy multimodal QA without requiring additional training or model modifications.\n- Reinforcement learning can be effectively repurposed to elicit visually grounded self-reflection in vision-language models, addressing a critical weakness in current chain-of-thought reasoning approaches.\n- Confidence calibration emerges as a distinct and important objective in LLM training, separable from raw correctness, with direct implications for deployment in high-stakes applications.\n- Continual multimodal learning suffers from a dangerous hidden failure mode where accuracy is preserved but grounding silently degrades, necessitating new evaluation metrics beyond answer correctness.\n- Knowledge editing in multimodal models reveals a fundamental scope gap where instance-level success fails to generalize to cross-modal variants, challenging current assumptions about edit reliability.\n- Code-mediated generation can be made more reliable through agent-based pair programming paradigms that ground review in actual toolchain feedback rather than model self-evaluation.\n- Specialized domains from traditional medicine to protein interaction prediction benefit from multimodal approaches that combine visual, textual, and structured knowledge representations, but require careful attention to data scarcity and domain-specific reasoning patterns.",
+    "papers": [
+      {
+        "title": "MultAttnAttrib: Training-Free Multimodal Attribution in Long Document Question Answering",
+        "url": "",
+        "authors": [
+          "Dang Quang Thien Tran",
+          "Quang V. Dang",
+          "Vinamra Tyagi",
+          "Sai Soorya Rao Veeravalli",
+          "Trang Nguyen",
+          "Ryan A. Rossi",
+          "Franck Dernoncourt",
+          "Nedim Lipka",
+          "Koustava Goswami",
+          "Samyadeep Basu"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Scaling with Confidence: Calibrating Confidence of LLMs for Adaptive Test Time Scaling",
+        "url": "",
+        "authors": [
+          "Xuqing Yang",
+          "Yi Yuan",
+          "Shanzhe Lei",
+          "Xuhong Wang"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "PairCoder++: Pair Programming as a Universal Paradigm for Verified Code-Driven Multimodal and Structured-Artifact Generation",
+        "url": "",
+        "authors": [
+          "Junhao Chen",
+          "Xiang Li",
+          "Mingjin Chen",
+          "Boran Zhang",
+          "Henghaofan Zhang",
+          "Yibin Xu",
+          "Yuehan Cui",
+          "Fangsheng Weng",
+          "Fei Ma",
+          "Qi Tian",
+          "Ruqi Huang",
+          "Hao Zhao"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "MKGR: Multimodal Knowledge-Graph Representation Learning for Cold-Start Protein-Protein Interaction Prediction",
+        "url": "",
+        "authors": [
+          "Wenbo Zhang"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "MMIR-TCM: Memory-Integrated Multimodal Inference and Retrieval for TCM Clinical Decision Support",
+        "url": "",
+        "authors": [
+          "Lihui Luo",
+          "Joongwon Chae",
+          "Ziyan Chen",
+          "Yang Liu",
+          "Siyi Cheng",
+          "Weihan Gao",
+          "Zelin Zeng",
+          "Xiaoming Yin",
+          "Samaneh Beheshti Kashi",
+          "Dongmei Yu",
+          "Lian Zhang",
+          "Jing Sui",
+          "Zeming Liang",
+          "Jiansong Ji",
+          "Peter E. Lobie",
+          "Peiwu Qin"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "EduArt: An educational-level benchmark for evaluating art history knowledge in large language models",
+        "url": "",
+        "authors": [
+          "Gianmarco Spinaci",
+          "Lukas Klic",
+          "Giovanni Colavizza"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Multimodal Knowledge Edit-Scoped Generalization for Online Recursive MLLM Editing",
+        "url": "",
+        "authors": [
+          "Siyuan Li",
+          "Youyuan Zhang",
+          "Ruitong Liu",
+          "Junxi Wang",
+          "Jing Li"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Visually Grounded Self-Reflection for Vision-Language Models via Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Liyan Tang",
+          "Fangcong Yin",
+          "Greg Durrett"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "InduceKV: Fixed-Footprint Continual Adaptation of Multimodal LLMs via Inducing KV Memories",
+        "url": "",
+        "authors": [
+          "Qianyu Chen",
+          "Ziteng Feng",
+          "Canran Xiao",
+          "Runxuan Tang"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Reasoning LLM Improves Speaker Recognition in Long-form TV Dramas",
+        "url": "",
+        "authors": [
+          "Yuxuan Li",
+          "Lingxi Xie",
+          "Xinyue Huo",
+          "Jihao Qiu",
+          "Jiacheng Shao",
+          "Pengfei Chen",
+          "Jiannan Ge",
+          "Kaiwen Duan",
+          "Qi Tian"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "Hidden Forgetting in Continual Multimodal Learning: When Accuracy Survives but Grounding Fails",
+        "url": "",
+        "authors": [
+          "Qianyu Chen",
+          "Canran Xiao",
+          "Runxuan Tang"
+        ],
+        "date": "2026-07-03"
+      },
+      {
+        "title": "QFedAgent: Quantum-Enhanced Personalized Federated Learning for Multi-Agent Activity Recognition",
+        "url": "",
+        "authors": [
+          "Quoc Bao Phan",
+          "Tuy Tan Nguyen"
+        ],
+        "date": "2026-07-03"
+      }
+    ]
+  }
+]
