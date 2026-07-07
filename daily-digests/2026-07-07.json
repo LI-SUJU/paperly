@@ -1,0 +1,885 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-07",
+    "paperCount": 17,
+    "markdown": "# Interpreting the Black Box: From Neuron-Level Attribution to Emergent Reasoning in LLMs and Beyond\n\nToday's research landscape reveals a maturing interpretability ecosystem that spans from mechanistic analyses of individual components to high-level behavioral probes, while also extending these tools to safety-critical domains like healthcare and infrastructure. A recurring tension emerges between the quest for neuron-level causal attribution and the discovery that models often encode richer, more robust representations than their surface behavior suggests.\n\n## Mechanistic Interpretability: Neurons, Circuits, and the Limits of Localization\n\n[1] **Induction Heads Interpolate N-Grams** investigates the precise computational mechanism underlying in-context learning in transformers trained on order-\\(k\\) Markov chains. The authors identify two complementary smoothing mechanisms operating at different scales: at finite attention-weight scale, the circuit implements a soft context-matching estimator that aggregates exact and partial context matches weighted exponentially by their overlap, producing a data-dependent interpolation across context orders analogous to Jelinek-Mercer smoothing. This work bridges the gap between high-level circuit identification and precise statistical estimation, showing that induction heads do not implement a single estimator but rather a family of smoothly interpolating estimators whose behavior depends on the attention weight scale. The contribution is significant because it provides the first precise characterization of what induction heads actually compute, moving beyond functional descriptions to exact mathematical equivalence.\n\n[4] **Individual Parameters in Weight-Sparse Transformers Appear Interpretable** tackles the fundamental question of whether a single weight in a neural network can be understood globally across the full training distribution. The authors move beyond circuit-finding approaches that focus on specific behaviors and instead characterize when a weight matters by identifying the inputs on which ablating it changes the output. Working with weight-sparse transformers, they find that individual parameters appear to have interpretable roles that are active on specific subsets of the input distribution, suggesting that sparsity may be a key ingredient for achieving the long-standing goal of fully interpretable neural networks. This work challenges the prevailing assumption that individual weights are inherently uninterpretable due to distributed representations and superposition, proposing instead that weight sparsity creates conditions where individual parameters acquire meaningful, localized functions.\n\n[12] **Faithfulness to Refusal: A Causal Audit of Neuron Selectors** provides a rigorous causal audit of attribution methods used to identify important neuron rows for applications like pruning, interpretability, and safety editing. The authors construct two paired audits built on one-shot neuron-row zeroing: first testing attribution methods at the language-modeling level across five LLMs, where they find attribution methods substantially outperform activation and magnitude-based baselines at identifying dispensable rows, then adapting the same intervention into a behavior test driven by a contrastive hypothesis. The key finding is that attribution methods reliably identify causally important neuron rows, but only when evaluated on the correct distribution—different selectors may be needed for different behavioral tests. This matters because it provides the first systematic causal verification of attribution methods that are widely used for safety-critical interventions like model editing and pruning.\n\n[6] **Can Dialects Be Steered Like Languages? Sparse Neurons and Distributed Directions in Arabic LLMs** investigates where and how dialectal features are encoded within model internals, using two complementary inference-time approaches that serve simultaneously as interpretability probes and control mechanisms. The authors conduct neuron-level analysis and distributed direction-based steering, finding that dialectal information is encoded through both sparse individual neurons with specialized dialect sensitivity and distributed directions in activation space that span multiple neurons. The key contribution is demonstrating that dialect generation can be improved without fine-tuning by selectively activating dialect-relevant neurons or steering along dialect-specific directions, achieving more dialectally accurate generation while maintaining MSA proficiency. This work is important because it bridges interpretability and practical NLP for low-resource dialects, showing that understanding where linguistic features are encoded enables direct control without expensive retraining.\n\n## Behavioral Probes and Representational Analysis\n\n[3] **They Infer What You Met: Models Represent Communicative Intent More Reliably Than They Act On It** introduces communicative intent—the Gricean what-was-meant—as a first-class interpretability object, showing that language models' failures to understand user intent are failures of readout rather than representation. Using linear probes on default-pass hidden states, the authors demonstrate that models robustly encode whether a sender wants their message recognized or evaluated, even when the model's surface output fails to respect this distinction. The key finding is a systematic dissociation: models represent communicative intent reliably in their internal states but fail to act on it in their outputs, suggesting that interpretability methods can detect capabilities that behavioral evaluations miss. This matters because it reframes many apparent LLM failures as readout problems rather than representational gaps, pointing toward targeted interventions on output layers rather than full retraining.\n\n[7] **Unsupervised Features Mining via Activation Geometry** introduces Mining via Activation Geometry (MAG), a simple unsupervised framework for extracting reasoning features from model activations by prepending the same natural-language instruction to every input. Rather than starting with labeled examples of human-defined concepts that may reflect human biases, MAG discovers features purely from the geometry of activation spaces by clustering and analyzing the structure that emerges when the same reasoning prompt is applied across diverse inputs. The method reveals that LLMs spontaneously organize their activations into interpretable geometric patterns corresponding to different reasoning strategies, without any supervised training signal. This contribution is significant because it provides a bias-free alternative to concept-based interpretability methods, potentially revealing features that human analysts would never think to probe.\n\n[16] **Latent Programming Horizons in Coding Agents** shows that the residual streams of language models under coding agents linearly encode properties of the evolving program, including whether the current code parses, passes its test suite, reduces the number of failing tests, and introduces regressions, achieving AUC up to 0.83 for correctness across two models. The authors use logistic-regression probes on hidden states to demonstrate that coding agents maintain rich internal representations of program state that go beyond surface features of the code text. This work is important because it provides the first systematic analysis of what coding agents internally represent during multi-step software engineering tasks, revealing that models maintain a \"latent programming horizon\" that encodes both current program properties and their evolution over time.\n\n[15] **Platonic Projection Structures: Operator-Induced Observability in Representation Learning** characterizes observability in representation learning through an operator-theoretic framework for analyzing representation accessibility under partial observation. Rather than treating observable outputs as direct reflections of latent representations, the framework models observation through a self-adjoint positive semidefinite operator acting on a latent representation space, formalizing how different observation operators reveal different aspects of the same latent representation. The key theoretical contribution is proving that the relationship between different observation operators determines what can and cannot be inferred about the underlying representation, providing a principled foundation for understanding when interpretability methods can recover ground-truth features. This matters because it provides mathematical tools for reasoning about what representations are fundamentally accessible given a particular observational setup, addressing a core epistemological question in interpretability.\n\n## Interpretability for Safety-Critical and Biomedical Applications\n\n[5] **Explainable Reinforcement Learning for Adaptive Traffic Signal Control** introduces a novel entity-centric RL framework for safe and transparent traffic signal control, addressing the gap between high-performance optimization and human-comprehensible interpretability in safety-critical infrastructure. Rather than processing traffic state as an opaque vector, the framework explicitly models traffic entities (vehicles, pedestrians, phases) and their interactions, producing decisions that can be traced back to specific entity states and learned rules. The framework achieves competitive performance with black-box deep RL methods while providing interpretable policies that transportation engineers can audit, debug, and fine-tune. This work is significant because it demonstrates that interpretability need not come at the cost of performance; entity-centric representations can simultaneously capture complex traffic dynamics and produce human-understandable decisions.\n\n[9] **EEG-SpikeAgent: Agentic Closed-Loop Program Synthesis for Automated EEG Spike Detection** introduces a closed-loop program-synthesis framework that uses an LLM agentic system to generate interpretable signal-processing features for spike detection in scalp EEG. The system iteratively proposes one deterministic EEG feature module at a time, executes the resulting code on EEG data to generate tabular features, evaluates performance via a tabular classifier, and refines its approach based on feedback, building up interpretable detection pipelines step by step. The key contribution is achieving competitive detection accuracy with deep learning methods while producing fully interpretable programs that clinicians can inspect and understand. This matters because it addresses the critical trade-off between interpretability and accuracy in clinical EEG analysis, where black-box deep learning models have historically excelled at detection but resisted clinical validation.\n\n[2] **CoFEND: A Cross-Modal Fusion End-to-End Network for Cold-Start Drug-Drug Interaction Prediction** addresses the cold-start problem in drug-drug interaction (DDI) prediction by capturing similarity between new and known drugs through cross-modal information including drug structures, enzymes, transporters, and interaction mechanisms. The authors identify that existing methods suffer from incomplete or biased similarity modeling because they consider only partial relationships and mechanisms, and propose a cross-modal fusion approach that integrates heterogeneous biomedical data types into a unified representation. The framework achieves strong performance on cold-start DDI prediction benchmarks where new drugs have no historical interaction data. This work is significant for pharmacovigilance because it demonstrates that interpretability in biomedical AI requires holistic modeling of multiple data modalities rather than relying on single-source features.\n\n[10] **RABBiT: Rapidly Adaptive BOLD Foundation Model via Brain-Tuning for Accurate Zero-Shot and Few-Shot Prediction of Speech-Elicited Responses** introduces a compact audio-to-fMRI encoder designed for accurate zero- and few-shot prediction of language-evoked brain activity across individuals. The model is evaluated on 324 participants across multiple unseen fMRI datasets, demonstrating that a foundation model can capture shared neural representation structure while adapting efficiently to new participants through minimal fine-tuning. The key contribution is showing that brain-activity prediction models can generalize across both stimuli and individuals, achieving strong zero-shot performance that improves with few-shot adaptation. This matters for cognitive neuroscience because it provides a tool for studying individual differences in language processing while maintaining the interpretability of mapping between linguistic features and brain responses.\n\n[14] **Machine Learning for Depression Screening and Intervention: An Original Circadian Rhythm Score-based Methodology** proposes the Circadian Rhythm Score (CRS), a composite index that compresses multi-domain daily behaviors into a unified representation of circadian rhythm, constructed to maximize discriminative power for depression screening while preserving interpretability. Rather than analyzing sleep, activity, and social behaviors in isolation, CRS captures their joint circadian structure, providing both strong screening performance and clinically interpretable features. The framework further provides intervention-oriented analysis by identifying which behavioral domains most strongly contribute to depression risk. This work is significant because it demonstrates that interpretable composite indices can match or exceed black-box models on clinical screening tasks while providing actionable insights for intervention design.\n\n[17] **Biologically Informed Deep Neural Networks for Multi-Omic Integration, Pathway Activity Inference and Risk Stratification in Cancer** reports Pathway Activity Autoencoders for the multi-omics setting, which embed prior knowledge via pathway-informed architectural constraints to foster interpretability while preserving representational power. The framework is applied to breast cancer data and evaluated on survival prediction, demonstrating that pathway-constrained architectures achieve competitive predictive performance while providing interpretable estimates of pathway activity that align with biological knowledge. The key contribution is showing that biological prior knowledge can be embedded as architectural constraints rather than post-hoc interpretation methods, producing models that are interpretable by design. This matters because it provides a template for building interpretable deep learning models in computational biology where both performance and biological plausibility are essential.\n\n## Theoretical Foundations and Novel Methods\n\n[8] **CSympNet-ID: Conformal-Symplectic Map Learning for Linearly Damped Hamiltonian Systems** proposes a discrete-time map-learning framework that learns the one-step flow map directly from snapshot pairs while enforcing exact discrete conformal symplecticity for dissipative systems. The framework simultaneously identifies the damping coefficient while learning the system dynamics, ensuring that the learned model respects the fundamental geometric structure of dissipative Hamiltonian systems. The key theoretical contribution is proving that enforcing conformal symplecticity provides both improved long-horizon prediction accuracy and physically meaningful parameter identification. This matters for scientific machine learning because it demonstrates that incorporating geometric structure into neural networks yields both interpretable parameters and reliable long-term predictions.\n\n[13] **Noisy-Channel Minimum Bayes Risk Decoding** introduces a noisy-channel framework for MBR decoding that addresses the discrepancy between hypothesis selection conditioned on pseudo-references and the asymmetric nature of evaluation metrics like BLEU and COMET. By modeling both hypothesis-to-reference and reference-to-hypothesis directional effects, the framework produces more robust and higher-quality text generation than standard MBR decoding. The key finding is that considering bidirectional information consistently improves generation quality across multiple language pairs and evaluation metrics. This matters because it demonstrates that careful theoretical analysis of decoding methods can yield practical improvements without requiring larger models or more training data.\n\n[11] **NeSy-CSA: A Neuro-Symbolic Framework for Open-Ended Critical Scenario Attribution** proposes a neuro-symbolic framework for reasoning about why discovered scenarios become critical in scenario-based testing, formulating criticality as an attribution problem that must handle diverse state variables, interaction patterns, and failure mechanisms. The framework balances open-ended reasoning flexibility with interpretability and tractability by combining neural perception with symbolic reasoning over learned concepts. The key contribution is demonstrating that neuro-symbolic approaches can provide human-interpretable explanations for scenario criticality while handling the open-ended nature of real-world driving scenarios. This matters for autonomous vehicle safety testing because current methods either produce uninterpretable black-box predictions or require predefined explanation spaces that cannot capture novel failure modes.\n\n## Key Takeaways\n- **Mechanistic interpretability is maturing from functional descriptions to precise mathematical characterizations**, as demonstrated by the exact equivalence between induction heads and Jelinek-Mercer smoothing [1], while simultaneously showing that individual weights can be globally interpretable under sparsity conditions [4].\n- **Models systematically encode more than they output**, with communicative intent [3], programming state [16], and dialectal features [6] all robustly represented in internal states even when surface behavior fails to reflect them, suggesting that interpretability methods often reveal capabilities that behavioral evaluations miss.\n- **Causal validation of attribution methods is becoming essential**, as [12] demonstrates that while attribution methods outperform baselines at identifying important neurons, their faithfulness depends critically on the behavioral test used, warning against their uncritical application in safety editing.\n- **Interpretability for safety-critical applications need not sacrifice performance**, with entity-centric [5] and closed-loop agentic [9] approaches achieving competitive results while producing human-comprehensible decisions in traffic control and clinical EEG analysis.\n- **Domain knowledge can be embedded as architectural constraints rather than post-hoc explanations**, with pathway-informed neural networks [17] and conformal symplectic networks [8] achieving both predictive performance and built-in interpretability through principled design.\n- **Unsupervised feature discovery is emerging as an alternative to human-defined concept probes**, with activation geometry [7] revealing reasoning features without labeled examples, potentially uncovering structures that human analysts would never think to probe.\n- **Cross-modal and multi-omics integration remains a core challenge for biomedical interpretability**, where capturing complex relationships across heterogeneous data types [2] [17] [10] requires frameworks that balance representational power with biological or clinical plausibility.",
+    "papers": [
+      {
+        "title": "Induction Heads Interpolate N-Grams",
+        "url": "",
+        "authors": [
+          "Francesco D'Angelo",
+          "Oguz Kaan Yuksel",
+          "Swathi Shree Narashiman",
+          "Nicolas Flammarion"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "CoFEND: A Cross-Modal Fusion End-to-End Network for Cold-Start Drug-Drug Interaction Prediction",
+        "url": "",
+        "authors": [
+          "Di Wu",
+          "Hongyi Sun",
+          "Haichao Xu",
+          "Jia Chen",
+          "Zhong Chen",
+          "Jie Yang"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "They Infer What You Meant: Models Represent Communicative Intent More Reliably Than They Act On It",
+        "url": "",
+        "authors": [
+          "Alex Kwon"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Individual Parameters in Weight-Sparse Transformers Appear Interpretable",
+        "url": "",
+        "authors": [
+          "Arnau Marin-Llobet",
+          "Stefan Heimersheim"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Explainable Reinforcement Learning for Adaptive Traffic Signal Control",
+        "url": "",
+        "authors": [
+          "Dickens Kwesiga",
+          "Nishu Choudhary",
+          "Angshuman Guin",
+          "Michael Hunter"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Can Dialects Be Steered Like Languages? Sparse Neurons and Distributed Directions in Arabic LLMs",
+        "url": "",
+        "authors": [
+          "Kareem Elozeiri",
+          "Mervat Abassy",
+          "Omar Kallas",
+          "Fahim Dalvi",
+          "Preslav Nakov",
+          "Kentaro Inui",
+          "Nadir Durrani"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Unsupervised Features Mining via Activation Geometry",
+        "url": "",
+        "authors": [
+          "Amit LeVi",
+          "Elad David",
+          "Max Fomin"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "CSympNet-ID: conformal-symplectic map learning for linearly damped Hamiltonian systems",
+        "url": "",
+        "authors": [
+          "Jiale Gong",
+          "Pengzhan Jin",
+          "Dongyang Kuang",
+          "Lu Li",
+          "Yifa Tang"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "EEG-SpikeAgent: Agentic Closed-Loop Program Synthesis for Automated EEG Spike Detection",
+        "url": "",
+        "authors": [
+          "Sonali Santhosh",
+          "Kelly Shuhong Yu",
+          "Eugene Chang",
+          "Jonathan Kim",
+          "Kie Shidara",
+          "Danilo Bernardo"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "RABBiT: Rapidly adaptive BOLD foundation model via brain-tuning for accurate zero-shot and few-shot prediction of speech-elicited responses in the brain",
+        "url": "",
+        "authors": [
+          "Omer Moussa",
+          "Mariya Toneva"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "NeSy-CSA: A Neuro-Symbolic Framework for Open-Ended Critical Scenario Attribution",
+        "url": "",
+        "authors": [
+          "Qitong Chu",
+          "Xunjie He",
+          "Chen Deng",
+          "Huaxin Pei",
+          "Yufeng Yue"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Faithfulness to Refusal: A Causal Audit of Neuron Selectors",
+        "url": "",
+        "authors": [
+          "Ananth Eswar",
+          "Pratinav Seth",
+          "Utsav Avaiya",
+          "Vinay Kumar Sankarapu"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Noisy-Channel Minimum Bayes Risk Decoding",
+        "url": "",
+        "authors": [
+          "Yusuke Sakai",
+          "Hidetaka Kamigaito",
+          "Taro Watanabe"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Machine Learning for Depression Screening and Intervention: an Original Circadian Rhythm Score-based Methodology",
+        "url": "",
+        "authors": [
+          "Bin Wang",
+          "Shuo Lian",
+          "Yuanyuan Hou",
+          "Dexian Wang",
+          "Peilan He",
+          "Feng Hong",
+          "Yanwei Yu",
+          "Tianrui Li"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Platonic Projection Structures: Operator-Induced Observability in Representation Learning",
+        "url": "",
+        "authors": [
+          "Kazuo Ishii",
+          "Bishnu Prasad Gautam",
+          "Jieling Wu",
+          "Javaid Saher"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Latent Programming Horizons in Coding Agents",
+        "url": "",
+        "authors": [
+          "André Silva",
+          "Han Tu",
+          "Martin Monperrus"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Biologically Informed Deep Neural Networks for Multi-Omic Integration, Pathway Activity Inference and Risk Stratification in Cancer",
+        "url": "",
+        "authors": [
+          "Pedro Henrique da Costa Avelar",
+          "Le Ou-Yang",
+          "Min Wu",
+          "Sophia Tsoka"
+        ],
+        "date": "2026-07-07"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-07",
+    "paperCount": 2,
+    "markdown": "# Neuro-Symbolic Explanations and Graph Reasoning: Advances in Explainable AI for Security and Structured Data\n\nToday's research landscape presents a fascinating dichotomy: while large language models dominate headlines, critical advances in explainable AI are emerging at the intersection of neuro-symbolic reasoning for security applications and rigorous evaluation frameworks for graph neural networks. Two papers tackle fundamentally different domains—ransomware detection and graph explainability benchmarking—yet both address the core challenge of making AI systems transparent, trustworthy, and practically deployable.\n\n## Explainable Multi-Agent Systems for Security Applications\n\n[1] presents **Agentic SABRE (Semantic-Behavioural Arbitration for Ransomware Evaluation)**, an uncertainty-aware neuro-symbolic multi-agent framework designed to address the fundamental failure of static signature-based and monolithic classifier approaches in detecting modern ransomware. Ransomware's adaptive nature, including concept drift, evasion techniques, and behavioural polymorphism, renders traditional detection methods ineffective. The core technical innovation lies in fusing two complementary evidence streams: semantic representation-based evidence from file content and behavioural forensic telemetry from time-windowed system monitoring. The framework employs Monte Carlo Dropout inference to quantify epistemic uncertainty—model uncertainty arising from limited training data or novel attack patterns—enabling the system to express confidence in its predictions rather than providing binary classifications. This matters because it moves ransomware detection from brittle, black-box classification toward a transparent, uncertainty-aware reasoning system that can adapt to evolving threats while providing security analysts with interpretable rationales for each detection decision. The neuro-symbolic architecture bridges the gap between deep learning's pattern recognition capabilities and symbolic AI's explicit reasoning, potentially setting a new standard for explainable security systems.\n\n## Unified Evaluation and Benchmarking for Graph Explainability\n\n[2] addresses the critical gap in Graph eXplainable AI (G-XAI): despite a proliferation of explanation methods for Graph Neural Networks (GNNs), there exists no standardized, quantitative framework for comparing these explainers or assessing the trustworthiness of their outputs. The authors introduce a **unified evaluation framework that requires no ground-truth assumptions**, overcoming the fundamental limitation that real-world graph explanations rarely have verified ground truth labels. Their technical approach formalizes tabular explainability metrics for graph data, specifically evaluating topological structure and node features independently. This is a significant methodological contribution because graph explanations are inherently more complex than tabular or image explanations—they must account for both node attributes and the intricate relational structure of edges and subgraphs. By providing quantitative metrics that measure explanation fidelity, sparsity, and stability without requiring oracle knowledge of \"correct\" explanations, the framework enables practitioners to make informed, empirical choices among competing GNN explainers. This work matters because as GNNs are deployed in high-stakes domains like drug discovery, molecular property prediction, and social network analysis, stakeholders need rigorous, standardized tools to validate that model decisions are based on meaningful graph patterns rather than spurious correlations.\n\n## Key Takeaways\n\n- **Neuro-symbolic architectures offer a promising path toward explainable security AI** by combining deep learning's pattern recognition with explicit reasoning, exemplified by Agentic SABRE's fusion of semantic and behavioural evidence for ransomware detection.\n- **Uncertainty quantification is emerging as a critical component of trustworthy AI**, with Monte Carlo Dropout enabling models to communicate their confidence levels rather than providing false precision in security-critical applications.\n- **GNN explainability suffers from a fundamental evaluation gap** that [2] addresses through ground-truth-free metrics, enabling objective comparison of explanation methods for graph-structured data.\n- **The separation of topological structure from node features in graph explanations** represents an important methodological advance, acknowledging that different stakeholders may care about different aspects of graph reasoning.\n- **Standardized benchmarking frameworks are essential for practical adoption** of explainable AI methods, as demonstrated by both papers' emphasis on rigorous, reproducible evaluation protocols.\n- **Domain-specific explainability solutions are outpacing general-purpose frameworks**, with security applications driving innovation in uncertainty-aware reasoning while graph learning communities develop specialized evaluation methodologies.\n- **The tension between model expressiveness and interpretability** remains a central challenge, with both papers advocating for architectures that maintain predictive performance while providing transparent reasoning paths.",
+    "papers": [
+      {
+        "title": "Agentic SABRE: An Uncertainty-Aware Neuro-Symbolic Multi-Agent Framework for Adaptive Ransomware Detection",
+        "url": "",
+        "authors": [
+          "Henry Kabuye",
+          "Biju Issac",
+          "Jeyamohan Neera"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Measuring What Matters: A Unified Evaluation Framework for GNN Explainability",
+        "url": "",
+        "authors": [
+          "Francesco Paolo Nerini",
+          "Mirko Zaffaroni",
+          "Paolo Baracco",
+          "Gabriele Ciravegna",
+          "Alan Perotti"
+        ],
+        "date": "2026-07-07"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-07",
+    "paperCount": 25,
+    "markdown": "# Multimodal Intelligence in Motion: From Embodied Agents to Social Impact and Scientific Discovery\n\nToday's research landscape reveals a decisive shift toward unified multimodal architectures that jointly process vision, language, audio, and tactile signals, while simultaneously expanding into specialized domains including social media safety, clinical decision support, and scientific inference. A striking tension emerges between large-scale foundation models pushing the frontiers of general-purpose reasoning and targeted frameworks addressing low-resource languages, cold-start problems, and niche sensing modalities.\n\n## Unified Multimodal Foundation Models and Architectures\n\n[2] **iFLYTEK-Embodied-Omni** presents a unified multimodal foundation model that jointly models vision (videos and images), language, and action within a single architecture, addressing the fragmentation of embodied AI where visual-language reasoning, world modeling, and action generation are typically handled by separate cascaded pipelines. By integrating these capabilities into one model, it avoids the interface bottlenecks and compound prediction errors that plague systems which first synthesize future observations and then infer actions. This represents a significant step toward general-purpose embodied agents capable of understanding multimodal instructions, anticipating environmental evolution, and producing precise control actions over extended horizons.\n\n[3] **Gemma 4** introduces a new generation of open-weight, natively multimodal language models featuring both dense and Mixture-of-Experts architectures ranging from 2.3B to 31B parameters, with improved vision and audio encoders across all model sizes. A key innovation is the unified, encoder-free architecture for the 12B model, which ingests raw audio and image patches directly, alongside a \"thinking mode\" that enables models to generate reasoning traces prior to responding. This work advances compute efficiency and reasoning capabilities in the open-weight ecosystem, demonstrating that native multimodality can scale across multiple model sizes while maintaining accessibility.\n\n[20] **Nemotron-Labs-Audex-30B-A3B (Audex)** proposes a unified audio-text LLM built on a strong text-only MoE backbone, addressing the challenge of building audio intelligence that understands, reasons about, and generates both audio and speech without regressing on text intelligence. The architecture uses a single Transformer decoder where audio inputs are encoded and projected into the text embedding space, while text tokens and quantized audio output tokens are treated uniformly during generation. This design achieves strong audio-text fusion and seamless multimodal generation while maintaining compatibility with standard LLM inference frameworks, preserving text capabilities that are often degraded in multimodal extensions.\n\n[16] **TacReasoner** addresses two key challenges in integrating tactile sensing into intelligent systems: insufficient modeling of dynamic tactile signals and hallucination in tactile foundation models caused by the absence of explicit reasoning mechanisms. The framework introduces a dynamic tactile-language architecture that enables reasoning over temporally evolving tactile properties while mitigating hallucination through explicit reasoning mechanisms. This work is significant because tactile sensing—arguably the most fundamental human sense for survival—has been largely underexplored in multimodal AI, and TacReasoner provides a pathway toward more robust real-world physical reasoning.\n\n[5] **Embodied Operators and Benchmarking** redefines embodied intelligence systems by identifying that they require not only end-to-end policy models but also reusable functional modules—termed \"embodied operators\"—that transform multimodal observations, robot states, human demonstrations, and task contexts into structured representations and control references. The work clarifies the definition boundary of these operators, emphasizing standardized input-output contracts, deployability, reusability, and multi-layer optimization. This framework provides a crucial architectural abstraction that could make embodied intelligence systems more modular, testable, and practically deployable.\n\n[22] **DynaVieW** proposes a dynamic schema-guided world model for understanding hierarchical visual dynamics in videos and multi-image sequences, addressing the challenge that multimodal LLMs struggle to systematically model temporal evolution of visual scenes. The model learns interleaved state-transition sequences where states cover multiple levels of dynamic constituents, including actions and associated environmental changes. This approach enables MLLMs to predict or simulate multiple levels of visual dynamics simultaneously, moving beyond static frame-level understanding to structured temporal reasoning.\n\n## Social Impact, Safety, and Misinformation Detection\n\n[1] **Echoes of Unrest** presents a multilingual, multimodal NLP framework for early warning of fake news and violence-driven mob activity, addressing how manipulated content and provocative narratives on platforms like Facebook and WhatsApp can trigger real-world harm in regions like South Asia. The framework targets the critical gap where false information often spreads faster than fact-checking efforts can respond, particularly in multilingual settings with limited moderation infrastructure. This work is vital for developing automated early-warning systems that could prevent social unrest and mob violence triggered by viral misinformation.\n\n[9] **BanglaMemeEvidence** introduces MemeEvidenceDetect, a hybrid task for analyzing memes and their contextual information to identify specific explanatory sentences, addressing the challenge that memes combine viral visuals with concise messaging in culturally specific ways. The benchmark dataset focuses on Bengali memes, a language and cultural context that remains underserved in multimodal content analysis research. This work advances the technical infrastructure needed for deeper contextual understanding of memes, moving beyond simple sentiment or harmful content classification toward nuanced meaning detection.\n\n[11] **AI Wizards at EXIST 2026** models multimodal sexism identification in memes as a hierarchical soft-label prediction problem over empirical annotator distributions, using fixed Gemini Embedding vision-language representations processed through a lightweight Gated MLP. The system achieves top performance (first on Task 2.3, fourth on Tasks 2.1 and 2.2) using only 2D representations rather than full multimodal models, demonstrating that careful hierarchical modeling of annotator disagreement can outperform more complex architectures. This approach is notable for its efficiency and its principled handling of subjective annotation distributions in sensitive content moderation tasks.\n\n[8] **ShishuRaksha AI** presents a training-free multimodal framework for screening abuse-related trauma in Bangladeshi children, fusing four modalities: validated questionnaires, Bengali narrative text, House-Tree-Person drawing features, and facial affect. The system uses cross-modal attention with clinical weighting and includes a single-modality option for deployment flexibility, addressing the severe shortage of mental-health professionals in Bangladesh (1.17 per 100,000 population). This decision-support framework demonstrates how multimodal fusion can operate effectively even without fine-tuning on domain-specific data, making it practical for low-resource clinical settings.\n\n## Specialized Technical Contributions and Benchmarks\n\n[10] **GUI Agents State-Belief Reliance** formalizes and measures visual state reliance—whether a GUI agent's belief about the current interface state is drawn from pixels, structure, or priors—using paired single-channel interventions over 310 real web, mobile, and desktop probes. The diagnostic approach reveals that GUI agents often rely more heavily on structural representations (DOM trees) than on visual rendering, which has implications for robustness and generalization. This work provides a critical diagnostic method for understanding how multimodal GUI agents process their dual input channels (pixels and structure), enabling more principled design of future interface agents.\n\n[13] **UI-MOPD** addresses the challenge of building multi-platform GUI agents through multi-platform on-policy distillation for continual learning, tackling the problems of scarce cross-platform trajectories and platform-specific capability degradation during joint training. The approach enables agents to learn across platforms while preventing catastrophic forgetting and behavioral pattern mixing that arise from different interaction conventions. This work is essential for achieving practical GUI automation across diverse platforms and interfaces.\n\n[19] **M3Bench** introduces a clinically grounded benchmark for multimodal model editing in medical vision-language models, evaluating whether edits remain reliable, precise, and generalizable under image and text variation, modality and protocol shifts, clinical knowledge composition, and sequential editing challenges. The benchmark addresses the gap between general-purpose model editing research and the demanding requirements of clinical deployment, where incorrect or inconsistent model behavior can have serious consequences. This framework enables rigorous validation of model editing techniques for high-stakes medical applications.\n\n[4] **Jointly Improving Dialect Identification and ASR** proposes a multimodal framework for Indian languages that jointly improves Automatic Speech Recognition and Dialect Identification using a Bottleneck Encoder for dialectal features from Conformer-based speech representations and a RoBERTa encoder for ASR-generated CTC embeddings. A gating mechanism merges these features, demonstrating that joint optimization can overcome performance trade-offs that typically occur when ASR and DID are optimized individually. This is particularly important for low-resource Indian languages with significant dialectal variation.\n\n[7] **MentalThink** introduces a visual-symbolic reasoning paradigm where Multimodal LLMs learn to generate, render, and interpret SVG code as an intermediate visual representation for multi-turn reasoning, mimicking human mental visualization processes. By creating structured vector sketches, the model externalizes spatial hypotheses and inspects them through deterministic rendering within a constrained geometric space. This approach provides an interpretable mechanism for geometric and spatial reasoning in MLLMs, addressing the limitation that current models struggle with systematic spatial manipulation.\n\n[14] **WorldTensor** presents a harmonised global dataset that aligns hundreds of environmental and socioeconomic variables to a standardized spatial grid, addressing the lack of unified training resources that combine climate, land, ocean, cryosphere, infrastructure, hazards, and socioeconomic data. The dataset enables the development of truly multimodal Earth system foundation models that represent both physical environmental systems and the human systems that drive and respond to environmental change. This resource is critical for advancing AI-driven climate science and sustainability research.\n\n## Scientific and Technical Method Innovation\n\n[6] **CoFEND** proposes a cross-modal fusion end-to-end network for cold-start drug-drug interaction prediction, addressing the challenge of capturing similarity between new and known drugs when limited information is available. The framework models complex relationships among drugs, enzymes, transporters, molecular structures, and other biomedical entities using cross-modal fusion, overcoming limitations of existing methods that consider only partial relationships and mechanisms. This work is critical for patient safety by enabling prediction of adverse drug reactions for newly developed pharmaceuticals.\n\n[12] **PhenoNEST** presents a neuro-symbolic framework for ontology-aware multimodal plant phenotyping that constructs granular Knowledge Graphs from unstructured text and isolated RGB images, focusing on wheat as a representative target crop. The pipeline distills noisy field notes to extract entities and relations, dynamically constructing KGs that monitor genotype-phenotype interactions across time and experiments. This work bridges the semantic gap between high-throughput plant phenotyping data and structured biological knowledge, enabling more systematic crop improvement research.\n\n[15] **PedestrianDiffusion** reformulates dense 6D state estimation for inertial navigation as a continuous conditional denoising process in the frequency domain, addressing the stochastic noise bottleneck of consumer-grade MEMS sensors. By operating in the spectral domain, the framework bounds spectral covariance and acts as a mathematical preconditioner to stabilize estimation while preserving high-frequency kinematic fidelity. This approach overcomes the \"estimation jittering\" problem that plagues traditional deterministic neural architectures for inertial navigation.\n\n[18] **MoP-JEPA** identifies and solves a fundamental flaw in JEPA world models: when environments are stochastic with branching transitions, regression-optimal single predictors collapse to the conditional mean between successor states—a point corresponding to no valid state. The framework uses hard-assigned predictor mixtures that converge to quantizers of the transition distribution, with one head per successor state. This theoretical contribution provides a principled solution for world modeling in stochastic environments, which is essential for reliable planning and decision-making under uncertainty.\n\n[23] **RL Forgets!** challenges the assumption that reinforcement learning is inherently less prone to forgetting than supervised fine-tuning in continual learning settings for vision-language models, introducing the MRCL benchmark built from diverse multimodal reasoning datasets. Experiments reveal that RL-based methods also suffer from catastrophic forgetting, contradicting widely held beliefs in the community. This finding has significant implications for how practitioners approach continual post-training of multimodal models, suggesting that forgetting mitigation remains a critical open problem regardless of learning paradigm.\n\n[25] **FUSE** introduces Feynman-Kac steered multi-modal flow matching for efficient simulation-based posterior estimation, addressing the challenge that existing SBI methods struggle with effective multimodal modeling and often ignore structural disparities between parameters and observations. The dual-track architecture preserves the distinct features of each modality while using flow matching for efficient inference, avoiding brute-force fusion strategies. This work enables more accurate scientific inference from complex multimodal experimental data.\n\n[21] **Stable Global Weighting of Flow Mixtures** presents AMF-VI-sEMA, a two-stage framework for mixture-based normalizing flows that features stable global weighting using a Simplex Exponential Moving Average update, addressing the problem that individual flow architectures fail to generalize across heterogeneous posterior geometries. In Stage 1, heterogeneous expert flows (RealNVP, MAF, RBIG) are trained independently to specialize in distinct structural regimes, while Stage 2 combines their parameters with globally stable weights. This approach provides a principled method for combining the strengths of different normalizing flow architectures.\n\n[17] **LP-SFT** introduces Local-Preserving Supervised Fine-Tuning that maintains the rich local preference structure learned during pretraining while adapting to downstream domains, addressing the problem that standard cross-entropy fine-tuning distorts probability mass redistribution over plausible alternatives. The method uses Shannon and Rényi entropy analysis to reveal that pretrained models exhibit regular local structures, and preserves these through a multimodal entropy structure constraint. This approach prevents the degradation of pre-existing capabilities during domain adaptation, a critical issue for practical deployment of fine-tuned models.\n\n[24] **Beyond Modality Fusion** demonstrates that multimodal data can be effectively classified using deep ensembles of unimodal networks without any explicit modality fusion, systematically comparing ensembles to late-fusion networks at equal parameter counts. This result challenges the prevailing assumption that explicit fusion mechanisms are necessary for multimodal classification, particularly when modality imbalance is present. The finding has practical implications for simplifying multimodal system design while maintaining classification performance.\n\n## Key Takeaways\n- Unified multimodal architectures that jointly model vision, language, audio, and action are replacing cascaded pipelines, with open-weight models like Gemma 4 democratizing access to native multimodality across multiple scales.\n- Social impact applications are driving specialized multimodal systems for misinformation detection, trauma screening, and hate speech identification, with increasing attention to low-resource languages and culturally specific contexts like Bengali and Indian dialects.\n- Tactile and dynamic temporal reasoning represent emerging frontiers in multimodality, with TacReasoner and DynaVieW extending beyond static visual-textual fusion to handle physical interaction and hierarchical scene evolution.\n- Foundational assumptions about learning dynamics are being rigorously tested: reinforcement learning is shown to forget just as much as supervised fine-tuning in continual learning, while deep ensembles of unimodal networks can match or exceed explicit fusion architectures.\n- Scientific and medical domains are benefiting from modality-specific innovations including cross-modal drug interaction prediction, neuro-symbolic plant phenotyping, spectral-domain inertial navigation, and flow-matching for simulation-based inference.\n- GUI agents require careful diagnostic methods to understand whether they rely on pixels, structural representations, or priors, with implications for robustness and cross-platform generalization.\n- Cold-start and low-resource scenarios are driving efficient approaches including training-free fusion, soft-label hierarchical modeling, and local-preserving fine-tuning that maintains pretraining capabilities while adapting to new domains.",
+    "papers": [
+      {
+        "title": "Echoes of Unrest: A Multimodal NLP Framework for Early Warning of Fake News and Violence-Driven Mob Activity",
+        "url": "",
+        "authors": [
+          "Md. Maruf Bangabashi",
+          "Tahmid Hasan",
+          "Golam Mahmud",
+          "Md. Mostafijur Rahman",
+          "Md. Toufiqur Rahman",
+          "Jahanur Biswas"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "iFLYTEK-Embodied-Omni Technical Report",
+        "url": "",
+        "authors": [
+          "Yuan Zhang",
+          "Jingfei Ni",
+          "Guanchen Lu",
+          "Shiqi Zhang",
+          "Qingshan Xu",
+          "Chi Liu",
+          "Xin Nie",
+          "Wenjie Xu",
+          "Lin Gao",
+          "Zhiyuan Cheng",
+          "Mingxin Zhou",
+          "Jiajia Wu",
+          "Diyuan Liu",
+          "Jia Pan",
+          "Chao Ji"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Gemma 4 Technical Report",
+        "url": "",
+        "authors": [
+          "Gemma Team",
+          "Sherif El Abd",
+          "Vaibhav Aggarwal",
+          "Robin Algayres",
+          "Alek Andreev",
+          "Olivier Bachem",
+          "Ian Ballantyne",
+          "Cormac Brick",
+          "Victor Cărbune",
+          "Michelle Casbon",
+          "Mayank Chaturvedi",
+          "Victor Cotruta",
+          "Alice Coucke",
+          "Phil Culliton",
+          "Robert Dadashi",
+          "Lucas Dixon",
+          "Mohamed Elhawaty",
+          "Utku Evci",
+          "Clément Farabet",
+          "Johan Ferret",
+          "Filippo Galgani",
+          "Sertan Girgin",
+          "Jean-Bastien Grill",
+          "Maarten Grootendorst",
+          "Jiaxian Guo",
+          "Cassidy Hardin",
+          "Yanzhang He",
+          "Steven M. Hernandez",
+          "Omri Homburger",
+          "Léonard Hussenot",
+          "Juyeong Ji",
+          "Armand Joulin",
+          "Aishwarya Kamath",
+          "Parnian Kassraie",
+          "Olivier Lacombe",
+          "Preethi Lahoti",
+          "Gaël Liu",
+          "Gus Martins",
+          "Luciano Martins",
+          "Tatiana Matejovicova",
+          "Ramona Merhej",
+          "Nikola Momchev",
+          "Sneha Mondal",
+          "Ryan Mullins",
+          "Sindhu Raghuram Panyam",
+          "Shreya Pathak",
+          "Sarah Perrin",
+          "André Susano Pinto",
+          "Etienne Pot",
+          "Angéline Pouget",
+          "Alexandre Ramé",
+          "Sabela Ramos",
+          "Douglas Reid",
+          "David Rim",
+          "Morgane Rivière",
+          "Karsten Roth",
+          "Louis Rouillard",
+          "Omar Sanseviero",
+          "Pier Giuseppe Sessa",
+          "Shane Settle",
+          "Danila Sinopalnikov",
+          "Sara Smoot",
+          "Piotr Stanczyk",
+          "Andreas Steiner",
+          "Lawrence Stewart",
+          "Ilya Tolstikhin",
+          "Michael Tschannen",
+          "Anton Tsitsulin",
+          "Nino Vieillard",
+          "Renjie Wu",
+          "Pingmei Xu",
+          "Haichuan Yang",
+          "Edouard Yvinec",
+          "Li Zhang",
+          "Joe Zou",
+          "Nicolas Aagnes",
+          "Abdelrahman Abdelhamed",
+          "Shivani Agrawal",
+          "Shubham Agrawal",
+          "Ibrahim Alabdulmohsin",
+          "Jean Baptiste Alayrac",
+          "Uri Alon",
+          "Chandramouli Amarnath",
+          "Ankesh Anand",
+          "Chrysovalantis Anastasiou",
+          "Setareh Ariafar",
+          "François-Xavier Aubet",
+          "Kyriakos Axiotis",
+          "Federico Barbero",
+          "Joelle Barral",
+          "Alexei Bendebury",
+          "Urs Bergmann",
+          "Stanley Bileschi",
+          "Kat Black",
+          "Mathieu Blondel",
+          "Sebastian Borgeaud",
+          "Arthur Bražinskas",
+          "Ryan Burnell",
+          "Robert Busa-Fekete",
+          "Mu Cai",
+          "Glenn Cameron",
+          "Charlotte Caucheteux",
+          "Garima Chadha",
+          "Jetha Chan",
+          "Aditya Chawla",
+          "Blake Jianhang Chen",
+          "Jesse Chen",
+          "Lin Chen",
+          "Xu Chen",
+          "Derek Cheng",
+          "Tzu-hsiang Chien",
+          "Nikolai Chinaev",
+          "Yi Chou",
+          "Zhaohui Chu",
+          "Benjamin Coleman",
+          "Pooja Consul",
+          "Sam Conway-Rahman",
+          "Scott Crowell",
+          "Dylan Cutler",
+          "Vivek Dani",
+          "Samira Daruki",
+          "Anil Das",
+          "Daniel Deutsch",
+          "Nishanth Dikkala",
+          "Li Ding",
+          "Qiuhan Ding",
+          "Shenil Dodhia",
+          "Konstantin Donhauser",
+          "Tulsee Doshi",
+          "Anca Dragan",
+          "Alex Druinsky",
+          "Sahil Dua",
+          "Zoltan Egyed",
+          "Danielle Eisenbud",
+          "Daniel Eppens",
+          "Cindy Fan",
+          "Bahare Fatemi",
+          "Yassir Fathullah",
+          "Vlad Feinberg",
+          "Milen Ferev",
+          "Takumi Fujimoto",
+          "Isaac Galatzer-Levy",
+          "João Gante",
+          "Simon Geisler",
+          "Soham Ghosal",
+          "Antonious M. Girgis",
+          "Alec Go",
+          "Alhaad Gokhale",
+          "Alex Grills",
+          "Yiming Gu",
+          "Pramod Gupta",
+          "Guru Guruganesh",
+          "Raia Hadsell",
+          "Hamza Harkous",
+          "Jitendra Harlalka",
+          "Demis Hassabis",
+          "Anja Hauth",
+          "Joe Heyward",
+          "Arian Hosseini",
+          "Chih-Yang Hsia",
+          "I-Hung Hsu",
+          "Xiaopeng Huang",
+          "Yangsibo Huang",
+          "Kevin Hui",
+          "Adrian Hutter",
+          "Te I",
+          "Fotis Iliopoulos",
+          "Advait Jain",
+          "Ganesh Jawahar",
+          "Ziwei Ji",
+          "Qilin Jin",
+          "Melvin Johnson",
+          "Kandarp Joshi",
+          "Arun Kandoor",
+          "Wang-Cheng Kang",
+          "Koray Kavukcuoglu",
+          "Mehran Kazemi",
+          "Kathleen Kenealy",
+          "Amr Khalifa",
+          "Phoebe Kirk",
+          "Suraj Kothawade",
+          "Vitaly Kovalev",
+          "Neel Kovelamudi",
+          "Adam Kraft",
+          "Ravin Kumar",
+          "Harish Kuppam",
+          "Justin Lannin",
+          "Chen-Yu Lee",
+          "Seungji Lee",
+          "Dmitry Lepikhin",
+          "Dongdong Li",
+          "Qiujia Li",
+          "Valentin Liévin",
+          "Ethan Lin",
+          "Ziqian Lin",
+          "Casper Liu",
+          "Tianlin Liu",
+          "Tianqi Liu",
+          "Xin Liu",
+          "Mayank Lunayach",
+          "Min Ma",
+          "Gagan Madan",
+          "Andrii Maksai",
+          "Eric Malmi",
+          "Michal Matuszak",
+          "Daniel McDuff",
+          "Gaurav Menghani",
+          "Daniil Mirylenka",
+          "Karolis Misiunas",
+          "Vedant Misra",
+          "Andreea Mitran",
+          "Kareem Mohamed",
+          "Maksim Mukha",
+          "Eric Noland",
+          "James O'Donnell",
+          "Kate Olszewska",
+          "Bernett Orlando",
+          "Wanqiong Pan",
+          "Rina Panigrahy",
+          "Unnati Parekh",
+          "Chunjong Park",
+          "Eric Paskie",
+          "Liqian Peng",
+          "Bryce Petrini",
+          "Slav Petrov",
+          "Jonas Pfeiffer",
+          "Bilal Piot",
+          "Martyna Plomecka",
+          "Siim Poder",
+          "Octavio Ponce",
+          "Arijit Pramanik",
+          "David Racz",
+          "Anish Rajan",
+          "Michelle Ramanovich",
+          "Anand Rao",
+          "Marvin Ritter",
+          "Vitor Rodrigues",
+          "Evan Rosen",
+          "Mikołaj Rybiński",
+          "Noveen Sachdeva",
+          "Michaël E. Sander",
+          "Rohit Sathyanarayana",
+          "Sagar Savla",
+          "Samuel Schmidgall",
+          "Tal Schuster",
+          "Benoit Seguin",
+          "Andrew Sellergren",
+          "Aliaksei Severyn",
+          "Izhak Shafran",
+          "Dhruv Shah",
+          "Yuan Shangguan",
+          "Ashish Shenoy",
+          "Pradeep Shenoy",
+          "Rakesh Shivanna",
+          "Pauline Sho",
+          "Lucas Spangher",
+          "Wojciech Stokowiec",
+          "Tim Strother",
+          "Yao Su",
+          "Yinghao Sun",
+          "Mukund Sundararajan",
+          "Andrea Tacchetti",
+          "Mor Hazan Taege",
+          "Pouya Tafti",
+          "Chetan Tekur",
+          "Rahul Thapa",
+          "Madeleine Traverse",
+          "Lenart Treven",
+          "Tao Tu",
+          "Chien Te Tung",
+          "Petar Veličković",
+          "Malini Pooni Venkat",
+          "Sagar Gubbi Venkatesh",
+          "Vidya Venkiteswaran",
+          "Francesco Visin",
+          "Alex Vitvitskyi",
+          "Kiran Vodrahalli",
+          "Weiyi Wang",
+          "Xin Wang",
+          "Tris Warkentin",
+          "Jan Wassenberg",
+          "John Wieting",
+          "Lechao Xiao",
+          "Hao Xu",
+          "Yuhui Xu",
+          "Fuzhao Xue",
+          "Arun Yadav",
+          "Jun Yan",
+          "Antoine Yang",
+          "Lin Yang",
+          "Ming-Hsuan Yang",
+          "Ziyu Ying",
+          "Jae Hyeon Yoo",
+          "Sajjad Zafar",
+          "Fred Zhang",
+          "Jiageng Zhang",
+          "Jianyi Zhang",
+          "Xiaofan Zhang",
+          "Chao Zhao",
+          "David Zhou",
+          "Chen Zou"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Jointly Improving Dialect Identification and ASR in Indian Languages using Multimodal Feature Fusion",
+        "url": "",
+        "authors": [
+          "Saurabh Kumar",
+          "Amartyaveer",
+          "Prasanta Kumar Ghosh"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Embodied Operators and Benchmarking: Toward Reusable and Deployable Embodied Intelligence Systems",
+        "url": "",
+        "authors": [
+          "Junwu Xiong",
+          "Jiaxuan Gao",
+          "Wei Chai",
+          "Renxing Chen",
+          "Yuzhen Li",
+          "Yu Guo",
+          "Yucheng Guo",
+          "Mingxi Luo",
+          "Wenyang Ma",
+          "Yiyun Mou",
+          "Yifei Zhang",
+          "Chen Zhou",
+          "Yongjian Guo"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "CoFEND: A Cross-Modal Fusion End-to-End Network for Cold-Start Drug-Drug Interaction Prediction",
+        "url": "",
+        "authors": [
+          "Di Wu",
+          "Hongyi Sun",
+          "Haichao Xu",
+          "Jia Chen",
+          "Zhong Chen",
+          "Jie Yang"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "MentalThink: Shaping Thoughts in Mental SVG World",
+        "url": "",
+        "authors": [
+          "Kangheng Lin",
+          "Jisheng Yin",
+          "Dingming Li",
+          "En Yu",
+          "Yana Wei",
+          "Han Zhou",
+          "Liang Zhao",
+          "Hongyu Zhou",
+          "Hongbo Peng",
+          "Jianjian Sun",
+          "Zheng Ge",
+          "Xiangyu Zhang",
+          "Daxin Jiang",
+          "Jingyu Wang"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Explainable AI for Screening Abuse-Related Trauma in Bangladeshi Children: A Training-Free Multimodal Framework Evaluated on Noise-Aware Synthetic Data",
+        "url": "",
+        "authors": [
+          "Salma Hoque Talukdar Koli",
+          "Fahima Haque Talukder Jely"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "BanglaMemeEvidence: A Multimodal Benchmark Dataset for Explanatory Evidence Detection in Bengali Memes",
+        "url": "",
+        "authors": [
+          "Fatema Tuj Johora Faria",
+          "Mukaffi Bin Moin",
+          "Md. Mahfuzur Rahman",
+          "Pronay Debnath",
+          "Asif Iftekher Fahim",
+          "Faisal Muhammad Shah"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Do GUI Agents Believe Their Eyes? Diagnosing State-Belief Reliance on Pixels versus Structure",
+        "url": "",
+        "authors": [
+          "Guijia Zhang",
+          "Harry Yang"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "AI Wizards at EXIST 2026: Hierarchical Soft-Label Learning for Multimodal Sexism Identification in Memes",
+        "url": "",
+        "authors": [
+          "Matteo Fasulo",
+          "Antonio Gravina",
+          "Luca Tedeschini",
+          "Luca Babboni"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "PhenoNEST: A Neuro-Symbolic Framework for Ontology-Aware Multimodal Plant Phenotyping and Trait Discovery",
+        "url": "",
+        "authors": [
+          "Jayant Ghadge",
+          "Soumyashree Kar",
+          "Surya S. Durbha"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "UI-MOPD: Multi-Platform On-Policy Distillation for Continual GUI Agent Learning",
+        "url": "",
+        "authors": [
+          "Niu Lian",
+          "Alan Chen",
+          "Zhehao Yu",
+          "Chengzhen Duan",
+          "Fazhan Liu",
+          "Hui Liu",
+          "Pei Fu",
+          "Jian Luan",
+          "Yaowei Wang",
+          "Shu-Tao Xia",
+          "Jinpeng Wang"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "A harmonised dataset for Earth system foundation models",
+        "url": "",
+        "authors": [
+          "Carlos Rodriguez-Pardo",
+          "Massimo Tavoni"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "PedestrianDiffusion: Multimodal Generative Denoising and Dense State Estimation for Inertial Navigation",
+        "url": "",
+        "authors": [
+          "I-Hao Lu",
+          "Dongsoo Han"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "TacReasoner: A Dynamic Tactile-Language Framework for Interactive Reasoning in Real-World Scenarios",
+        "url": "",
+        "authors": [
+          "Kailin Lyu",
+          "Di Wu",
+          "Long Xiao",
+          "Jianning Zeng",
+          "Jianwei He",
+          "Chang Lin",
+          "Lianyu Hu",
+          "Lin Shu",
+          "Jie Hao",
+          "Ce Hao"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "LP-SFT: Local-Preserving Supervised Fine-Tuning via Multimodal Entropy Structure",
+        "url": "",
+        "authors": [
+          "Yueyang Wang",
+          "Baolong Bi",
+          "Shuo Lu",
+          "Jingyuan Zhang"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "MoP-JEPA: Hard-Assigned Predictor Mixtures for Stochastic JEPA World Models",
+        "url": "",
+        "authors": [
+          "Zhi Song",
+          "Ximing Xing",
+          "Zhenchao Tang",
+          "hanbo Huang",
+          "Tianxu Lv",
+          "minghao Yang",
+          "Zhongzheng Niu",
+          "He Bing",
+          "Lusheng Wang",
+          "Jianhua Yao"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Evaluating and Understanding Model Editing for Medical Vision Language Models",
+        "url": "",
+        "authors": [
+          "Guli Zhu",
+          "Chenwei Wu",
+          "Liyue Shen"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Unified Audio Intelligence Without Regressing on Text Intelligence",
+        "url": "",
+        "authors": [
+          "Zhifeng Kong",
+          "Sang-gil Lee",
+          "Jaehyeon Kim",
+          "Boxin Wang",
+          "Zihan Liu",
+          "Sungwon Kim",
+          "Yang Chen",
+          "Arushi Goel",
+          "Rajarshi Roy",
+          "Wenliang Dai",
+          "Zhuolin Yang",
+          "Yangyi Chen",
+          "Dongfu Jiang",
+          "Sreyan Ghosh",
+          "Tuomas Rintamaki",
+          "Andrew Tao",
+          "Jonathan Raiman",
+          "Mohammad Shoeybi",
+          "Bryan Catanzaro",
+          "Wei Ping"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Stable Global Weighting of Flow Mixtures using Simplex Exponential Moving Average",
+        "url": "",
+        "authors": [
+          "Benjamin Wiriyapong",
+          "Oktay Karakus",
+          "Can Eyupoglu",
+          "Kirill Sidorov"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "DynaVieW: Schema-Guided World Modeling for Understanding Hierarchical Visual Dynamics",
+        "url": "",
+        "authors": [
+          "Silin Gao",
+          "Hao Zhao",
+          "Zeming Chen",
+          "Sepideh Mamooler",
+          "Antara Raaghavi Bhattacharya",
+          "Qiyu Wu",
+          "Hiromi Wakaki",
+          "Yuki Mitsufuji",
+          "Li Mi",
+          "Syrielle Montariol",
+          "Antoine Bosselut"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "RL Forgets! Towards Continual Policy Optimization",
+        "url": "",
+        "authors": [
+          "Mao-Lin Luo",
+          "Zhe-Xu Wang",
+          "Zi-Hao Zhou",
+          "Bo Ye",
+          "Jian Zhao",
+          "Min-Ling Zhang",
+          "Tong Wei"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "Beyond Modality Fusion: Deep Ensembles for Multimodal Classification",
+        "url": "",
+        "authors": [
+          "Ilya Burenko",
+          "Dmitry Vetrov"
+        ],
+        "date": "2026-07-07"
+      },
+      {
+        "title": "FUSE: FK-Steered Multi-Modal Flow Matching for Efficient Simulation-Based Posterior Estimation",
+        "url": "",
+        "authors": [
+          "Weichen Qin",
+          "Yufan Xie",
+          "Peihao Wang",
+          "Chia-Jui Chou",
+          "Minghui Du",
+          "Peng Xu",
+          "Ziren Luo",
+          "Yi Yang",
+          "Jingyi Yu",
+          "Bo Liang",
+          "Jiakai Zhang"
+        ],
+        "date": "2026-07-07"
+      }
+    ]
+  }
+]
