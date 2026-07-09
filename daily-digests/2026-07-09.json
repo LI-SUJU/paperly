@@ -1,0 +1,265 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-09",
+    "paperCount": 6,
+    "markdown": "# Rethinking Interpretability: From Geometric Embeddings to Mechanistic Reverse-Engineering\n\nToday's research landscape advances interpretability along two complementary axes: developing theoretically grounded methods that reveal how models represent and process information, and creating practical frameworks that make these insights actionable for safety-critical deployments. The papers span Riemannian geometry for understanding sentence-level classification, optimization-based instance modification for explaining classifier decisions, uncertainty-aware learning with evidential reasoning, efficient Bayesian ensembles for calibrated predictions, and a comprehensive survey of mechanistic interpretability techniques, collectively pushing toward more transparent, trustworthy AI systems.\n\n## Geometric and Representation-Based Interpretability\n\n**Paper [1]** \"Riemannian Geometry for Pre-trained Language Model Embeddings\" tackles the problem of understanding where sentence-level classification signal resides within transformer embeddings. The authors propose Riemannian Mean Pooling (RMP), which extracts per-token pullback metrics from a learned encoder's analytical Jacobian and aggregates them on the symmetric positive definite (SPD) manifold using the Fréchet mean. Across CoLA, CREAK, and RTE datasets—tasks requiring nuanced linguistic understanding—RMP outperforms Euclidean mean pooling, demonstrating that classification-relevant information is encoded in the Riemannian rather than Euclidean structure of token embeddings. This work provides a principled geometric lens for probing how language models organize semantic information, which is crucial for both interpretability and safety auditing.\n\n**Paper [5]** offers a comprehensive survey of mechanistic interpretability for neural networks, covering circuits, sparse features, and symbolic reasoning. The authors systematically explain how transformer circuit analysis reveals the function of internal components like the residual stream and attention mechanisms, moving beyond surface-level input-output correlations to reverse-engineer model algorithms. While traditional XAI methods stop at correlations, this survey shows how mechanistic approaches enable true understanding of model computations, which is essential for ensuring safety and auditability in high-stakes deployments. The paper serves as an important reference for researchers seeking to adopt or advance these techniques.\n\n## Optimization-Based Explanation and Robustness\n\n**Paper [2]** introduces a unified optimization framework for diagnosing misclassification and assessing classifier robustness in black-box settings. The method modifies an input instance so that the classifier predicts a specified target label while keeping modifications easily explainable, using a novel explainability-aware L0 (XA-L0) penalty that promotes sparse, interpretable changes combined with a classifier loss objective. This integrated optimization enables both understanding why misclassifications occur and quantifying model robustness through the minimal, interpretable alterations needed to flip predictions. The approach matters because it transforms black-box diagnostics from opaque failure analysis into transparent, human-understandable explanations that can guide model improvement.\n\n## Uncertainty-Aware and Bayesian Interpretability\n\n**Paper [3]** proposes Uncertainty-Aware Self-Paced Learning (UASPL), addressing the limitation that standard self-paced learning assumes low-loss samples are reliable, when in fact they may not be simple for the model. The method integrates evidential neural networks to quantify prediction uncertainty and uses this uncertainty to guide the curriculum, rather than relying solely on loss values. This ensures that the learning process prioritizes truly simple, reliable samples while giving appropriate weight to uncertain ones. For interpretability, UASPL provides calibrated uncertainty estimates that reveal not just what a model predicts but how confident it is, enabling more trustworthy decision-making in safety-critical applications.\n\n**Paper [4]** introduces an efficient Bayesian deep ensemble method for predictive regression that enhances interpretability while maintaining competitive performance and computational efficiency. The approach combines three components: low-dimensional ensemble representation for tractable inference, analytic predictive distributions that yield closed-form uncertainty estimates, and calibrated confidence bounds. By providing well-calibrated uncertainty alongside predictions, the method allows practitioners to understand when model outputs are reliable versus when additional human oversight is needed. This matters because it makes Bayesian rigor practical for deployment, enabling interpretable uncertainty quantification without the computational burden of full Bayesian inference.\n\n## Applied Interpretability in Healthcare\n\n**Paper [6]** presents ECGLight, a compute-light framework for digitizing paper ECG printouts and screening for myocardial infarction in remote clinics with limited connectivity. While not primarily an interpretability paper, it addresses a critical practical challenge: enabling AI-based decision support for conditions like acute coronary occlusion that are often overlooked when paper ECGs cannot be digitized efficiently. The framework's lightweight design ensures deployment in resource-constrained settings, and its interpretability stems from making ECG signals accessible to established clinical AI pipelines. This work demonstrates that interpretability in practice often requires solving the fundamental data access problem before higher-level explanations become possible.\n\n## Key Takeaways\n- Riemannian geometry of token embeddings reveals that classification-relevant information in language models is encoded in non-Euclidean manifold structure, enabling deeper geometric interpretation of how models process semantic content.\n- Explainability-aware optimization with sparse penalties (XA-L0) provides a unified framework for both diagnosing misclassification and quantifying robustness through interpretable instance modifications.\n- Uncertainty-aware learning with evidential neural networks improves curriculum learning by distinguishing truly simple samples from merely low-loss ones, yielding more reliable training and calibrated confidence estimates.\n- Efficient Bayesian deep ensembles with analytic predictive inference make calibrated uncertainty quantification practical for deployment, bridging the gap between statistical rigor and computational scalability.\n- Mechanistic interpretability, through circuit analysis and component-level reverse-engineering, moves beyond surface-level correlations to provide true algorithmic understanding of neural network behavior.\n- Practical interpretability in healthcare hinges on solving foundational data access and digitization challenges, as demonstrated by compute-light ECG processing enabling downstream diagnostic AI.\n- Across methods, the integration of uncertainty quantification with interpretability techniques represents a crucial direction for building trustworthy AI systems that can explain both their predictions and their confidence.",
+    "papers": [
+      {
+        "title": "Riemannian Geometry for Pre-trained Language Model Embeddings",
+        "url": "",
+        "authors": [
+          "Szczepan Konior",
+          "Alexandre Quemy",
+          "Przemysław Klocek",
+          "Grégoire Cattan",
+          "Bartłomiej Sobieski"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Optimized Instance Alteration for Explaining and Assessing Robustness of Classifiers",
+        "url": "",
+        "authors": [
+          "Evgenii Kuriabov",
+          "David Miller",
+          "Jia Li"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "UASPL: Uncertainty-Aware Self-Paced Learning with Evidential Neural Networks",
+        "url": "",
+        "authors": [
+          "Yifan Zhang",
+          "Yuxin Hu",
+          "Zhuobin Hao",
+          "Xiaozhuan Gao",
+          "Lipeng Pan"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Efficient Bayesian Deep Ensembles via Analytic Predictive Inference",
+        "url": "",
+        "authors": [
+          "Sina Aghaee Dabaghan Fard",
+          "Marie Maros",
+          "Jaesung Lee"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Mechanistic Interpretability for Neural Networks: Circuits, Sparse Features and Symbolic Reasoning",
+        "url": "",
+        "authors": [
+          "Pranav Sawant",
+          "Jakub Krejčí"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "ECGLight: Compute-Light Framework For Paper ECG Digitization and Myocardial Infarction Screening",
+        "url": "",
+        "authors": [
+          "Shreyasvi Natraj",
+          "Cyrus Achtari",
+          "Felice Gragnano",
+          "Andrea Milzi",
+          "Marco Valgimigli",
+          "Diego Paez-Granados"
+        ],
+        "date": "2026-07-09"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-09",
+    "paperCount": 2,
+    "markdown": "# Explainability in the Age of Opaque Models: From Instance-Level Diagnostics to Interpretable RL Policies\n\nToday's explainability research landscape demonstrates a maturing field that is moving beyond simple post-hoc feature attribution toward integrated, optimization-driven frameworks. Two notable contributions address complementary challenges: one provides a principled approach for diagnosing classifier failures through sparse instance alterations, while the other tackles the notoriously difficult problem of extracting interpretable policies from deep reinforcement learning agents operating in continuous action spaces.\n\n## Optimization-Driven Instance Alteration for Classifier Diagnostics\n\n[1] Kuriabov et al. address the critical problem of diagnosing misclassification and assessing robustness in black-box classifiers without requiring access to model internals. Their core technical contribution is a unified optimization framework that systematically modifies input instances to achieve a specified target label prediction, while enforcing that the modifications remain easily explainable. The objective function introduces a novel explainability-aware \\(L_0\\) (XA-\\(L_0\\)) penalty that promotes sparse, interpretable perturbations, combined with a classifier loss that steers the perturbed instance toward the desired output. This work matters because it bridges robustness evaluation and explanation generation—two traditionally separate tasks—by providing a single, principled framework that reveals exactly which minimal feature changes cause a classifier to flip its decision, offering both diagnostic value and actionable insights for model improvement.\n\n## Interpretable Policy Extraction in Continuous Reinforcement Learning\n\n[2] Lopez-Miguel et al. address the fundamental challenge of distilling interpretable policies from deep reinforcement learning agents, particularly when operating in complex environments with continuous action spaces—a domain where existing rule extraction methods typically fail. Their approach, ORCAID, introduces an efficient oblique decision tree training algorithm that partitions the state space using hyperplanes and fits local linear models to approximate the original policy's behavior. The key innovation lies in a three-stage split search procedure that efficiently discovers oblique splits, enabling the extraction of compact, human-readable rule-based policies from agents trained on mixed continuous-discrete environments. This contribution is significant because it opens the door for deploying deep RL in safety-critical applications (robotics, autonomous driving, healthcare) where regulatory requirements and operational trust demand transparent, verifiable decision-making processes that go beyond black-box performance metrics.\n\n## Key Takeaways\n- The explainability field is converging on optimization-based frameworks that integrate interpretability constraints directly into the diagnostic process, rather than treating explanation as a post-hoc afterthought.\n- Sparse perturbation methods (such as XA-\\(L_0\\)) provide a powerful bridge between robustness analysis and model understanding, revealing the precise feature changes that alter model decisions.\n- Continuous action spaces in reinforcement learning remain a significant frontier for interpretability research, requiring fundamentally different approaches than discrete-action environments.\n- Oblique decision trees with local linear models represent a promising direction for extracting interpretable policies from deep RL agents, offering a favorable trade-off between fidelity and comprehensibility.\n- Both papers demonstrate that meaningful explainability requires domain-specific design choices—instance-level analysis for classification versus policy-level extraction for RL—rather than one-size-fits-all solutions.\n- The integration of explainability constraints into optimization objectives (rather than post-hoc approximation) represents a paradigm shift toward \"explanability-by-design\" in machine learning systems.\n- These advances are particularly timely for regulated industries where model transparency is not merely desirable but legally mandated for deployment in high-stakes decision-making scenarios.",
+    "papers": [
+      {
+        "title": "Optimized Instance Alteration for Explaining and Assessing Robustness of Classifiers",
+        "url": "",
+        "authors": [
+          "Evgenii Kuriabov",
+          "David Miller",
+          "Jia Li"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "ORCAID: Oblique Rule-Based Continuous-Action Interpretation for Deep RL Policies",
+        "url": "",
+        "authors": [
+          "Ignacio D. Lopez-Miguel",
+          "Ezio Bartocci",
+          "Thomas Eiter",
+          "Martin Tappler"
+        ],
+        "date": "2026-07-09"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-09",
+    "paperCount": 10,
+    "markdown": "# Multimodal Intelligence: From Foundations to Frontier — A Cross-Domain Technical Digest\n\nToday's research landscape reveals a maturing field where multimodal systems are moving beyond simple fusion toward principled integration across modalities, with innovations spanning sentiment analysis, neuroimaging, time-series forecasting, and scientific discovery. The community is increasingly focused on two critical challenges: enabling efficient deployment of multimodal models on resource-constrained edge devices, and developing rigorous benchmarks that stress-test models' understanding of domain-specific physics and causal reasoning rather than surface-level pattern matching.\n\n## Architectures for Multimodal Fusion and Representation\n\n**[1]** Audio sentiment analysis requires joint understanding of vocal prosody and lexical content, but existing audio foundation models may not fully capture both aspects. The authors propose a multimodal solution using cross-modal transformers to integrate audio features with automatically generated multilingual text transcripts via ASR. By creating multiple text modalities from ASR outputs and applying knowledge distillation, the system achieves robust sentiment classification that leverages complementary audio-text information. This work is significant for real-world deployment scenarios where high-quality transcripts may not be available, demonstrating that generated text can effectively serve as a bridge modality.\n\n**[7]** In neuroimaging, the challenge lies in encoding complex structural and functional brain features from MRI data within a unified generative framework. The authors systematically evaluate encoding strategies, latent multimodal fusion approaches, and generative model architectures for combining gray matter volume (GMV) with static functional network connectivity (sFNC) features. Their latent graph encoding approach captures cross-modal dependencies while preserving the distinct structural and functional signatures of brain organization. This matters for clinical applications where joint modeling of brain structure and function could enable more accurate biomarkers for neurological disorders.\n\n**[6]** Cellular traffic forecasting is complicated by bursty endogenous dynamics and external urban event disturbances that are poorly captured by single-modality spatiotemporal models. The authors propose a multimodal spatiotemporal-frequency fusion framework with peak enhancement mechanisms that jointly models intrinsic traffic patterns, exogenous contextual signals (e.g., events, weather), and frequency-domain burst characteristics. By integrating peak-aware attention into the frequency domain, the model captures abrupt traffic surges that traditional methods miss. This addresses a critical operational need for network operators who must allocate resources in real-time during unexpected demand spikes.\n\n**[4]** Federated learning over edge devices faces modality heterogeneity where clients differ in both sensing capabilities and computational resources, while existing compression schemes apply uniform policies across all layers. MESH-FL introduces an entropy-guided matrix product state (MPS) update-compression framework that estimates the spectral entropy of each layer-wise update to determine optimal compression ratios per modality and layer. This achieves significant communication savings without sacrificing model quality, addressing the practical reality that different modalities (e.g., audio vs. image streams) have fundamentally different spectral compressibility profiles. The work is crucial for scaling multimodal FL to heterogeneous edge networks where bandwidth and compute budgets vary wildly across clients.\n\n## Benchmarks, Evaluation, and Standardization\n\n**[2]** Vision-language models have demonstrated strong semantic understanding but it remains unclear whether they can handle the physics and inverse problems underlying computational imaging tasks. ImagingBench introduces a systematic benchmark of 20 computational imaging tasks spanning ray/wave optics, image signal processing, inverse reconstruction, computational sensing, and calibration, evaluated across three settings: Expert (fixed reconstruction), Planner (guided reconstruction), and Forward (pure prediction). This reveals that current VLMs struggle significantly with physics-based tasks compared to semantic ones, while agentic AI approaches show promise in planner-guided settings. The benchmark fills a critical gap by moving beyond semantic vision evaluation to test genuine physics understanding.\n\n**[8]** Multimodal time-series forecasting benchmarks suffer from small scale, synthetic data, limited textual context types, and data leakage issues. TimesX provides a context-enriched benchmark with high-quality real-world time series and automatically generated textual contexts across diverse domains, with careful leakage mitigation. The authors' empirical study of zero-shot forecasting reveals that existing multimodal methods underperform proper unimodal baselines when evaluation is leakage-free, challenging prior claims in the literature. This work forces the field to reconsider whether reported multimodal improvements are real or artifacts of flawed evaluation protocols.\n\n**[5]** Existing neural architecture search benchmarks cover only narrow, task-specific regions of the architectural design space and lack cross-domain evaluation. LEMUR 2 introduces a large-scale framework with over 14,000 architectures and 750,000 structured training records spanning diverse tasks, generated through AST-based code mutation and genetic/RL evolution. The benchmark unifies generative, evaluative, and deployment pipelines, enabling researchers to study architecture-performance relationships across modalities and deployment constraints. This democratizes NAS research by providing the scale and diversity needed to develop generalizable architecture design principles.\n\n## Scientific Reasoning and Generative Frontiers\n\n**[3]** Structure-property understanding across biology, chemistry, and materials science requires mechanistic reasoning grounded in domain-native structural information such as stereochemistry, bonding, symmetry, and periodic order. The authors address the joint challenge of representation and reasoning by proposing Deep Native Structural Reasoning, which preserves domain-specific structural representations while incorporating physical constraints into the learning process. Their approach achieves interdisciplinary, transparent structure-property predictions that can be interpreted through scientific principles. This advances AI-driven scientific discovery by ensuring models reason about molecular and materials structure in ways that align with established physical and chemical laws.\n\n**[9]** Reinforcement learning for enhancing LLM reasoning suffers from an exploration-stability dilemma where importance sampling causes catastrophic instability while clipping strictly constrains exploration. By formalizing Probability Capacity (Cap), the authors reveal that conservative clipping structurally limits exploration, and propose UP (Unbounded Positive) optimization that breaks this tradeoff. The approach enables unbounded positive updates that promote exploration while maintaining training stability through careful asymmetric optimization design. This has direct implications for training more capable reasoning LLMs that can explore diverse solution paths without diverging.\n\n**[10]** Sampling from multimodal probability distributions is notoriously difficult for standard MCMC methods due to poor mixing and mode trapping. GRiLS introduces a gradient-free Riemannian Langevin sampler that reshapes local geometry via a learned Riemannian metric to facilitate transitions across modes, without requiring gradient evaluations of the target density. The gradient-free nature makes it suitable for computationally expensive posterior distributions common in multimodal generative modeling and Bayesian inverse problems. This addresses a fundamental challenge in probabilistic machine learning where gradient information is unavailable or prohibitively expensive.\n\n## Key Takeaways\n- **Physics-aware benchmarking is essential**: ImagingBench [2] reveals that current multimodal models fail at computational imaging tasks requiring physics understanding, highlighting the gap between semantic and scientific reasoning capabilities.\n- **Evaluation leakage undermines progress**: TimesX [8] shows that careful evaluation design changes conclusions about multimodal time-series methods, emphasizing the need for rigorous benchmarking practices.\n- **Modality-specific compression is necessary**: MESH-FL [4] demonstrates that uniform compression policies in federated learning are suboptimal—entropy-guided, per-modality compression yields significant efficiency gains.\n- **Generated text as bridge modality works**: Audio sentiment analysis [1] shows that ASR-generated transcripts can effectively serve as text modality for cross-modal learning, reducing dependence on high-quality human transcripts.\n- **Scientific reasoning requires structural priors**: Deep Native Structural Reasoning [3] establishes that domain-native structural representations with physical constraints enable interpretable, principled structure-property predictions.\n- **Exploration-stability tradeoff can be broken**: UP optimization [9] provides a principled solution to the exploration-stability dilemma in RL for LLMs through asymmetric, unbounded update rules.\n- **Gradient-free MCMC advances multimodal sampling**: GRiLS [10] offers a practical solution for sampling complex multimodal distributions without gradient evaluations, expanding applicability to black-box and expensive models.",
+    "papers": [
+      {
+        "title": "Audio Sentiment Analysis via Distillation and Cross-Modal Integration of Generated Multilingual Transcripts",
+        "url": "",
+        "authors": [
+          "Andrei-George Durdun",
+          "Victor Constantinescu",
+          "Radu Tudor Ionescu"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Does AI Understand Imaging? A Systematic Benchmark of Agentic AI for Computational Imaging Tasks",
+        "url": "",
+        "authors": [
+          "Ethan Chung",
+          "Chuanjun Zheng",
+          "Jasper Tan",
+          "Jingxi Li",
+          "Haopeng Zhang",
+          "Huaijin Chen"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Accurate, Interdisciplinary and Transparent Structure-property Understanding with Deep Native Structural Reasoning",
+        "url": "",
+        "authors": [
+          "Chen Tang",
+          "Yizhou Wang",
+          "Jianyu Wu",
+          "Lintao Wang",
+          "Shixiang Tang",
+          "Pengze Li",
+          "Encheng Su",
+          "Jun Yao",
+          "Jiabei Xiao",
+          "Yuqi Shi",
+          "Jielan Li",
+          "Hongxia Hao",
+          "Zhangyang Gao",
+          "Fang Wu",
+          "Ben Fei",
+          "Xiangyu Yue",
+          "Pan Tan",
+          "Bozitao Zhong",
+          "Jinouwen Zhang",
+          "Aoran Wang",
+          "Yan Lu",
+          "Jiaheng Liu",
+          "Xinzhu Ma",
+          "Liang Hong",
+          "Mingyue Zheng",
+          "Phil Torr",
+          "Bowen Zhou",
+          "Wanli Ouyang",
+          "Lei Bai"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Entropy-Guided Tensor Compression for Multimodal Federated Learning on Edge Devices",
+        "url": "",
+        "authors": [
+          "Quoc Bao Phan",
+          "Tuy Tan Nguyen"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "LEMUR 2: Unlocking Neural Network Diversity for AI",
+        "url": "",
+        "authors": [
+          "Tolgay Atinc Uzun",
+          "Waleed Khalid",
+          "Saif U Din",
+          "Sai Revanth Mulukuledu",
+          "Akashdeep Singh",
+          "Chandini Vysyaraju",
+          "Raghuvir Duvvuri",
+          "Avi Goyal",
+          "Yashkumar Rajeshbhai Lukhi",
+          "Muhammad A. Hussain",
+          "Krunal Jesani",
+          "Usha Shrestha",
+          "Yash Mittal",
+          "Roman Kochnev",
+          "Pritam Kadam",
+          "Mohsin Ikram",
+          "Harsh R. Moradiya",
+          "Alice Arslanian",
+          "Dmitry Ignatov",
+          "Radu Timofte"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Multimodal Spatiotemporal-Frequency Fusion with Peak Enhancement for Cellular Traffic Forecasting",
+        "url": "",
+        "authors": [
+          "Qingzhong Li",
+          "Yue Hu",
+          "Hui Ma",
+          "Yajun Zhang",
+          "Xinjun Pei",
+          "Ming Yan",
+          "Fei Xing"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Latent graph encoding of multimodal neuroimaging features with generative AI architectures",
+        "url": "",
+        "authors": [
+          "Ishaan Batta",
+          "Meenu Ajith",
+          "Vince Calhoun"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Rethinking Multimodal Time-Series Forecasting Evaluation",
+        "url": "",
+        "authors": [
+          "Haoxin Liu",
+          "Yichen Zhou",
+          "Rajat Sen",
+          "B. Aditya Prakash",
+          "Abhimanyu Das"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma",
+        "url": "",
+        "authors": [
+          "Chongyu Fan",
+          "Pengfei Liu",
+          "Jingjia Huang",
+          "Sijia Liu",
+          "Yi Lin"
+        ],
+        "date": "2026-07-09"
+      },
+      {
+        "title": "Gradient-free Riemannian Langevin Sampler",
+        "url": "",
+        "authors": [
+          "Ricardo Baptista",
+          "Olivier Zahm"
+        ],
+        "date": "2026-07-09"
+      }
+    ]
+  }
+]
