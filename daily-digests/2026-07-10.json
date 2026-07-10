@@ -1,0 +1,274 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-10",
+    "paperCount": 6,
+    "markdown": "# Mechanistic Interpretability and Trustworthy AI: From Combinatorial Foundations to Cross-Seed Universality\n\nToday's research landscape reveals a deepening push toward rigorous, statistically grounded interpretability methods—moving beyond heuristic explanations toward certifiable guarantees and cross-model universality. Two complementary themes emerge: foundational frameworks for trustworthy ML through combinatorial optimization, and mechanistic probes that recover latent representations from model internals, while new statistical tools promise anytime-valid evaluation of causal claims in interpretability experiments.\n\n## Foundations for Trustworthy and Interpretable ML\n\nThe pursuit of interpretability increasingly demands formal guarantees rather than post-hoc storytelling. Vidal and Ferry [1] provide a comprehensive survey on how combinatorial optimization can serve as a unifying lens for trustworthy ML, addressing transparency, interpretability, robustness, fairness, privacy, and certifiability simultaneously. They argue that optimization- and certification-oriented reasoning enables systematic comparison of models with similar empirical performance but radically different behavioral properties, supporting tasks from model selection to verification. This work matters because it establishes a cross-cutting framework that could unify disparate interpretability efforts under a common mathematical foundation, potentially reducing the gap between empirical explainability and formal verification.\n\n## Probing Internal Representations Across Languages and Seeds\n\nUnderstanding what models encode internally is central to mechanistic interpretability. Gorgone and Carcassi [2] introduce TypeProbe, which probes the residual streams of pretrained code models to recover type representations using parallel Java and Python datasets. Their key finding is that cross-lingual type representations emerge even from untyped code, and that hidden states linearly encode result types implied by typed function application—enabling cross-lingual transfer where probes trained on one language infer argument and result types in another. This is significant because it demonstrates that code models learn abstract, language-agnostic type information, suggesting that interpretability tools for code models may need to target universal programming concepts rather than language-specific syntax.\n\nAddressing a fundamental challenge in mechanistic interpretability, Váradi and Kmetty [3] tackle cross-seed feature universality: because dictionary learning is non-convex, independently trained networks learn misaligned feature spaces. Their Procrustes-conditioned Joint End-to-end Top-K Sparse Autoencoder (SAE) computes an orthogonal Procrustes rotation between seeds' activation spaces before joint SAE training, combining Top-K sparsity with end-to-end optimization to extract universal features across independently trained BERT models. This work is crucial because it provides a concrete method for establishing whether discovered features are genuinely universal or artifacts of random initialization—a question that has haunted mechanistic interpretability since its inception.\n\n## Statistical Rigor for Causal Claims in Interpretability\n\nAsiaee [6] identifies a critical weakness in mechanistic interpretability: intervention experiments (activation patching, ablation, compression comparisons) are typically summarized by point estimates without accounting for finite sampling or adaptive evaluation choices. Certified Interventional Fidelity (CIF) provides an anytime-valid statistical layer that produces confidence sequences rather than fixed confidence intervals, enabling researchers to monitor evaluations continuously and adapt toward suspected failures while maintaining rigorous error control. This matters because it introduces the kind of statistical discipline that has been missing from many interpretability studies, potentially preventing overclaimed causal findings and enabling more reliable benchmarking of interpretability methods.\n\n## Broader Methodological Advances\n\nWhile not directly about interpretability, two papers demonstrate complementary technical advances. Zhong et al. [4] propose PGD-NO, a neural operator with Precomputed Geometry Decomposition that addresses memory bottlenecks in 3D physics simulations by relocating geometric encoding overhead to a deterministic pre-computation phase. Jamil and Malakar [5] develop a classifier chain-based pathological test recommendation system that frames test selection as multi-label classification, leveraging dependencies between tests via the Classifier Chain technique. These works highlight how interpretability concerns intersect with practical deployment challenges—PGD-NO's pre-computation strategy could inform how we design interpretable physics models, while the classifier chain approach demonstrates a transparent, dependency-aware decision pipeline that is inherently more interpretable than black-box alternatives.\n\n## Key Takeaways\n- Combinatorial optimization provides a unifying mathematical framework for reasoning about transparency, interpretability, robustness, fairness, privacy, and certifiability simultaneously [1].\n- Code models learn cross-lingual type representations that are linearly decodable from hidden states, enabling transferable interpretability tools across programming languages [2].\n- Procrustes-conditioned joint SAE training addresses the fundamental non-convexity problem in mechanistic interpretability, enabling extraction of cross-seed universal features from independently trained models [3].\n- Certified Interventional Fidelity introduces anytime-valid confidence sequences for intervention experiments, providing statistical rigor that has been largely absent from mechanistic interpretability evaluations [6].\n- The field is shifting from post-hoc explanations toward methods with formal guarantees—whether through combinatorial optimization, universal feature extraction, or statistical certification.\n- Precomputation strategies and transparent model architectures (classifier chains, neural operators with decomposed geometry) offer practical paths toward more interpretable AI systems in high-stakes domains [4, 5].\n- Reproducible and statistically sound evaluation protocols remain a critical bottleneck; CIF's adaptive, anytime-valid approach sets a new standard for how interpretability claims should be validated.",
+    "papers": [
+      {
+        "title": "Trustworthy Machine Learning through the Lens of Combinatorial Optimization: Survey and Research Perspectives",
+        "url": "",
+        "authors": [
+          "Thibaut Vidal",
+          "Julien Ferry"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "TypeProbe: Recovering Type Representations from Hidden States of Pre-trained Code Models",
+        "url": "",
+        "authors": [
+          "Giuliano Gorgone",
+          "Fausto Carcassi"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Cross-seed explainability using Procrustes-conditioned Joint End-to-end Top-K Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Bendegúz Váradi",
+          "Zoltán Kmetty"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "PGD-NO: A Neural Operator with Precomputed Geometry Decomposition for 3D Million-scale Physics Simulations",
+        "url": "",
+        "authors": [
+          "Weiheng Zhong",
+          "Jing Bi",
+          "Victor Oancea",
+          "Hadi Meidani"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Classifier Chain-based Pathological Test Recommendation",
+        "url": "",
+        "authors": [
+          "Abu Rafe Md Jamil",
+          "Nayan Malakar"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Certified Interventional Fidelity: Anytime-Valid, Adaptive Evaluation of Causal Claims in Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Amir Asiaee"
+        ],
+        "date": "2026-07-10"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-10",
+    "paperCount": 2,
+    "markdown": "# Explainability in AI: From Graph Dynamics to Mechanistic Alignment\n\nToday's research landscape reveals a dual focus in explainability: extending interpretability methods to temporally-dynamic graph models on one hand, and aligning mechanistic feature representations across independently trained neural networks on the other. Both works grapple with the fundamental challenge of making black-box models transparent—whether by tracing historical influences in temporal graphs or by ensuring that discovered neural features are universal and reproducible.\n\n## Temporal Graph Explainability via Memory and Structure\n\n**Paper [1]** addresses the critical gap in explaining Temporal Graph Networks (TGNs), which maintain memory modules to track evolving node histories but lack interpretability mechanisms for those memories. The authors propose a dual-tree attribution framework comprising a topology attribution tree (capturing neighbor influence and their memory states) and a memory backtracking tree (tracing which historical events in a node's memory contributed to a prediction). By explicitly modeling how past interactions propagate through the memory module to influence current predictions, this approach provides fine-grained temporal explanations that existing static graph methods cannot achieve. This matters because TGNs are increasingly deployed in fraud detection, recommendation systems, and social network analysis where understanding *when* and *which* past events drove a decision is essential for trust and regulatory compliance.\n\n## Cross-Seed Feature Alignment via Procrustes-Conditioned Sparse Autoencoders\n\n**Paper [2]** tackles the fundamental non-convexity problem in mechanistic interpretability: dictionary learning on independently trained models yields unaligned feature spaces, making it impossible to determine whether \"identical\" features discovered across random seeds are truly universal or artifacts of initialization. The authors introduce a Procrustes-conditioned Joint End-to-end Top-K Sparse Autoencoder (SAE) that first computes an orthogonal Procrustes rotation between the activation spaces of different seeds, then jointly trains a shared Top-K sparse autoencoder across the rotated representations. This conditioning ensures that the discovered features are aligned by construction, enabling the extraction of universally shared features across model seeds rather than initialization-dependent idiosyncrasies. The contribution is significant because cross-seed universality is a prerequisite for building reliable mechanistic interpretability—without it, we cannot distinguish genuine learned representations from random noise, hampering progress toward understanding how neural networks truly operate.\n\n## Key Takeaways\n- Explainability must evolve alongside model architectures: temporal models require explanation methods that explicitly trace memory and temporal dependencies, not just static graph structures.\n- Memory backtracking offers a principled way to attribute predictions to specific historical events in temporal graph networks, addressing a critical trust gap in deployed TGN systems.\n- Mechanistic interpretability faces a reproducibility crisis: independently trained models learn misaligned feature spaces, making cross-seed comparison of discovered features unreliable without alignment techniques.\n- Procrustes-conditioned training provides a mathematically elegant solution to feature alignment, enabling joint dictionary learning across random initializations rather than post-hoc matching.\n- Top-K sparsity combined with end-to-end joint training offers a scalable path toward extracting universal features that are robust to initialization variance.\n- Both papers underscore that explainability is not merely about post-hoc attribution but about building interpretable representations into the modeling pipeline from the start.\n- The convergence of temporal and cross-seed perspectives suggests that future explainability research must simultaneously handle dynamic data streams and ensure reproducibility across training runs—two dimensions currently addressed in isolation.",
+    "papers": [
+      {
+        "title": "Towards the Explainability of Temporal Graph Networks via Memory Backtracking and Topological Attribution",
+        "url": "",
+        "authors": [
+          "Yazheng Liu",
+          "Xi Zhang",
+          "Sihong Xie",
+          "Hui Xiong"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Cross-seed explainability using Procrustes-conditioned Joint End-to-end Top-K Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Bendegúz Váradi",
+          "Zoltán Kmetty"
+        ],
+        "date": "2026-07-10"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-10",
+    "paperCount": 13,
+    "markdown": "# Multimodal Foundations: From Sleep Physiology to Edge Deployment — A Technical Digest\n\nToday's multimodal research landscape reveals a striking convergence between physiological priors and architectural innovations, with foundation models expanding across sleep medicine, document parsing, materials science, and autonomous driving. Simultaneously, the community is grappling with critical challenges in model evaluation, selective forgetting, and efficient edge deployment, signaling a maturation from proof-of-concept toward real-world utility and trustworthiness.\n\n## Physiological Priors and Domain-Specific Foundation Models\n\nRecent work demonstrates that incorporating domain-specific structural priors into multimodal foundation models can significantly improve representation quality and downstream performance. Omni-Sleep [1] addresses the problem that existing sleep foundation models fuse heterogeneous biosignals (EEG, EOG, EMG, ECG, respiration) in a topology-agnostic manner, overlooking the physiological organization of central and autonomic nervous systems. The model introduces a hierarchical contrastive learning framework that uses the CNS/ANS partition as a physiological prior for topology-constrained representation learning, structuring representations through three contrastive objectives that respect biological hierarchies. This approach enables more physiologically meaningful sleep stage classification and could serve as a template for other biomedical domains where multimodal signals have known anatomical or functional organization.\n\nOn the Earth observation front, Imtiaz et al. [4] tackle the challenge that remote sensing foundation models (RSFMs) cannot be transferred reliably without domain-specific adaptation because EO data are governed by measurement physics and operational constraints. The paper argues that reliable RSFM development requires incorporating physical sensor models, atmospheric correction, and domain-specific pretraining objectives rather than simply scaling generic multimodal architectures. This work is important because it grounds the foundation model paradigm in the physical realities of remote sensing, where spectral, spatial, and temporal characteristics of satellite data impose constraints that generic multimodal approaches may violate.\n\n## Synthetic Data, Reinforcement Learning, and Document Understanding\n\nData scarcity remains a critical bottleneck for supervised multimodal tasks, and two papers address this through complementary synthesis and training strategies. Infinity-Parser2 [2] targets the persistent scarcity of faithfully annotated document parsing corpora by coupling a controllable data-synthesis pipeline with multi-task reinforcement learning. The system builds a scalable synthesis engine pairing a controllable rendering framework with an iterative refinement loop, producing and open-sourcing Infinity-Doc2-5M: a 5-million-sample bilingual corpus spanning diverse document types with element bounding boxes and canonical structure annotations. This work matters because end-to-end document parsing is fundamental to enterprise AI workflows, and the combination of synthetic data with RL-based training could reduce dependence on expensive human annotation while improving generalization across document formats.\n\nMatBind [13] addresses a different multimodality challenge in materials science: fully characterizing crystalline materials requires integrating atomic structures, diffraction patterns, electronic density of states, and natural language, but these modalities are stored and analyzed in isolation. The paper presents a contrastive learning framework that aligns four materials modalities—crystal structure, powder X-ray diffraction, density of states, and natural language—into a shared embedding space. By enabling cross-modal retrieval and property prediction across representational boundaries, MatBind could accelerate materials discovery by allowing researchers to query materials databases using any available characterization modality.\n\n## Encoder Architectures and Quantization for Edge Deployment\n\nTwo papers systematically investigate architectural choices that are often taken for granted in multimodal systems, revealing important opportunities for optimization. Koloiarov et al. [3] challenge the conventional use of plain MLPs as tabular encoders in image-tabular multimodal learning, noting that if MLPs were strong encoders, the tabular domain would not be \"the last unconquered castle for deep learning.\" They evaluate state-of-the-art tabular models as encoders for the first time, identifying a key obstacle: In-Context Learning models among the best tabular methods require labels to process instances, making non-trivial the embedding of training and test samples differently. This work highlights that encoder choice in multimodal settings deserves far more careful consideration than the field has given it.\n\nShin et al. [7] focus on the practical challenge of deploying vision-language models under 3 billion parameters on edge devices through systematic quantization analysis. Their evaluation framework separates the vision encoder, projector, and LLM backbone across six quantization configurations on Jetson Orin platforms, revealing that quantization sensitivity is governed by the structural paradigm of each subnetwork. By providing component-wise sensitivity analysis and hardware-aware deployment recommendations, this work bridges the gap between model compression research and practical edge AI deployment, which is crucial as on-device multimodal intelligence becomes increasingly widespread.\n\n## Evaluation, Unlearning, and Benchmarking Blind Spots\n\nA recurring theme across this week's papers is the critical need for better evaluation methodologies that reveal genuine model limitations rather than benchmark overfitting. Santelmo et al. [6] introduce blind-spots-bench, a benchmark designed to expose failures on tasks that humans find almost trivial but modern AI systems still struggle with—such as manipulating a string or drawing a dog with five legs. By collecting raw questions from AI course students and structuring them with reference solutions, this benchmark addresses the under-measurement of persistent blind spots in current systems. This work is important because it provides a methodology for stress-testing multimodal models in ways that standard benchmarks systematically miss.\n\nSarwar et al. [5] provide a comprehensive survey of multimodal unlearning—the selective removal of information across vision, language, video, and audio modalities from foundation models that have inadvertently encoded sensitive, copyrighted, biased, or unsafe cross-modal associations. The survey offers a unified, system-oriented view covering methods, datasets, and benchmarks, addressing why targeted forgetting remains difficult when knowledge is distributed across shared representations. This work is timely as regulatory pressure and ethical considerations increasingly demand mechanisms for model forgetting that go beyond simple retraining.\n\nDamodharan et al. [12] introduce AUTOPILOT-VQA, an incident-centric visual question answering benchmark for dashcam video understanding that evaluates whether vision-language models can reliably reason about safety-critical driving incidents. The dataset structures questions around real-world driving scenarios to test scene understanding, decision-making, and trajectory prediction capabilities. This benchmark fills a critical gap in autonomous driving evaluation by focusing on the specific failure modes that matter most for safety, rather than generic scene understanding metrics.\n\n## Generation Order, Adaptive Fusion, and Theoretical Foundations\n\nThe final group of papers pushes theoretical and methodological boundaries in multimodal generation and fusion. Ouyang et al. [9] investigate optimizing token generation order for multimodal masked diffusion models, establishing that unlike structured problems in language generation, model logits alone are insufficient for determining optimal generation sequences in text-to-image synthesis. This finding has implications for how diffusion language models should be adapted for multimodal tasks, suggesting that generation order optimization must be addressed differently for visual versus textual modalities.\n\nAlihodzic and Skopljakovic Hubljar [10] revisit XAI-guided adaptive fusion for multimodal emotion and sentiment recognition, where a tree-based mixture of unimodal and cross-modal experts uses sample-level weights derived from TreeSHAP attribution magnitudes. The paper focuses on the effect of SHAP attribution reduction when experts have unequal feature contributions, revealing both the promise and limitations of explanation-guided fusion. This work is valuable for practitioners building interpretable multimodal systems where understanding which modalities drive predictions is as important as accuracy.\n\nFinally, Zhao et al. [11] address a fundamental technical challenge in recommender systems: estimating original-space conditional expectations for heavy-tailed, zero-inflated, and multimodal regression targets like dwell time and LTV. They prove that any useful nonlinear marginal transform loses expectation consistency under direct inversion, and propose a deployable empirical marginal transform framework with expectation-consistent recovery. This contribution bridges the gap between practical target transformations and statistical rigor, with implications for any multimodal regression task where target distributions are complex.\n\n## Key Takeaways\n- Domain-specific physiological and physical priors (CNS/ANS organization, sensor physics) can significantly improve foundation model representations in biomedical and Earth observation domains [1, 4].\n- Synthetic data generation combined with reinforcement learning offers a viable path to overcoming annotation scarcity for complex multimodal tasks like document parsing [2] and materials characterization [13].\n- Encoder choice in multimodal systems matters substantially more than commonly assumed, with state-of-the-art tabular encoders potentially outperforming standard MLPs in image-tabular settings [3].\n- Component-wise quantization analysis reveals that optimal edge deployment strategies for small VLMs must account for heterogeneous sensitivity across vision encoders, projectors, and LLM backbones [7].\n- Existing benchmarks systematically under-measure persistent blind spots in multimodal models; new benchmarks targeting human-trivial failures are essential for meaningful progress evaluation [6].\n- Multimodal unlearning is emerging as a critical capability for responsible AI deployment, but remains challenging due to distributed representations across shared spaces [5].\n- Theoretical understanding of generation order in diffusion models, expectation consistency in target transformations, and attribution-guided fusion continues to mature, providing foundations for more robust multimodal architectures [9, 10, 11].",
+    "papers": [
+      {
+        "title": "Omni-Sleep: A Sleep Foundation Model via Hierarchical Contrastive Learning of CNS--ANS Dynamic",
+        "url": "",
+        "authors": [
+          "Zhoujie Hou",
+          "Song Wang",
+          "Kexin Lou",
+          "Mo Wang",
+          "Chen Wei",
+          "Quanying Liu"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Infinity-Parser2 Technical Report",
+        "url": "",
+        "authors": [
+          "Zuming Huang",
+          "Jun Huang",
+          "Kexuan Ren",
+          "Baode Wang",
+          "Weizhen Li",
+          "Jianming Feng",
+          "Yu Wang",
+          "Yichen Yao",
+          "Shijun Lin",
+          "Yige Tang",
+          "Cheng Peng",
+          "Weidi Xu",
+          "Wei Chu",
+          "Yinghui Xu",
+          "Yuan Qi"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "The Importance of Encoder Choice:A Tabular-Image Study",
+        "url": "",
+        "authors": [
+          "Ilia Koloiarov",
+          "Diego Coello de Portugal Mecke",
+          "Vijaya Krishna Yalavarthi",
+          "Tom Hanika",
+          "Lars Schmidt-Thieme"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Scalable and Trustworthy Earth Observation Foundation Models",
+        "url": "",
+        "authors": [
+          "Syed Usama Imtiaz",
+          "Mitra Nasr Azadani",
+          "Nasrin Alamdari"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Multimodal Unlearning Across Vision, Language, Video, and Audio: Survey of Methods, Datasets, and Benchmarks",
+        "url": "",
+        "authors": [
+          "Nobin Sarwar",
+          "Shubhashis Roy Dipta",
+          "Zheyuan Liu",
+          "Vaidehi Patil"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Blind-Spots-Bench: Evaluating Blind Spots in Multimodal Models",
+        "url": "",
+        "authors": [
+          "Matteo Santelmo",
+          "Xiuying Wei",
+          "Israa Fakih",
+          "Felix Bauer",
+          "Juan Garcia Giraldo",
+          "Chengkun Li",
+          "Etienne Bamas",
+          "Emmanuel Abbé"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Rethinking Small VLM Quantization: From Component-Wise Analysis to Hardware-Aware Edge Deployment",
+        "url": "",
+        "authors": [
+          "Hyeju Shin",
+          "Chorwon Kim",
+          "Ryangsoo Kim",
+          "Hark Yoo",
+          "Jaein Kim"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "UniClawBench: A Universal Benchmark for Proactive Agents on Real-World Tasks",
+        "url": "",
+        "authors": [
+          "Zhekai Chen",
+          "Chengqi Duan",
+          "Kaiyue Sun",
+          "Bohao Li",
+          "Yuqing Wang",
+          "Manyuan Zhang",
+          "Xihui Liu"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "Reinforcing the Generation Order of Multimodal Masked Diffusion Models",
+        "url": "",
+        "authors": [
+          "Yidong Ouyang",
+          "Zhe Wang",
+          "Sourav Bhabesh",
+          "Dmitriy Bespalov"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "SHAP-Weighted Cross-Modal Expert Fusion for Emotion and Sentiment Recognition: Evidence and Limits",
+        "url": "",
+        "authors": [
+          "Adis Alihodzic",
+          "Selma Skopljakovic Hubljar"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "PIT-SUN: A Deployable Empirical Marginal Transform Framework with Expectation-Consistent Recovery for Regression in Recommender Systems",
+        "url": "",
+        "authors": [
+          "Mingyu Zhao",
+          "Zhaohan Li",
+          "Zhenxiong Miao",
+          "Xu Zhang",
+          "Dewei Leng",
+          "Yanan Niu",
+          "Kun Gai"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "AUTOPILOT VQA: Benchmarking Vision-Language Models for Incident-Centric Dashcam Understanding",
+        "url": "",
+        "authors": [
+          "Siddharth Damodharan",
+          "Radhika Gupta",
+          "Ali Alshami",
+          "Ryan Rabinowitz",
+          "Jugal Kalita"
+        ],
+        "date": "2026-07-10"
+      },
+      {
+        "title": "MatBind: A Shared Embedding Space for Multimodal Materials Characterization",
+        "url": "",
+        "authors": [
+          "Le Yang",
+          "Anoop K. Chandran",
+          "Jona Östreicher",
+          "Evgenii Sovetkin",
+          "Adrian Mirza",
+          "Sebastien Bompas",
+          "Bashir Kazimi",
+          "Pascal Friederich",
+          "Stefan Kesselheim",
+          "Kevin Maik Jablonka",
+          "Stefan Sandfeld"
+        ],
+        "date": "2026-07-10"
+      }
+    ]
+  }
+]
