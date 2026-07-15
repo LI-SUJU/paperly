@@ -1,0 +1,192 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-15",
+    "paperCount": 7,
+    "markdown": "# The Interpretability Landscape: From Neural Shortcuts to Scientific Discovery\n\nToday's research landscape spans a critical examination of how neural networks learn—and fail to learn—meaningful representations, from shape-prior shortcuts in depth estimation to the fundamental nature of intelligence as compression. A unifying theme emerges: interpretability is not merely a post-hoc analysis tool but a first-class design principle that can expose flaws in model reasoning, reveal hidden structure in neural representations, and even reframe what it means for an AI to discover knowledge.\n\n## Exposing and Remedying Shortcut Learning in Vision Systems\n\n[1] \"Repairing Shape-Prior Shortcuts in Long-Range Single-Shot Fringe Projection Profilometry\" addresses a critical failure mode in single-shot fringe projection profilometry (FPP) networks: these models learn to exploit shape-prior shortcuts, inferring depth from object boundaries rather than from the fringe phase signal. The authors demonstrate that a standard UNet baseline plateaus at 14.54 mm mean absolute error on a synthetic benchmark of 15,600 fringe images, and neither increasing data volume nor model capacity removes the shortcut because neither changes the optimizer's hypothesis space. Their proposed PhiCalNet shifts the output representation to wrapped phase (sin φ, cos φ), forcing the network to learn the physics-constrained mapping from fringe patterns to depth, effectively removing the exploitable shortcut. This work is significant for the interpretability community because it shows that *output representation design* is a powerful interpretability intervention—by constraining what the network can predict, we can force it to learn causally correct features rather than spurious correlations.\n\n[5] \"Sparse Inter-Layer Dependencies of Transformer FFN Neurons\" tackles the interpretability challenge posed by the additive superposition in residual streams, which obscures how feedforward network (FFN) neurons actually contribute to computation. The authors introduce a training-free attribution method that estimates the relative influence of upstream neurons and attention outputs on a target FFN neuron's activation, revealing that each FFN neuron's activation can be explained by a sparse set of preceding neurons across layers. Empirically, across multiple model architectures and layers, they show that this sparse dependency structure holds, suggesting that the residual stream's apparent superposition is underlain by a more interpretable, low-rank interaction pattern. This matters because it provides a concrete, scalable tool for dissecting the internal computations of large transformers without requiring retraining or modifying the architecture.\n\n## Rethinking Neural Architectures for Better Interpretability\n\n[3] \"Scale-Aware Attention for Scarce Neural Data: An RG-Flow Transformer on Sleep-EDF EEG\" addresses the question of whether explicit physics-inspired inductive biases can improve both performance and interpretability on scarce neural data. The authors propose the RG-Flow Transformer, which augments ordinary self-attention with a scale-aware stream incorporating a learnable anomalous dimension γ, block-spin coarse-graining, and an entropy-gated synchronization bridge—all derived from renormalization group (RG) theory. Using real, scarce EEG data from sleep studies, they demonstrate that this architecture outperforms a parameter-matched vanilla transformer while providing interpretable scale-dependent representations of brain dynamics. The work bridges physics and machine learning by showing that building known invariances (here, scale-free brain dynamics with 1/f^β spectra) into the architecture yields models that are not only more data-efficient but also more interpretable at multiple temporal scales.\n\n[7] \"Understanding Structured Health Data through Interaction-Aware Mixture-of-Experts\" tackles the challenge of interpreting how different views of structured health records contribute to model predictions, even when performance gains are minimal. The authors propose an interaction-aware mixture-of-experts (MoE) model for post-stroke rigidity prediction, where different expert modules attend to distinct constructed views of the same patient data. Their key finding is that routing attribution—analyzing which experts are activated for which inputs—reveals systematic importance differences across views, even though the overall prediction performance does not significantly improve over baselines. This is a crucial methodological contribution: it demonstrates that *interpretability analysis can uncover meaningful structure in data and model behavior that is invisible from performance metrics alone*. The paper underscores view construction as the primary lever for interpretability in structured health data.\n\n## Conceptual Foundations: Intelligence, Compression, and Discovery\n\n[4] \"From Observation to Insight: Mechanistic World Models and the Quest for Autonomous Discovery\" argues that contemporary machine learning, organized around predictive mappings, falls short of scientific discovery because prediction alone does not constitute understanding. The authors propose that scientific discovery is fundamentally a problem of knowledge organization—specifically, uncovering the reusable explanatory mechanisms that generate observations. They advocate for \"mechanistic world models\" that learn not just input-output mappings but causal, compositional explanations of how data are generated. This paper provides a philosophical framework for interpretability research: it repositions the goal from \"explaining a model's predictions\" to \"building models whose internal representations *are* scientific explanations.\" For the field, this shifts the evaluation metric from prediction accuracy to the discoverability and reusability of learned mechanisms.\n\n[6] \"Atomic Units of X: The Compression Layer of Intelligence\" proposes a sweeping theoretical framework: intelligence—whether cognitive, biological, computational, or organizational—arises through a process of atomic compression and compositional reuse. The paper argues that all intelligent systems decompose complex phenomena into reusable atomic units that can be recombined into higher-order structures, drawing evidence from cognitive science, information theory, evolutionary biology, and software engineering. While highly abstract, this framework directly connects to interpretability: if intelligence is compression, then understanding a model means identifying its learned \"atomic units\" and their compositional grammar. The paper provides a unifying language for discussing what interpretability methods should aim to discover—the fundamental building blocks of a model's knowledge representation.\n\n[2] \"Designing Agent-Ready Websites for AI Web Agents\" introduces a practical framework for making e-commerce platforms interpretable and actionable for AI agents, complementing existing SEO and generative engine optimization (GEO) approaches. The paper defines specific metrics for machine readability, verifiability, and actionability—properties that make a website's structure and content transparent to automated agents. While primarily about web design, this work connects to interpretability through the lens of *designing for algorithmic transparency*: as AI agents increasingly mediate human interactions (shopping, information retrieval), it becomes critical that the underlying data representations are interpretable not just to humans but to other AI systems. This extends interpretability beyond model internals to the entire ecosystem in which models operate.\n\n## Key Takeaways\n- **Output representation is a powerful interpretability lever**: Constraining a model's prediction space (e.g., from depth to wrapped phase in FPP [1]) can force it to learn causally correct features, removing exploitable shortcuts that larger datasets and models cannot fix.\n- **Sparse dependency structure underlies residual stream superposition**: FFN neurons in transformers have sparse, interpretable inter-layer dependencies that can be extracted with training-free attribution methods, challenging the notion that residual streams are inherently opaque [5].\n- **Physics-inspired inductive biases improve both performance and interpretability**: Building known invariances (e.g., scale-free dynamics in EEG) into transformer architectures via renormalization group principles yields more data-efficient and more interpretable models [3].\n- **Interpretability analysis can reveal structure invisible from performance metrics**: Routing attribution in mixture-of-experts models can expose systematic importance differences across data views, even when overall accuracy does not improve [7].\n- **Scientific discovery requires mechanistic world models, not just predictors**: The goal of AI for science should shift from predictive accuracy to learning reusable, causal explanatory mechanisms that constitute understanding [4].\n- **Intelligence as atomic compression provides a unified framework for interpretability**: Understanding a model means identifying its learned \"atomic units\" and their compositional grammar, linking compression to interpretability across cognitive and computational systems [6].\n- **Interpretability extends beyond model internals to system design**: As AI agents mediate human interactions, designing transparent, verifiable data representations (e.g., agent-ready websites) becomes a critical interpretability challenge [2].",
+    "papers": [
+      {
+        "title": "Repairing Shape-Prior Shortcuts in Long-Range Single-Shot Fringe Projection Profilometry",
+        "url": "",
+        "authors": [
+          "Adam Haroon",
+          "Cody Fleming",
+          "Beiwen Li"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Designing Agent-Ready Websites for AI Web Agents: A Framework for Machine Readability, Actionability, and Decision Reliability",
+        "url": "",
+        "authors": [
+          "Said Elnaffar",
+          "Farzad Rashidi"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Scale-Aware Attention for Scarce Neural Data: An RG-Flow Transformer on Sleep-EDF EEG",
+        "url": "",
+        "authors": [
+          "Dibakar Sigdel"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "From Observation to Insight: Mechanistic World Models and the Quest for Autonomous Discovery",
+        "url": "",
+        "authors": [
+          "Ingmar Posner",
+          "Anson Lei",
+          "Bernhard Schölkopf"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Sparse Inter-Layer Dependencies of Transformer FFN Neurons",
+        "url": "",
+        "authors": [
+          "Johannes Knittel",
+          "Hanspeter Pfister"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Atomic Units of X: The Compression Layer of Intelligence",
+        "url": "",
+        "authors": [
+          "Sachin Dev Duggal",
+          "Pradyumna Swarnalatha Ramanna",
+          "Alexandros Vassiliades"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Understanding Structured Health Data through Interaction-Aware Mixture-of-Experts",
+        "url": "",
+        "authors": [
+          "Ji Hwan Park",
+          "Ying Ding",
+          "Tianjin Guo"
+        ],
+        "date": "2026-07-15"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-15",
+    "paperCount": 1,
+    "markdown": "# Explainability and Compliance: Bridging Technical Transparency with Regulatory Frameworks\n\nThe research landscape today marks a critical inflection point where technical explainability research is increasingly being shaped by emerging regulatory demands, particularly the EU AI Act. Papers are moving beyond theoretical XAI methods toward domain-specific frameworks that operationalise transparency, traceability, and accountability in high-stakes deployment contexts.\n\n## Regulatory Standardisation and Domain-Specific Compliance\n\n**Paper [1]** addresses the urgent challenge of aligning algorithmic hiring systems with the EU AI Act's requirements for high-risk AI, including risk management, data governance, logging, and human oversight. The authors propose \"vertical standardisation\" — a domain-specific framework that translates high-level regulatory mandates into concrete, auditable technical and procedural specifications tailored to recruitment contexts. Their key contribution is a set of standardisation-oriented recommendations that bridge the gap between abstract legal requirements (e.g., transparency, traceability) and implementable engineering practices, including logging schemas for candidate rejection decisions and bias audit protocols. This work matters because, as the authors note, no European standards yet fully cover algorithmic hiring's unique challenges, making this a timely operational blueprint for compliance teams and AI auditors.\n\n## Key Takeaways\n- Regulatory pressure (especially the EU AI Act) is driving a shift from generic explainability research toward domain-specific, standardisation-ready frameworks.\n- \"Vertical standardisation\" for algorithmic hiring demonstrates how legal requirements for transparency and traceability can be translated into concrete technical specifications and audit protocols.\n- The lack of mature European standards for high-risk AI systems creates an urgent need for prescriptive, evidence-based compliance guidance.\n- Logging and traceability requirements demand explainability mechanisms that persist beyond model inference time, capturing data provenance and decision rationales.\n- Domain-specific approaches (like hiring) reveal that one-size-fits-all explainability solutions are insufficient for regulatory compliance.\n- Human oversight requirements intersect with explainability, necessitating interfaces that surface model limitations and confidence to operators.\n- Technical documentation in the form of auditable logging schemas represents a practical contribution that bridges XAI research with real-world deployment governance.",
+    "papers": [
+      {
+        "title": "Vertical Standardisation for High-Risk AI Systems under the EU AI Act: A Domain-Specific Framework for Algorithmic Hiring",
+        "url": "",
+        "authors": [
+          "Anna Gatzioura",
+          "Vrettos Moulos",
+          "Nina Baranowska"
+        ],
+        "date": "2026-07-15"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-15",
+    "paperCount": 7,
+    "markdown": "# Multimodal Intelligence at the Edge: Forgetting, Fusion, and Foundational Questions\n\nToday's research landscape reveals a community pushing multimodal AI toward practical deployment by addressing three critical bottlenecks: catastrophic forgetting in federated environments, architectural decompositions for efficient fusion, and fundamental scaling questions about model size versus task performance. The papers span from rigorous benchmark construction to theoretical analyses of confidence, collectively advancing both the methodological foundations and application-ready systems for multimodal reasoning.\n\n## Federated Fine-Tuning and Continual Learning for Multimodal LLMs\n\n**Paper [2] \"PFAdapter: Hierarchical LoRA Decomposition for Personalized Federated MLLMs\"** addresses the challenge of federated fine-tuning of Multimodal Large Language Models (MLLMs) across heterogeneous network edges, where uniform parameter aggregation conflates domain-invariant and domain-specific features. The authors propose PFAdapter, a hierarchical LoRA decomposition approach that separates global (shared across clients) and local (client-specific) low-rank adapters, enabling personalized model adaptation while retaining collaborative knowledge. This work matters because it provides a principled solution for deploying MLLMs in distributed, privacy-sensitive environments such as telecommunications networks, where both data heterogeneity and personalization are unavoidable.\n\n**Paper [3] \"Continual Learning with Elastic Regularization and Synthetic Replay for Federated MLLM Fine-Tuning\"** tackles catastrophic forgetting in federated MLLM fine-tuning, where sequential task updates erase previously acquired cross-modal knowledge—a critical issue for safety-sensitive domains like content moderation. The method combines elastic weight consolidation (EWC) regularization with synthetic data replay generated by the model itself, preventing knowledge loss across visual, linguistic, and cross-modal representations without requiring access to past training data. This contribution is significant because it directly addresses the fundamental obstacle preventing robust deployment of federated MLLMs in dynamic environments, where data streams evolve and prior knowledge must be reliably retained.\n\n## Architectural Innovations in Multimodal Fusion\n\n**Paper [4] \"Segregate, Refine, Integrate: Decomposing Multimodal Fusion for Sentiment Analysis\"** identifies a core tension in multimodal fusion: modality-specific refinement and cross-modal interaction are typically entangled within the same operation, producing suboptimal representations. The SeRIn framework enforces a clean architectural prior by segregating modality-specific pathways (each refined against its own encoder context) from a dedicated cross-modal pathway that accumulates joint evolution without contaminating unimodal streams. This decomposition is important because it provides a principled alternative to monolithic fusion approaches, demonstrating that disentangling these competing objectives yields more robust multimodal representations, particularly for sentiment analysis tasks.\n\n**Paper [5] \"Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?\"** questions the prevailing trend of scaling MLLMs for multimodal emotion recognition (MER), noting that models with 7B+ parameters incur high computational costs and hinder real-time deployment on resource-constrained platforms. Through systematic comparison of small (sub-1B) and large models, the authors show that carefully designed smaller models can achieve competitive or superior performance on MER tasks while offering significantly lower latency and energy consumption. This work matters because it challenges the \"bigger is better\" assumption in multimodal emotion recognition, providing evidence that task-specific architectural choices can outweigh raw parameter count, with direct implications for robotics and mobile deployment.\n\n## Benchmarks, Problem Generation, and Theoretical Foundations\n\n**Paper [1] \"LakeQuest: A Three-Domain Benchmark for Grounded Question Answering across Data Lakes\"** addresses the gap between existing QA benchmarks—which evaluate performance on clean, schema-aligned corpora—and real-world scenarios requiring navigation of heterogeneous, weakly structured data lakes comprising tables, passages, and linked metadata. The authors introduce a human-validated benchmark of 9,846 QA pairs spanning three domains, designed to evaluate the full end-to-end retrieve-and-synthesize pipeline over noisy, heterogeneous data. This contribution is significant because it provides the first systematic evaluation framework for grounded QA in realistic enterprise and scientific data environments, where the discovery and retrieval process is as challenging as reasoning.\n\n**Paper [6] \"FormalAnalyticGeo: A Neural-Symbolic Based Framework for Multimodal Analytic Geometry Problem Generation\"** tackles the scarcity of annotated samples in analytic geometry, a domain where existing diagram generation approaches fail due to the need for constraint-driven layouts and precise rendering of conic curves. The framework combines formal symbolic reasoning with neural components to automatically generate multimodal problems (diagrams + text) with guaranteed geometric correctness. This work matters because it enables scalable data augmentation for MLLM training in mathematical reasoning, addressing a critical bottleneck in a domain where annotated data is expensive to produce and geometric precision is non-negotiable.\n\n**Paper [7] \"The Computational Basis of Confidence in Large Language Models\"** investigates the fundamental nature of confidence signals in LLMs, moving beyond calibration metrics to ask whether answer logits reflect a latent decision variable sufficient for normative Bayesian confidence computation, or merely a heuristic preference signal. The authors employ statistical decision-theoretic methods to dissect the confidence signal, revealing systematic deviations from Bayesian optimality. This theoretical contribution is important because understanding the computational basis of confidence is essential for building trustworthy AI systems—if confidence signals are heuristic rather than normative, calibration methods alone cannot guarantee reliability.\n\n## Key Takeaways\n- Federated fine-tuning of MLLMs requires explicit architectural mechanisms (hierarchical LoRA decomposition, elastic regularization, synthetic replay) to balance global knowledge aggregation with local adaptation and to prevent catastrophic forgetting in dynamic, privacy-sensitive environments.\n- Decoupling modality-specific refinement from cross-modal interaction as an explicit architectural prior (SeRIn) yields more robust multimodal representations than entangled fusion, with direct applications in sentiment and emotion analysis.\n- Smaller (sub-1B parameter) multimodal models can match or exceed larger 7B+ models on emotion recognition tasks when properly designed, challenging the scaling dogma and enabling real-time deployment on resource-constrained platforms.\n- Real-world multimodal QA demands end-to-end evaluation over heterogeneous, noisy data lakes (tables, passages, metadata), as existing clean benchmarks abstract away the critical discovery and retrieval challenges.\n- Scalable generation of multimodal mathematical problems with guaranteed geometric precision is achievable through neural-symbolic frameworks (FormalAnalyticGeo), addressing a critical data scarcity bottleneck in analytic geometry reasoning.\n- The confidence signals in LLMs may reflect heuristic preference rather than normative Bayesian computation, raising fundamental questions about the reliability of calibration-based trustworthiness guarantees.",
+    "papers": [
+      {
+        "title": "LakeQuest: A Three-Domain Benchmark for Grounded Question Answering across Data Lakes",
+        "url": "",
+        "authors": [
+          "Michael Solodko",
+          "Steven Gong",
+          "Guangwei Yu",
+          "Satya Krishna Gorti",
+          "Jesse C. Cresswell",
+          "Victor Zhong"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "PFAdapter: Hierarchical LoRA Decomposition for Personalized Federated MLLMs",
+        "url": "",
+        "authors": [
+          "Jing Liu",
+          "Kun Yang",
+          "Yan Wang",
+          "Dingkang Yang",
+          "Xiaoshuai Hao",
+          "Wei Zhang",
+          "Yang Liu",
+          "Wei Zhou"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Continual Learning with Elastic Regularization and Synthetic Replay for Federated MLLM Fine-Tuning",
+        "url": "",
+        "authors": [
+          "Jing Liu",
+          "Chenxuanyin Zou",
+          "Jiayang Ren",
+          "Gaoyun Fang",
+          "Chengfang Li",
+          "Yan Wang",
+          "Zhenchao Ma",
+          "Bo Hu"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Segregate, Refine, Integrate: Decomposing Multimodal Fusion for Sentiment Analysis",
+        "url": "",
+        "authors": [
+          "Alexios Filippakopoulos",
+          "Elias Kallioras",
+          "Nikolaos Xiros",
+          "Efthymios Georgiou",
+          "Alexandros Potamianos"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "Do We Really Need Multimodal Emotion Language Models Larger Than 1B Parameters?",
+        "url": "",
+        "authors": [
+          "Kaiwen Zheng",
+          "Junchen Fu",
+          "Wenhao Deng",
+          "Hu Han",
+          "Joemon M. Jose",
+          "Xuri Ge"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "FormalAnalyticGeo: A Neural-Symbolic Based Framework for Multimodal Analytic Geometry Problem Generation",
+        "url": "",
+        "authors": [
+          "Ruoran Xu",
+          "Wending Gao",
+          "Qiufeng Wang"
+        ],
+        "date": "2026-07-15"
+      },
+      {
+        "title": "The Computational Basis of Confidence in Large Language Models",
+        "url": "",
+        "authors": [
+          "Dharshan Kumaran",
+          "Viorica Patraucean",
+          "Maks Ovsanikov",
+          "Petar Veličković",
+          "Nathaniel Daw"
+        ],
+        "date": "2026-07-15"
+      }
+    ]
+  }
+]
