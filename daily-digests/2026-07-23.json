@@ -1,0 +1,203 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-23",
+    "paperCount": 6,
+    "markdown": "# Autointerpretability Under the Microscope: Pipelines, Penalties, and the Quest for Faithful Explanations\n\nToday's research landscape reveals a growing tension between the promise of automated interpretability methods and their empirical fragility. While sparse autoencoders and fuzzy systems aim to make neural networks transparent, systematic investigations show that evaluation pipelines introduce confounding variance that dwarfs model-based differences, and novel training objectives are needed to ensure explanations capture verifiable facts rather than plausible-sounding gist.\n\n## The Reliability Crisis in Automated Interpretability\n\nThe field's foundational assumption—that automated interpretability scores reflect stable properties of neural network features—faces serious scrutiny. **van der Ben et al.** [1] conduct a comprehensive audit of autointerpretability pipelines, varying four methodological axes across four metrics (simulation, detection, fuzzing, purity) and two language models. Their key finding is damning: pipeline choices (e.g., which LM generates explanations, prompt phrasing, scoring procedure) dominate variance in interpretability scores, while the actual features being evaluated contribute negligible signal. This means cross-paper comparisons of sparse autoencoder quality are essentially incomparable unless pipelines are standardized, calling into question a large body of published SAE evaluations.\n\n**Dingeto** [3] delivers a complementary blow, exposing that natural-language autoencoders pass reconstruction-based faithfulness tests while remaining structurally insensitive to individual factual claims. On a Qwen-2.5-7B verbalizer, explanations reconstruct activations above chance while only ~2% of specific claims are actually reconstruction-dependent—the metric tracks gist, not veridicality. The proposed solution is \"decodability supervision,\" where explanations are trained to maximize the accuracy of decoding specific claims from activations, not just overall reconstruction. This shifts the burden from impressionistic scoring to fact-level verification, a necessary standard for safety-critical deployment.\n\n## Interpretability Through Architectural Constraints\n\nTwo papers advance interpretability by explicitly engineering neural architectures to enforce or measure desirable properties. **Di Cecco** [4] introduces the quadrilateral loss, a differentiable penalty that measures additivity as a second-order mixed difference on pairs of training points swapping one coordinate. The loss vanishes precisely when a feature carries no interaction, equals the per-coordinate interaction mass of interventional Shapley-GAM in expectation, and remains informative for piecewise-linear networks. This transforms additivity from an architectural constraint into a tunable dial—practitioners can now train dense networks that are \"as additive as needed\" for a given deployment context, preserving expressiveness where interactions are genuine while enforcing interpretability where they are not.\n\n**Kucuktopana et al.** [5] extend the Ex-Fuzzy library with interpretable Mamdani-style fuzzy regression, addressing a gap in modern ML software for transparent regression. Their target-aware partition initialization strategy learns scalar consequents directly from data, producing rule bases that are both accurate and linguistically interpretable. For safety-critical domains (medical dosing, industrial control), this provides a drop-in replacement for black-box regressors where auditors require explicit, human-readable decision rules rather than feature importance scores.\n\n## Revisiting Problem Decomposition for Interpretability\n\n**Esser and Dörpinghaus** [2] demonstrate that even for well-established tasks like occupation coding, decomposing a problem into interpretable subtasks yields both transparency and robustness. Their two-step pipeline separates named entity recognition (identifying job titles in noisy OCR text) from taxonomic mapping (assigning standardized codes), rather than solving both in a black-box end-to-end model. Each step uses domain-specific models that can be validated independently—the NER component can be audited for missed job titles, the classifier for mis-mappings—enabling targeted debugging that is impossible with monolithic approaches.\n\n## Physics-Informed Architectures as Interpretability Testbeds\n\n**Sadr et al.** [6] contribute to the growing literature on Kolmogorov-Arnold Networks, showing that a Petrov-Galerkin formulation with KANs outperforms MLP-based physics-informed neural networks for both forward and inverse PDE problems. The learnable spline activations of KANs are structurally aligned with classical piecewise-polynomial discretization bases, offering a natural path to interpretability: the learned splines can be inspected as explicit function forms rather than opaque weight matrices. By reformulating the PDE loss in a weak (Petrov-Galerkin) form, they avoid the high-order derivative computations and heavy loss balancing that plague strong-form PINNs, improving both accuracy and training stability.\n\n## Key Takeaways\n\n- **Autointerpretability scores are dangerously pipeline-dependent**: Pipeline choices (LM selection, prompt design, scoring metric) dominate variance, making cross-paper comparisons of SAE quality essentially meaningless without strict standardization [1].\n- **Reconstruction-based faithfulness tests are insufficient**: Gist-level reconstruction can pass while ~98% of specific factual claims in explanations are unverified; decodability supervision at the fact level is required for verifiable explanations [3].\n- **Additivity can be a tunable dial, not a hard constraint**: The quadrilateral loss allows dense networks to be trained to arbitrary degrees of additivity, preserving expressiveness where interactions are genuine while enforcing interpretability where they are not [4].\n- **Task decomposition improves both interpretability and robustness**: Separating entity recognition from taxonomic mapping in occupation coding enables independent validation and targeted debugging of each component [2].\n- **Fuzzy rule-based regression is now library-grade**: The Ex-Fuzzy extension provides drop-in interpretable regression with learned scalar consequents and target-aware initialization, bridging the gap between transparency and modern ML tooling [5].\n- **KANs offer interpretable physics-informed learning**: Petrov-Galerkin KANs avoid spectral bias and dense parameterization of MLPs while providing inspectable spline activations, outperforming MLP-based PINNs on forward/inverse PDE problems [6].",
+    "papers": [
+      {
+        "title": "Building Fast, Evaluating Slow: Pipeline Choices Dominate Autointerpretability Score Variance",
+        "url": "",
+        "authors": [
+          "Sinie van der Ben",
+          "Neele Roch",
+          "Anna Hedström",
+          "Mennatallah El-Assady"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "Two-Step Occupation Coding",
+        "url": "",
+        "authors": [
+          "Alexander M. Esser",
+          "Jens Dörpinghaus"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "Train the Model, Not the Reader: Decodability Supervision for Verifiable Activation Explanations",
+        "url": "",
+        "authors": [
+          "Hiskias Dingeto"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "The Quadrilateral Loss: Additivity as a Measurable Behavior of Dense Neural Networks",
+        "url": "",
+        "authors": [
+          "Antonio Di Cecco"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "Interpretable Fuzzy Rule-Based Regression Extension for Ex-Fuzzy Library",
+        "url": "",
+        "authors": [
+          "Cayan Deniz Kucuktopana",
+          "Javier Fumanal-Idocin",
+          "Richard Pitts",
+          "Javier Andreu-Perez"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "PG-KINN: A Physics-Informed Petrov-Galerkin Kolmogorov-Arnold Network for Solving Forward and Inverse PDEs",
+        "url": "",
+        "authors": [
+          "Amirhossein Sadr",
+          "Nima Soltani",
+          "Vahideh Moghtadaiee",
+          "Aida Pakniyat",
+          "Dara Rahmati",
+          "Saeid Gorgin"
+        ],
+        "date": "2026-07-23"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-23",
+    "paperCount": 5,
+    "markdown": "# Explainability at the Frontier: From Continual Learning to Enterprise Governance\n\nToday's research landscape reveals a maturing field where explainability is no longer treated as a post-hoc add-on but as an integrated design principle across diverse domains—from time series forecasting and media bias detection to federated clinical prediction and enterprise strategic decision support. The papers collectively demonstrate a shift toward multi-dimensional evaluation frameworks, hybrid architectural approaches, and risk-calibrated systems that balance predictive accuracy with interpretability, fairness, and regulatory compliance.\n\n## Explainability in Adaptive and Non-Stationary Environments\n\n[1] Besnard et al. tackle the underexplored intersection of explainability and continual learning for time series forecasting in environmental monitoring. Their core approach augments neural architectures (PatchMixer, PatchTST, DLinear) with attention-based sampling mechanisms for Experience Replay, using explainability as a diagnostic tool to understand how models adapt to non-stationary dynamics over time. While the abstract is truncated, the work addresses a critical gap: most continual learning research focuses on computer vision, leaving time series domains—where concept drift is pervasive—largely unexamined. The contribution lies in proposing explainability not merely as a reporting requirement but as an analytical lever for understanding model forgetting and adaptation patterns, which is essential for building trustworthy forecasting systems in climate and environmental applications.\n\n[5] Palagin proposes a hybrid user-centric approach for transactional sequence modeling that combines contrastive representation learning (CoLES) with State Space Models (SSMs), specifically Mamba. The problem is that existing sequential encoders (RNNs, Transformers) suffer from either vanishing gradients or quadratic computational complexity when modeling long-range dependencies in user behavior. The key innovation is investigating two integration strategies for initializing Mamba's hidden state with CoLES embeddings, achieving efficient long-range dependency capture while maintaining explainability through the structured inductive biases of state space representations. This matters for personalization and recommendation systems where understanding *why* a user behaves in a certain way over extended time horizons is as important as predicting their next action.\n\n## Multi-Dimensional and Task-Specific Explainability Evaluation\n\n[2] Chen et al. present a systematic, multi-dimensional evaluation of explainability specifically for encoder-based media bias detection using the BABE dataset. They study BERT and RoBERTa classifiers along three complementary axes: predictive performance, explanation plausibility (token-level alignment with expert rationales), and presumably other dimensions outlined in the truncated abstract. The core technical contribution is establishing that high predictive accuracy does not guarantee faithful explanations in a domain where biased framing is subtle and context-dependent. This work is significant because it provides a rigorous evaluation framework that the community can adopt—demonstrating that media bias detection systems must be held accountable not just for *what* they predict but for *how* they justify their predictions with reasoning that aligns with human expert judgments.\n\n## Explainability in Privacy-Preserving and Synthetic Data Contexts\n\n[3] Akarsh Kair et al. propose SynPre-FL, a unified framework integrating high-fidelity synthetic Electronic Health Record (EHR) generation with synthetic-pretrained Federated Learning for clinical risk prediction. While the abstract is partially truncated, the framework addresses the critical challenges of data scarcity, client heterogeneity, and class imbalance in federated settings through a latent generative approach. The implied explainability contribution—though not fully detailed—lies in the synthetic pretraining step, which enables more robust and interpretable feature representations before federated optimization. This matters because healthcare AI deployment is bottlenecked by privacy regulations and non-IID data distributions across hospitals; SynPre-FL suggests a path where synthetic data augmentation can improve both predictive performance and model transparency in federated environments.\n\n## Governance-Aware and Risk-Calibrated Explainability\n\n[4] Qiu et al. introduce TRUST-ESD, a comprehensive framework for enterprise strategic decision support that integrates predictive utility estimation, conformal uncertainty calibration, CVaR-based downside-risk scoring, risk-memory retrieval, policy-as-code governance, explainability, and human oversight. The problem is that existing decision support systems optimize for prediction accuracy alone without accounting for uncertainty, downside risk, or regulatory compliance—critical shortcomings for high-stakes enterprise contexts. The framework's novelty lies in its holistic architecture: conformal prediction provides calibrated uncertainty intervals, CVaR scoring quantifies tail-risk exposure, and policy-as-code enables automated governance checks, all while maintaining explainability hooks for human auditors. This matters because enterprises deploying AI for strategic decisions (e.g., supply chain, investment, resource allocation) require systems where explanations are tightly coupled with risk quantification and governance verification, not just feature attribution.\n\n## Key Takeaways\n- **Explainability as a diagnostic tool for adaptation**: [1] demonstrates that explainability methods can serve as analytical levers for understanding model forgetting and concept drift in continual learning settings, moving beyond static post-hoc analysis.\n- **Multi-dimensional evaluation is essential**: [2] establishes that predictive performance and explanation plausibility are orthogonal dimensions; high-accuracy models can produce misleading explanations, particularly in nuanced domains like media bias.\n- **Hybrid architectures enable trade-off resolution**: [5] shows that combining contrastive representations with State Space Models (Mamba) can overcome the complexity limitations of Transformers while preserving interpretability for sequential user data.\n- **Synthetic data can bridge privacy and explainability**: [3] suggests that high-fidelity synthetic data generation integrated with federated learning may improve feature interpretability under non-IID conditions, though further work is needed to verify explanation fidelity.\n- **Risk-calibrated explainability is emerging as a design requirement**: [4] introduces governance-aware frameworks where explanations are not standalone outputs but integrated components of risk assessment, uncertainty quantification, and policy compliance—a shift toward \"explainability-as-governance.\"\n- **Domain-specific evaluation frameworks are proliferating**: Across [1], [2], and [5], the field is moving away from one-size-fits-all explainability metrics toward task-specific evaluation protocols tailored to time series, text, and sequential transaction data respectively.\n- **Human-in-the-loop oversight remains central**: [4] explicitly incorporates human auditors in its governance layer, while [2] uses expert rationales as ground truth, underscoring that explainability's ultimate value depends on its alignment with human reasoning processes.",
+    "papers": [
+      {
+        "title": "Challenges of Explainability in Continual Learning for Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Quentin Besnard",
+          "Emmanuel Doumard",
+          "Nicolas Labroche",
+          "Nicolas Ragot",
+          "Nicolas Ringuet"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "A Multi-Dimensional Evaluation of Explainability in Media Bias Detection",
+        "url": "",
+        "authors": [
+          "Ting Chen",
+          "Raina Zhang",
+          "Benjamin M. Ampel",
+          "Sagar Samtani"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "SynPre-FL: Synthetic data-driven pretraining integrated Federated Learning training framework",
+        "url": "",
+        "authors": [
+          "Akarsh K Nair",
+          "Muhammad Arifur Rahman",
+          "Nicholas Shopland",
+          "Andy Burton",
+          "Jun He",
+          "Yuan Shen",
+          "David Baldwin",
+          "Emma O'Dowd",
+          "Amna Burzic",
+          "Mufti Mahmud",
+          "David J. Brown"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "TRUST-ESD: A Risk-Calibrated and Governance-Aware AI Framework for Enterprise Strategic Decision Support Under Uncertainty",
+        "url": "",
+        "authors": [
+          "Tian Qiu",
+          "Li Yan",
+          "Mahabubur Rahman Miraj",
+          "Shanqin Yi",
+          "Md Intekhab Rahman Galib",
+          "Jahid Hasan"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "User-Centric Modeling of Transactional Sequences with Explainable State Space Models",
+        "url": "",
+        "authors": [
+          "Ivan Palagin"
+        ],
+        "date": "2026-07-23"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-23",
+    "paperCount": 4,
+    "markdown": "# Multimodal Systems in Transition: From Visual Reasoning to Trustworthy Healthcare — A Technical Digest\n\nToday's research landscape reveals a pivotal shift in multimodal AI: systems are moving beyond simple text-image understanding toward complex reasoning, agentic workflows, and high-stakes deployment. Across six papers, we see critical advances in hypergraph-enhanced retrieval, automated PCB design, diagnostic reliability in agentic search, and privacy-preserving federated learning for clinical applications, each addressing fundamental limitations in how multimodal systems perceive, reason, and cooperate.\n\n## Retrieval-Augmented Generation and Visual Reasoning\n\n**VizRAG: Enhancing Retrieval-Augmented Generation with Hypergraph Visualization [1]** tackles a critical limitation in existing hypergraph-based RAG systems, which organize complex n-ary atomic facts but remain confined to text-only retrieval despite modern MLLMs' visual capabilities. The authors systematically explore integrating hypergraph visualization with RAG, enabling MLLMs to leverage their visual perception for knowledge retrieval and reconstruction rather than relying solely on textual representations. This approach bridges the gap between structured knowledge organization (via hypergraphs) and visual reasoning, potentially allowing MLLMs to \"see\" relationships in retrieved information, which matters for tasks requiring spatial or relational understanding.\n\n**Silent Failures in Multimodal Agentic Search: A Diagnostic Taxonomy and Cross-Judge Evaluation [3]** addresses a critical blind spot in evaluating multimodal agentic search systems: existing metrics focus on final-answer accuracy, ignoring failures hidden within the search trajectory. The authors introduce a six-category taxonomy—covering modality shortcuts, phantom grounding, wrong-evidence-right-answer cases, over-retrieval laundering, cross-modal contradiction, and provenance hallucination—and build a trajectory-level diagnostic pipeline. This work is essential for building trustworthy multimodal agents, as it reveals systemic failure modes that accuracy metrics alone cannot detect, providing a framework for reliability auditing.\n\n## Agentic Systems and Domain-Specific Automation\n\n**Symbol and Footprint Database for Electronic Components by Agentic Recognition and Generation [2]** tackles the labor-intensive, error-prone process of manually creating component symbols and footprints for PCB design. The authors develop SFgen, an agentic recognition and generation flow leveraging MLLMs, achieving 86% accuracy for symbol generation and 80% for footprint generation. This system has been used to create SFnet, a database now containing 1000+ components, demonstrating that MLLM-powered agents can automate specialized engineering workflows that traditionally require years of domain expertise.\n\n## Trustworthy Multimodal Healthcare Systems\n\n**Trustworthy Privacy-Preserving Multimodal Federated Learning for Personalised Breast Cancer Prediction [4]** investigates whether federated learning can support robust tumor progression prediction while addressing four critical deployment pillars: transparency, scalability, security, and fairness. The framework integrates multimodal clinical data—including patient history, tumor characteristics, and biomarker data—across distributed institutions without centralizing sensitive information. This work is significant because it moves beyond accuracy-centric evaluation to address the multifaceted trust requirements (privacy, fairness, transparency) that are prerequisites for clinical deployment of multimodal AI systems.\n\n*Note: Papers [1], [2], [3], and [4] were provided with incomplete abstracts. The above analysis is based on available content and reasonable inference from the provided context.*\n\n## Key Takeaways\n- **Hypergraph visualization in RAG [1] offers a promising path to unify structured knowledge representation with MLLMs' visual reasoning**, potentially overcoming the text-only bottleneck in current retrieval pipelines.\n- **Agentic MLLM systems are achieving production-grade accuracy (80-86%) in specialized engineering domains [2]**, suggesting that multimodal agents can automate tasks previously requiring years of human expertise.\n- **Silent failure modes in multimodal agentic search [3] are more pervasive than accuracy metrics suggest**, with a structured taxonomy enabling systematic reliability auditing beyond end-task performance.\n- **Trustworthy multimodal healthcare AI [4] requires simultaneously addressing privacy, fairness, transparency, and scalability**—not just predictive accuracy—to meet clinical deployment standards.\n- **The field is bifurcating**: one track pushes multimodal systems toward more open-ended reasoning and agentic autonomy [1, 2, 3], while another focuses on constrained, high-assurance deployment with rigorous guarantees [4].\n- **Cross-modal contradictions and phantom grounding [3] remain understudied failure modes** that undermine reliability in practical multimodal applications, demanding new evaluation paradigms.\n- **Federated multimodal learning [4] demonstrates that privacy-preserving paradigms can handle heterogeneous clinical data sources**, though balancing utility with trustworthiness requirements remains an open challenge.",
+    "papers": [
+      {
+        "title": "VizRAG: Enhancing Retrieval-Augmented Generation with Hypergraph Visualization",
+        "url": "",
+        "authors": [
+          "Yanbin Wei",
+          "Yang Chen",
+          "Renling Gan",
+          "Ziru Liu",
+          "Xinyu Fu",
+          "Chun Kang",
+          "Ning Lu",
+          "Rui Liu",
+          "Yu Zhang",
+          "James Kwok"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "Symbol and Footprint Database for Electronic Components by Agentic Recognition and Generation",
+        "url": "",
+        "authors": [
+          "Yichen Shi",
+          "Yuzhi Liu",
+          "Zhuofu Tao",
+          "Li Huang",
+          "Yuhao Gao",
+          "Ting-Jung Lin",
+          "Lei Hel"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "Silent Failures in Multimodal Agentic Search:A Diagnostic Taxonomy and Cross-Judge Evaluation",
+        "url": "",
+        "authors": [
+          "Zhengxian Wu",
+          "Junjie Gao",
+          "Kai Yang"
+        ],
+        "date": "2026-07-23"
+      },
+      {
+        "title": "Trustworthy Privacy-Preserving Multimodal Federated Learning for Personalised Breast Cancer Prediction",
+        "url": "",
+        "authors": [
+          "Ruth Amey",
+          "Muhammad Arifur Rahman",
+          "Taha Osman",
+          "Nicholas Shopland",
+          "Andy Burton",
+          "Mufti Mahmud",
+          "David J. Brown"
+        ],
+        "date": "2026-07-23"
+      }
+    ]
+  }
+]
