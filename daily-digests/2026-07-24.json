@@ -1,0 +1,392 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-24",
+    "paperCount": 10,
+    "markdown": "# Causal Inference, Feature Geometry, and the Limits of Interpretability: A Technical Digest\n\nToday's research landscape reveals a maturation of mechanistic interpretability, where sparse autoencoders face rigorous causal scrutiny and alternative architectures are proposed to make interpretability intrinsic rather than post-hoc. Simultaneously, interpretability techniques are extending into specialized domains—from atmospheric chemistry forecasting to cardiac diagnosis and emotion recognition—driving the need for grounded, domain-aware explanations.\n\n## Sparse Autoencoders Under the Microscope: Causality, Stability, and Geometry\n\n[1] **Are Single-Token SAE Features Causally Necessary?** Cho et al. probe whether SAE-discovered features correspond to causally necessary units by analyzing 3.9M single-token features across six models and three SAE families. Using zero-ablation across full layer depth, they find that single-token features cluster 4.7× tighter in decoder space and concentrate disproportionately in early layers (Layer 0 for GPT2-Small; L0-L4 for Gemma). Critically, ablating these features yields statistically significant effects only after Benjamini-Hochberg correction, challenging the assumption that individual SAE features are uniformly causally necessary and revealing that causal role is not stable across SAE families.\n\n[2] **Scaling Interpretable Transformers with Parity Bottleneck Layers.** Mack et al. tackle the superposition problem by proposing the ParityTransformer, a GPT-2-scale architecture where intermediate representations are inherently wide and sparse by design, eliminating the need for post-hoc SAE recovery. Their key innovation—a Deep Parity Bottleneck at each layer—achieves efficient over-complete representations without the prohibitive memory and compute costs of a per-layer sparse bottleneck. This work demonstrates that interpretability-by-construction at scale is feasible, offering an alternative path to understanding model internals without relying on proxy features.\n\n[3] **Attention Degradation and Function Token Anchoring.** Dangal and Shakya present six coordinated experiments across GPT-2, LLaMA-3.2-1B/3B, OPT-1.3B, and distilgpt2 to characterize mean cross-positional attention degradation. They discover a universal exponential-then-plateau pattern where degradation rate inversely correlates with layer depth, but with distinct layer-wise entropy signatures per architecture. Crucially, function token anchoring proves architecture-dependent—OPT-1.3B with absolute positional encoding shows distinct behavior—and the authors demonstrate that the commonly reported attention degradation is not a causal bottleneck for contextual retrieval, revealing fundamental limits of attention-based interventions for interpretability.\n\n[6] **Mechanistic Interpretability of Foundation Models for Atmospheric Chemistry.** Hu et al. present the first mechanistic interpretability study of a weather forecasting foundation model fine-tuned for air quality prediction. They investigate whether high forecast skill reflects learned physical mechanisms or statistical regularities in reanalysis training data, using activation patching and feature attribution methods. This work bridges the gap between high-stakes scientific applications and mechanistic interpretability, finding that fine-tuned FMs partially capture known chemical transport patterns but also exploit non-physical correlations, raising important questions about trust in foundation model forecasts for environmental policy.\n\n## Logic-Grounded and Domain-Specific Interpretability\n\n[4] **CEDAR: Causal Edge Discovery for Autoregressive Processes.** Fesanghary proposes a constraint-based method for lagged causal edge discovery in sparse autoregressive time series, using AR(1)-residualized U-centered distance correlation for candidate screening. The method applies two targeted conditional-independence tests per significant cross-variable lag, accepts at most one lag per ordered pair, and uses stable MCI pruning to remove indirect edges with optional deterministic C-nodes for nonstationarity. In sparse regimes, CEDAR offers a principled approach to causal discovery where interpretability is built into the structure discovery process itself.\n\n[8] **Guide-Grounded Multimodal LLMs for Explainable Cardiac Diagnosis.** Vuong et al. address the hallucination and limited interpretability of LLM-generated ECG reports by proposing a guide-grounded multimodal framework that explicitly anchors report generation in curated clinical knowledge. Their CNN + multimodal LLM architecture incorporates structured diagnostic criteria as grounding signals, producing explanations that are reproducible and clinically trustworthy. This work demonstrates that domain-specific guide grounding can substantially reduce hallucinations while maintaining diagnostic accuracy, a critical advance for clinical deployment of interpretable AI.\n\n[10] **Differentiable Logic Programming to Mitigate Reasoning Shortcuts in Neurosymbolic Systems.** Takemura and Inoue use matrix-based differentiable logic programming to address two harmful phenomena in NeSy systems: constraint satisfaction shortcuts and cognition shortcuts where biased data leads to semantically incorrect concept mappings. Their method provides an interpretable logical layer that can detect and prune reasoning shortcuts by enforcing consistency between neural outputs and logical constraints during training. This offers a principled way to ensure that interpretability via logical reasoning is genuinely faithful rather than superficial.\n\n## User-Centric and Socially-Grounded Interpretability\n\n[5] **PrefReward: Learning User Preference Matrix for Personalized Text Generation.** Wu et al. propose a preference-aware generative framework that explicitly models user styles through a structured preference matrix integrated into decoding as a reward signal, replacing implicit representation approaches. This structured matrix makes user-specific preferences interpretable and editable, addressing the long-context dependency problem inherent in implicit personalization. PrefReward demonstrates that interpretability can be a design goal for personalized AI systems, enabling both transparent user modeling and controllable generation.\n\n[7] **slang.gr: Large-Scale Crowdsourced Resource for Non-Standard Greek.** Papadakos et al. present the first large-scale computational study of a crowdsourced Greek slang lexicon, mapping noisy folksonomic tags to a structured multi-layer taxonomy capturing semantic categories and sociolinguistic metadata. While primarily a resource paper, the structured taxonomy enables interpretable analysis of dynamic, non-standard language phenomena that resist traditional computational modeling. This work highlights the importance of interpretable representations for studying cultural and social dimensions of language.\n\n[9] **Lightweight Temporal Convolutional Networks for Interpretable Emotion Recognition.** Arzate Cruz et al. evaluate lightweight TCNs against graph-based skeleton models for body-based emotion recognition, finding that TCN-Base remains within 1.58 accuracy points of the best graph model while offering substantially fewer parameters and lower latency. The TCN architecture provides inherently more interpretable temporal feature maps compared to graph convolutions, enabling real-time affective computing with transparency. This work shows that interpretability does not necessarily sacrifice performance when architectures are chosen thoughtfully for the task.\n\n## Key Takeaways\n- Single-token SAE features are not uniformly causally necessary across model depths or SAE families, challenging the assumption that SAE-discovered units are atomic causal components.\n- Interpretability-by-construction approaches like the ParityTransformer offer a viable alternative to post-hoc SAE recovery, suggesting that future models could be designed for interpretability from the ground up.\n- Attention degradation is a universal phenomenon but not a causal bottleneck for contextual retrieval, revealing fundamental limits on what attention-based interventions can achieve.\n- Domain-specific grounding (clinical knowledge, physical chemistry, logical constraints) substantially improves the trustworthiness of explanations compared to purely data-driven interpretability.\n- Lightweight, structured representation learning (preference matrices, temporal convolutions, taxonomy mapping) can achieve both interpretability and competitive performance, particularly in resource-constrained settings.\n- Differentiable logic programming provides a principled mechanism to detect and mitigate reasoning shortcuts in neurosymbolic systems, ensuring that logical interpretability is genuinely faithful.\n- Mechanistic interpretability is extending beyond language models into high-stakes scientific domains, where the distinction between learned physics and statistical artifacts has direct policy implications.",
+    "papers": [
+      {
+        "title": "Are Single-Token Sparse Autoencoder Features Causally Necessary? Layer-Depth and SAE-Family Effects",
+        "url": "",
+        "authors": [
+          "Seonglae Cho",
+          "Zekun Wu",
+          "Kleyton Da Costa",
+          "Rishi Kalra",
+          "Ilham Wicaksono",
+          "Adriano Koshiyama"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Scaling Interpretable Transformers with Parity Bottleneck Layers",
+        "url": "",
+        "authors": [
+          "Andrew Mack",
+          "Kraig Yuheng Tou",
+          "Mark Henry",
+          "Zhengxun Wu",
+          "Lauren Greenspan"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Attention Degradation, Function Token Anchoring, and the Limits of Attention-Based Intervention in Large Language Models",
+        "url": "",
+        "authors": [
+          "Sagar Dangal",
+          "Manoj Shakya"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "CEDAR: Causal Edge Discovery for Autoregressive Processes",
+        "url": "",
+        "authors": [
+          "Mohammad Fesanghary"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "PrefReward: Learning User Preference Matrix for Personalized Text Generation",
+        "url": "",
+        "authors": [
+          "Yue Wu",
+          "Chengbing Wang",
+          "Yimeng Bai",
+          "Xiaoyan Zhao",
+          "Yang Zhang",
+          "Fuli Feng"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Toward Mechanistic Interpretability of an AI Foundation Model Fine-Tuned for Atmospheric Chemistry",
+        "url": "",
+        "authors": [
+          "Jason Y. Hu",
+          "Ivan Higuera-Mendieta",
+          "Patrick Obin Sturm",
+          "Makoto M. Kelp"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "slang.gr as a Large-Scale Crowdsourced Resource for Non-Standard Greek",
+        "url": "",
+        "authors": [
+          "Panagiotis Papadakos",
+          "Katerina Papantoniou",
+          "Dimitris Plexousakis"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Enhancing Explainable Cardiac Diagnosis with Guide-Grounded Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Hai-Nam Duy Vuong",
+          "Duy-Anh Bui",
+          "Trong-Nghia Nguyen",
+          "Kim-Ngan Thi Nguyen",
+          "Trang Mai Xuan",
+          "Tien-Cuong Nguyen",
+          "Van-Dem Pham",
+          "Thien Van Luong"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Efficient and Interpretable Body-Based Emotion Recognition with Lightweight Temporal Convolutional Networks",
+        "url": "",
+        "authors": [
+          "Christian Arzate Cruz",
+          "Stefanos Gkikas",
+          "Houshyar Asadi"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Differentiable Logic Programming to Mitigate Reasoning Shortcuts in Neurosymbolic Systems",
+        "url": "",
+        "authors": [
+          "Akihiro Takemura",
+          "Katsumi Inoue"
+        ],
+        "date": "2026-07-24"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-24",
+    "paperCount": 2,
+    "markdown": "# Counterfactual Pathways and Multimodal Synthesis: Advances in Explainable AI for Biomedical Discovery\n\nToday's research landscape showcases two distinct but complementary approaches to AI explainability in biomedical domains: one focusing on post-hoc visual counterfactual explanations for clinical decision support, and the other on interpretable generative frameworks for integrating multimodal biomedical data. Both papers tackle the critical challenge of making deep learning models transparent and trustworthy for high-stakes medical applications.\n\n## Counterfactual Explanations for Clinical Image Analysis\n\n**Paper [1] - \"Counterfactual Explainability Framework With CycleGAN And Counterfactual-Classifier Alignment Score for Retinal Disease Classification\"** addresses the critical bottleneck of deep learning explainability in retinal disease diagnosis, where model decisions often fail to correspond to clinically meaningful retinal regions. The authors introduce CounterFundus, a novel framework leveraging CycleGAN to generate counterfactual examples—realistic images that show what a fundus image would look like if the model's classification changed. A key technical contribution is the Counterfactual-Classifier Alignment Score, which quantifies how well generated counterfactuals align with the classifier's decision boundary, ensuring explanations are both visually plausible and class-discriminative. This work matters because it directly targets clinical adoption barriers by producing explanations that clinicians can intuitively verify against known pathological regions in retinal images, potentially enabling earlier screening and reducing dependence on specialist-only assessment. The framework's ability to generate healthy-to-diseased and diseased-to-healthy transitions provides bidirectional interpretability that goes beyond standard saliency map approaches.\n\n## Interpretable Multimodal Generative Frameworks\n\n**Paper [2] - \"M$^3$-Gen: Interpretable Multimodal Generation of Gene Expression Profiles Using Clinical and Imaging Data\"** tackles the dual challenges of data scarcity and interpretability in integrating heterogeneous biomedical data types. The authors propose MultiModal Molecular Generation (M$^3$-Gen), a conditional Generative Adversarial Network that synthesizes gene expression profiles from histopathology images and clinical metadata, thereby circumventing the high costs and privacy concerns associated with acquiring real molecular data. The core technical innovation lies in learning a unified latent representation that captures cross-modal dependencies, enabling the generation of biologically plausible gene expression patterns conditioned on both imaging and clinical inputs. This framework is inherently interpretable because the generation process is conditioned on clinically observable features, allowing researchers to trace how specific pathological patterns in tissue images or patient metadata correspond to predicted molecular signatures. The work is significant for the AI/ML research community as it demonstrates how generative models can serve dual purposes—both augmenting scarce molecular data and providing a transparent bridge between macroscopic clinical observations and microscopic molecular profiles, thereby advancing comprehensive disease understanding in multimodal research.\n\n## Key Takeaways\n- Counterfactual explainability frameworks like CounterFundus represent a paradigm shift from passive attention-based explanations to active, interventional explanations that show \"what would need to change\" for a model's decision to flip.\n- The Counterfactual-Classifier Alignment Score introduces a principled evaluation metric for counterfactual quality that balances visual realism with discriminative fidelity, addressing a key gap in the explainability literature.\n- M$^3$-Gen demonstrates that generative models can serve as interpretable bridges between imaging, clinical, and molecular data modalities without requiring expensive gene expression profiling.\n- Both papers highlight that interpretability in medical AI requires domain-specific validation—explanations must align with clinical and biological knowledge, not just computational metrics.\n- Conditional GANs emerge as a versatile architecture for both creating counterfactual explanations (CycleGAN-based) and synthesizing missing modalities (conditional generation), showing the breadth of generative approaches for interpretability.\n- The integration of heterogeneous data types (imaging, clinical, molecular) through unified latent representations represents a growing trend toward holistic, interpretable biomedical AI systems.\n- These works collectively underscore that explainability is not merely a technical add-on but a fundamental design consideration that can enable responsible AI deployment in high-stakes clinical settings.",
+    "papers": [
+      {
+        "title": "Counterfactual Explainability Framework With CycleGAN And Counterfactual-Classifier Alignnment Score for Retinal Disease Classification",
+        "url": "",
+        "authors": [
+          "Kritanu Chattopadhyay",
+          "Sayanjit Singha Roy",
+          "Soumya Chatterjee"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "M$^3$-Gen: Interpretable Multimodal Generation of Gene Expression Profiles Using Clinical and Imaging Data",
+        "url": "",
+        "authors": [
+          "Francesca Pia Panaccione",
+          "Carlo Sgaravatti",
+          "Marco Venere"
+        ],
+        "date": "2026-07-24"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-24",
+    "paperCount": 19,
+    "markdown": "# Multimodal Systems in Transition: From Evaluation to Generation and Back Again\n\nToday's research landscape reveals a fundamental tension in multimodal AI: while foundation models and large language models continue to advance in capability, the research community is increasingly focused on two complementary challenges—rigorous evaluation of how these models behave in high-stakes domains, and novel architectures that can handle the complexity of real-world multimodal data. The papers span clinical medicine, drug design, emotion recognition, scientific discovery, and game AI, unified by a common thread of pushing beyond single-modality thinking toward systems that can reason, generate, and adapt across modalities with reliability and interpretability.\n\n## Clinical and Biomedical Multimodal Systems: Trust, Interpretability, and Safety\n\n[1] This paper presents the first rigorous study of how LLM watermarking schemes affect medical performance, benchmarking 5 watermarking approaches across 11 LLMs and 7 VLMs on clinical reasoning tasks spanning unimodal and multimodal settings. The authors find that existing watermarks—designed for general-purpose text—introduce small token-level perturbations that can cause significant semantic changes in medical contexts, where precision is critical. This work matters because it exposes a dangerous gap: watermarking for traceability, while necessary for clinical deployment, may inadvertently degrade diagnostic accuracy in ways current evaluation benchmarks fail to capture.\n\n[8] The authors propose a guide-grounded multimodal framework for ECG report generation that anchors explanations in curated clinical knowledge rather than relying solely on CNN+Grad-CAM+LLM pipelines. By explicitly grounding report generation in established diagnostic criteria, their approach reduces hallucination risk and improves interpretability compared to existing weakly-grounded methods. This is significant for clinical deployment, as it addresses the trustworthiness gap that currently prevents deep learning models from being adopted in cardiac assessment.\n\n[7] ACE introduces an adaptive confidence-weighted expansion mechanism for multi-omics multimodal fusion that dynamically assesses data quality and provides trustworthy confidence scores on predictions. The framework addresses a critical limitation of existing fusion approaches: poor performance under noisy or uninformative data streams, which has hindered clinical deployment in safety-critical settings. By enabling dynamic assessment of data quality rather than assuming all modalities are equally informative, ACE represents a practical step toward trustworthy multimodal medical AI.\n\n[16] M³-Gen presents a generative framework that produces gene expression profiles conditioned on histopathology images and clinical metadata, learning a unified latent representation across heterogeneous biomedical data types. This addresses the fundamental bottleneck that gene expression data is expensive to acquire and privacy-sensitive, limiting its use in multimodal research. The ability to generate molecular profiles from widely available clinical and imaging data could democratize access to multi-omics research and enable larger-scale AI-driven discovery.\n\n[17] This work develops a multimodal EEG foundation model combining a Mamba-based raw signal encoder with a ViT-style encoder for time-frequency data, pretrained for generalizable representation learning across epilepsy-related tasks. The approach addresses the fragmentation problem where EEG models are typically limited to specific datasets and tasks, lacking cross-dataset generalizability. A multimodal, self-supervised EEG backbone could enable more robust clinical applications by learning representations that transfer across recording setups and clinical contexts.\n\n## Emotion, Reasoning, and Agentic Multimodal Systems\n\n[3] SCoPE introduces shift-aware speaker-conditioned priors for emotion recognition in conversations, capturing the observation that emotions evolve smoothly over time in speaker-specific patterns rather than switching abruptly. The approach models emotional trajectories as continuous processes conditioned on speaker identity, addressing a limitation of frame-wise emotion classifiers that treat each utterance independently. This matters for conversational AI because realistic emotion understanding requires temporal coherence and personalization—two factors that existing methods largely ignore.\n\n[6] SiGMA tackles multimodal continual instruction tuning through sign-guided merging and adaptation, addressing negative interference where newly learned updates overwrite useful prior knowledge during inference. The framework uses two components: sign-based gradient masking to preserve important directions from previous tasks, and adaptive merging to balance old and new knowledge. This is important because multimodal LLMs must continuously adapt to new tasks without catastrophic forgetting, yet prior approaches using Mixture of Experts or expansion merge still suffer from performance degradation.\n\n[14] EmoAgent-R1 leverages reinforcement learning-based dynamic agent specialization for multimodal emotion understanding, moving beyond fixed prompts that fail to capture the dynamic and complex nature of emotional sources in video inputs. By optimizing agent specialization through RL, the framework can adaptively focus on different emotional cues as they emerge over time. This addresses a key limitation of existing MLLM-based emotion recognition: the assumption that a single prompt or representation suffices for temporally evolving emotional content.\n\n[18] OpenForgeRL introduces an open-source framework for training harness-native agents end-to-end across diverse environments, solving the problem that complex inference harnesses (Claude Code, Codex) are powerful but difficult to train with standard SFT/RL stacks. The framework achieves this through a lightweight proxy that serves model calls while recording interactions, enabling gradient-based training of stateful, multi-process agent behaviors. This is significant for agent research as it bridges the gap between sophisticated inference-time harnesses and end-to-end trainable systems.\n\n[9] MemTools proposes a unified research framework for interoperable agent memory that decouples memory system components from deployment environments through declarative data contracts. The framework standardizes the memory lifecycle—encoding, storage, retrieval, and forgetting—enabling interchangeable memory modules across different agent architectures. This addresses pervasive architectural fragmentation that has hindered systematic research into agent memory, providing infrastructure for more rigorous comparisons and reusable components.\n\n## Retrieval, Generation, and Scientific Foundation Models\n\n[2] Multimodal CoLRAG-TF presents a four-axis fusion architecture for retrieval-augmented generation over complex PDFs, integrating dense text embeddings, BM25 keyword matching, knowledge-graph triple filtering, and image-based similarity. The system constructs a multimodal index from disaster lesson PDFs using hybrid OCR and LLM-based processing, enabling multi-hop reasoning across dispersed evidence in heterogeneous documents. This is important for domain-specific RAG applications where documents contain charts, diagrams, and domain terminology that pure text retrieval fails to capture.\n\n[5] Monkey King Bang (MKB) introduces a unified scientific multimodal foundation model built around a shared Transformer capable of both understanding and generation across diverse scientific inputs. Unlike existing systems that unify scientific data primarily through text tokenization and prompt-based interfaces, MKB produces modality-native outputs and supports joint reasoning across text, images, and scientific diagrams. This represents a step toward AI for science that can work across isolated disciplines, handling the multimodal nature of scientific communication natively rather than through lossy text-centric conversion.\n\n[4] This review positions geometric deep learning as an integrative approach for polypharmacology and multi-target drug design, moving beyond the \"one drug, one target\" paradigm that fails for multifactorial diseases. The authors argue that GDL can simultaneously satisfy geometric constraints imposed by multiple protein targets, addressing a computational bottleneck in rational design of multi-target ligands. This matters because drug resistance in cancer and neurodegenerative diseases often arises from compensatory pathways that single-target drugs cannot overcome.\n\n[10] This paper proposes a multi-axis evaluation framework for structured audio captions that assesses outputs across five orthogonal axes: tag-sets, descriptions, and other structured properties. Existing caption metrics focus on flat textual outputs and fail to reliably assess multimodal attributes in structured audio descriptions like AudioCards. A dedicated evaluation framework is essential as the field shifts from monolithic sentence generation toward structured formats that explicitly disentangle acoustic and semantic properties.\n\n## Training, Compression, and Specialized Multimodal Architectures\n\n[11] OPOD (On-Policy Omni Distillation) addresses the challenge of improving all modality capabilities simultaneously in omni-modal models through on-policy distillation from multiple specialized teachers. The key insight is that the student learns directly from behaviors it actually produces, and the framework manages competing guidance from multiple teachers to avoid improving one modality at the expense of another. This matters because training a single model on pooled multimodal data typically fails to match specialists, yet deploying separate models per modality is impractical.\n\n[13] This review examines the interactions between compression, MoE routing, and quantization in multimodal edge intelligence, arguing these techniques cannot be treated independently. The paper covers visual token compression, video token management, KV-cache optimization, MoE routing, low-bit quantization, and hardware-aware benchmarking, emphasizing that joint optimization is required under latency, memory, and energy constraints. This is practically important as multimodal models move to edge devices where computational budgets are severely constrained.\n\n[15] This work studies multi-task learning for heterogeneous prediction from video game state data, adapting a multimodal architecture that combines rasterized vision inputs, global match context, and per-unit state information. The authors investigate whether shared models trained jointly across related tasks in team-based multiplayer games can improve generalization while reducing training and inference cost. This matters for game AI and simulation more broadly, as game telemetry naturally provides multiple supervision signals from the same structured observations.\n\n[12] MedGame transforms static clinical cases into structured, executable storytelling games for medical education using a dual-engine design: a Medical Narrative Designer synthesizes case-grounded storylines, while a Story Director converts them into dependency-aware multimodal interactions. Unlike existing LLM-based medical education systems focused on question answering or single-turn feedback, MedGame organizes entire clinical cases into decision-centered learning trajectories. This represents a novel application of multimodal LLMs to create engaging, structured educational experiences that go beyond simple Q&A.\n\n## Key Takeaways\n- Clinical and biomedical multimodal systems face a critical trust gap: watermarking can degrade diagnostic accuracy [1], interpretability methods often lack grounding in domain knowledge [8], and fusion approaches break under noisy data [7]—all of which must be addressed before deployment.\n- Emotion recognition and conversational AI are moving beyond frame-wise classification toward temporally coherent, speaker-specific models that capture the smooth evolution of emotions rather than treating each utterance independently [3, 14].\n- Agent memory and training infrastructure are being standardized through frameworks like MemTools [9] and OpenForgeRL [18], addressing fragmentation that has hindered systematic research and end-to-end training of complex agent behaviors.\n- Scientific and domain-specific applications demand natively multimodal approaches: geometric deep learning for drug design [4], unified scientific foundation models [5], and multi-axis retrieval for complex documents [2] all require moving beyond text-centric unification.\n- Self-supervised and generative approaches are enabling new capabilities in data-scarce domains, including EEG foundation models [17] and gene expression generation from clinical data [16], promising to democratize access to expensive or sensitive data modalities.\n- The interaction between compression, routing, and quantization cannot be treated independently for edge deployment [13], while on-policy distillation offers a principled way to combine specialist models without modality competition [11].\n- Evaluation remains a persistent challenge across multimodal domains, from audio captioning metrics [10] to watermark assessment in medicine [1], suggesting that the field's progress depends as much on better evaluation frameworks as on novel architectures.",
+    "papers": [
+      {
+        "title": "Marking the Wrong Symptoms: Evaluating LLM Watermarks in Medical Texts",
+        "url": "",
+        "authors": [
+          "Melanie Rieff",
+          "Robin Staab",
+          "Thibaud Gloaguen",
+          "Stefan Hegselmann",
+          "Martin Vechev"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Multimodal CoLRAG-TF: Triple-Filtered Retrieval for Complex PDFs",
+        "url": "",
+        "authors": [
+          "Takato Yasuno"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "SCoPE: Shift-Aware Speaker-Conditioned Priors for Emotion Recognition in Conversations",
+        "url": "",
+        "authors": [
+          "Burak Can Kaplan",
+          "Stefan Wermter"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Beyond SBDD: Geometric Deep Learning in Polypharmacology and Multi-target Drug Design",
+        "url": "",
+        "authors": [
+          "Tianming Han",
+          "Zhijie Pan",
+          "Wenchi Ge",
+          "Qi Zhao"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Monkey King Bang: A Unified Scientific Multimodal Foundation Model",
+        "url": "",
+        "authors": [
+          "Hesen Chen",
+          "Xinyu Su",
+          "Xiaomeng Yang",
+          "Yuetan Lin",
+          "Zixiong Yang",
+          "Junyi An",
+          "Fenglei Cao",
+          "Yifeng Jiao",
+          "Yunqi Zhang",
+          "Yuan Cheng",
+          "Zhiyu Tan",
+          "Hao Li",
+          "Libo Wu",
+          "Yuan Qi"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "SiGMA: Sign-Guided Merging and Adaptation for Multimodal Continual Instruction Tuning",
+        "url": "",
+        "authors": [
+          "Keonhee Park",
+          "Gunhee Kim"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Adaptive Confidence-weighted Expansion for Trustworthy Multi-Omics Multimodal Fusion",
+        "url": "",
+        "authors": [
+          "Mohammad Raahemi",
+          "Ali Sekhavati",
+          "Alireza Maleki",
+          "Hamid Nasiri"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Enhancing Explainable Cardiac Diagnosis with Guide-Grounded Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Hai-Nam Duy Vuong",
+          "Duy-Anh Bui",
+          "Trong-Nghia Nguyen",
+          "Kim-Ngan Thi Nguyen",
+          "Trang Mai Xuan",
+          "Tien-Cuong Nguyen",
+          "Van-Dem Pham",
+          "Thien Van Luong"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "MemTools: A Unified Research Framework for Interoperable Agent Memory",
+        "url": "",
+        "authors": [
+          "Chengfeng Zhao",
+          "Jinhui Chen",
+          "Sirui Liang",
+          "Shizhu He",
+          "Yequan Wang",
+          "Jun Zhao",
+          "Kang Liu"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "An Evaluation Framework for Structured Audio Captions Validated by Controlled Perturbations",
+        "url": "",
+        "authors": [
+          "Liang-Yuan Wu",
+          "Sripathi Sridhar",
+          "Mark Cartwright",
+          "Magdalena Fuentes"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "OPOD: On-Policy Omni Distillation",
+        "url": "",
+        "authors": [
+          "Tong Zhao",
+          "Yuyang Hu",
+          "Reed Li",
+          "Yu Lu",
+          "Haibo Shi",
+          "Yutao Zhu",
+          "Zhicheng Dou"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "MedGame: Storytelling Gamification Empowered by Large Language Models for Medical Education",
+        "url": "",
+        "authors": [
+          "Qian Wu",
+          "Xinrong Zhou",
+          "Zizhan Ma",
+          "Kai Chen",
+          "Zheyao Gao",
+          "Xun Lin",
+          "Hongqiu Wu",
+          "Longfei Gou",
+          "Yixiao Liu",
+          "Ann Sin Nga Lau",
+          "Qi Dou"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Beyond Independent Optimization: Compression, MoE Routing, and Quantization Interactions in Multimodal Edge Intelligence",
+        "url": "",
+        "authors": [
+          "Jay Gor",
+          "Karm Dave",
+          "Akshita Abrol",
+          "Rajesh Gupta",
+          "Sudeep Tanwar",
+          "Zhengkui Wang"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "EmoAgent-R1: Towards Multimodal Emotion Understanding with Reinforcement Learning-based Dynamic Agent Specialization",
+        "url": "",
+        "authors": [
+          "Lihuang Fang",
+          "Yuchen Zou",
+          "kebin Jin",
+          "Jinghui Qin"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Multi-Task Learning for Heterogeneous Prediction from Video Game State with Transfer Learning",
+        "url": "",
+        "authors": [
+          "Jonas Peché",
+          "Aliaksei Tsishurou",
+          "Alexander Zap",
+          "Günter Wallner"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "M$^3$-Gen: Interpretable Multimodal Generation of Gene Expression Profiles Using Clinical and Imaging Data",
+        "url": "",
+        "authors": [
+          "Francesca Pia Panaccione",
+          "Carlo Sgaravatti",
+          "Marco Venere"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "Multimodal Pretraining for Generalizable EEG Representation Learning",
+        "url": "",
+        "authors": [
+          "Targol Bakhtiarvand",
+          "Jugal Kalita",
+          "Adham Atyabi"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "OpenForgeRL: Train Harness-native Agents in Any Environment",
+        "url": "",
+        "authors": [
+          "Xiao Yu",
+          "Baolin Peng",
+          "Ruize Xu",
+          "Hao Zou",
+          "Qianhui Wu",
+          "Hao Cheng",
+          "Wenlin Yao",
+          "Nikhil Singh",
+          "Zhou Yu",
+          "Jianfeng Gao"
+        ],
+        "date": "2026-07-24"
+      },
+      {
+        "title": "MIRROR: Learning from the Other View for Multi-Modal Reasoning",
+        "url": "",
+        "authors": [
+          "Wen Ye",
+          "Yuxiao Qu",
+          "Aviral Kumar",
+          "Xuezhe Ma"
+        ],
+        "date": "2026-07-24"
+      }
+    ]
+  }
+]
