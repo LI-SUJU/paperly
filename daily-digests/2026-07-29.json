@@ -1,0 +1,350 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-29",
+    "paperCount": 6,
+    "markdown": "# Phase Structures, Sparse Concepts, and Functional Geometry: Advances in Interpretability Research\n\nToday's interpretability landscape spans three complementary frontiers: mechanistic analysis of internal representations in transformers, novel frameworks for measuring functional similarity between models, and practical tools for making neural predictions explainable. The papers reviewed here demonstrate a maturation of the field, moving from isolated neuron-level analyses toward integrated spectral, geometric, and emergent-latent perspectives on model behavior.\n\n## Cracking Open the Black Box: Mechanistic Interpretability of Internal Representations\n\n**Paper [2]** addresses the challenge of determining whether learned decision-making agents contain interpretable internal concepts that explain their behavior. The authors train a tokenized autoregressive Transformer on the Game of Hidden Rules (GOHR), a compact two-rule task where object shapes map to target buckets under different permutations. By applying sparse autoencoders to the model's hidden states, they extract monosemantic features that reliably activate for specific rule-relevant concepts, demonstrating that the agent's internal representations encode the hidden rules in a disentangled manner. This work is significant because it extends the sparse autoencoder toolkit—so far primarily applied to language models—to reinforcement learning agents, offering a path toward verifying that goal-directed systems build interpretable world models.\n\n**Paper [3]** proposes a bounded spectral framework for analyzing rotary phase alignment, hidden-state continuity, and semantic drift in Transformer language models. The author identifies ordered hidden-state sequences as valid domains for spectral decomposition, then derives the Rotary Position Embedding (RoPE) attention score as a sum of magnitude-weighted phase terms. Key contributions include demonstrating that RoPE introduces explicit phase structure into query-key interactions, enabling detection of semantic boundaries where phase alignment discontinuities occur, and showing that these phase discontinuities correspond to execution boundaries in generated text. This matters because it provides a principled, mathematically grounded alternative to heuristic attention visualization, potentially allowing researchers to predict where models will lose coherence or change topics without treating language models as \"literal physical wave systems.\"\n\n**Paper [4]** investigates how sequence models internally represent latent stochastic dynamics under noisy, partially observed observations—a significant departure from the field's focus on deterministic language model tasks. The authors study multivariate stochastic volatility settings where models observe only returns while the ground-truth latent volatility state is known to the researcher. Through controlled experiments, they find that trained models develop emergent internal representations that encode the latent volatility structure, with linear probes successfully decoding the hidden state from model activations. This work bridges mechanistic interpretability and probabilistic modeling, establishing a benchmark for understanding how neural networks perform inference under partial observability—a capability crucial for safe deployment in finance, control systems, and scientific modeling.\n\n## Beyond Distribution-Matching: Frameworks for Functional and Structural Similarity\n\n**Paper [5]** proposes Rashomon Alignment (RA), a geometric measure of functional similarity between two models that estimates decision boundary alignment across the entire data space rather than only on observed data points. Unlike existing distributional measures that quantify output differences on real-world samples, RA computes the fraction of agreement between two classifiers over the full continuous input space, using uniform random sampling or structured exploration of decision boundaries. The authors demonstrate that two models with identical test-set accuracy can exhibit drastically different RA scores, revealing hidden functional divergence. This is a critical advance for model comparison, ensemble construction, and model auditing, as it provides a data-distribution-independent view of whether two models truly \"think alike\" beyond their performance on available data.\n\n**Paper [6]** directly questions a prevalent assumption in neural network analysis: that high-weight neurons are the most important ones for model performance. The authors propose a systematic three-pronged assessment: quantifying overlap between high-weight and accuracy-impacting neurons via ablation studies, analyzing perturbation effects on high-weight neurons, and testing post-retraining accuracy after high-weight neuron ablation. Experiments on CIFAR-10 and Mini-ImageNet reveal that overlap between top 10% high-weight neurons and those most critical for accuracy is surprisingly low—often below 30%—and that removing high-weight neurons causes less performance degradation than removing neurons selected by importance metrics. This finding has profound implications for pruning, backdoor defense, and interpretability workflows that rely on weight magnitude as a proxy for importance, suggesting researchers must look beyond raw weights to identify truly influential units.\n\n## LLM-Empowered Interpretable Column Annotation\n\n**Paper [1]** addresses the limitations of neural column annotation (CA) methods—which sacrifice interpretability by directly mapping column representations to label categories—by proposing SymCA, an LLM-empowered framework that materializes column annotation as a global-to-local decision process. The approach decomposes column type annotation (CTA) and column property annotation (CPA) into an interpretable, symbolically grounded pipeline where an LLM generates explicit reasoning steps: first identifying candidate label sets globally, then refining through local column context, and finally materializing the decision path as human-readable symbols. SymCA achieves state-of-the-art accuracy on standard CA benchmarks while providing full transparency into how each annotation decision was reached. This matters because column annotation is a critical data preparation step for enterprise AI pipelines, and interpretability here directly enables trust, debugging, and compliance in automated data cataloging systems.\n\n## Key Takeaways\n- Sparse autoencoders successfully extract monosemantic, interpretable features from Transformer-based reinforcement learning agents, demonstrating that the mechanistic interpretability toolkit generalizes beyond language models to goal-directed decision-making systems.\n- Rotary position embeddings introduce measurable phase structure in hidden states, enabling spectral detection of semantic boundaries and topic transitions without resorting to physical analogies or heuristic attention analysis.\n- Sequence models trained on partially observable stochastic processes develop emergent latent-state representations that can be decoded via linear probes, establishing a new benchmark for mechanistic interpretability under uncertainty.\n- Rashomon Alignment provides a geometric, distribution-free measure of functional similarity that reveals hidden divergence between models with identical test accuracy, enabling more rigorous model auditing and comparison.\n- The assumption that high-weight neurons are the most important for neural network performance is empirically false: overlap between weight magnitude and functional importance can be below 30%, challenging pruning and interpretability practices that rely on weight-based heuristics.\n- LLM-symbolized decision processes can make column annotation—a crucial but opaque data preparation task—fully interpretable without sacrificing accuracy, demonstrating a practical path toward explainable AI in enterprise data systems.\n- Collectively, these papers signal a shift from merely identifying \"important\" units toward understanding the geometric, spectral, and latent structures that govern model behavior, with implications for safety, debugging, and deployment.",
+    "papers": [
+      {
+        "title": "Interpretable Column Annotation with LLM-Symbolized Decision Process Materialization",
+        "url": "",
+        "authors": [
+          "Mengqi Wang",
+          "Jianwei Wang",
+          "Qing Liu",
+          "Xiwei Xu",
+          "Zhenchang Xing",
+          "Michael Bain",
+          "Liming Zhu",
+          "Wenjie Zhang"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Interpretable GOHR Agents via Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Shiwei Tan",
+          "Yusong Zhao",
+          "Weiyi Qin",
+          "Wentian Wang",
+          "Jacob Feldman",
+          "Lazaros K. Gallos",
+          "Paul B. Kantor",
+          "Vladimir Menkov",
+          "Hao Wang"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Phase Structure in Rotary Attention: A Spectral Framework for Semantic Continuity and Execution-Boundary Governance",
+        "url": "",
+        "authors": [
+          "Abraham Chachamovits"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Emergent Latent-State Computation under Stochastic Volatility",
+        "url": "",
+        "authors": [
+          "Xiaoyu Huang",
+          "Lulu Wang"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Rashomon Alignment",
+        "url": "",
+        "authors": [
+          "Moisés Santos",
+          "Peter van der Putten",
+          "Bernhard Pfahringer",
+          "Carlos Soares"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Are the High-weight Neurons the Important Ones in Image Classification Neural Networks?",
+        "url": "",
+        "authors": [
+          "Qitao Chen",
+          "Dongfu Yin",
+          "F. Richard Yu"
+        ],
+        "date": "2026-07-29"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-29",
+    "paperCount": 3,
+    "markdown": "# Explainability Frontiers: From Behavioral Systems to Pedagogical Audits\n\nToday's research landscape in explainability spans three critical frontiers: embedding explainability into system development lifecycles, auditing the quality of explanations themselves in high-stakes domains like education, and trading off optimality for comprehensibility in autonomous decision-making systems. These papers collectively address the growing tension between system complexity and human understanding, each proposing concrete technical approaches to make AI systems more transparent and trustworthy.\n\n## Behavioral and Development-Centric Explainability\n\n**Paper [1]** introduces \"Behavior-Driven Explainability,\" a framework that leverages Behavior-Driven Development (BDD) principles to embed explainability into the entire system development lifecycle. The core approach maps system behaviors across different development stages (design, testing, maintenance) to natural-language scenarios that stakeholders can understand and verify. The key contribution is a systematic methodology for generating human-readable behavioral specifications that serve as built-in explanations for safety-critical systems. This matters because it addresses the fundamental challenge of trust in complex systems by making explainability a first-class citizen from the earliest design phases, rather than an afterthought applied to black-box models.\n\n**Paper [3]** presents **dtControl2+ε**, which extends the state-of-the-art decision tree controller representation tool by introducing controlled approximation for Markov decision processes (MDPs). The technical innovation allows users to specify an epsilon tolerance—sacrificing a small, bounded amount of optimality to dramatically simplify decision trees to human-comprehensible sizes. The key result demonstrates that even in large systems with many corner cases, one can achieve significant tree reduction while providing formal guarantees about the maximum performance degradation within ε-bounds. This matters because it provides a practical bridge between formally verified optimal controllers and the cognitive limitations of human operators who need to understand and trust autonomous system behavior.\n\n## Pedagogical and Auditing-Focused Explainability\n\n**Paper [2]** introduces AIriskEval-edu Demo, a comprehensive platform for auditing the pedagogical quality of instructional explanations generated by large language models. The technical approach evaluates explanations against a five-dimension rubric—factual accuracy, depth and completeness, focus and relevance, student-level appropriateness, and ideological bias—returning binary decisions with confidence scores, natural-language rationales, and localized evidence spans for most dimensions. The platform integrates with GPT-5.5 (likely a future iteration or a specific model version) to provide scalable auditing capabilities. This matters because as AI-generated educational content becomes ubiquitous, we need standardized, explainable auditing tools that can identify pedagogical risks—from factual errors to inappropriate complexity levels—with transparent reasoning that educators can verify and act upon.\n\n## Key Takeaways\n\n- **Lifecycle integration of explainability** is emerging as a critical paradigm, with BDD-inspired approaches demonstrating that explanations can be systematically generated from behavioral specifications rather than retrofitting onto existing systems.\n- **Controlled optimality trade-offs** provide a mathematically rigorous path to human-comprehensible AI controllers, with epsilon-bounded approximations enabling formal guarantees while dramatically reducing cognitive load for operators.\n- **Explainability itself requires auditing**—the quality, appropriateness, and potential biases of explanations must be evaluated through structured rubrics and transparent scoring systems.\n- **Domain-specific explainability frameworks** are necessary; pedagogical explanations have fundamentally different quality dimensions than safety-critical system explanations, requiring tailored evaluation criteria.\n- **Natural-language rationales with localized evidence spans** represent a gold standard for explainable AI auditing, combining interpretable justification with precise attribution.\n- **The scalability of explanation complexity** remains a central challenge, as even decision tree representations of large systems can become incomprehensible without principled simplification techniques.\n- **Formal guarantees remain compatible with explainability** when appropriate trade-off mechanisms (like epsilon-bounded approximation) are built into the tooling from the start.",
+    "papers": [
+      {
+        "title": "Behavior-Driven Explainability",
+        "url": "",
+        "authors": [
+          "Caroline Dominik",
+          "Rolf Drechsler"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "AIriskEval-edu Demo: Auditing of Pedagogical Risks in Educational Explanations",
+        "url": "",
+        "authors": [
+          "Javier Irigoyen",
+          "Roberto Daza",
+          "Francisco Jurado",
+          "Julian Fierrez",
+          "Ruben Tolosana",
+          "Alvaro Ortigosa",
+          "Miguel Lopez-Duran",
+          "Aythami Morales"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "dtControl2+$\\varepsilon$: Trading Optimality for Explainability in MDPs via Decision Trees",
+        "url": "",
+        "authors": [
+          "Tereza Kinská",
+          "Jan Křetínský",
+          "Tobias Meggendorfer",
+          "Sabine Rieder",
+          "Maximilian Weininger"
+        ],
+        "date": "2026-07-29"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-29",
+    "paperCount": 16,
+    "markdown": "# Multimodal Frontiers: From Clinical Reasoning to Financial Forecasting – A Technical Digest of July 29, 2026\n\nToday's research landscape reveals two dominant tensions in multimodal AI: the push toward **reliable uncertainty quantification** in high-stakes domains (finance, healthcare) and the parallel struggle against **hallucinations and computational inefficiency** in vision-language systems. A third emerging theme—**on-device, privacy-preserving multimodal agents**—signals a maturation of the field beyond cloud-dependent architectures.\n\n## Clinical and Diagnostic Multimodal Reasoning\n\n[2] **MyoCardBench** addresses the critical gap between LLM benchmarks and real-world cardiovascular care by constructing 2,263 items across 13 task-specific datasets derived from de-identified clinical records, annotated by 16 cardiologists. The benchmark spans the full care continuum—from diagnosis through treatment planning—and evaluates models on longitudinal, multimodal clinical reasoning rather than isolated knowledge recall. This work matters because it provides the first standardized, clinically authentic evaluation framework that captures the safety-critical, multi-step nature of cardiovascular decision-making, potentially reshaping how medical LLMs are validated before deployment.\n\n[10] **ClinMM-Bench** tackles the unrealistic nature of single-turn diagnostic evaluations by introducing the largest multi-turn multimodal clinical benchmark, where models must progressively integrate imaging, lab results, and patient history while dynamically updating differential diagnoses. The framework mirrors real clinical practice by requiring continuous refinement of hypotheses as new multimodal information is disclosed across conversation turns. This contribution is vital for advancing MLLMs toward clinically deployable diagnostic assistants that can reason iteratively, rather than producing static answers from complete information.\n\n[12] **ClinPRISM** addresses the underexplored problem of question answering over irregular clinical time series (ICTS), where observations are sparse, asynchronous, and unevenly sampled—a direct reflection of real hospital data. The framework introduces an irregularity-aware multi-scale encoder that captures temporal patterns at varying granularities coupled with a cost-effective multimodal LLM reasoning layer, avoiding the prohibitive expense of full time-series foundation models. This is significant because it provides a practical, deployable solution for clinical QA over the messy, non-uniform data streams that dominate electronic health records.\n\n[7] **MyMentorLLM** creates a multimodal voice/text simulation environment for psychotherapy training, generating 2,100 complete Cognitive Behavioral Therapy (CBT) sessions incorporating DSM-5-TR-grounded patients, trainees, and expert supervisors in a deliberate practice framework. The system addresses the scalability bottleneck in psychotherapy supervision, where trainees require repeated expert feedback that is resource-intensive to deliver. This work opens a novel application domain for multimodal agents—mental health training—where the combination of voice prosody, textual content, and turn-taking dynamics must be precisely orchestrated to simulate therapeutic interactions.\n\n[14] **DynaBridge** tackles the psychometric blindspot in multimodal mental health assessment: generic fusion models ignore the structured nature of DASS-21 questionnaire labels, where risk scores derive from ordered symptom items via fixed subscale mappings. The framework encodes acoustic, visual, and textual cues across multiple sessions, augmenting them with frozen-LLM-generated DASS-aware summaries that serve as participant-level semantic anchors for cross-task learning. The key insight is that leveraging the inherent psychometric structure of clinical instruments can substantially improve multimodal behavioral assessment accuracy.\n\n## Uncertainty, Calibration, and Hallucination in Multimodal Systems\n\n[1] **FinAbstain** confronts a dangerous failure mode in financial LLMs: they express high confidence even when multimodal evidence (filings, news, prices, technical signals) is sparse, stale, or contradictory. The framework introduces uncertainty-calibrated multimodal RAG with selective prediction, where a point-in-time retriever admits only information public at the forecast timestamp and a verification module decides whether to abstain from prediction when evidence is insufficient. This work is critical for high-stakes financial forecasting because it provides a principled mechanism for models to \"know when they don't know,\" potentially preventing costly overconfident predictions in markets.\n\n[4] **Bendre et al.** conduct a rigorous reproducibility study challenging claims that Contrastive Decoding (CD) mitigates object hallucinations in MLLMs. Through systematic replication and extension, they demonstrate that CD primarily induces a unidirectional output distribution shift on discriminative benchmarks like POPE rather than genuine improvements in visual grounding. This matters enormously for the MLLM community: it warns against conflating benchmark performance with actual perceptual improvement and calls for more careful evaluation protocols that distinguish surface-level distributional changes from substantive visual reasoning gains.\n\n[8] **Shieldstral** introduces a 3B-parameter multimodal safety classifier that matches or outperforms models nearly 7× its size on text safety benchmarks while setting a new state of the art on multimodal safety classification. The key technical innovation is formulating content moderation as a binary question-answering task, which unifies heterogeneous safety datasets with divergent taxonomies under a single training framework. This is practically significant because it demonstrates that compact, efficiently deployable safety classifiers can achieve frontier-level performance, addressing the deployment bottleneck of safety systems that must run alongside larger models.\n\n[9] **Eliza & Rahman** investigate the evidential basis of MLLM-generated claims about visualizations, systematically analyzing 1,224 descriptions across three models and four input conditions. They develop a taxonomy (DIRECT, DERIVED, SPECULATIVE) to categorize model-attributed claims and conduct automated audits of numeric agreement, finding that accessible chart context significantly shifts how models attribute their interpretations. This exploratory study is important for AI transparency: it reveals how MLLMs blur the line between what is visually present and what is inferred or speculated, with implications for accessibility tools and scientific communication.\n\n## Efficient Architectures and Inference for Multimodal Understanding\n\n[5] **ReMem** addresses the fundamental limitation of restricted context windows in MLLMs for long video understanding, where uniform or static keyframe selection misses critical temporal context. The framework introduces temporal granularity-adaptive keyframe selection with dual-level memory augmentation: a short-term memory for local temporal coherence and a long-term memory for global narrative structure, both operating without training. This matters because it enables training-free long video QA that dynamically adjusts which frames to attend to based on query temporal granularity, significantly outperforming static sampling baselines.\n\n[15] **SKIP** (Salient Knowledge-Injected Pathways) tackles the computational explosion at the intersection of three expensive primitives: long visual token sequences, dense retrieval over large corpora, and full cross-modal fusion. The architecture routes computation along sparse pathways jointly conditioned on the question, image, and a difficulty estimator, ensuring that only relevant visual content and retrieved knowledge are fully processed. This is technically significant because it demonstrates that knowledge-intensive multimodal QA can achieve near-oracle accuracy while dramatically reducing computational cost, challenging the assumption that full cross-modal fusion is always necessary.\n\n[3] **ProcAgent** presents a fully on-device, agentic vision-based assistant for procedural task guidance (furniture assembly, home repair) that operates on a single NVIDIA edge device. The system combines real-time visual state tracking, task progress reasoning, and human-in-the-loop error recovery while avoiding cloud dependency for latency-sensitive and privacy-critical domestic settings. This work is important because it demonstrates that complex multimodal reasoning—previously considered exclusive to cloud infrastructure—can be achieved on-device, opening deployment scenarios in privacy-sensitive environments where data cannot leave the local device.\n\n## Multimodal Representation Learning and Zero-Shot Transfer\n\n[6] **Neurai-VN Benchmark** addresses the reproducibility crisis in digital phenotyping for mental health by standardizing evaluation across heterogeneous datasets, inconsistent preprocessing pipelines, and varying classification tasks. The benchmark defines four clinically relevant binary classification tasks using high-resolution multimodal data (passive sensing, active assessments from wearables and smartphones) collected from 100 Vietnamese adults over two weeks. This contribution is crucial for the digital mental health community because it provides a standardized evaluation protocol that enables fair comparison across methods, accelerating progress toward clinically deployable phenotyping systems.\n\n[13] **PMRD** introduces pharmacological response domain-guided multimodal drug representation learning, addressing the limitation that direct fusion and instance-level contrastive alignment mix mechanism-related signals with modality-specific noise. The framework organizes compound representations by pharmacological response domains rather than chemical structure, enabling zero-shot prediction of properties for unseen compounds by transferring knowledge from related biological mechanisms. This work is significant for drug discovery because it moves beyond structure-based representation learning to capture functional biological responses, enabling prediction for novel compounds with no available experimental data.\n\n[16] **CHARM** proposes a multimodal graph foundation model with hierarchical context modeling designed specifically for zero-shot transfer across graph domains. The framework handles graphs where nodes are associated with text, images, and other modalities by learning hierarchical context representations that disentangle domain-specific from domain-invariant features. This matters because existing graph foundation models either require downstream adaptation (GNN-based) or are computationally prohibitive (LLM-based), whereas CHARM enables genuine zero-shot transfer on multimodal graphs without per-domain fine-tuning.\n\n[11] **Schlager et al.** address the computational cost of exploring high-dimensional multimodal posterior distributions in Bayesian neural networks by leveraging curvature estimates computed as a byproduct of adaptive optimizers like AdamW during warmstarting. The key insight is that optimizer-derived geometry can inform the sampling phase of Bayesian Deep Ensembles at negligible additional cost, substantially improving posterior exploration efficiency. This work is important for uncertainty quantification because it provides a practical bridge between optimization and sampling, making Bayesian deep learning more accessible for high-dimensional, multimodal posterior landscapes.\n\n## Key Takeaways\n- **Uncertainty calibration is becoming non-negotiable** in high-stakes multimodal applications: FinAbstain's selective prediction and the reproducibility study on Contrastive Decoding both underscore that confidence without grounded uncertainty is dangerous, whether in financial forecasting or visual grounding.\n- **Clinical multimodal benchmarks are maturing** beyond isolated tasks: MyoCardBench and ClinMM-Bench establish multi-turn, longitudinal evaluation frameworks that capture the progressive disclosure and dynamic reasoning inherent to real clinical practice.\n- **On-device multimodal agents are viable** for privacy-sensitive applications: ProcAgent demonstrates that complex procedural guidance with vision, state tracking, and human-in-the-loop recovery can run entirely on edge hardware without cloud dependencies.\n- **Sparse computation is the path to efficiency** for knowledge-intensive QA: SKIP's routing along question- and image-conditioned sparse pathways challenges the dogma that full cross-modal fusion is always necessary, achieving high accuracy at fraction of the cost.\n- **Hallucination mitigation requires careful evaluation**: The CD reproducibility study warns that benchmark gains may reflect distributional shifts rather than genuine perceptual improvements, calling for more rigorous evaluation protocols that disentangle surface-level changes from substantive reasoning.\n- **Zero-shot transfer is expanding to multimodal graphs and drug discovery**: PMRD and CHARM demonstrate that mechanism-aware and domain-invariant representations can enable prediction for unseen compounds and graph domains without per-task fine-tuning.\n- **Psychometric structure informs better multimodal fusion**: DynaBridge shows that leveraging the inherent structure of clinical instruments (e.g., DASS-21 item-to-subscale mappings) improves multimodal behavioral assessment over generic fusion approaches.",
+    "papers": [
+      {
+        "title": "FinAbstain: Uncertainty-Calibrated Multimodal RAG for Selective Financial Forecasting",
+        "url": "",
+        "authors": [
+          "Dorothy Torres",
+          "Wei Cheng",
+          "Henan Huang"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "MyoCardBench: A Real-World Data Benchmark for Evaluating Large Language Models in Clinically Authentic Cardiovascular Care Scenarios",
+        "url": "",
+        "authors": [
+          "Xiao Li",
+          "Mouxiao Bian",
+          "Zhaodi Wu",
+          "Sijie Ren",
+          "Juechen Chen",
+          "Lu Lu",
+          "Jingru Ding",
+          "Yun Zhong",
+          "Jie Xu",
+          "Yixiu Liang",
+          "Junbo Ge"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "ProcAgent: An Agentic Framework for Procedural Task Guidance on Edge with Human-in-the-Loop",
+        "url": "",
+        "authors": [
+          "Azizul Zahid",
+          "Subrata Biswas",
+          "Bashima Islam",
+          "Sai Swaminathan"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Rethinking CD: A Reproducibility Study and Extension on the Ineffectiveness of Contrastive Decoding at Mitigating Object Hallucinations in MLLMs",
+        "url": "",
+        "authors": [
+          "Arnav Bendre",
+          "Guneesh Gupta",
+          "Kavish Grover",
+          "Chayan Aggarwal",
+          "Shreyansh Modi"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Reasoning with Memory: A Temporal Granularity-Adaptive Framework for Training-Free Long Video Understanding",
+        "url": "",
+        "authors": [
+          "Linghao Meng",
+          "Qiankun Li",
+          "Junyuan Mao",
+          "Pujin Liao",
+          "Zhicheng He",
+          "Enbo Zhang",
+          "Kun Wang",
+          "Yang Liu",
+          "Huazhu Fu",
+          "Yueming Jin"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Neurai-VN Benchmark: Standardized Machine Learning Models for Multimodal Digital Phenotyping in Mental Health Classification",
+        "url": "",
+        "authors": [
+          "Quoc-Cuong Pham",
+          "Hoang-Thuy-Duong Vu",
+          "Thi-Thanh-Huong Ha",
+          "Huy-Hieu Pham"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "MyMentorLLM: A psychotherapy GenAI environment with multimodal voice/text patients, trainees and experts for deliberate practice",
+        "url": "",
+        "authors": [
+          "Rodolfo Rizzi",
+          "Alessandro Grecucci",
+          "Massimo Stella"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Shieldstral",
+        "url": "",
+        "authors": [
+          "Antonia Calvi",
+          "Avinash Sooriyarachchi",
+          "Giada Pistilli",
+          "Guillaume Lample",
+          "Maarten Buyl",
+          "Maximilian Augustin",
+          "Maximilian Müller",
+          "Pierre Stock",
+          "Tom Bewley",
+          "Wassim Bouaziz",
+          "Yimu Pan"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Chart-Supported or Model-Supplied? Examining MLLM-Generated Claims for Accessible Visualization",
+        "url": "",
+        "authors": [
+          "Ishrat Jahan Eliza",
+          "Md Dilshadur Rahman"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Evaluating Multi-Turn Multimodal Diagnostic Reasoning on Challenging Real-World Clinical Cases",
+        "url": "",
+        "authors": [
+          "Rui Yang",
+          "Weihao Xuan",
+          "Yi Lin",
+          "Zhuhan Bao",
+          "Jonathan Chong Kai Liew",
+          "Matthew Yu Heng Wong",
+          "Nicolás Lescano",
+          "Nikita R. Paripati",
+          "Emily Ling-Lin Pai",
+          "Jiarui Liu",
+          "Heli Qi",
+          "Heng-Jui Chang",
+          "Benny Kai Guo Loo",
+          "Huitao Li",
+          "Kunyu Yu",
+          "Yufan Wang",
+          "Chuan Hong",
+          "Shijian Lu",
+          "Douglas Teodoro",
+          "Naoto Yokoya",
+          "Ross Koppel",
+          "Mona Diab",
+          "Hua Xu",
+          "David W. Bates",
+          "Nan Liu",
+          "Yifan Peng"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Guiding Posterior Exploration with Optimizer-Derived Geometry",
+        "url": "",
+        "authors": [
+          "Moritz Schlager",
+          "Emanuel Sommer",
+          "Thomas Möllenhoff",
+          "David Rügamer"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "A Cost-Effective Multimodal LLM Reasoning Framework for Question Answering over Irregular Clinical Time Series",
+        "url": "",
+        "authors": [
+          "Frank Nie",
+          "Ethan B Liu",
+          "Yuan Zhu",
+          "Wei Fan",
+          "Jindong Han"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "From Cellular Responses to Pharmacological Domains: Multimodal Zero-Shot Drug Representation Learning",
+        "url": "",
+        "authors": [
+          "Jintao Huang",
+          "Lu Leng",
+          "Ziyuan Yang"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "DynaBridge: Dynamic Summary-Guided Cross-Task Multimodal Fusion for DASS-Structured Mental Health Assessment",
+        "url": "",
+        "authors": [
+          "Shiyu Teng",
+          "Haichen Yu",
+          "Jiaqing Liu",
+          "Hao Sun",
+          "Yu Song",
+          "Shurong Chai",
+          "Ruibo Hou",
+          "Lanfen Lin",
+          "Yen-Wei Chen"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "Salient Knowledge Pathways: Sparse Cross-Modal Routing for Efficient Knowledge-Intensive Multimodal Question Answering",
+        "url": "",
+        "authors": [
+          "Noor Islam S. Mohammad",
+          "Uluğ Bayazıt"
+        ],
+        "date": "2026-07-29"
+      },
+      {
+        "title": "CHARM: A Multimodal Graph Foundation Model with Hierarchical Context Modeling for Zero-Shot Transfer",
+        "url": "",
+        "authors": [
+          "Ankang Yang",
+          "Jitao Zhao",
+          "Di Jin",
+          "Yuxiao Huang",
+          "Dongxiao He"
+        ],
+        "date": "2026-07-29"
+      }
+    ]
+  }
+]
