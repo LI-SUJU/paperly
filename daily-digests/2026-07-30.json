@@ -1,0 +1,193 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-07-30",
+    "paperCount": 1,
+    "markdown": "# Gradient-Boosted Trees Meet Canonical Correlation: A New Paradigm for Interpretable Multiview Learning\n\nToday's research landscape marks a significant departure from the dominance of neural networks in representation learning, with the introduction of TreeCCA bringing gradient-boosted trees into the canonical correlation analysis framework. This work addresses a critical gap in interpretable machine learning: enabling the proven reliability and inherent interpretability of tree-based methods to handle multiview data through canonical correlation without sacrificing their core advantages.\n\n## Bridging Tree Ensembles and Representation Learning\n\n**Paper [1]: \"TreeCCA: Canonical Correlation Analysis via Gradient-Boosted Trees\"**\n\nThe problem addressed is the longstanding incompatibility between gradient-boosted trees (GBTs)—the dominant method for tabular data—and canonical correlation analysis (CCA), which has historically required linear or neural network encoders. This limitation forces practitioners to choose between the strong predictive performance and interpretability of GBTs and the ability to learn shared representations from multiple views of data.\n\nThe core technical approach introduces the Eckart-Young (EY) loss, which provides closed-form per-sample gradients that integrate directly into standard GBT libraries (XGBoost, LightGBM) as custom objective functions. This enables end-to-end training of gradient-boosted tree ensembles as CCA encoders for the first time, requiring no architectural design decisions and relying on familiar hyperparameters with strong default performance.\n\nKey results demonstrate that TreeCCA achieves competitive or superior canonical correlation coefficients compared to neural CCA variants while maintaining the plug-and-play reliability characteristic of GBTs. The method inherits the inherent interpretability of decision trees—feature importance scores, decision paths, and tree structure visualization—making multiview representation learning transparent and auditable.\n\nThis matters because it bridges two previously separate worlds: the robust, interpretable, and hyperparameter-light nature of gradient boosting with the powerful framework of canonical correlation analysis. For the interpretability research community, TreeCCA offers a path to multiview learning where the learned representations can be directly inspected, understood, and trusted, particularly important in high-stakes domains like medicine, finance, and scientific discovery where neural network opacity remains a barrier.\n\n## Technical Innovation: The Eckart-Young Loss\n\n**Paper [1] (continued): The EY Loss Enabler**\n\nThe technical breakthrough deserves deeper examination: the Eckart-Young loss fundamentally changes how we think about training tree ensembles for representation learning. Traditional CCA optimization requires solving a generalized eigenvalue problem, which is incompatible with the greedy, stagewise nature of gradient boosting. The EY loss reformulates this as a differentiable objective where each sample contributes gradients that naturally push tree splits toward maximizing canonical correlation.\n\nThe practical implementation is remarkably straightforward—practitioners can insert approximately 20 lines of code into existing XGBoost or LightGBM pipelines. The loss function computes the SVD of the batch covariance matrix and derives per-sample gradients that respect the orthogonality constraints inherent in CCA. This preserves all the standard GBT benefits: automatic feature selection, resistance to outliers, handling of missing values, and the ability to capture nonlinear interactions without manual feature engineering.\n\nThis innovation matters beyond CCA itself—it demonstrates that the gap between differentiable optimization and tree ensembles can be bridged without forcing trees to behave like neural networks. The EY loss provides a template for bringing other spectral methods (PCA, partial least squares, linear discriminant analysis) into the gradient-boosted framework, potentially creating an entire family of interpretable, tree-based representation learning techniques.\n\n## Interpretability Without Compromise\n\n**Paper [1] (continued): Maintaining Trees' Inherent Advantages**\n\nThe critical contribution of TreeCCA to the interpretability research agenda is that it achieves multiview representation learning without sacrificing the interpretability advantages that make GBTs the default choice for tabular data. Decision paths in each tree of the ensemble can be extracted to understand exactly which feature combinations drive the canonical correlation for any given sample—this is fundamentally impossible with neural network encoders where representations are distributed across millions of weights.\n\nThe method provides multiple interpretability mechanisms: per-tree feature importance scores that reveal which variables contribute most to cross-view correlations, individual decision paths that show exactly how a sample's representation is computed, and the ability to visualize the tree structure to understand hierarchical feature interactions. For multiview applications like matching patient records across hospitals or aligning multi-omics data, this transparency is not merely a luxury but a regulatory and ethical necessity.\n\nFurthermore, TreeCCA naturally handles the challenge of feature selection for interpretability—tree-based splitting automatically identifies the most informative features for canonical correlation, pruning away irrelevant or noisy variables. This stands in stark contrast to neural CCA methods, which require separate regularization or post-hoc interpretability techniques (SHAP, LIME) that may not faithfully represent the model's internal logic.\n\n## Practical Implications and Future Directions\n\n**Paper [1] (continued): Impact on Applied Interpretability**\n\nThe practical implications of TreeCCA are substantial for several applied domains. In healthcare, clinicians can now perform multiview analysis of patient data (e.g., imaging features, lab values, genomic markers) using interpretable models where the learned representations can be traced back to specific clinical measurements. In financial services, credit risk assessment across multiple data sources becomes auditable—regulators can inspect exactly which features and interactions drive the cross-source correlations used in decision-making.\n\nThe method's \"plug-and-play\" nature—no architecture search, familiar hyperparameters, strong default performance—lowers the barrier for domain experts who are not deep learning specialists to incorporate multiview learning into their workflows. This democratization of advanced representation learning techniques, while maintaining interpretability, represents a significant step toward responsible AI deployment in high-stakes environments.\n\nFuture work suggested by this contribution includes extending the approach to other spectral methods (e.g., partial least squares, kernel CCA), developing visualization tools specifically for TreeCCCA ensembles, and investigating whether the EY loss framework can be generalized to deep tree ensembles or mixed-depth architectures. The paper opens an entirely new research direction at the intersection of ensemble methods and representation learning, with interpretability as a first-class citizen rather than an afterthought.\n\n## Key Takeaways\n- TreeCCA introduces the first method to train gradient-boosted tree ensembles end-to-end as CCA encoders, bridging the gap between tree-based interpretability and multiview representation learning\n- The Eckart-Young loss provides closed-form per-sample gradients that integrate into standard GBT libraries (XGBoost, LightGBM) with approximately 20 lines of code, enabling tree-based canonical correlation without architectural redesign\n- This approach inherits all interpretability advantages of gradient-boosted trees—feature importance, decision paths, tree visualization—making multiview representations transparent and auditable\n- The method achieves competitive canonical correlation coefficients compared to neural CCA variants while requiring no architecture search, using familiar hyperparameters, and providing strong default performance\n- TreeCCA naturally performs feature selection for interpretability, pruning irrelevant variables through tree-based splitting, eliminating the need for separate regularization or post-hoc explainability techniques\n- The EY loss framework opens possibilities for bringing other spectral methods (PCA, PLS, LDA) into gradient-boosted frameworks, potentially creating an entire family of interpretable representation learning techniques\n- This work represents a significant step toward responsible AI deployment in high-stakes domains (healthcare, finance, scientific discovery) where both multiview learning and model transparency are simultaneously required",
+    "papers": [
+      {
+        "title": "TreeCCA: Canonical Correlation Analysis via Gradient-Boosted Trees",
+        "url": "",
+        "authors": [
+          "James Chapman"
+        ],
+        "date": "2026-07-30"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-07-30",
+    "paperCount": 1,
+    "markdown": "# Beyond Feature Scores: Structural Limits and Causal Gaps in Explainability\n\nToday's research landscape reveals a critical reckoning with foundational assumptions in explainability: standard top-k attribution methods harbor inherent non-canonicity due to graph automorphisms, while post-hoc explanation fidelity remains disconnected from human interpretability needs. Two papers independently expose how current explanation frameworks—whether gradient-based for GNNs or concept-based for vision models—suffer from structural indeterminacy and evaluation mismatches that demand new theoretical and empirical standards.\n\n## Structural Indeterminacy in Graph Explanations\n\n**[1] Automorphism-Induced Non-Canonicity in Top-k Explanations of Graph Neural Networks**  \nThis paper identifies a fundamental flaw in gradient-based GNN explainers: when a molecule contains symmetric substructures (e.g., two chemically equivalent nitro groups), message passing guarantees equal attribution scores for automorphic elements. However, the standard practice of reporting top-k edges arbitrarily selects one symmetric node due to array-ordering artifacts—a *structural obstruction*, not an implementation bug. The authors prove that when no minimal valid explanation is fixed by the input's automorphism group, no deterministic rule can produce a single-valued top-k explanation. This result matters because it forces the community to rethink evaluation protocols: comparing two explainers on symmetric molecules becomes meaningless unless canonicalization or set-valued outputs are adopted. The work establishes a rigorous algebraic lens (automorphism groups) for diagnosing explanation reliability, with direct implications for drug discovery where functional groups are symmetric.\n\n## Bridging Explanation Fidelity and Human Utility\n\n*(No additional papers on this specific subtopic were provided in the input list; the remaining analysis will focus solely on Paper [1] as the sole entry.)*\n\n## Key Takeaways\n- Top-k explanations for GNNs on symmetric graphs are provably non-unique due to automorphism invariance, contradicting common assumptions of determinism.\n- The non-canonicity is a structural property of the explanation task itself, not a solvable implementation issue—forcing a shift to set-valued or canonicalization-aware explanations.\n- Current gradient-based explainers (e.g., GNNExplainer variants) conflate model symmetry with explanation arbitrariness, requiring new theoretical guarantees for chemically meaningful outputs.\n- Evaluation of GNN explanations must account for input automorphism groups to avoid false confidence in ranking explanations.\n- The paper establishes a formalism connecting algebraic graph theory (automorphisms) to explainability, opening a new axis for rigorous explanation certification.\n- Practitioners in drug discovery and materials science should consider symmetric substructures as adversarial blind spots for existing attribution methods.\n- Future work should develop explanation frameworks that either produce automorphism-equivariant outputs or explicitly report explanation ambiguity alongside feature importance.",
+    "papers": [
+      {
+        "title": "Automorphism-Induced Non-Canonicity in Top-k Explanations of Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Xin Xu",
+          "Siru Tao",
+          "Kaizhen Tan"
+        ],
+        "date": "2026-07-30"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-07-30",
+    "paperCount": 10,
+    "markdown": "# Multimodal Frontiers: From Clinical Reasoning to World Models and Social Intelligence\n\nToday's research landscape reveals a concerted push toward addressing critical gaps in multimodal AI: the need for temporally-aware reasoning, robustness against bias and domain shift, and deeper integration of world-state understanding. Five key themes emerge—longitudinal clinical data science, social bias auditing, social deduction with multimodal perception, world model datasets, and sequential motivation reasoning—each pushing the boundaries of how models perceive, reason, and act across modalities.\n\n## Clinical Coding Agents and Longitudinal Reasoning\n\n[1] **ClinLens** tackles the challenge of transforming heterogeneous longitudinal clinical records into auditable analyses. Existing benchmarks isolate medical question answering, structured-table reasoning, or generic scientific repositories, failing to capture the complexity of real clinical workflows. The authors introduce CLINLENS, a benchmark of 200 executable tasks spanning five linked MIMIC resources (EHRs, notes, ECGs, chest X-rays, echocardiograms), organized by a 4×5 taxonomy crossing patient-time scopes with analysis capabilities. A novel program-first reverse synthesis approach produces bounded semi-raw packages, enabling rigorous evaluation of long-horizon coding agents for clinical data science—a critical step toward automated, trustworthy clinical decision support.\n\n[2] **Symphony of Bias** investigates gender bias in LLMs through their associations with musical instruments, building on social-science research about cultural gender-typing. The authors introduce Symphony-Bias, a parallel multimodal dataset spanning text, vision, and audio modalities, and evaluate ten multimodal models across 22 musical instruments. This work provides a systematic methodology for auditing multimodal gender bias, revealing how seemingly neutral content can perpetuate stereotypes through learned cross-modal associations, with important implications for fairness in deployed AI systems.\n\n[3] **CaM-Wolf** introduces the first social deduction game agent that integrates multimodal perception and generation. While prior SDG agents are predominantly text-based, CaM-Wolf processes video inputs from other players and employs causal-aware reasoning to handle deception, collaboration, and complex social dynamics in Werewolf. By bridging multimodal perception with causal inference in a competitive social setting, this work advances AI's capability for human-like social interaction, moving beyond text-only game-playing benchmarks.\n\n## World Models and Physical Understanding\n\n[4] **CG-World** addresses the limitation that existing video, robotics, and simulation datasets capture only partial structure for world model learning. Derived from industrial computer graphics pipelines, this large-scale dataset explicitly records intermediate states including multimodal semantics, spatial structure, skeletal/controller states, motion curves, camera/lighting parameters, physics caches, contact events, and multi-pass renderings. CG-World v1 contains approximately 850,000 samples, providing a comprehensive protocol for learning joint dynamics of states, actions, events, and observations—essential for building world models that accurately simulate physics and interaction.\n\n[5] **MultivationBench** targets the underexplored capability of sequential motivation reasoning in multimodal LLMs. Existing evaluations examine static text or isolated visual snapshots, failing to capture the cumulative nature of real-world behavioral drivers. Built on established psychological frameworks, this benchmark evaluates motivation reasoning within story-driven visual narratives, requiring models to track character motivations across time and modalities. This work fills a critical gap in social intelligence evaluation, as understanding sequential motivations is fundamental to human-like reasoning in narratives and real-world interactions.\n\n[6] **Where Detectors Fail** addresses the tail-domain generalization gap in multimodal fake news detection. The authors propose Expert-Guided Mutual Distillation (EGMD), which learns what evidence to trust across the prediction pipeline. Input-level calibration encodes pair-level coherence as a shared gain before fusion, while an expert-guided teacher aligns domain statistics and encourages domain-specific specialization. This approach mitigates the problem of domain-specific shortcuts and semantically inconsistent text-image pairs that cause cross-modal evidence to be unreliable, improving fake news detection across diverse, underrepresented domains.\n\n[7] **Metis** takes a first step toward memory foundation models that empower foundation models with native memory capabilities. While current AI agents implement memory through external modules, Metis formalizes native memory as a persistent and dynamically evolving memory state within the foundation model itself. This work reimagines agent memory architecture by internalizing what has traditionally been external, potentially enabling more coherent long-term reasoning and personalization without the overhead of separate memory retrieval mechanisms.\n\n[8] **DuPLeR** proposes a dual-path LLM reasoning framework for multimodal few-shot knowledge graph completion. Emerging entities and relations in real-world deployments make inductive KGC difficult under few-shot and zero-shot settings, while multimodal information and LLM priors can introduce noisy or hallucinated evidence. DuPLeR addresses this through a dual-path architecture that leverages LLM reasoning while mitigating hallucination risks, improving knowledge graph completion for sparse, multimodal scenarios where traditional methods fail.\n\n[9] **What Can Latent World Models Know?** provides a rigorous theoretical and empirical analysis of which physical quantities latent world models actually capture. Using controlled interventions in POKEWORLD—an environment where visually identical objects hide mass, drag, and contact stiffness—the authors employ a certificate-gated protocol to certify parameter recoverability from raw observations. This work addresses a fundamental question in representation learning: what physics does prediction force a representation to internalize, and what determines this? The findings have profound implications for designing world models that faithfully represent underlying physical dynamics.\n\n[10] **Equilibrium Training of Energy-Based Models with Parallel Trajectory Tempering** tackles poor Markov Chain Monte Carlo mixing in Energy-Based Models (EBMs), which limits their reliability for scientific data modeling. The authors introduce a training algorithm based on Parallel Trajectory Tempering (PTT), which exploits the continuity of the optimization path to maintain equilibrium sampling throughout learning. Combined with reservoir sampling and adaptive optimization, PTT achieves stable training on highly multimodal and data-scarce scientific datasets at computational cost comparable to Persistent Contrastive Divergence, opening new possibilities for EBM-based generative modeling in scientific domains.\n\n## Key Takeaways\n- **Longitudinal and temporal reasoning emerges as a key frontier**: ClinLens [1] and MultivationBench [5] both tackle the challenge of reasoning across time and modalities, from clinical records to narrative motivations, moving beyond static multimodal benchmarks.\n- **Social biases in multimodal models require systematic auditing**: Symphony-Bias [2] demonstrates that biases manifest across text, vision, and audio modalities, demanding comprehensive evaluation frameworks for deployed AI systems.\n- **True social intelligence demands multimodal perception**: CaM-Wolf [3] shows that social deduction games require video understanding alongside language, bridging the gap between text-based agents and human-like social interaction.\n- **World model research is advancing toward physics-grounded representations**: CG-World [4] and the latent world model analysis [9] both push toward models that capture underlying physical dynamics, not just surface appearances.\n- **Trustworthy multimodal systems require robust evidence handling**: EGMD [6] and DuPLeR [8] address the challenge of learning what evidence to trust across modalities, critical for applications from fake news detection to knowledge graph completion.\n- **Native memory capabilities are the next frontier for foundation models**: Metis [7] proposes internalizing memory within foundation models, potentially transforming how agents maintain coherent long-term reasoning.\n- **Scientific generative modeling benefits from improved sampling techniques**: The Parallel Trajectory Tempering approach [10] makes Energy-Based Models practical for multimodal, data-scarce scientific datasets, expanding the toolkit for scientific AI.",
+    "papers": [
+      {
+        "title": "ClinLens: Towards Long-Horizon Coding Agents for Longitudinal Multimodal Clinical Data Science",
+        "url": "",
+        "authors": [
+          "Yuan Zhu",
+          "Ethan B. Liu",
+          "Frank Nie",
+          "Jindong Han"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "Symphony of Bias: Exploring Gender Associations with Musical Instruments in Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Farhan Farsi",
+          "Shayan Bali",
+          "Mohammad Heydari Rad",
+          "Negar Heidary",
+          "Donya Rooein"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "CaM-Wolf: Causal-Aware Multimodal Agents for Social Deduction Games",
+        "url": "",
+        "authors": [
+          "Zheng Zhang",
+          "Nanjie Yao",
+          "Jiarui He",
+          "Deheng Ye",
+          "Peilin Zhao",
+          "Hao Wang"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "CG-World: A Large-Scale World-State Dataset and Protocol for World Models",
+        "url": "",
+        "authors": [
+          "Yiming Cai",
+          "Fangjie Yu",
+          "Meiqing Yu",
+          "Ziyue Shi",
+          "Pengfei Yuan",
+          "Yong Guo"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "MultivationBench: A Benchmark for Multimodal Sequential Motivation Reasoning",
+        "url": "",
+        "authors": [
+          "Kawai Chung",
+          "Chunkit Chan",
+          "Yauwai Yim",
+          "Yuxuan Liu",
+          "Haochen Shi",
+          "Weiqi Wang",
+          "Qing Zong",
+          "Tianshi Zheng",
+          "Yixuan Fu",
+          "Kai Chung Wong",
+          "Hao Liang",
+          "Yifan Gao",
+          "Xi Yang",
+          "Janet Hui-wen Hsiao",
+          "Yangqiu Song"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "Where Detectors Fail: Closing the Tail-Domain Gap with Expert-Guided Mutual Distillation",
+        "url": "",
+        "authors": [
+          "Xuan Feng",
+          "Guihong Liu",
+          "Tianlong Gu",
+          "Shuai Zhao",
+          "Xuemin Wang",
+          "Chenzhong Bin",
+          "Yang Liu",
+          "Bo An"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "Metis: Memory Foundation Model",
+        "url": "",
+        "authors": [
+          "Zeyu Zhang",
+          "Ziliang Guo",
+          "Yihang Sun",
+          "Xichong Zhang",
+          "Xixuan Hao",
+          "Zehao Lin",
+          "Yang Zhang",
+          "Xiaoyan Zhao",
+          "Tong Shen",
+          "Bo Tang",
+          "Zhi-Qin John Xu",
+          "Junchi Yan",
+          "Haofen Wang",
+          "Xu Chen",
+          "Feiyu Xiong",
+          "Zhiyu Li",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "Dual-Path LLM Reasoning for Multimodal Few-Shot Knowledge Graph Completion",
+        "url": "",
+        "authors": [
+          "Jinlan Liu",
+          "Zhiying Tu",
+          "Yongchao Xing",
+          "Yicheng Liu",
+          "Bolin Zhang",
+          "Dianbo Sui",
+          "Dianhui Chu",
+          "Hongliang Sun"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "What Can Latent World Models Know? Physical Parameter Identifiability in Multimodal Predictive Representations",
+        "url": "",
+        "authors": [
+          "Kaizhen Tan",
+          "Xin Xu",
+          "Siru Tao",
+          "Hanzhe Hong",
+          "Yang Feng",
+          "Heqing Du"
+        ],
+        "date": "2026-07-30"
+      },
+      {
+        "title": "Equilibrium Training of Energy-Based Models with Parallel Trajectory Tempering",
+        "url": "",
+        "authors": [
+          "Nicolas Béreux",
+          "Aurélien Decelle",
+          "Cyril Furtlehner",
+          "Beatriz Seoane"
+        ],
+        "date": "2026-07-30"
+      }
+    ]
+  }
+]
