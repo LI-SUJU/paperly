@@ -1,0 +1,377 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-02",
+    "paperCount": 5,
+    "markdown": "# Interpretability at the Intersection: From Physiological Signals to Policy Frameworks\n\nToday's research landscape reflects a growing maturation of interpretability as a first-class engineering concern, moving beyond post-hoc visualization toward principled benchmarking, provable identifiability guarantees, and task-aware explanation generation. Across healthcare, representation learning, and even AI governance, researchers are developing standardized tools and theoretical foundations that make model internals not just inspectable, but actionable.\n\n## Benchmarking and Evaluation Infrastructure\n\nInterpretability research is entering an era of standardized evaluation, where the focus shifts from anecdotal demonstrations to rigorous, reproducible comparisons across models and explanation methods.\n\nThe paper [1] introduces ECG-InterpBench, a novel benchmark purpose-built for evaluating the interpretability of electrocardiogram (ECG) foundation models. Rather than relying on downstream task performance, the benchmark employs sparse autoencoders (SAEs) as standardized measurement instruments, carefully matching their capacity across different models to enable controlled comparisons. This approach allows researchers to systematically evaluate whether internal representations can be faithfully decomposed and clinically interpreted. The significance lies in establishing a template for evaluating interpretability in medical foundation models, where the stakes of uninterpretable decisions are particularly high.\n\n## Theoretical Foundations for Interpretable Factorization\n\nWhile benchmarks capture empirical interpretability, complementary theoretical work is establishing the mathematical conditions under which interpretable representations are provably recoverable.\n\nPaper [2] tackles the long-standing problem of identifiability in matrix tri-factorisation under sparsity constraints, a generalization beyond the well-studied two-factor case. The work provides rigorous theoretical guarantees for when sparse tri-factorisation yields unique, interpretable solutions. By moving beyond heuristics, this research offers a foundational assurance that the interpretable structures we extract from data are not artifacts of the algorithm but inherent properties of the underlying system. This theoretical grounding is critical for applications in biomedicine and social science where practitioners must trust that discovered factors reflect true latent structures.\n\nThe distinction between two-factor and tri-factor formulations is more than a mathematical technicality—tri-factorisation often produces representations that are more physically or semantically meaningful (e.g., sample × feature × group structures), making sparsity-driven identifiability both practically relevant and theoretically necessary.\n\n## Attention-Based Interpretation for Time-Series\n\nA significant gap in interpretability research is the translation of model insights into domain-meaningful temporal semantics, particularly in clinical settings where actions must be tied to specific behavioral cycles.\n\nPaper [3] presents HealthCAT, an encoder-only transformer framework that integrates an Attentive Class Activation Token (AttentiveCAT) to produce class-specific, time-step-level interpretations from wearable sensor data. The key innovation is the generation of fine-grained temporal interpretations that can be mapped directly onto behavioral cycles (e.g., sleep stages or physical activity patterns). This stands in contrast to prior deep learning methods that prioritize accuracy at the expense of explainability. In clinical practice, a high-performance model that cannot localize exactly *when* a health-relevant pattern occurs is far less useful than a slightly less accurate model that provides temporally actionable insights.\n\nThe framework is additionally validated as flexible, suggesting the architecture may generalize beyond its specific health-prediction application to any time-series domain where aligning model explanations with known biological or behavioral periodicities is essential.\n\n## Actionable Explanations via Task-Aware Generation\n\nCounterfactual explanations represent a distinct paradigm: rather than explaining internal model mechanics, these methods generate alternative *inputs* that would change a model's decision, facilitating actionable understanding for end-users.\n\nPaper [4] investigates a previously underexplored dimension of counterfactual generation via reinforcement learning—the inclusion of the instance's predicted class as part of the state representation. Earlier RL-based approaches formulated states using only features from the supervised dataset. This work demonstrates that incorporating the model's own output can meaningfully improve CFE quality, impacting metrics such as validity, sparsity, and proximity. The findings suggest that making the counterfactual search \"class-aware\" allows for better optimization of the tradeoffs between minimal edits and interpretable output. This is an elegantly practical insight: the predictor's internal state, even in a compressed form, provides useful signal for steering the counterfactual search toward more meaningful alternative explanations.\n\n## Interpretable Frameworks for AI Governance\n\nIn an unexpected but welcome development, interpretability principles are being applied at the level of policy documents and governance proposals—a domain where \"black-box\" reasoning can be as harmful as in any ML system.\n\nPaper [5] introduces a policy analysis framework that structures the evaluation of AI governance proposals around multiple attributes, allowing stakeholders to surface priorities and underlying tensions without prescribing a fixed outcome. The mixed-methods approach integrates expert qualitative insights with computational text analysis to systematically dissect policy proposals. This is particularly relevant to the broader interpretability community because it addresses the highest-stakes \"model\" of all: the regulatory landscape that will govern our AI systems. By making policy analysis transparent and structured, the framework enables a form of \"interpretability\" for governance decisions that could otherwise be opaque and binary.\n\n---\n\n## Key Takeaways\n\n- **Standardized benchmarks for interpretability are emerging**: [1] demonstrates that with careful capacity matching, sparse autoencoders can serve as uniform measurement instruments for comparing representational interpretability across heterogeneous models, though the framework remains to be tested on larger, more diverse model families.\n\n- **Identifiability theory advances beyond two-factor models**: [2] provides first rigorous guarantees for sparse tri-factorisation, establishing that structure discovery can be provably unique under stated conditions—a necessary foundation for trustworthy applications.\n\n- **Temporal interpretability is a distinct and critical axis**: [3] shows that class-specific, time-step-level attributions (e.g., via attentive tokens) can bridge the gap between abstract attention weights and clinically meaningful behavioral cycles.\n\n- **Counterfactual generation benefits from task-aware state representation**: [4] demonstrates that explicit inclusion of the predicted class in the RL state improves the balance between validity, sparsity, and proximity in generated counterfactuals.\n\n- **Interpretability frameworks are scaling to AI governance**: [5] adapts principles of structured, transparent evaluation to policy analysis, signaling a broader cultural shift where interpretability is increasingly viewed as a multi-level principle, not just a model-level one.\n\n- **The healthcare domain remains a primary driver and early adopter** of interpretability methodology, spanning models, benchmarks, and theory.\n\n- **There is a noticeable convergence on \"actionability\"** as the shared goal: whether through factor identifiability, temporal localization, class-aware counterfactuals, or structured policy analysis, the field is collectively moving from producing explanations to ensuring they are useful, faithful, and consequential.",
+    "papers": [
+      {
+        "title": "ECG-InterpBench: Benchmarking the Interpretability of ECG Foundation Models with Matched-Scale Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Yixuan Duan",
+          "Wei Qiu"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Sparsity Induced Identifiability in Matrix Tri-Factorisation",
+        "url": "",
+        "authors": [
+          "Tingting Mu"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "HealthCAT: An Interpretable Encoder-only Transformer Framework for Health Indicator Prediction and Temporal Interpretation of Wearable Sensor Data",
+        "url": "",
+        "authors": [
+          "Xiaotong Yu",
+          "Joshua Y. Kim",
+          "HaeJin Lee",
+          "Kalina Yacef"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Class-Aware Reinforcement Learning for Counterfactual Explanation Generation",
+        "url": "",
+        "authors": [
+          "Muhammad Adil Saleem",
+          "Syed Ali Raza",
+          "Mary-Anne Williams"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "An Instrument to Evaluate Governance Proposals: AI Policy Analysis at Scale",
+        "url": "",
+        "authors": [
+          "Paulo Carvao",
+          "Claudio Mayrink Verdun",
+          "Isabel Adler",
+          "Jeffrey Zhou"
+        ],
+        "date": "2026-08-02"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-02",
+    "paperCount": 24,
+    "markdown": "# Multimodal Intelligence at Scale: From Robust Fusion to Trustworthy Reasoning\n\nToday's research landscape reveals a field maturing beyond simple feature concatenation toward principled frameworks for understanding modality reliability, contribution dynamics, and evidence provenance. Across 24 papers, we observe convergent efforts to address fundamental challenges: how to maintain stability in continually learning multimodal systems, how to ensure models reason from grounded evidence rather than spurious correlations, and how to build trustworthy systems for high-stakes domains ranging from healthcare to content moderation.\n\n## Rethinking Multimodal Fusion: Reliability, Risk, and Contribution Dynamics\n\nThe question of *how much* each modality should contribute—and whether that contribution remains appropriate over time—has emerged as a central theoretical concern. [1] introduces the concept of Modality Contribution Drift (MCD), quantifying the stability of modality contributions across incremental tasks in continual learning. The authors propose an MCD score combining contribution-strength and relative-reliance changes under controlled modality interventions, addressing a critical blind spot in existing MMCL methods that focus on representation alignment while ignoring decision-level stability. This work matters because it exposes a failure mode where cross-modal alignment succeeds but the model's decision-making becomes progressively dominated by an increasingly unreliable modality.\n\nAddressing the related problem of determining *when* a modality should be trusted, [3] presents TIER-MoE, a risk-guided subspace mixture-of-experts model that defines sample-specific modality reliability through prediction-loss-based conditioning. By routing inputs to specialized experts based on conditional modality risk, TIER-MoE distinguishes between unreliable, redundant, and poorly-matched modality sources—a distinction previous fusion methods collapse. The biomedical classification context makes this particularly consequential, as blind fusion of noisy imaging data with structured clinical features could degrade rather than improve diagnostic accuracy. This risk-conditioned routing represents a principled alternative to attention-based fusion that remains agnostic to source quality.\n\nThe theoretical foundations of multimodal representation learning receive rigorous treatment in [10], which develops a unified framework connecting Submodular Information Measures (SIMs) to classical concepts in representation learning and statistical pattern recognition. The authors provide a variance and separation perspective on SIM-based objectives, explaining *why* these objectives succeed in supervised contrastive learning rather than merely demonstrating that they do. This theoretical grounding is essential for guiding principled objective design in multimodal learning, moving beyond empirical trial-and-error toward objectives with provable geometric and statistical properties.\n\n## Multimodal Continual Learning and Open-World Adaptation\n\nThe intersection of multimodality with continual and federated learning presents unique challenges explored in two papers. [1]'s MCD framework, discussed above, directly addresses how modality contributions drift as models learn incrementally, proposing regularization strategies to maintain decision-level stability. [11] tackles the more complex setting of federated open-world multimodal graph learning with FedOGL, where clients must learn emerging classes from private multimodal graph streams while retaining historical categories and rejecting out-of-distribution samples. The paper identifies that catastrophic forgetting in federated multimodal graphs extends beyond classification to graph structure and cross-modal dependencies, requiring coordinated solutions across the federation.\n\n[8] offers a distinctive methodology for understanding temporal drift in multimodal models: rather than analyzing data distributions directly, the authors propose recovering latent \"regimes\" from the chronological trajectory of model weights. By fitting a Hidden Markov Model to aligned weight trajectories from models trained on drifting streams (multimodal misinformation in Fakeddit, sentiment in Yelp), they demonstrate recoverable discrete state transitions. This weight-centric approach provides an interpretable window into how models internalize distribution shift, with implications for detecting when deployed models have silently crossed into regimes where their assumptions no longer hold.\n\n## Benchmarks and Evaluation: Pushing Toward Fine-Grained Understanding\n\nA major theme is the insufficiency of coarse-grained evaluation protocols. [2] introduces AHA-Memes, the first large-scale Arabic hateful meme benchmark with fine-grained multi-label annotations, addressing the language gap in hateful content detection while capturing the cultural specificity embedded in Arabic memes. The 5K manually-annotated dataset enables research on how multimodal harm manifests differently across languages and cultural contexts—an increasingly urgent concern for global platform moderation.\n\n[12] presents MMHBench, a multimodal benchmark for mental health understanding in long-form videos, comprising 268 videos and 2,184 carefully curated questions organized across multiple evaluation perspectives. The benchmark moves beyond coarse-grained classification to probe whether models genuinely understand psychological phenomena—latent states, interpersonal context, and behavioral cues—or rely on superficial correlations. [19] similarly argues for fine-grained evaluation in computational pathology with PathView-Bench, which tests multiscale visual understanding through vision-anchored questions with spatial annotations rather than scoring only final diagnoses. Both benchmarks respond to a growing recognition that multiple-choice accuracy on downstream tasks fails to isolate the perceptual and reasoning capabilities that multimodal systems must possess.\n\nFor long-document multimodal summarization, [16] introduces MMLDSum-Bench, a benchmark spanning multiple domains, context lengths, and visual-textual modality distributions, alongside methods addressing attention drift and cross-modal alignment gaps. The work highlights how sparse critical evidence across paragraphs and modalities causes key information omission and hallucination in multimodal LLMs—a problem that grows more acute as documents become longer and more professionally specialized.\n\n## Safety, Security, and Trustworthiness\n\nThe trustworthiness of multimodal systems receives substantial attention across jailbreak defense, content moderation robustness, and provenance tracking. [13] conducts a cross-architecture audit of direction-based inference-time defenses against vision-language model jailbreaks, comparing five defense candidates across 15 model-layer cells from four architectural families. Using a magnitude-controlled protocol that pairs each defense direction with a random control of the same norm, the study provides rigorous empirical evidence about which defenses generalize across architectures—and which merely appear effective due to intervention magnitude rather than semantic content.\n\n[14] proposes a neuron-level cross-dimensional safety alignment framework for unified multilingual and multimodal safety in LVLMs, driven by modality- and language-shared safety neurons (MLS-Neurons). By identifying neurons that jointly trigger across languages and modalities, the approach enables efficient safety alignment that defends against compound attacks combining multilingual instructions with adversarial visual inputs—a threat model that isolated language-only or modality-only defenses miss.\n\n[18] offers a cautionary black-box evaluation of commercial multimodal content-moderation APIs, demonstrating that simple image transformations—crops, rotations, color shifts—can break modern AI-based moderation systems built on large foundation models. This work challenges the assumption that foundation-model-based moderation is inherently more robust than conventional classifiers, revealing surprising fragility to basic perturbations and underscoring that capability does not guarantee robustness.\n\n[21] proposes HyperClaim, a discriminative temporal hypergraph framework for video misinformation detection that captures higher-order cross-modal dependencies among query phrases, contextual text, and short temporal frame spans. By explicitly modeling multi-way interactions that pairwise graph formulations miss, HyperClaim addresses localized authenticity cues that global fusion paradigms under-represent. [22] introduces LEDGERMIND, treating multimodal agent trajectories as provenance-constrained state machines where tool outputs are normalized into a Structured Evidence Ledger that constrains downstream reasoning and decision claims. This provenance-first approach enables evaluation of whether correct answers arose from grounded evidence or accidental error cancellation—a critical distinction for deploying agents in high-stakes settings.\n\n## Domain-Specific Advances: Healthcare, Maritime, Sign Language, and Beyond\n\nDomain specialization drives innovation in several papers. [4] addresses gloss-free sign language translation with DualAnchor, which tackles language-prior degradation in LLM-based SLT—where strong text priors actually produce disfluent translations—and lexical fidelity gaps from sentence-level video-text alignment. By preserving language priors through anchoring and improving lexical alignment, the work demonstrates that LLM backbones require careful calibration rather than naive adoption in multimodal translation tasks.\n\n[6] develops context-informed ship trajectory prediction via conditional attention, arguing that existing multimodal approaches treat environmental variables as peer features rather than conditioning contexts. The key insight is that weather and vessel characteristics should modulate how kinematic states are processed rather than being fused as equal partners—a distinction with practical implications for maritime safety and autonomous navigation.\n\n[15] reimagines credit assignment in embodied multi-agent reinforcement learning as rank aggregation, using large multimodal models to generate contribution-based pairwise comparisons among agents. This shift from absolute to relative estimation provides robustness against noise and dynamic agent participation, addressing the fundamental credit assignment challenge in settings with limited, delayed feedback.\n\n[9] introduces RRM (Reflective Retrieval Memory) for long-horizon multimodal reasoning, augmenting an entity-centric multimodal memory graph with reflective mechanisms that diagnose retrieval failures from previous task trajectories and adapt future search strategies. This moves beyond \"what to store\" toward \"how to retrieve effectively,\" addressing the under-explored retrieval side of memory-augmented agents. [5] proposes CoRA, a gradient-free framework for on-device in-context learning that converts a frozen encoder into a task-conditioned retriever using paired candidate inputs and outputs, operating under limited computation and memory budgets.\n\n[17] demonstrates the value of domain-specific multimodal foundation models with IndustryForge-27B for industrial CAD, built on Qwen3.5-VL-27B and fine-tuned on six industrial-CAD sub-corpora. The model must simultaneously interpret engineering drawings and 3D geometry screenshots, write parametric-modeling scripts and Windows COM API code, and span single parts to assemblies—showcasing how specialized training can bridge the gap between general-purpose capabilities and professional-grade performance.\n\n## Key Takeaways\n\n- **Modality contribution stability is a first-class problem**: The introduction of Modality Contribution Drift [1] and risk-conditioned routing [3] signals a shift from \"whether to fuse\" toward \"how much to trust each modality at each sample,\" with direct implications for continual learning and safety-critical biomedical applications.\n\n- **Beyond final-answer evaluation is essential**: Multiple benchmarks [2], [12], [19], [16] converge on fine-grained, process-oriented evaluation that isolates perceptual, reasoning, and grounding capabilities, rejecting accuracy-only protocols that cannot distinguish genuine understanding from superficial correlation.\n\n- **Fusion must respect context and conditioning**: Whether in ship trajectory prediction [6], sign language translation [4], or industrial CAD [17], treating all inputs as peer features is increasingly recognized as insufficient; conditional and context-modulated processing yields qualitatively better performance.\n\n- **Multimodal safety requires cross-dimensional thinking**: Unified defenses spanning languages and modalities [14], architecture-robust intervention protocols [13], and demonstrations of foundation-model moderation fragility [18] collectively indicate that safety cannot be bolted on per-modality or per-language.\n\n- **Provenance and evidence tracking are becoming non-negotiable**: Structured evidence ledgers [22] and higher-order dependency modeling [21] address the gap between plausible-sounding outputs and verifiably grounded reasoning, essential for deploying multimodal agents in consequential domains.\n\n- **Theoretical foundations lag empirical advances**: Bridging work like the SIM framework analysis [10] is crucial for moving multimodal learning from heuristic design toward principled objectives with provable properties, even as domain applications race ahead.\n\n- **Memory and retrieval must be adaptive and reflective**: RRM [9] and CoRA [5] both recognize that in long-horizon and resource-constrained settings, effective retrieval is as important as storage, with reflective diagnosis and task-conditioning emerging as key mechanisms.",
+    "papers": [
+      {
+        "title": "Regularizing modality contribution drift in multimodal continual learning",
+        "url": "",
+        "authors": [
+          "Zhen Zhang",
+          "Jielei Chu",
+          "Bin Liu",
+          "Tianrui Li"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "AHA-Memes: A Fine-Grained Multimodal Benchmark for Understanding Hate in Arabic Memes",
+        "url": "",
+        "authors": [
+          "Mohamed Bayan Kmainasi",
+          "Ali Ezzat Shahroor",
+          "Abul Hasnat",
+          "Md. Rafiul Biswas",
+          "Wajdi Zaghouani",
+          "Firoj Alam"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "TIER-MoE: Trust-Informed Expert Routing via Conditional Modality Risk for Multimodal Fusion in Biomedical Classification",
+        "url": "",
+        "authors": [
+          "Yu Chang",
+          "Anzhe Cheng",
+          "Chenwei Wu",
+          "Zhuoran Wang",
+          "Jiahao Chen",
+          "Tamoghna Chattopadhyay",
+          "Sophia I. Thomopoulos",
+          "Paul M. Thompson",
+          "Liyue Shen",
+          "Paul Bogdan"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "DualAnchor: Preserving Language Priors and Improving Lexical Fidelity in Gloss-Free Sign Language Translation",
+        "url": "",
+        "authors": [
+          "Hongbin Zhang",
+          "Junhao Liu",
+          "Xuefeng Bai",
+          "Youcheng Pan",
+          "Yang Xiang",
+          "Kehai Chen"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Gradient-free Task-Conditioned Retrieval for On-Device In-Context Learning",
+        "url": "",
+        "authors": [
+          "Xinyu Luo",
+          "Hui Liu",
+          "Yihua Shao",
+          "Junyi Yang",
+          "Arindam Basu",
+          "Haoliang Li"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Context-Informed Ship Trajectory Prediction via Conditional Attention",
+        "url": "",
+        "authors": [
+          "Yuan Guan",
+          "Chandler Squires",
+          "Timothy Hu",
+          "Pradeep Ravikumar"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Semantic-Aligned Structural Abstraction for Multimodal Sentiment Analysis",
+        "url": "",
+        "authors": [
+          "Wei Chen",
+          "Junkai Li",
+          "Tongguan Wang",
+          "Hui Liu",
+          "Feiyue Xue",
+          "Chuanxiang Ma",
+          "Ying Sha"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Latent States in Neural Networks: Recovering the Temporal Structure of Drifting Data from Model Weights",
+        "url": "",
+        "authors": [
+          "Kevin Guan"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "RRM: Experience-Driven Reflective Retrieval Memory for Long-Horizon Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Jingxiang Fan",
+          "Junbao Zhuo",
+          "Bochao Zou"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Understanding Submodular Information Measure Based Objectives for Representation Learning: A Variance and Separation Perspective",
+        "url": "",
+        "authors": [
+          "Rishabh Iyer",
+          "Truong Pham",
+          "Anay Majee"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "FedOGL: Combating Catastrophic Forgetting in Federated Open-World Multimodal Graph Learning",
+        "url": "",
+        "authors": [
+          "Zekai Chen",
+          "Haodong Lu",
+          "Shihao Li",
+          "Weiwei Ji",
+          "Xunkai Li",
+          "Xun Wu",
+          "Yinlin Zhu",
+          "Rong-Hua Li"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "MMHBench: A Multi-Perspective Benchmark for Mental Health Understanding in Long-Form Videos",
+        "url": "",
+        "authors": [
+          "Jinpeng Hu",
+          "Erqiang Wang",
+          "Shan Wang",
+          "Zhuo Li",
+          "Peipei Song",
+          "Xun Yang",
+          "Meng Wang"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "A Cross-Architecture Audit of Direction-Based Inference-Time Defences in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Xiangyu Yin",
+          "Tora Bodin",
+          "Rohan Menon",
+          "Chih-Hong Cheng"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "One Anchor for All: Unified Multilingual and Multimodal Safety Alignment for LVLMs",
+        "url": "",
+        "authors": [
+          "Enyi Shi",
+          "Fei Shen",
+          "Chuancheng Shi",
+          "Linxia Zhu",
+          "Shuyi Miao",
+          "Jinhui Tang",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "MARS-RA: Rank Aggregation for Credit Assignment via Multimodal Comparisons in Embodied Multi-Agent Cooperation",
+        "url": "",
+        "authors": [
+          "Dawei Wang",
+          "Di Zhao",
+          "Xinyuan Liu",
+          "Marci Chi Ma",
+          "Xiaoyang Liu",
+          "Chengming Zhou",
+          "Gary Ushaw",
+          "Richard Davison"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "MMLDSum-LLM: Multimodal Long-Document Summarization with Visual-Alignment and Keyword-Aware",
+        "url": "",
+        "authors": [
+          "Xianpeng Zhang",
+          "Jiahua Yang",
+          "Dongyu Chen",
+          "Lei zhang",
+          "Jian Ma",
+          "Xu guohuan",
+          "Haonan Lu",
+          "Tianhuang Su",
+          "Chuangchuang Wang",
+          "Kai Tang"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "IndustryForge-27B: A Domain-Enhanced Multimodal Foundation Model for Industrial CAD",
+        "url": "",
+        "authors": [
+          "Nianchen Deng",
+          "Jiaxin Ai",
+          "Tao Hu",
+          "Shu Zou",
+          "Yurui Dong",
+          "Siqi Li",
+          "Xinyu Cai",
+          "Xuemeng Yang",
+          "Licheng Wen",
+          "Hongbin Zhou",
+          "Hairong Zhang",
+          "Pinlong Cai",
+          "Botian Shi"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Old Tricks, New Models: How Simple Image Transformations Break Modern AI-based Content Moderation",
+        "url": "",
+        "authors": [
+          "Marco Alecci",
+          "Francesco Marchiori",
+          "Iyiola Emmanuel Olatunji",
+          "Tegawendé F. Bissyandé",
+          "Jacques Klein"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "PathView-Bench: Can Multimodal Large Language Models Achieve Fine-grained Multiscale Understanding of Pathology Images?",
+        "url": "",
+        "authors": [
+          "Zongyi Chen",
+          "Yu Liang",
+          "Jie Lin",
+          "Liansheng Wang"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Correcting What You Cannot See: Credit Assignment for Perception Distillation in Multimodal Reasoners",
+        "url": "",
+        "authors": [
+          "Feng Xiong",
+          "Leyan Xue",
+          "Hongyu Lin"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "HyperClaim: Fine-Grained Cross-Modal Hypergraph Reasoning for Video Misinformation Detection",
+        "url": "",
+        "authors": [
+          "Xiangbo Wang",
+          "Jiasheng Zhang",
+          "Xingtong Yu",
+          "Luoqiang Lei",
+          "Delvin Ce Zhang"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "LEDGERMIND: Provenance-Constrained Multimodal Agentic Reasoning with a Structured Evidence Ledger",
+        "url": "",
+        "authors": [
+          "Enjun Du",
+          "Hange Zhou",
+          "Chenxu Du",
+          "Siyi Liu",
+          "Zirong Chen",
+          "Ziyu Zheng",
+          "Yongqi Zhang"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "Why Are GUI Agents Correct but Late? Decode on the Decision-Time Critical Path, Tested with Pre-Compiled Policy Trees",
+        "url": "",
+        "authors": [
+          "Zihan Dong",
+          "Rui Qian",
+          "Qishi Zhan",
+          "Dongshen Peng",
+          "Kaixin Li",
+          "Yu Li"
+        ],
+        "date": "2026-08-02"
+      },
+      {
+        "title": "DualG-MRAG: Decoupling Macro-Reasoning and Micro-Matching for Multimodal Retrieval-Augmented Generation",
+        "url": "",
+        "authors": [
+          "Jiacheng Tao",
+          "Qingyun Sun",
+          "Haonan Yuan",
+          "Ziwei Zhang",
+          "Jianxin Li"
+        ],
+        "date": "2026-08-02"
+      }
+    ]
+  }
+]
