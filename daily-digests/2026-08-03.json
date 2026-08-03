@@ -1,0 +1,277 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-03",
+    "paperCount": 6,
+    "markdown": "# From Reasoning Effort to Lawful Representations: The Interpretability Frontier\n\nToday's research landscape reveals a field in transition: interpretability is no longer just about visualizing attention maps or probing neurons, but about rigorously quantifying reasoning effort, verifying causal structure against physical laws, and unifying theoretical frameworks for explanation methods. The papers span from fine-grained analysis of chain-of-thought computation to ontological engineering for industrial systems, collectively pushing toward more principled, verifiable, and actionable interpretations of model behavior.\n\n## Quantifying Reasoning and Computation in LLMs\n\nUnderstanding where and how large language models allocate computational effort during reasoning has been a persistent challenge. Traditional interpretability methods either collapse the entire reasoning process into a single scalar or rely on coarse output-level signals, leaving the internal step-wise dynamics opaque. [2] introduces Step-Aware Reasoning Energy (SARE), a geometric framework that quantifies computational effort at the granularity of individual chain-of-thought (CoT) steps. The core technical innovation is the use of Centered Kernel Alignment (CKA) between Gram matrices constructed from token hidden states across adjacent transformer layers, capturing inter-token relational structure without requiring labeled data or interventions. By measuring how much representational structure changes between layers at each reasoning step, SARE provides a principled proxy for \"how hard the model is thinking\" at that moment. This contribution matters because it opens the door to step-level computational profiling—enabling researchers to identify where models struggle, where reasoning becomes redundant, and potentially where to intervene for efficiency gains or correctness improvements.\n\nThe relationship between reasoning and reward modeling is tackled head-on in [5]. Scalar reward models (RMs) offer efficiency and probabilistic interpretability but rely on superficial cues that break down on out-of-distribution tasks; generative RMs leverage detailed reasoning but lose numerical flexibility. This paper addresses the hybrid challenge by learning latent reasoning traces for scalar reward models end-to-end, rather than relying on off-policy multi-task distillation or prompting. The approach enables the scalar RM to internalize reasoning-like computations in a compressed latent space during training, yielding the robustness of generative reasoning with the efficiency and calibrate-ability of scalar outputs. This is significant because reward models are the backbone of RLHF-aligned systems; making them simultaneously robust and interpretable is critical for safe deployment.\n\n## Verifying Causal and Physical Structure\n\nA deeper question in interpretability is whether a model that performs well on physical prediction tasks has genuinely internalized the governing laws as structured knowledge. [3] identifies four interpretability gaps that obstruct answering this question: the lack of coverage-aware causal-consistency measures over continuous counterfactuals, missing domain-of-validity tests for identified circuits, unverified law invariants and forbidden behaviors, and insufficient law-aligned witness mechanisms. The proposed LAWFUL framework addresses these gaps by establishing formal criteria for when a neural network's internal computation can be certified as faithfully using a physical law throughout its entire domain of validity. The technical approach involves constructing causal graphs over continuous variables, testing circuit consistency beyond training distribution, and verifying that invariant quantities (e.g., conservation laws) hold under intervention. This work matters for scientific AI applications where we need not just predictive accuracy but certifiable physical correctness—in drug discovery, climate modeling, or engineering simulation.\n\n## Theoretical Foundations for Explanations\n\nCounterfactual explanations have been widely adopted as a practical interpretability tool, but their theoretical grounding has remained under-examined. [4] provides a significant theoretical contribution by proving that the conventional distance-minimization formulation of counterfactual explanations is mathematically equivalent to maximum a posteriori (MAP) estimation under a Gibbs posterior when using a distance-based prior. This generalized-Bayes perspective unifies seemingly ad-hoc heuristics with principled Bayesian decision theory, yielding posterior-based decision rules for both generating and evaluating counterfactuals. The framework also enables natural extensions such as uncertainty quantification and prior elicitation in explanation generation. This matters because it elevates counterfactual explanations from a heuristic technique to a theoretically principled framework, enabling rigorous comparison, principled hyper-parameter selection, and new algorithmic developments grounded in Bayesian statistics.\n\n## Augmentation and Data-Level Interpretability\n\n[1] addresses the problem of underrepresented topics in unsupervised NLP clustering, where minority clusters are often poorly captured or completely missed. While not a traditional interpretability paper, the work is fundamentally about making the latent structure of data visible and tractable. The approach integrates Gaussian Mixture Models (GMMs) to detect clusters that correspond to underrepresented data areas, then uses Large Language Models to generate synthetic documents that enrich those clusters, improving their representation before clustering. From an interpretability perspective, this work highlights how data-level interventions can serve as a form of \"illumination\"—making hidden structure learnable rather than merely explaining it post hoc. The contribution is an unsupervised augmentation pipeline that is fully label-free and robust to class imbalance, applicable to any clustering pipeline.\n\n## Domain-Aware Interpretable Systems\n\n[6] tackles interpretability from an ontological engineering perspective in the fault detection and diagnostics (FDD) domain for variable air volume (VAV) HVAC systems. The paper develops FDD-ON, a formal ontology that bridges heterogeneous data sources, diverse equipment types, and varied diagnostic outputs, addressing deep issues of data interpretability and interoperability that plague industrial deployments. The ontology serves as a structured knowledge layer that makes data and diagnostic outputs machine-interpretable and semantically consistent, enabling downstream use cases like digital twin frameworks and AI-assisted diagnostics. This work matters because it demonstrates that interpretability is not only about model internals but also about the external knowledge infrastructure that makes model outputs trustworthy and actionable in deployment.\n\n## Key Takeaways\n\n- **Step-level reasoning quantification (SARE)** [2] provides a new granular tool for measuring computational effort in CoT, moving beyond trajectory-level scalars to identify where models concentrate their processing.\n- **Latent reasoning traces for scalar reward models** [5] offer a path to combine generative-level robustness with scalar-level efficiency and probabilistic interpretability, crucial for RLHF alignment.\n- **Certifying lawful internal representations** [3] establishes formal criteria for verifying whether networks truly use physical laws across the entire domain of validity, not just on training data.\n- **Theoretical unification of counterfactual explanations** [4] via the Gibbs posterior framework transforms a practical heuristic into a principled Bayesian procedure, enabling uncertainty quantification and principled evaluation.\n- **Data augmentation as interpretability enabler** [1] shows that GMM-guided LLM augmentation can reveal and strengthen underrepresented structure in unsupervised settings, making data-level latent patterns tractable.\n- **Ontological infrastructure for domain interpretability** [6] underscores that bridging data silos via structured knowledge (FDD-ON) is as essential for trustworthy AI deployment as model-level explanations.\n- **Across all papers** [1]-[6], there is a clear shift from post hoc explanation toward proactive, structured verification—whether through geometric energy measures, causal-consistency certification, Bayesian decision frameworks, or semantic ontologies—indicating that interpretability is maturing into a formal engineering discipline.",
+    "papers": [
+      {
+        "title": "Imbalanced Data Clustering via Targeted Data Augmentation Using GMM and LLM",
+        "url": "",
+        "authors": [
+          "Noor Khalal",
+          "Abdallah Alaa-Eddine Djamai",
+          "Imed Keraghel",
+          "Mohamed Nadif"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "How Hard Does It Think? Analyzing Step-Aware Reasoning Energy in LLM Chain-of-Thought Trajectories",
+        "url": "",
+        "authors": [
+          "Hui Wei",
+          "Junda Wu",
+          "Sheldon Yu",
+          "Sizhe Zhou",
+          "Yizhu Jiao",
+          "Ming Zhong",
+          "Bowen Jin",
+          "Tong Yu",
+          "Shijia Pan",
+          "Jiawei Han",
+          "Julian McAuley"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "LAWFUL: Law-Aligned Witness for Faithful Use of Latents",
+        "url": "",
+        "authors": [
+          "Kevin Chen",
+          "Kenneth W. Parker",
+          "Anish Arora"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "A Generalized-Bayes Perspective on Counterfactual Explanations: Posterior-Based Decision-Making and Evaluation",
+        "url": "",
+        "authors": [
+          "Keita Kinjo"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "Learning Latent Reasoning Traces for Scalar Reward Models End-to-End",
+        "url": "",
+        "authors": [
+          "Sanwoo Lee",
+          "Clive Bai",
+          "Hsiu-Yuan Huang",
+          "Kun Liang",
+          "Weijie Liu",
+          "Yunfang Wu"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "Development of FDD-ON: an Ontology for VAV HVAC System Fault Detection and Diagnostics",
+        "url": "",
+        "authors": [
+          "Yimin Chen",
+          "Brian Fricke",
+          "Bo Shen",
+          "Jamie Lian",
+          "Mingkan Zhang",
+          "James Lo",
+          "Yun Zhang",
+          "Shi Ye",
+          "Jiajing Huang",
+          "Han Hu",
+          "Chujie Lu",
+          "Rui Tang",
+          "George Zhuang"
+        ],
+        "date": "2026-08-03"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-03",
+    "paperCount": 3,
+    "markdown": "# Bridging Explanation Fidelity and Clinical Decision-Making: A Multi-Perspective Digest on Explainable AI in High-Stakes Domains\n\nToday's research landscape demonstrates a maturing shift from algorithmic novelty toward human-centered validation and end-to-end pipeline rigor in explainable AI (XAI). The selected papers collectively address three critical dimensions: clinical integration of interpretable biomarkers, methodological standardization of ML pipelines, and quantitative metrics that align machine explanations with human cognition.\n\n## From Biomarkers to Interpretable Signals: Explainability in Cognitive Health Assessment\n\nEarly detection of cognitive impairment represents a profound explainability challenge, as clinicians must trust AI outputs derived from heterogeneous physiological and behavioral data streams. [1] provides a comprehensive synthesis of multimodal detection technologies—EEG, structural and molecular neuroimaging, blood-based biomarkers, and digital markers—integrated through AI/ML and deep learning frameworks. The authors critically assess the trend toward increasingly complex, multi-modal architectures while highlighting a persistent gap: the opacity of these models undermines clinical adoption despite strong predictive performance. Their core contribution is a structured taxonomy of detection modalities mapped to explainability requirements at different disease stages, from MCI to dementia. This matters because it establishes a roadmap for where XAI investments are most needed—particularly in EEG-based systems where temporal explainability could reveal early neural signatures that are currently indistinguishable to human experts.\n\nThe paper further identifies a critical tension between biomarker specificity and interpretability: while amyloid/tau PET offers molecular precision, the explanations derived from such imaging require specialized clinical vocabulary that generalist practitioners may not possess. By framing technological advances through the lens of deployable cognitive assessment, [1] argues persuasively that the next frontier is not higher accuracy but transparent, stage-specific explanation protocols that can be embedded into routine geriatric care workflows.\n\n## Standardizing the Explanation Pipeline: Methodological Fragmentation in Surgical Risk Prediction\n\nSurgical risk stratification suffers from a reproducibility crisis rooted in heterogeneous ML practices, where differing feature selection strategies and validation protocols produce incomparable—and often unexplainable—results. [2] addresses this through a scoping review of end-to-end machine learning approaches for postoperative adverse event prediction, systematically characterizing pipelines from data preprocessing through model interpretation. The authors identify that while many studies report strong discrimination metrics (AUC, calibration), they frequently omit critical explainability components: feature attribution analyses, counterfactual explanations for individual patients, and uncertainty quantification. This methodological fragmentation directly undermines trust among perioperative clinicians who must act on model outputs in time-sensitive contexts.\n\nThe core contribution is a standardized pipeline framework that integrates explanation generation as a non-negotiable stage rather than an optional post-hoc step. By synthesizing design patterns across dozens of studies, [2] reveals that models incorporating structured explanation outputs—such as SHAP values or LIME-based local surrogates—demonstrate higher clinical acceptance in observed deployment studies, even when their raw accuracy is marginally lower. This finding matters enormously for the XAI community: it suggests that explanation quality, not raw performance, is the binding constraint for real-world surgical decision support. The review concludes with specific recommendations for reporting standards that include explanation fidelity metrics, positioning interpretability as a first-class citizen in clinical ML research design.\n\n## Quantifying Human-Aligned Explanations: The Explainability-Performance Coefficient Revisited\n\nA fundamental open problem in XAI is the absence of objective, model-agnostic metrics that capture both fidelity (how well explanations reflect model reasoning) and human comprehensibility (whether users can act on explanations). [3] confronts this directly by proposing a refined version of the Explainability-Performance Coefficient (EPC), a metric that quantifies explanation quality through the explicit trade-off between feature selection sparsity and preserved model performance. The authors embed this within a human-centered validation framework, recognizing that mathematically optimal explanations may fail in practice if they do not align with clinician mental models or decision heuristics.\n\nThe core technical approach introduces an entropy-based regularization that penalizes explanations for retaining non-informative features while rewarding those that maintain predictive accuracy under feature ablation. Through empirical validation across multiple model families and datasets, [3] demonstrates that the EPC score correlates significantly with human judgment ratings of explanation usefulness—a critical result that has been elusive in prior XAI metric design. This work matters because it moves beyond circular validation (comparing one saliency map to another) toward grounding explanation quality in human utility. The model-agnostic nature of EPC enables direct comparison across explanation techniques (e.g., LIME vs. SHAP vs. integrated gradients), offering practitioners a principled selection criterion that balances sparsity against faithfulness, with implications for regulatory compliance where explanation requirements are increasingly mandated.\n\n## Cross-Cutting Themes and Emerging Architectures\n\nSynthesizing across [1], [2], and [3], several convergent patterns emerge that define the current state of explainability research. First, there is a clear departure from post-hoc explanation as an afterthought toward proactive explanation design embedded in the modeling pipeline—whether through clinical biomarker selection protocols [1], standardized surgical risk pipelines [2], or human-validated metrics that guide feature engineering [3]. This architectural shift suggests that the next generation of XAI will be evaluated not on standalone explanation quality but on end-to-end system trustworthiness, from raw data through model output to clinical action.\n\nSecond, the human-centered turn is unmistakable. [3] provides quantitative evidence that human-compatible explanations differ systematically from purely algorithmic ones, while [2] demonstrates that clinical adoption correlates with explanation interpretability rather than raw accuracy. [1] reinforces this by showing that even the most sensitive biomarkers fail to influence care decisions when their rationale cannot be effectively communicated to overburdened practitioners. The implication is that XAI research must partner closely with domain experts and cognitive scientists, not merely as evaluators but as co-designers of explanation interfaces and validation protocols.\n\nFinally, the papers collectively highlight a methodological gap: the absence of standardized benchmarks for explanation quality in high-stakes domains. While [3] contributes the EPC framework, its application to clinical settings remains preliminary. [2] calls for reporting guidelines, and [1] emphasizes the need for stage-specific explainability requirements. There is an unmistakable opportunity for the research community to develop shared evaluation suites that couple computational metrics with human performance tasks, enabling fair comparison across methods and facilitating regulatory approval pathways.\n\n## Key Takeaways\n\n- **Explanation quality, not raw accuracy, is the primary barrier to clinical AI adoption**: Both [2] and [3] provide evidence that practitioners prioritize interpretable outputs with modest performance over opaque high-performing models, suggesting a fundamental reweighting of evaluation criteria.\n- **Multimodal clinical data require stage-specific explanation protocols**: [1] demonstrates that EEG, imaging, and digital biomarkers each demand different explainability strategies, from temporal pattern visualization to molecular pathway narratives, necessitating modular XAI architectures.\n- **Standardized pipeline frameworks are urgently needed**: [2] reveals that fragmented methodological practices undermine reproducibility and trust in surgical risk prediction, proposing explanation generation as a mandatory pipeline stage rather than optional enhancement.\n- **Human-centered XAI metrics are feasible and necessary**: [3] shows that the Explainability-Performance Coefficient can achieve statistically significant correlation with human usefulness judgments, bridging the gap between computational fidelity and cognitive alignment.\n- **Sparsity and performance trade-offs define a Pareto frontier for explanations**: [3]'s approach formalizes this trade-off, enabling practitioners to select explanation complexity appropriate for their decision context—high-stakes surgical settings may require more exhaustive explanations despite lower sparsity.\n- **Post-hoc explanations are insufficient; proactive explanation design is the emerging paradigm**: Across all three papers, the most promising approaches integrate interpretability into model construction and validation, rather than appending it after deployment.\n- **Regulatory and clinical adoption pathways hinge on reproducible explanation benchmarks**: The absence of standardized evaluation suites linking computational metrics to human performance remains the single largest obstacle to translating XAI advances into routine practice, as collectively evidenced by [1], [2], and [3].",
+    "papers": [
+      {
+        "title": "Technological Advances in Detecting and Managing Cognitive Impairment in Older Adults: Trends, Challenges, and Future Directions",
+        "url": "",
+        "authors": [
+          "Mohammad Asif",
+          "Azizuddin Khan",
+          "Mohd Azam",
+          "Anurag Rajkumar Bombarde"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "What Is Missing in Surgical Risk Stratification and Outcome Prediction: A Scoping Review of End-to-End Machine Learning Approaches",
+        "url": "",
+        "authors": [
+          "Yizhi Dong",
+          "Yuhe Ke",
+          "Hairil Rizal Abdullah",
+          "Yucheng Xing",
+          "Kevan Kai Bing Teo",
+          "Ling Huang",
+          "Mengling Feng"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "A Human-Centered Validation of the Explainability-Performance Coefficient",
+        "url": "",
+        "authors": [
+          "Christian Oliva",
+          "Luis F. Lago-Fernández"
+        ],
+        "date": "2026-08-03"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-03",
+    "paperCount": 11,
+    "markdown": "# Multimodal Systems Under the Microscope: From Benchmarking Gaps to Memory Architectures\n\nToday's research landscape spans the full lifecycle of multimodal AI systems—from foundational benchmarking of modality gaps and content drift to applied systems for hate speech detection, shopping agents, and clinical risk stratification. Across these papers, a unifying theme emerges: as multimodal models become deployment-ready, the community is increasingly focused on reliability, consistency, and the architectural mechanisms that govern how vision and language interact.\n\n## Benchmarking Modality Gaps and Consistency Failures\n\nThe systematic evaluation of cross-modal consistency has emerged as a critical concern for multimodal large language models (MLLMs). [2] introduces TokenSwap, a method that constructs semantically equivalent inputs by replacing textual concepts with aligned images, thereby interleaving visual tokens with text. This enables the first systematic measurement of the \"modality gap\"—the performance discrepancy between text-only and multimodal inputs—revealing that MLLMs exhibit surprising inconsistency under cross-modal variation. The work provides both a benchmark and a diagnostic tool, suggesting that current architectures do not fully achieve modality-invariant reasoning.\n\nComplementary to this diagnostic work, [7] investigates a related but distinct consistency problem: content drift in accelerated diffusion-based MLLMs. By comparing Fast-dLLM outputs against unaccelerated baselines on 300 real images, the authors isolate stale visual and generated-text states as primary contributors to drift. Their state-refresh ablations and image-swap interventions provide actionable insights for serving-time deployment, where training-free acceleration is desirable but must not silently alter generated content. The paper's finding that confidence-threshold tuning alone is insufficient underscores the need for architectural interventions rather than decoding-time adjustments.\n\nThe cognitive dimension of multimodal evaluation appears in [9], which introduces FriendBench, a benchmark for dyadic familiarity inference from 20-second interaction clips. Testing 26 models across text, audio, and video against human panels, the authors find that the best model achieves statistical parity with humans on accuracy, yet reaches decisions through different mechanisms. This highlights that benchmark parity does not imply cognitive alignment—a crucial caveat for researchers using human performance as a ceiling for model evaluation.\n\n## Memory Architectures for Long-Horizon Multimodal Agents\n\nTwo papers address the growing need for sophisticated memory mechanisms in multimodal agents operating over extended time horizons. [3] proposes ViSAGE, an agentic memory framework designed for long-form video understanding. The approach tackles two critical failures in existing systems: the loss of fine-grained identity cues under aggressive compression, and the reliance on vector-similarity retrieval that can surface semantically related but identity-mismatched evidence. By constructing self-correcting memories, ViSAGE addresses entity confusion and error propagation that plague current approaches to long-horizon reasoning.\n\nSimilarly motivated, [8] formalizes the concept of \"analytic memory\" as distinct from the retrieval-centric paradigm that dominates multimodal agent design. While retrieval memory returns query-relevant information, analytic memory organizes recurring multimodal observations into queriable structures supporting filtering, aggregation, ranking, and temporal reasoning. This abstraction enables agents to compute over accumulated experiences rather than merely retrieve them, addressing a fundamental limitation in current systems that cannot perform cross-interaction analysis. Both papers converge on the insight that vector similarity alone is insufficient for reliable multimodal memory.\n\n## Domain-Specific Adaptation: Hate Speech, Shopping, and Clinical Systems\n\nTwo papers demonstrate the importance of task-specific architectural adaptation for multimodal systems. [1] presents ZeroR@CHiPSAL 2026, a two-stage vision-language adaptation framework for Nepali meme classification. Building on the semantic alignment of the RA-HMD framework with Qwen3-VL-8B-Instruct, the approach employs LoRA fine-tuning with an MLP projection head followed by contrastive backbone fine-tuning using supervised InfoNCE. The native Devanagari support of the backbone is critical for this low-resource language setting, illustrating how base model selection interacts with downstream performance in culturally specific multimodal tasks.\n\n[5] introduces MMShopBench, the first real-log benchmark for multimodal, multi-turn shopping agents, addressing the gap between synthetic text-only evaluation and real-world shopping behavior. The benchmark's ground-truth annotations of purchase intent and multi-turn dialogue structure enable rigorous evaluation of agents that must interpret images and language jointly. This work matters because shopping agents represent one of the highest-value commercial applications of multimodal AI, yet have been evaluated almost exclusively on unrealistic synthetic data.\n\n## Privacy, Unlearning, and Trustworthy Multimodal Learning\n\nThe intersection of multimodal learning with privacy and trust emerges as a critical research direction. [6] addresses the underexplored problem of multimodal federated graph unlearning (MMFGU), where clients may request removal of specific modality content, interactions, or cross-modal correspondences while retaining other data. The authors identify that existing unlearning methods cannot handle these fine-grained, heterogeneous requests, proposing a framework that navigates the tension between removing information and preserving model utility. This work is timely given evolving data protection regulations that mandate granular user control over their contributed data.\n\nWhile [4] and [10] are broader reviews of clinical applications rather than novel methods, they provide essential context for multimodal systems in healthcare. [4] synthesizes advances in EEG, neuroimaging, blood biomarkers, and digital markers integrated through AI for detecting cognitive impairment, noting that multimodal integration through deep learning is promising but fragmented. [10] conducts a scoping review of end-to-end ML for surgical risk stratification, revealing methodological heterogeneity that undermines reproducibility and clinical translation. Both papers matter because they map the gap between research capabilities and clinical deployment readiness—a gap that multimodal AI must bridge through standardized evaluation and validation.\n\n## The Geometry of Private Generation\n\n[11] offers a theoretically grounded approach to differentially private training of rectified-flow transformers (StraightDP), addressing the utility cliff at strong privacy guarantees. By exploiting the geometric structure of rectified flows—where the Bayes-optimal velocity is governed by class-conditional moments near the noise end and sample-specific structure near the data end—the method strategically allocates the privacy budget. Releasing whitened class-conditional moments once with a small budget share enables distillation into weights or injection at sampling time. This geometry-aware approach represents a principled advance over treating privacy as a uniform perturbation across all generation steps.\n\n## Key Takeaways\n\n- The modality gap is measurable and systematic: TokenSwap [2] demonstrates that MLLMs produce inconsistent predictions for semantically equivalent text-only and multimodal inputs, making cross-modal consistency a first-class evaluation criterion.\n- Memory for multimodal agents requires more than retrieval: Both ViSAGE [3] and analytic memory [8] argue that vector similarity retrieval fails on identity-consistency and cross-interaction computation, necessitating structured, self-correcting memory designs.\n- Acceleration introduces silent content drift: [7] shows that training-free acceleration of diffusion MLLMs changes generated content through stale visual/text states, requiring architectural rather than decoding-time fixes.\n- Human parity on benchmarks does not imply human-like reasoning: FriendBench [9] demonstrates statistical accuracy parity between models and humans while revealing divergent decision mechanisms.\n- Domain-specific multimodal systems require careful backbone selection and task adaptation: The success of [1] on Nepali memes hinges on native Devanagari support, and [5] shows that real-world multimodal shopping logs provide evaluation fidelity synthetic data cannot match.\n- Privacy-preserving multimodal learning is expanding to fine-grained unlearning: [6] identifies the need for modality- and relationship-specific unlearning in federated graph settings, going beyond entity and client removal.\n- Geometry-aware privacy mechanisms can rescue utility at strong DP guarantees: StraightDP [11] demonstrates that exploiting rectified-flow structure enables principled budget allocation, offering a template for other generative architectures.",
+    "papers": [
+      {
+        "title": "ZeroR@CHiPSAL 2026: Two-Stage Vision-Language Adaptation with Contrastive Learning for Nepali Meme Classification",
+        "url": "",
+        "authors": [
+          "Nitiz Khanal"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "TokenSwap: Benchmarking and Reducing the Modality Gap in Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Andong Hua",
+          "Colton Bishop",
+          "Igor Mordatch",
+          "Arian Hosseini",
+          "Jindong Gu",
+          "Aleksandra Faust",
+          "Rebecca Roelofs",
+          "Yao Qin"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "ViSAGE: Constructing Self-Correcting Memories for Long-Form Video Understanding",
+        "url": "",
+        "authors": [
+          "Xinkui Zhao",
+          "Enbo Chen",
+          "Yifan Zhang",
+          "Chang Liu",
+          "Guanjie Cheng",
+          "Naibo Wang",
+          "Yueshen Xu"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "Technological Advances in Detecting and Managing Cognitive Impairment in Older Adults: Trends, Challenges, and Future Directions",
+        "url": "",
+        "authors": [
+          "Mohammad Asif",
+          "Azizuddin Khan",
+          "Mohd Azam",
+          "Anurag Rajkumar Bombarde"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "MMShopBench: A Real-Log Benchmark for Multimodal, Multi-Turn Shopping Agents",
+        "url": "",
+        "authors": [
+          "Zeying Hao",
+          "Hao Guo",
+          "Mengtao Xu",
+          "Yimin Hu",
+          "Yuheng Song",
+          "Zesheng Zhou",
+          "Jinsong Lan",
+          "Xiaoyong Zhu"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "MMFGU: Multimodal Federated Graph Unlearning",
+        "url": "",
+        "authors": [
+          "Haodong Lu",
+          "Zekai Chen",
+          "Weiwei Ji",
+          "Shihao Li",
+          "Xunkai Li",
+          "Xun Wu",
+          "Yinlin Zhu",
+          "Rong-Hua Li"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "Faster but Different: Diagnosing and Controlling Content Drift in Accelerated Multimodal Diffusion Language Models",
+        "url": "",
+        "authors": [
+          "Yaoxuan Dou",
+          "Yang Shu"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "Beyond Retrieval: Analytic Memory for Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Zhoujin Tian",
+          "Yao Tian",
+          "Hao Zhang",
+          "Cheng Chen",
+          "Yakun Li",
+          "Lei Zhang",
+          "Xiaofang Zhou"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "FriendBench: Benchmarking Dyadic Familiarity Inference in Humans and Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Jeffrey M. Girard",
+          "Jason Z. Zheng",
+          "Jacqueline R. Vertino",
+          "Antony D'Avirro",
+          "Benjamin Peloquin"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "What Is Missing in Surgical Risk Stratification and Outcome Prediction: A Scoping Review of End-to-End Machine Learning Approaches",
+        "url": "",
+        "authors": [
+          "Yizhi Dong",
+          "Yuhe Ke",
+          "Hairil Rizal Abdullah",
+          "Yucheng Xing",
+          "Kevan Kai Bing Teo",
+          "Ling Huang",
+          "Mengling Feng"
+        ],
+        "date": "2026-08-03"
+      },
+      {
+        "title": "StraightDP: Geometry-Aware Differential Privacy for Rectified-Flow Transformers",
+        "url": "",
+        "authors": [
+          "Xujun Che",
+          "Depeng Xu",
+          "Xintao Wu"
+        ],
+        "date": "2026-08-03"
+      }
+    ]
+  }
+]
