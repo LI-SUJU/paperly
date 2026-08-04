@@ -1,0 +1,547 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-04",
+    "paperCount": 7,
+    "markdown": "# Navigating the Latent Geometry of Trust: Interpretability Across Modalities, Languages, and Sequential Decisions\n\nToday's research landscape reveals a maturing field where interpretability is no longer a post-hoc add-on but a fundamental design constraint, extending from the internal geometry of vision-language models to the deployment constraints of robust decision-making under uncertainty. The papers presented span interpretability at multiple scales—from local subspace decompositions of VLM activations to memory trajectories in long-horizon dialogue and credit-assigned gradient flows for test-time reasoning—all unified by a shared commitment to making AI systems more transparent, accountable, and diagnostically useful.\n\n## Local Geometry and Representation Decomposition in Multimodal Models\n\nThe first cluster of work addresses the challenge of understanding how vision-language models (VLMs) organize information in their high-dimensional residual streams. Traditional interpretability methods often default to finding global linear directions, which can obscure the fact that neural representations may be locally low-dimensional even when globally high-dimensional.\n\n**LENS (Local Explanation of Neighborhood Subspaces)** [1] tackles this by employing a Mixture of Factor Analyzers to decompose VLM activations into local low-rank Gaussian neighborhoods, applied to LLaVA-1.5-7B and Qwen3-VL-8B. The method reveals distinct \"de\" (likely a truncated \"decomposition\" or \"decoding\") patterns that are invisible to global linear probes, suggesting that multimodal interactions occur within highly localized geometric structures. This work matters because it provides a principled framework for understanding *where* and *how* visual and textual information fuse, which is critical for debugging multimodal systems and for building more controllable generation pipelines.\n\nBuilding on a similar theme of task-specific representational clarity, **GradCuit** [6] introduces a credit-assigned gradient flow approach for test-time latent reasoning. The core insight is that existing optimization-based reasoning methods suffer from indirect sequence-level credit assignment—latent updates are connected to reasoning trajectories only through decoded tokens. GradCuit circumvents this by inserting optimizable latent states at a selected Transformer layer between the prompt's hidden representations and the generated continuation. This design enables credit to flow directly through the computational circuit, making the latent reasoning process both more robust and more interpretable. The contribution is significant because it reframes latent reasoning not as an opaque optimization loop but as a structured, analyzable computational pathway, allowing researchers to trace exactly how latent updates influence subsequent token generation.\n\n## Interpretable Representations for Structured and Low-Resource Domains\n\nA second thematic thread centers on making interpretability practical for specialized domains where data is structured, scarce, or safety-critical. The trade-off between predictive performance and human-understandable representations is a recurring motif.\n\nFor clinical applications, **xMICD** [2] directly addresses the long-standing tension in representing ICD codes in Electronic Health Records. Grouping-based methods are interpretable but lossy, while embedding-based methods are powerful but opaque. The proposed Explainable Representation of Multiple ICD Codes framework seeks to bridge this gap, presumably by constructing representations that retain the expressive power of embeddings while preserving tractable semantic relationships to original code definitions. The importance here is clinical: models that clinicians cannot probe or audit are unlikely to be adopted, regardless of predictive accuracy.\n\nIn the low-resource language space, **SentiBanglaBERT** [5] presents a two-stage framework for Bengali sentiment classification that combines domain-adaptive continual pretraining (adapting to news-style data) with parameter-efficient fine-tuning via Low-Rank Adaptation (LoRA). Critically, the authors integrate SHAP-based interpretability to provide linguistic insights into how BERT-family models make sentiment decisions in Bengali. This is a doubly valuable contribution: it demonstrates that high-performance sentiment analysis is achievable in low-resource settings without sacrificing computational efficiency, and it shows that interpretability tools can yield concrete linguistic findings—suggesting that SHAP attribution can surface which specific Bengali lexemes or syntactic structures drive sentiment, thereby informing both model improvement and linguistic theory.\n\n## Memory, Provenance, and Diagnostic Transparency in Sequential Agents\n\nA third cluster addresses the challenge of maintaining interpretable, traceable memory in long-horizon interactive systems. Here, the problem is not just *what* a model knows, but *how* it came to know it, and how that knowledge evolves.\n\n**TrajWiki** [4] proposes a trajectory-based memory framework for long-horizon dialogue agents, fundamentally rethinking how external memory is structured. Rather than storing isolated records or overwritable states, TrajWiki treats memory as a set of source-grounded trajectories that explicitly preserve how information originates, evolves, conflicts, and becomes obsolete. This is a significant departure from prior memory-augmented agents, which often lose provenance or make it difficult to diagnose errors. For dialogue agents, the practical payoff is enormous: if an agent states a fact that is later contradicted, the trajectory structure allows the system (and a human auditor) to trace back to the original source, understand the conflict resolution, and assess whether the final response is justified. This makes the agent's memory not just a retrieval mechanism but a diagnostically transparent knowledge base.\n\nComplementing this focus on provenance, **DeBERTa-Sentinel** [3] addresses the related problem of transparency in AI-generated text detection. The authors argue that existing detectors like GPT-Sentinel fail to generalize across diverse model outputs and paraphrasing attacks. Their solution leverages DeBERTa-v3's disentangled attention mechanism to capture subtle structural irregularities in synthetic text. While the primary framing is detection performance, the \"responsible AI\" framing suggests that the model's internal attention patterns serve a dual interpretability function: highlighting *which* structural cues are most diagnostic of synthetic text. This matters for building trustworthy web ecosystems, where understanding *why* a text is flagged is as important as the flag itself.\n\n## Uncertainty, Constraints, and Policy Interpretability\n\nThe final paper extends interpretability into the realm of robust sequential decision-making under uncertainty, where the constraint is not internal model structure but operational fidelity.\n\n**Optimizing Minimax Regret in Uncertain MDPs with Small Sets of Policies** [7] addresses a practical and often-overlooked problem: what if you cannot deploy an unlimited number of policies in an uncertain environment? In uncertain Markov decision processes (UMDPs), the environment is represented as a set of possible MDPs. Deploying a single policy sacrifices performance, but preparing individually optimized policies for every MDP violates real-world operational, regulatory, or interpretability constraints. The authors consider the setting where only a small, fixed number of policies can be prepared, and they seek to optimize minimax regret across the uncertain environment set. This is an interpretability problem in a broad sense: the constraint on the number of policies is often imposed precisely to maintain human oversight and system auditability. The contribution is a framework for selecting and allocating a small set of policies such that worst-case regret is minimized, rather than average performance maximized. This work matters for safety-critical applications like clinical decision support or autonomous systems, where regulators require that the number of distinct behaviors a system can exhibit be enumerable and auditable, even at the cost of peak performance.\n\n## Key Takeaways\n\n- **Local geometry reveals what global probes miss**: LENS demonstrates that multimodal interactions in VLMs are locally low-dimensional and structured, suggesting that interpretability methods must operate at neighborhood scales, not just global linear directions, to faithfully capture representational organization.\n- **Credit assignment is the key to interpretable reasoning**: GradCuit shows that inserting optimizable latent states directly between prompt and continuation, with credit flowing through the circuit, yields both better robustness and clearer insight into how latent reasoning shapes outputs.\n- **Parameter-efficient fine-tuning can be paired with interpretability in low-resource settings**: SentiBanglaBERT proves that LoRA-based adaptation plus SHAP analysis delivers both computational efficiency and concrete linguistic insights for Bengali sentiment, a replicable template for other low-resource languages.\n- **Memory must be trajectory-based, not record-based, for long-horizon trust**: TrajWiki's source-grounded memory trajectories address provenance, evolution, and obsolescence of information, making dialogue agents diagnostically transparent in ways that isolated memory records cannot achieve.\n- **Detection systems improve when they are interpretable by design**: DeBERTa-Sentinel's use of disentangled attention not only enhances generalization for AI-text detection but also surfaces the structural cues that make synthetic text identifiable, supporting a responsible-AI framing.\n- **Interpretability constraints can reshape optimization objectives**: In UMDPs, operational limits on the number of deployable policies (often imposed for oversight and auditability) shift the objective from maximizing average performance to minimizing worst-case regret, a principled trade-off between flexibility and transparency.\n- **A unified theme emerges: traceability is the common currency of trust**: Across vision-language models, clinical codes, dialogue memory, sentiment analysis, and robust decision-making, the papers converge on the principle that systems earn trust when their internal decisions, memory states, and policy selections can be traced, audited, and explained.",
+    "papers": [
+      {
+        "title": "Through the LENS: Local Geometric Decomposition of Vision-Language Model Representations",
+        "url": "",
+        "authors": [
+          "Shalom Kachko",
+          "Raz Lapid",
+          "Margarita Vald",
+          "Almog Dubin",
+          "Moshe Sipper"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "xMICD: Explainable Representation of Multiple ICD Codes",
+        "url": "",
+        "authors": [
+          "Pat Vatiwutipong",
+          "Kumkup Keeratisiwakul",
+          "Albert Phuoc Kien Van Truong",
+          "Nutcha Yodrabum",
+          "Wasin Pansiritanachot",
+          "Marvin N. Wright",
+          "Thanapon Noraset"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "DeBERTa-Sentinel: Toward Transparent and Trustworthy Detection of AI-Generated Text",
+        "url": "",
+        "authors": [
+          "Muhammad Yousaf Rehman",
+          "Muhammad Islam"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "TrajWiki: Source-Grounded Memory Trajectories for Long-Horizon Dialogue Agents",
+        "url": "",
+        "authors": [
+          "Jingyu Sun",
+          "Yuyang Xue",
+          "Mingyang Li",
+          "Zhengtao Yao",
+          "Jiachen Li",
+          "Yang Cui",
+          "Wenhao Cai",
+          "Haozhe Liu",
+          "Fangying Wang",
+          "Magdalene Katharina Montgomery",
+          "Syed Murtuza Baker",
+          "Hongpeng Zhou"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Two-Stage Bengali Sentiment Classification: Domain Adaptation Through Continual Learning and Parameter-Efficient Fine-Tuning",
+        "url": "",
+        "authors": [
+          "MD Shaikh Rahman",
+          "Syed Maudud E Rabbi",
+          "Muhammad Mahbubur Rashid"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "GradCuit: Credit-Assigned Gradient Flow Enables Robust and Interpretable Test-Time Latent Reasoning",
+        "url": "",
+        "authors": [
+          "Zhaoxin Yu",
+          "Qi Shen",
+          "Hengli Li",
+          "Zhaowei Zhang",
+          "Song-Chun Zhu",
+          "Chi Zhang",
+          "Zilong Zheng"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Optimizing Minimax Regret in Uncertain MDPs with Small Sets of Policies",
+        "url": "",
+        "authors": [
+          "Sterre Lutz",
+          "Daniël Vos",
+          "Matthijs T. J. Spaan",
+          "Anna Lukina"
+        ],
+        "date": "2026-08-04"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-04",
+    "paperCount": 3,
+    "markdown": "# The Explainability Arms Race: From Auditing Attacks to Trustworthy Healthcare AI\n\nToday's research landscape reveals a critical tension: explainability methods are simultaneously being weaponized and defended, while their application in high-stakes domains like healthcare demands increasingly rigorous standards. The field is pivoting from simply generating explanations toward understanding their vulnerabilities, verifying their reliability, and integrating them into comprehensive trust frameworks.\n\n## Adversarial Attacks on Explainability: The Security Blindspot\n\nThe security of post-hoc explanation methods has received far less scrutiny than the models they interpret, creating a significant vulnerability gap. This work exposes how adversaries can systematically undermine the very tools designed to ensure transparency and accountability.\n\n[1] Kumar and Kasyap introduce a dual-penalty evasion framework that attacks white-box explainability pipelines at their foundation. Rather than targeting the model's predictions directly, the attack exploits the interaction between explainers (LIME, SHAP, Integrated Gradients) and out-of-distribution (OOD) detectors, creating adversarial triggers that toggle predictions specifically when queried by an explainer. Their approach uses two penalty terms: one to fool the explainer into producing misleading feature attributions and another to evade detection by OOD safeguards. The critical contribution is demonstrating that current defenses—which primarily focus on OOD detection—are insufficient, as the dual-penalty formulation bypasses them while maintaining model performance on legitimate inputs. This matters because it reveals that explainability audits, which stakeholders rely on for fairness and bias verification, can be systematically manipulated to conceal algorithmic biases and backdoors, undermining regulatory compliance and trust.\n\n## Robust AI-Generated Text Detection Through Explainability\n\nThe proliferation of LLM-generated content creates urgent demand for detectors that are not just accurate but also transparent about their decisions. This work directly addresses the generalization gap in existing detectors and positions explainability as a core feature rather than an afterthought.\n\n[2] Rehman and Islam present DeBERTa-Sentinel, a framework that leverages DeBERTa-v3's disentangled attention mechanism to detect AI-generated text with superior generalization and resistance to paraphrase attacks. The architecture captures subtle structural irregularities in synthetic text by modeling both content and position information separately, which previous transformer-based detectors like GPT-Sentinel miss. The key technical innovation is the disentangled attention mechanism, which allows the model to focus on positional discrepancies that are characteristic of machine-generated text but largely invariant to paraphrasing. Their results demonstrate improved detection accuracy across diverse LLM outputs and adversarial paraphrasing, and the framework incorporates explainability components that show *why* specific texts are flagged as synthetic. This matters because building trustworthy web ecosystems requires detectors that can both perform well and justify their decisions to users, moderators, and policymakers, especially when false accusations could harm legitimate authors.\n\n## Trustworthy AI in Digital Health: The Missing Synthesis\n\nWhile healthcare AI has seen explosive growth, the field lacks a unified framework connecting robustness requirements with explainability standards. This gap has direct clinical consequences—clinicians cannot trust what they cannot verify, and regulators require both safety and transparency.\n\n[3] Mamun, Soumma, and Ghasemzadeh provide a comprehensive review of trustworthy AI specifically tailored to digital health, filling a critical gap in synthesizing robustness and explainability for this domain. The review systematically categorizes the dimensions of trustworthy AI—including fairness, accountability, and privacy—and analyzes how they interact across the AI lifecycle from problem formulation through deployment and human interaction. The key contribution is a focused synthesis that maps current explainability techniques to healthcare-specific requirements such as clinical validation, regulatory compliance (e.g., FDA, HIPAA), and clinician-AI interaction patterns. They identify that most current approaches treat robustness and explainability as separate concerns, whereas healthcare applications require them to be jointly optimized—for instance, an explanation that is robust to input perturbations is more clinically trustworthy than one that is not. This matters because it provides researchers and practitioners with a structured roadmap for building AI systems that meet the rigorous safety, ethical, and regulatory standards required for clinical integration, where the cost of both unexplained failures and misinterpreted explanations can be life-altering.\n\n## Toward Unified Trust Frameworks\n\nWhen viewed collectively, these papers suggest that explainability cannot be treated as a static property but rather as a dynamic capability that must be tested, secured, and contextualized for each deployment domain [1], [2], [3]. The adversarial attack surface documented in [1] directly challenges the safety assumptions underpinning healthcare applications reviewed in [3], while [2] demonstrates how architectural choices can simultaneously improve both detection performance and explainability quality. Together, they argue for a \"defense-in-depth\" approach where explanations are stress-tested against manipulation, designed with domain-specific interpretability requirements, and integrated into larger systems of accountability.\n\n## Key Takeaways\n\n- Explainability methods are vulnerable to adversarial manipulation, and current OOD-based defenses are insufficient; dual-penalty attacks can systematically hide biases and backdoors from auditors [1].\n- The security of explanation pipelines must be treated as a first-class concern in the design of AI governance frameworks, not an afterthought post-deployment [1].\n- Architectural innovations like disentangled attention can simultaneously improve detection robustness and explainability quality, suggesting that interpretability and performance are not inherently in conflict [2].\n- AI-generated text detection requires explainable outputs to be actionable and trustworthy in real-world settings where false accusations have consequences [2].\n- Healthcare AI requires a unified framework that jointly optimizes robustness and explainability across the entire lifecycle, from data collection to human interaction, rather than treating them as separate properties [3].\n- The gap between explainability research and regulatory requirements in high-stakes domains demands structured approaches that map technical capabilities to clinical and policy needs [3].\n- The field is shifting from \"producing explanations\" to \"guaranteeing explanation integrity\"—a fundamentally harder problem that will define the next phase of trustworthy AI research [1, 3].",
+    "papers": [
+      {
+        "title": "Crushing the Evidence: A Dual-Penalty Evasion Framework for Fooling White-Box Explainable AI Auditors",
+        "url": "",
+        "authors": [
+          "Niraj Kumar",
+          "Harsh Kasyap"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "DeBERTa-Sentinel: Toward Transparent and Trustworthy Detection of AI-Generated Text",
+        "url": "",
+        "authors": [
+          "Muhammad Yousaf Rehman",
+          "Muhammad Islam"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Trustworthy AI in Digital Health: A Comprehensive Review of Robustness and Explainability",
+        "url": "",
+        "authors": [
+          "Abdullah Mamun",
+          "Shovito Barua Soumma",
+          "Hassan Ghasemzadeh"
+        ],
+        "date": "2026-08-04"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-04",
+    "paperCount": 27,
+    "markdown": "# From Raw Signals to Reasoned Agents: The Expanding Frontier of Multimodal Intelligence\n\nToday's research landscape reveals a maturing multimodal field that is simultaneously pushing toward real-world deployment—in disaster response, clinical settings, and educational integrity—while deepening our theoretical understanding of how vision, language, and audio interact within increasingly complex model architectures. The papers span from foundational questions about what transfers between modalities [2] to applied systems that must operate under strict time constraints [1], with a notable emphasis on evaluation rigor, failure analysis, and the subtle ways modalities influence each other's reliability.\n\n## Benchmarking for Real-World Multimodal Deployment\n\nThe gap between laboratory evaluations and operational realities drives several contributions this week. **Obshazard-bench** [1] directly confronts the mismatch between static, expert-processed remote sensing benchmarks and the dynamic, time-critical nature of disaster response. The authors introduce an observation-driven evaluation framework that requires MLLMs to reason about rapidly evolving hazards from raw Earth observation streams, rather than curated post-hoc products. The core contribution is a benchmark design that forces models to make decisions under simulated operational constraints, revealing that current MLLMs struggle substantially when reanalysis products are unavailable and raw streams must be interpreted in real time. This matters because it exposes the fragility of models that appear competent on traditional benchmarks but fail when deployed in actual emergency response pipelines.\n\n**LongChart VQA** [13] addresses a similar evaluation gap in the document understanding domain, where existing benchmarks focus on single-chart perception. The authors design a synthesis pipeline built on latent graphs that generates multi-chart reasoning questions requiring genuine multi-step inference across charts. The key innovation is the guarantee of consistency and validity through the latent graph structure, which allows for controllable complexity in chart-to-chart reasoning. This benchmark provides a critical testbed for MLLMs as they are increasingly integrated into agentic workflows that require synthesizing information across multiple visual documents.\n\n**PosterMELD** [26] takes a different approach to benchmarking by building a complete multi-agent pipeline for scientific poster generation. Rather than hiding failures behind completed-output scoring, the system uses capacity-aware slots to guide writing before rendering, with deterministic gates and VLM review routing failures to bounded repair processes. The system exports editable PPTX and PNG artifacts, making it practically useful while providing fine-grained control over design diversity. This work matters because it demonstrates how evaluation and generation can be coupled in a way that surfaces intermediate failures rather than masking them behind aggregate metrics.\n\nThe **clinical modality failure analysis framework** [21] introduces a reusable, model-agnostic approach to understanding what happens when modalities are dropped at deployment time. The authors distinguish between \"loud\" failures (where accuracy drops are clearly signaled) and \"silent\" failures (where the model remains confident despite degraded inputs), arguing that this per-example, per-modality distinction is orthogonal to SHAP-style feature attribution. The framework's reusability across model replacements is a pragmatic contribution, acknowledging that clinical models are frequently updated while the evaluation infrastructure must remain stable. This work is essential for any safety-critical multimodal deployment where modality availability cannot be guaranteed. Several papers focus on specific application domains where the problem definition itself must be refined. The **multimodal Aristotelian persuasion evaluation** [11] tests VLMs on ethos, pathos, and logos detection using the ImageArg dataset, finding that Qwen-family models perform best, with Qwen3 excelling on logos and pathos tasks. The **zero-shot fake news detection framework** [18] argues that current methods fail because they assess news items in isolation rather than recognizing recycled disinformation tactics from past campaigns. Their multimodal retrieval-augmented approach explicitly models cross-modal discrepancies, addressing a reasoning gap that semantic matching alone cannot bridge. The paper on **protecting exercises against AI cheating** [15] proposes a novel defense: using adversarial visual perturbations on multimodal multiple-choice questions to steer AI solvers toward designated incorrect answers, creating statistical fingerprints of AI involvement. This \"fighting fire with fire\" approach is notable for reframing adversarial machine learning as a tool for educational integrity rather than an attack vector.\n\n## Interfaces Between Modalities: Learning What Transfers and What Doesn't\n\nThe theoretical question of how modalities interact and influence each other runs through several contributions. The **capability-driven scaling law** [2] provides the first cross-family framework for predicting VLM performance from LLM textual capabilities alone. By extracting a low-dimensional capability score S from LLM benchmarks via PCA, the authors show that VLM accuracy can be predicted before training begins, addressing the longstanding problem that compute-based scaling laws fail to generalize across model families. This work has immediate practical implications for choosing LLM backbones when building VLMs, transforming what was previously an unprincipled decision into a quantifiable prediction problem.\n\nThe **polysemy study** [7] reveals a striking \"multimodal gap\" in how models handle ambiguous words. Across 17 text-to-image and 15 text-generation models, the authors find that image generators produce a narrower, less diverse set of senses for polysemous words compared to text-generating counterparts within the same model family. This suggests that the visual modality imposes a strong prior that collapses semantic ambiguity in ways that text generation does not. Understanding this asymmetry is crucial for building systems that handle ambiguity gracefully across modalities, particularly for creative generation and human-AI interaction where maintaining multiple interpretations is valuable.\n\nThe **LENS interpretability method** [9] offers a new lens on VLM representations by decomposing activations into local low-rank Gaussian neighborhoods using a Mixture of Factor Analyzers. Applied to LLaVA-1.5-7B and Qwen3-VL-8B, the method reveals that interactions between image and text modalities are often locally low-dimensional even when globally high-dimensional. This nuanced view of representation geometry could inform targeted interventions for improving multimodal reasoning and debugging failures, complementing linear probes and causal tracing approaches that operate on global directions.\n\nThe **contrastive audio embedding study** [16] presents a counterintuitive finding: scaling the corpus does nothing for a missing attribute, but adding a lexical-speech round to a frozen-base embedding model raises zero-shot keyword spotting by 76 points while reducing speech-emotion recognition. Critically, the paper shows the emotion loss is not a capacity issue—fine-tuning on a prosody-controlled corpus recovers emotion performance—nor a data volume issue at matched exposure. This case study challenges the default assumption that more data fixes representational gaps and suggests that architectural inductive biases may be more important than corpus scale for acquiring specific attributes.\n\n## Memory and Reasoning Under Constraints\n\nLong-term memory and reasoning efficiency emerge as central concerns for multimodal agents operating over extended interactions. **PMMC** [12] (Prospective Multimodal Memory Compilation) shifts memory reasoning from query time to consolidation time, allowing the system to pre-compile multimodal memories into a form that captures image-text binding, temporal updates, and visual details more effectively than static retrieve-then-reason pipelines. The framework addresses a fundamental inefficiency in agent memory systems: they often reduce visual experiences into textual summaries, losing precise visual details that later questions may require. By processing accumulated multimodal interactions prospectively, PMMC constructs memories that are query-efficient and robust to questions requiring fine-grained visual information.\n\n**TRAM** [19] (Trajectory-Derived Auxiliary Memory) targets a complementary problem: as reasoning trajectories grow, models lose effectiveness at using information established earlier in the context. Rather than sustaining visual grounding throughout reasoning, TRAM compiles task-specific relations, constraints, and intermediate conclusions into an auxiliary memory that persists across long trajectories. This addresses the insight that reasoning transforms visual observations into abstract relations whose influence weakens over time, and that retaining these derived constructs is as important as maintaining raw visual grounding.\n\n**V-Mem** [22] tackles the modality gap in agent memory retrieval, showing that similarity search assumptions break down in multimodal settings where queries lie closer to memory content of their own modality than to relevant cross-modal evidence. The authors propose modality-routed retrieval that explicitly accounts for the modality gap in index space, enabling agents to answer vision-related questions that existing text-centric memory systems fail on. This work identifies a fundamental architectural assumption—that query-to-evidence proximity holds in multimodal embedding space—and provides a principled correction that improves retrieval for cross-modal memory queries.\n\nThe **Macer token compression framework** [23] argues that token compression in OmniLLMs is mis-specified as a single saliency-ranking problem. Since the same attention score decides both modality capacity allocation and within-modality token selection, shared top-K rules inherit an audio-favoring allocation prior. Macer decouples these decisions by assigning explicit audio and video budgets before performing within-modality selection. This training-free approach corrects a subtle bias in compression that could significantly impact downstream task performance when video tokens are systematically starved of representation capacity.\n\n## Reliability, Unlearning, and Safety at Scale\n\nSeveral papers confront reliability challenges in multimodal systems, from unlearning precision to safety alignment under white-box attacks. The **attribute-level MLLM unlearning work** [14] introduces a finer-grained task than existing profile-level deletion approaches: models should forget a specified attribute while retaining non-sensitive information about the same identity. The authors construct a benchmark that evaluates this trade-off, addressing a practical gap where privacy requests are often attribute-specific rather than identity-specific. This work matters for deployed MLLMs that must comply with data protection regulations while maintaining utility on non-sensitive attributes.\n\nComplementing this, the **knowledge holes study** [24] reveals a critical blind spot in MLLM unlearning evaluation: current paradigms assess utility through benchmarks whose representations are distant from the forget set, missing severe degradation on benign adjacent inputs. The constructed benchmark captures unintended degradation on inputs that share semantic or visual similarity with the forget set, exposing how unlearning can create \"holes\" where benign queries fail catastrophically. This work is essential for making unlearning practically viable in safety-critical applications.\n\nThe **distributed safety alignment approach** [17] addresses the fragility of neuron-level safety mechanisms against white-box attacks that identify and manipulate safety-related neurons. Rather than concentrating safety behavior in a small set of neurons, DSA redundantly encodes safety capabilities across multiple computational neurons, ensuring the model maintains its safety baseline even when critical neurons are compromised. This work shifts the safety alignment paradigm from single points of failure to distributed representations, a necessary evolution given the proliferation of open-weight models and white-box attack techniques.\n\n**EchoChange** [25] tackles factual error cascades in remote-sensing disaster change captioning by proposing a diffusion language model with dual-pass remasking. Unlike autoregressive decoding where early misinterpretations become irreversible premises for subsequent text, the dual-pass mechanism allows the model to revisit and correct initial change identifications. This addresses a fundamental architectural limitation in sequential generation: the amplification of early visual ambiguity into cascading factual errors. By enabling iterative refinement, EchoChange produces more coherent and factual change descriptions for sparse, spatially localized disaster changes.\n\n## Navigating Heterogeneity in Multimodal Graph Learning\n\nTwo papers tackle the challenge of multimodal-attributed graph clustering and federated learning under heterogeneous conditions. **RHEA** [5] addresses the problem that existing MAG clustering methods assume equal modality reliability across all nodes, degrading substantially under noisy or missing attributes. The authors propose a reliability-harmonized reconstruction and assignment approach that explicitly models node-specific modality reliability, learning which modalities to trust for each node. This work matters because real-world MAGs frequently have corrupt or incomplete attributes, and robust clustering requires adaptive trust rather than uniform assumptions.\n\nThe **federated multimodal graph learning framework** [6] extends this to the decentralized setting, where clients hold heterogeneous MAGs with task heterogeneity across diverse objectives. The authors identify that naively applying existing FGL methods fails to navigate the multifaceted heterogeneity inherent in decentralized MAGs. Their approach explicitly models task heterogeneity along with modality availability differences across clients, enabling collaborative optimization without exposing raw data. This work is crucial for privacy-preserving multimodal learning in domains like healthcare and finance where data cannot be centralized and task objectives naturally differ across institutions.\n\n## Key Takeaways\n\n- **Real-world deployment exposes evaluation gaps**: Several papers [1, 13, 21] demonstrate that existing benchmarks fail to capture the conditions of operational deployment—time constraints, missing modalities, and multi-step reasoning—creating a pressing need for evaluation frameworks that simulate deployment realities.\n\n- **Modality interactions are asymmetric and often counterintuitive**: Text-to-image models collapse polysemy [7], contrastive audio embeddings gain keyword spotting at the cost of emotion recognition [16], and shared top-K token compression biases against video [23], revealing that modality interactions are governed by subtle architectural priors rather than simple complementarity.\n\n- **VLM performance is now predictable before training**: The capability-driven scaling law [2] provides a principled framework for predicting VLM accuracy from LLM textual capabilities, transforming backbone selection from an unprincipled gamble into a quantifiable engineering decision.\n\n- **Memory systems must move beyond retrieve-then-reason**: Prospective memory compilation [12], trajectory-derived auxiliary memory [19], and modality-routed retrieval [22] collectively argue that efficient long-term multimodal reasoning requires restructuring when and how memories are formed, not just how they are retrieved.\n\n- **Unlearning precision remains unsolved**: The knowledge holes benchmark [24] and attribute-level unlearning [14] reveal that current unlearning methods create unintended degradation on benign adjacent inputs, suggesting that the field needs fundamentally different evaluation paradigms and possibly different optimization objectives.\n\n- **Safety mechanisms must be distributed and verifiable**: White-box attacks on safety neurons require distributed redundancy [17], while remote-sensing grounding benefits from cross-modal verifiability [8]—both pointing toward architectures that distribute trust rather than concentrate it in vulnerable components.\n\n- **Heterogeneity is the norm, not the exception**: Whether in federated settings [6], attribute noise [5], or reliability differences across modalities [21], robust multimodal systems must explicitly model per-node and per-modality reliability rather than assume uniform quality.",
+    "papers": [
+      {
+        "title": "Obshazard-bench: Benchmarking Multimodal Foundation Models for Real-Time Disaster Intelligence from Raw Earth Observation Streams",
+        "url": "",
+        "authors": [
+          "Fengxiang Wang",
+          "Qiuyang Yu",
+          "Yueying Li",
+          "Mingshuo Chen",
+          "Chengchi Fei",
+          "Kaiyi Xu",
+          "Lixin Gu",
+          "Wangxu Wei",
+          "Junchao Gong",
+          "Lipeng Ma",
+          "Jiong Wang",
+          "Fenghua Ling",
+          "Wenlong Zhang",
+          "Xue Yang",
+          "Wenjing Yang",
+          "Ben Fei",
+          "Long Lan"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "What Transfers from Text to Vision? Capability Scaling Laws and Transfer Dynamics for VLMs",
+        "url": "",
+        "authors": [
+          "Ziran Li",
+          "Qiang Wang",
+          "Zhengyu Chen",
+          "Shanglin Lei",
+          "Borun Chen",
+          "Jingang Wang",
+          "Xunliang Cai"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "DiffusionGemma Technical Report",
+        "url": "",
+        "authors": [
+          "DiffusionGemma Team",
+          "Adrien Ali Taïga",
+          "James Assiene",
+          "Daniele Calandriello",
+          "Rahma Chaabouni",
+          "João Gante",
+          "Tamara von Glehn",
+          "Nate Keating",
+          "Chris Knutsen",
+          "Martin Kukla",
+          "Tianlin Liu",
+          "Ivan Lobov",
+          "Ofir Nabati",
+          "João Gabriel Oliveira",
+          "Nicolas Perez-Nieves",
+          "Nastasia Prutianova",
+          "Bobak Shahriari",
+          "Jean Tarbouriech",
+          "Pavel Tyletski",
+          "Çağlar Ünlü",
+          "Cindy Wu",
+          "Glenn Cameron",
+          "Jerome Connor",
+          "Sertan Girgin",
+          "Maarten Grootendorst",
+          "Alon Levkovitch",
+          "Eliya Nachmani",
+          "Omar Sanseviero",
+          "Piotr Stanczyk",
+          "Quentin Berthet",
+          "Andrew Campbell",
+          "Clément Crepy",
+          "Valentin De Bortoli",
+          "Arnaud Doucet",
+          "Romuald Elie",
+          "Alexandre Galashov",
+          "Klaus Greff",
+          "Alexis Jacq",
+          "David Ruhe",
+          "Yu-Han Wu",
+          "Sebastian Flennerhag",
+          "Brendan O'Donoghue",
+          "George Scrivener",
+          "Shantanu Thakoor"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "RF-HOI: Recognize Human-Object Interaction with Radio Frequency Signals",
+        "url": "",
+        "authors": [
+          "Lihao Wang",
+          "Linlu Gao",
+          "Jiacan Yu",
+          "Yanyu Lin",
+          "Yifan Yin",
+          "Jianxin Wang",
+          "Tianmin Shu",
+          "Renjie Zhao"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "RHEA: Reliability-Harmonized Reconstruction and Assignment for Robust Multimodal-Attributed Graph Clustering",
+        "url": "",
+        "authors": [
+          "Yinlin Zhu",
+          "Di Wu",
+          "Ziyu Han",
+          "Zekai Chenm",
+          "Wang Luo",
+          "Miao Hu",
+          "Guocong Quan"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Towards Effective Federated Multimodal Graph Learning via Navigating Multifaceted Heterogeneity",
+        "url": "",
+        "authors": [
+          "Yinlin Zhu",
+          "Di Wu",
+          "Yi Zhang",
+          "Xunkai Li",
+          "Wang Luo",
+          "Wei-Jin Huang",
+          "Miao Hu",
+          "Guocong Quan"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Where did the ambiguity go? Examining how multimodal models interpret polysemous words",
+        "url": "",
+        "authors": [
+          "Jasin Cekinmez",
+          "Addison J. Wu",
+          "Raja Marjieh",
+          "Thomas L. Griffiths"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "GeoArbiter: Verifiability-Guided Grounding for Remote-Sensing Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Xuechen Li"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Through the LENS: Local Geometric Decomposition of Vision-Language Model Representations",
+        "url": "",
+        "authors": [
+          "Shalom Kachko",
+          "Raz Lapid",
+          "Margarita Vald",
+          "Almog Dubin",
+          "Moshe Sipper"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Distill What the Student Can See: Fisher-Projected On-Policy Distillation for Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Leyan Xue",
+          "Feng Xiong",
+          "Mingjun Ma",
+          "Changqing Zhang"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Evaluating VLMs on Multimodal Aristotelian Persuasion Tasks",
+        "url": "",
+        "authors": [
+          "Khondoker Ittehadul Islam"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "PMMC: Prospective Multimodal Memory Compilation for Long-Term LVLM Agents",
+        "url": "",
+        "authors": [
+          "Jingyu Sun",
+          "Yan Lin",
+          "Yuyang Xue",
+          "Yifan Wang",
+          "Zhengtao Yao",
+          "Rui Qian",
+          "Zefeng Xu",
+          "Jiachen Li",
+          "Xianyang Liu",
+          "Jiancheng Pan",
+          "Jingyuan Sun",
+          "Syed Murtuza Baker",
+          "Hongpeng Zhou"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "LongChart VQA: A Comprehensive Benchmark for MLLMs with Complex Multi-Chart Reasoning",
+        "url": "",
+        "authors": [
+          "Ziyan Xiao",
+          "Yinghao Zhu",
+          "Wenting Zhang",
+          "Heaju Kim",
+          "Lequan Yu"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Toward Fine-Grained Forgetting:Attribute Unlearning for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Junkai Lin",
+          "Junkai Chen",
+          "Siqi Hou",
+          "Yuhao He",
+          "Ruiqi Liu",
+          "Chenhan Jin",
+          "Shengze Xu",
+          "Tieyong Zeng"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Fighting Fire with Fire: On the Feasibility of Protecting Exercises Against AI Cheating",
+        "url": "",
+        "authors": [
+          "Tobias Braun",
+          "Jonas Grebe",
+          "Louis Rethfeld",
+          "Marcus Rohrbach"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Discriminative Axis, Not Data Volume: What a Contrastive Corpus Teaches an Audio Embedding",
+        "url": "",
+        "authors": [
+          "Abdul Basit Tonmoy"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "No Single Neuron of Failure: Distributed Safety Alignment Against White-Box Attacks",
+        "url": "",
+        "authors": [
+          "Simiao Xie",
+          "Chuancheng Shi",
+          "Shangze Li",
+          "Wenhua Wu",
+          "Fei Shen",
+          "Ying Zhou",
+          "Zhiyong Wang",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "MRAFnd: Multimodal Retrieval-Augmented Framework for Zero-Shot Fake News Detection",
+        "url": "",
+        "authors": [
+          "Lehan Zhang",
+          "Yinlei Cheng",
+          "Shiqi Hu Yiheng Zhou",
+          "Shangxi Li",
+          "Naidong Zhao"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "TRAM: Enhancing Multimodal Reasoning with Trajectory-Derived Auxiliary Memory",
+        "url": "",
+        "authors": [
+          "Kang Liu",
+          "Zijing Wang",
+          "Yongkang Liu",
+          "Mengjie Zhao",
+          "Xiaocui Yang",
+          "Shi Feng",
+          "Yifei Zhang",
+          "Daling Wang"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Beyond Routing Saturation: A Long-Horizon Class-Incremental Perspective on Expert Routing in Multimodal Continual Instruction Tuning",
+        "url": "",
+        "authors": [
+          "Huiyu Yi",
+          "Yongqi Xu",
+          "Bogang Zhang",
+          "Dunwei Tu",
+          "Xu Zhiming",
+          "Zhen-Hao Xie",
+          "Baile Xu",
+          "Furao Shen"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Loud or Silent? A Reusable Framework for Per-Modality Failure Analysis in Multimodal Clinical AI",
+        "url": "",
+        "authors": [
+          "Quang Bui",
+          "Shlok Jaiswal",
+          "Samuel Paik-Heintz",
+          "Kevin Zhou",
+          "Kaushik Madapati",
+          "Krittaphas Chaisutyakorn",
+          "Noah Dane Hebdon",
+          "Dimitrios Proios",
+          "Sebastián Andrés Cajas Ordóñez",
+          "Kacper Dobek",
+          "Boya Zhang",
+          "Aly Dhedhi",
+          "Ahram Han",
+          "Kushul Reddy Palakala",
+          "Rahul Gorijavolu",
+          "Jacques Kpodonu",
+          "Leo Anthony Celi"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "V-Mem: Modality-Routed Retrieval for Long-Term Multimodal Agentic Memory",
+        "url": "",
+        "authors": [
+          "Dingyi Kang",
+          "Dongming Jiang",
+          "Yi Li",
+          "Guanpeng Li",
+          "Bingzhe Li"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Allocation Before Ranking: Decoupled Token Compression for OmniLLMs",
+        "url": "",
+        "authors": [
+          "Zhenghui Guo",
+          "Yilin Yang",
+          "Yuanbin Man",
+          "Miao Yin",
+          "Weidong Shi",
+          "Rabimba Karanjai",
+          "Omprakash Gnawali",
+          "Chengming Zhang"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Exploring and Bridging Knowledge Holes in Unlearned Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Junxiang You",
+          "Junkai Chen",
+          "Yuhao He",
+          "Ruiqi Liu",
+          "Zhetao Guo",
+          "Shu Wu"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "EchoChange: A Diffusion Language Model with Dual Pass Remasking for Factual Remote Sensing Disaster Change Captioning",
+        "url": "",
+        "authors": [
+          "Dongwei Sun",
+          "Bowen Yao",
+          "Yujie Zhang",
+          "Pei Liu",
+          "Jing Yao",
+          "Xiangyong Cao"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "PosterMELD: Multi-Agent Paper-to-Poster Generation for Controllable Design Diversity with Editable Print-Ready Outputs",
+        "url": "",
+        "authors": [
+          "Haojie Hu",
+          "Chenhao Dang",
+          "Yaojia Liu",
+          "Hengrui Kang",
+          "Conghui He",
+          "Weijia Li"
+        ],
+        "date": "2026-08-04"
+      },
+      {
+        "title": "Abduction Without a Body? Representational Grounding and the Abduction Loop for Scientific Hypothesis Generation",
+        "url": "",
+        "authors": [
+          "Michael Farmer"
+        ],
+        "date": "2026-08-04"
+      }
+    ]
+  }
+]
