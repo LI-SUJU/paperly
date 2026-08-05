@@ -1,0 +1,394 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-05",
+    "paperCount": 5,
+    "markdown": "# Title: From Circuits to Landscapes: Emerging Paradigms in LLM Interpretability\n\nThe field is rapidly expanding beyond static attention visualization toward dynamic, model-agnostic, and automated approaches that scale with model size. Today's research landscape features a convergence of circuit-level analysis with neural network reparameterization, alongside novel post-hoc surrogates for black-box systems and theoretically grounded knowledge-tracing frameworks.\n\n## Automated Circuit Discovery and Annotation\n\nThe manual bottleneck in mechanistic interpretability—grouping low-level features into meaningful supernodes—is being addressed through LLM-driven automation and weight-space factorization.\n\n[1] Patel et al. tackle the labor-intensive supernode annotation step in circuit tracing by proposing an automated pipeline where feature descriptions are directly fed to an LLM for grouping. Using automated interpretability metrics, they demonstrate that LLM-generated supernodes match human-annotated quality, recovering a meaningful supernode for a two-hop Capitals task. This work dramatically lowers the barrier to circuit analysis, enabling scalable mechanistic studies that were previously impractical due to human annotation costs.\n\n[4] Yan et al. address the fidelity gap in circuit extraction, where auxiliary sparse learning often alters the model under analysis. Their Sparse Weight Decomposition (SWD) reparameterizes pretrained linear projections into two sparse factors sharing intermediate coordinates, creating individually addressable units without additional training or fidelity loss. This approach preserves the original model's behavior while exposing interpretable structure, making circuit extraction both more efficient and more faithful to the pretrained weights.\n\n## Black-Box Interpretability and Energy-Based Surrogates\n\nFor proprietary models with no weight access, interpretability requires innovative surrogate architectures that can approximate internal reasoning from input-output behavior alone.\n\n[2] Rezaee et al. propose a model-agnostic, post-hoc interpreter for closed-API LLMs that operates at sentence granularity. Their method trains an Energy-Based Model (EBM) as a surrogate, capturing the conceptual consistency between prompts and responses, which then guides a lightweight standalone interpreter network. This approach uniquely circumvents the need for logit or activation access, making it applicable to any commercial API. The sentence-level energy landscapes provide a practical interpretability layer for responsible deployment of black-box systems.\n\n## Dynamic Processing and Theoretical Reinterpretations\n\nA conceptual reframing challenges the \"stochastic parrot\" view, suggesting transformers perform genuine computation through dynamically generated transformations.\n\n[5] Giunti and Garavaglia offer a theoretical reinterpretation of transformer inference, arguing that models construct prompt-dependent transformations whose parameters are generated during inference—a paradigm they term SIDPP (Sequence-level Interactive Dynamic Parallel Processing). In this view, token vectors are concepts transformed by parameterized operations generated on the fly, positioning transformers as systems that manipulate concepts through concepts. This framework provides a new vocabulary for mechanistic interpretability, shifting focus from static weights to the dynamic, context-dependent computation occurring during inference.\n\n## Interpretable Knowledge Tracing and Latent Dynamics\n\nBeyond language models, interpretability principles are being applied to educational modeling through variational Bayesian approaches.\n\n[3] Cook et al. introduce UNVaMP, a knowledge tracing architecture integrating student-item interactions with internal memory to produce evolving latent knowledge representations. The method supports both purely neural and hybrid configurations, where the hybrid variant predicts responses through an interpretable measurement function over the latent space. By enabling explicit control over learning trajectory smoothness via variational regularization, UNVaMP balances predictive accuracy with interpretability—a crucial trade-off for educational applications requiring actionable insights into student learning dynamics.\n\n## Key Takeaways\n- LLM-driven automation is maturing: models can now annotate interpretability artifacts (supernodes) with quality matching human experts, enabling scalable circuit analysis.\n- Weight-space factorization (e.g., SWD) offers a promising middle path between full mechanistic interpretability and practical efficiency, preserving original model fidelity.\n- Post-hoc, API-compatible interpretability via energy-based surrogates is emerging as a viable solution for closed-source models, addressing a critical deployment gap.\n- Theoretical reinterpretations of transformers as dynamic, prompt-parameterized computation engines challenge static-weight analysis paradigms, suggesting new interpretability targets.\n- Variational Bayesian approaches in knowledge tracing demonstrate that interpretability and predictive performance are not mutually exclusive when latent dynamics are properly regularized.\n- The field is bifurcating into white-box (weight-level) and black-box (behavioral-level) interpretability, each with distinct toolsets, yet converging on the principle of extracting human-meaningful structure from complex computations.\n- Automated evaluation metrics for interpretability quality are becoming essential infrastructure, enabling iteration without human-in-the-loop bottlenecks.",
+    "papers": [
+      {
+        "title": "LLMs Can Annotate Attribution Graphs",
+        "url": "",
+        "authors": [
+          "Ameen Patel",
+          "Max Zhang",
+          "Nathan Hu"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Interpreting Black-Box Large Language Models with Sentence-Level Energy Landscapes",
+        "url": "",
+        "authors": [
+          "Maryam Rezaee",
+          "Pooriya Safaei",
+          "Maryam Asgarinezhad",
+          "Fatemeh Seyyedsalehi"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "UNVaMP: Neural Knowledge Tracing with Variational Regularization of Latent Knowledge Dynamics",
+        "url": "",
+        "authors": [
+          "Carson J. Cook",
+          "Ahmed J. Zerouali",
+          "Anthony Schmidt",
+          "Reginald Ziedzor",
+          "Paul Lin",
+          "Luke G. Eglington"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Sparse Weight Decomposition for Efficient Circuit Extraction",
+        "url": "",
+        "authors": [
+          "Chuanhao Yan",
+          "Xuhan Huang",
+          "Yawen Duan",
+          "Zhenfei Yin",
+          "Hang Zhao",
+          "Bryan Dai",
+          "Jie Fu"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "The Transformer Revolution, Part 1: Dynamic Processing through Output- Weight Interconnections",
+        "url": "",
+        "authors": [
+          "Marco Giunti",
+          "Fabrizia Giulia Garavaglia"
+        ],
+        "date": "2026-08-05"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-05",
+    "paperCount": 2,
+    "markdown": "# From Black Boxes to Trustworthy Systems: The Evolving Science of AI Explainability\n\nToday's research landscape is converging on a critical realization: explainability is not a luxury but a necessity for AI deployment in high-stakes domains, from medicine to scientific discovery. The papers in this digest tackle the challenge of making AI systems not just more transparent, but more accountable, by developing frameworks that explicitly trace reasoning from raw data to final outputs, and by quantifying the risk when that reasoning fails.\n\n## Risk-Aware Fact Verification and Faithfulness in Domain-Specific QA\n\n**VetScore: Risk-Weighted Fact Verification for Veterinary Long-Form QA with Citations** [1] addresses a persistent failure mode in retrieval-augmented generation: even when models cite sources, their claims may not actually be supported by those excerpts. The authors propose a multi-step evaluation method that not only segments and decomposes generated outputs into atomic claims but also weights each claim's verification score by its potential for harm in veterinary practice—acknowledging that a misdiagnosis or incorrect dosage recommendation carries far greater consequence than a generic factual error. This risk-weighted approach is a significant departure from traditional fact-verification metrics, which treat all errors as equal. The work matters because it pushes the field toward context-aware evaluation, recognizing that in high-stakes domains, the *cost* of an error should modulate how we measure system reliability. By explicitly baking harm potential into the scoring rubric, VetScore provides a template for domain-specific QA evaluation beyond veterinary medicine, offering a blueprint for any field where AI output can have direct physical or financial consequences.\n\n## Causal Discovery with Transparent Reasoning\n\n**GENESIS: Towards Explainable Causal Discovery** [2] tackles the twin challenges of causal discovery from observational data: insufficient statistical power in small samples and the opacity of LLM-assisted reasoning. The core innovation is a hybrid framework that not only improves structure recovery through LLM-based semantic reasoning but, crucially, surfaces *why* each edge in the learned causal DAG was included or excluded. This addresses a fundamental gap in existing hybrid methods, which often produce more accurate graphs but cannot justify their decisions in a way that domain experts can audit. The authors' approach integrates statistical constraints with natural language rationales, generating a human-readable explanation for every causal relationship decision. This work is critical for real-world deployment where domain experts need to validate that discovered causal links make clinical or scientific sense, not just statistical ones. By making the reasoning process transparent at the level of individual edge decisions, GENESIS promises to bridge the trust gap between machine-discovered causality and human-domain knowledge, which is essential for fields like epidemiology, economics, and personalized medicine where causal claims have profound policy implications.\n\n## Bridging the Evaluation Gap: From Generic Metrics to Domain-Specific Validation\n\nThe papers in this digest collectively highlight a shift from generic explainability metrics toward domain-anchored validation frameworks. [1] demonstrates that faithfulness to sources requires a *decompositional* approach—breaking outputs into atomic, checkable claims—and that evaluation must be sensitive to downstream risk. [2] shows that for structured outputs like causal graphs, explainability must operate at the *granularity of individual decisions* (edges) rather than aggregate model behavior. Both papers recognize that the end-user of explainability is not the ML researcher but the domain expert who must act on the system's output. This convergence suggests that the next frontier of explainability research lies not in developing more sophisticated visualization tools or attention maps, but in designing evaluation protocols and explanation formats that are intrinsically tied to the decision-making context and its consequences.\n\n## The Role of LLMs in Explainability: Enabler and Subject of Scrutiny\n\nA notable undercurrent in both papers is the dual role of large language models. In [2], LLMs serve as the *reasoning engine* that generates causal justifications, meaning their outputs themselves require scrutiny—a self-referential challenge where the explainer must be explained. In [1], the evaluation framework is designed to catch LLM-generated claims that are *not* supported by citations, acknowledging that LLMs can produce confident but unfaithful text even when given source material. Together, these papers suggest that as LLMs become more integrated into both the production and explanation of AI reasoning, we will need hierarchical systems of verifiability: explanations of explanations, and audits of the auditors. The practical implication is that future explainability frameworks must treat LLM outputs as first-class citizens requiring their own evidence trails, not as simple deterministic functions of their inputs.\n\n## Key Takeaways\n\n- **Risk-weighted evaluation is emerging as a core principle**: VetScore's approach of modulating fact-verification scores by harm potential sets a new standard for deploying QA systems in sensitive domains, moving beyond binary correctness to a nuanced assessment of consequence.\n- **Explainability must operate at decision-level granularity**: GENESIS's focus on justifying individual causal edges, rather than overall graph statistics, demonstrates that actionable transparency requires reasoning at the level where domain experts can actually intervene and validate.\n- **Hybrid statistical-LLM approaches are maturing**: The integration of statistical causal discovery with LLM-based semantic reasoning is producing more accurate models, but the critical value-add is now the explicit explanation of the reasoning process itself.\n- **Domain-specific evaluation is replacing generic benchmarks**: Both papers advocate for evaluation metrics that are tightly coupled to the application context—veterinary harm potential and causal plausibility—rather than abstract textual similarity or graph edit distance.\n- **The explainer itself requires scrutiny**: As LLMs become the engines of explanation, frameworks must account for the possibility that the justifications they generate may be as unreliable as the original predictions, necessitating multi-layered verification.\n- **Decomposition is foundational to verification**: Breaking complex outputs (long-form answers, causal graphs) into atomic, independently verifiable units is a shared prerequisite for meaningful fact-checking and causal auditing in both works.\n- **The user of explainability is the domain expert, not the ML engineer**: The ultimate success metric for these frameworks is whether a veterinarian can trust a drug recommendation or a clinician can accept a discovered causal pathway, not whether the underlying model's perplexity decreases.",
+    "papers": [
+      {
+        "title": "VetScore: Risk-Weighted Fact Verification for Veterinary Long-Form QA with Citations",
+        "url": "",
+        "authors": [
+          "Ivan Kartáč",
+          "Jan Tovarys",
+          "Mateusz Lango",
+          "Ondřej Dušek"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "GENESIS: Towards Explainable Causal Discovery",
+        "url": "",
+        "authors": [
+          "Abhinav Thorat",
+          "Ravi Kumar Kolla",
+          "Vishak K Bhat",
+          "Harsh Vardhan Singh Chauhan",
+          "Niranjan Pedanekar"
+        ],
+        "date": "2026-08-05"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-05",
+    "paperCount": 20,
+    "markdown": "# Multimodal Intelligence at Scale: From Robust Benchmarks to Reasoning Architectures\n\nToday's research landscape reveals a field maturing beyond basic modality fusion toward principled treatment of uncertainty, reliability, and reasoning traceability. The community is simultaneously pushing toward realistic, heterogeneous benchmarks that stress-test models on patient-level clinical reasoning, long-document evidence composition, and cultural variation, while developing novel architectures that address fundamental limitations in how multimodal systems represent, retrieve, and reason over diverse information streams.\n\n## Benchmarking the Uncharted: New Frontiers in Multimodal Evaluation\n\nThe evaluation landscape is expanding dramatically with benchmarks targeting previously underexplored capabilities and real-world complexities. [2] introduces OncoTriad-QA, a patient-level radiology-pathology-genomics benchmark with 86.1k questions across 9,281 TCGA cases spanning 32 cancer cohorts, directly addressing the gap in multi-evidence-stream oncology assessment. Similarly, [11] presents ArtECulture, containing 6,792 artworks with culture-specific emotion labels, tackling the overlooked dimension of cultural variation in visual emotion understanding while addressing annotation consistency and cultural coverage limitations through majority-supported labeling. [14] introduces ChartAnno with 1,200 real-world charts for evaluating MLLMs on chart annotation generation—a common yet previously unbenchmarked communicative task requiring models to infer intended messages and place appropriate textual or graphical elements. [13] presents DataSpace, comprising 410 cross-language tasks and 7,439 artifacts, uniquely requiring data agents to produce verifiable tabular results from heterogeneous workspaces spanning databases, structured files, long documents, and multimedia. [20] contributes UNLINK-VL, a real-world benchmark for cross-modal knowledge unlearning in vision-language models, addressing whether forgetting transfers across modalities—a critical question for building trustworthy AI systems that must remove sensitive or copyrighted knowledge. [19] rounds out the benchmark landscape with KnowHal, which unifies four hallucination dimensions—entity, attribute, relation, and knowledge—into a single evaluation framework, moving beyond the fragmented hallucination assessments that previously treated knowledge-related failures separately.\n\n## Reasoning with Evidence: Structural Approaches to Multimodal Understanding\n\nSeveral papers tackle the challenge of making multimodal reasoning more explicit, traceable, and evidence-grounded. [10] casts Long Document Visual Question Answering as an explicit evidence graph reasoning problem, proposing DocTrace with hierarchical evidence graph reasoning to represent and verify how grounded evidence is progressively composed during multi-page reasoning—addressing the common failure of existing RAG pipelines and document agents to provide answer traceability. [8] presents an evidence-grounded multimodal pipeline for educational lecture videos that transcribes speech, applies OCR to slides, and uses vision-language models to extract only concepts and typed relationships supported by transcript, OCR, or visual evidence, canoncalizing mentions into a provenance-rich knowledge graph across 3,118 processed elements. [5] introduces DiffImaginE, which reformulates multimodal named entity recognition type verification as conditional latent diffusion inference, using a type-conditioned denoiser to predict noise injected into span-localized visual evidence—overcoming the limitation of existing imagine-and-compare verifiers that compress diverse visual realizations into a single prototype and lack explicit probabilistic semantics. [9] proposes trajectory-guided structured sampling for test-time alignment of large vision-language models, dynamically refining inference to achieve better visual grounding and logical consistency while bridging the mismatch between post-training RL objectives and inference-time distributions.\n\n## Robustness, Reliability, and Governance in Multimodal Systems\n\nA cluster of papers addresses critical reliability challenges, from missing data and hallucination to catastrophic forgetting and risk management. [16] argues for explicitly modeling modality reliability in multimodal sentiment analysis with incomplete observations, proposing a framework that contrasts with both reconstruction-based and joint-representation approaches that treat reliability only implicitly. [17] identifies a critical vulnerability in reinforcement fine-tuning (RFT) for continual multimodal post-training: under pronounced task distributional shifts, forgetting escalates sharply because RFT's implicit reward-variance regularization fails to suppress uncontrolled optimization risk, leading to the proposal of RAPO, a dual-channel framework with explicit Risk-Aware Policy Optimization. [18] addresses the data bottleneck in MLLM training through failure-informed image self-augmentation, where image transformations are guided by the model's actual incapabilities rather than generic or handcrafted transformations, extending beyond text-centric self-augmentation approaches. [3] introduces PhenMol, a structure-preserving framework for phenotype-aware molecular representation learning that disentangles molecular and cellular representations into shared and private components, preventing distortion of chemical space organization during cross-modal alignment—a critical advancement for phenotypic drug discovery where functional relationships between molecular structures and cellular responses are essential.\n\n## Industrial and Operational Applications\n\nThe applied papers demonstrate multimodal techniques moving into production environments with real constraints. [1] develops a multimodal auto-regressive transformer surrogate for geological carbon storage that processes three input modalities—3D geomodel, scalar parameters, and operational controls—to model variable well perforation and injection strategies under geological uncertainty in a faulted system with three stacked aquifers. [7] presents UniGD, a Unified Generative-Discriminative framework for industrial search advertising that integrates generative retrieval with relevance scoring within a single model, addressing the decoupling of generative likelihood from query-ad relevance discrimination that compromises effectiveness and increases serving costs in existing cascaded systems. [12] reveals a surprising finding in hybrid GUI-MCP computer-use agents: under an identical harness, the same MCP tools improved a reasoning model by +4.0pp while degrading a non-reasoning model by -5.9pp, with the key differentiator being tool-decision behavior—the non-reasoning policy ignores, misnames, or falsely terminates around tools, while even the reasoning model only calls tools on 55/309 tasks, suggesting significant headroom for eliciting tool use. [15] presents Dr. AGENTONOMICS, a didactic experiment treating AI agents as economic entities governed through integrated management architecture, serving as both the object of study and the medium through which students learn the AGENTONOMICS framework. [6] addresses a fundamental flaw in contrastive training for multimodal retrieval: treating all unmatched query-document pairs as equally informative negatives ignores that many may be semantically relevant, leading to a Bayesian Data Reweighting framework that models query-document importance as latent variables and adaptively infers posterior weights to downweight false negatives.\n\n## Key Takeaways\n- **Benchmarking is diversifying beyond modality pairs toward multi-stream, patient-level, and culturally-aware evaluations** that stress-test models on realistic heterogeneous evidence integration [2, 11, 13, 14].\n\n- **Explicit evidence graph reasoning is emerging as the answer to traceability and verifiability** in long-document and educational multimodal understanding, replacing implicit reasoning hidden inside end-to-end models [8, 10].\n\n- **The field is transitioning from implicit to explicit treatment of uncertainty and reliability**, whether through probabilistic modeling of retrieval negatives, explicit modality reliability estimation, or probabilistic semantics in diffusion-based verification [5, 6, 16].\n\n- **Multimodal self-improvement is moving beyond text-centric augmentation toward failure-informed image transformations** that align augmentation strategies with the model's actual incapabilities [18].\n\n- **Reinforcement fine-tuning's assumed resistance to catastrophic forgetting is being challenged**, with work showing that explicit risk governance (not just implicit variance regularization) is needed for continual multimodal post-training under distributional shift [17].\n\n- **Cross-modal transfer of knowledge—both unlearning and learning—is an emerging critical area**, with new benchmarks and methods addressing whether and how knowledge transfers across modalities in VLMs [19, 20].\n\n- **Production systems reveal that tool integration and generative retrieval require unified architectures**, not cascaded or hybrid approaches, to realize their potential benefits in industrial applications [7, 12].",
+    "papers": [
+      {
+        "title": "Multimodal Auto-regressive Transformer Surrogate for Modeling Variable Operations and Quantifying Uncertainty in Geological Carbon Storage",
+        "url": "",
+        "authors": [
+          "Yifu Han",
+          "Louis J. Durlofsky"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "OncoTriad-QA: A Patient-Level Radiology-Pathology-Genomics Benchmark for Pan-Cancer Reasoning",
+        "url": "",
+        "authors": [
+          "Ahnaf Munir",
+          "Dannong Wang",
+          "Michael W. McDonald",
+          "Mubarak Shah",
+          "Pegah Khosravi",
+          "Yu Tian"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Learning Molecular Representations from Cellular Phenotypes with Structure Preservation",
+        "url": "",
+        "authors": [
+          "Xuan Lin",
+          "Jingyu Sheng",
+          "Tengfei Ma",
+          "Li Sun",
+          "Dapeng Xiong"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "PatTree: a novel approach for automated creation of multimodal, graph-based patient representations for medical classification tasks",
+        "url": "",
+        "authors": [
+          "Julia Gehrmann",
+          "Lars Quakulinski",
+          "Hamza Naseem",
+          "Oya Beyan"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "DiffImaginE: Imagine to Verify Entity Types with Diffusio",
+        "url": "",
+        "authors": [
+          "Feng Zhang",
+          "Feiyu Han",
+          "Rongxin Yang",
+          "Yang Liu",
+          "Yancheng Chen",
+          "Rui Wang",
+          "Yingguang Yang",
+          "Tian Xueyun",
+          "Chongyang Zhang",
+          "Hao Zheng",
+          "Xu Kefu",
+          "Congjing Ran",
+          "Fuhai Chen",
+          "Bin Chong"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Bayesian Data Reweighting Improves Multimodal Retrieval for Knowledge-Based Visual Question Answering",
+        "url": "",
+        "authors": [
+          "Jingchen Sun",
+          "Shaobo Han",
+          "Ruiyi Zhang",
+          "Naresh Kumar Devulapally",
+          "Ming Liu",
+          "Yitao Long",
+          "Vishnu Suresh Lokhande",
+          "Changyou Chen"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "UniGD: A Unified Generative-Discriminative Framework for Industrial Retrieval",
+        "url": "",
+        "authors": [
+          "Shujie Ji",
+          "Yawei Kong",
+          "Yilin Zhao",
+          "Li Wang",
+          "Xialong Liu",
+          "Peng Jiang"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Evidence-Grounded Multimodal Knowledge Graph Construction for Multi-Lecture Educational Reasoning",
+        "url": "",
+        "authors": [
+          "Sahil Al Farib",
+          "Momota Ahsana Meem",
+          "Sheikh Redwanul Islam",
+          "Md. Tanvir Raihan"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Aligning Large Vision-Language Models at Test Time: A Trajectory-Guided Structured Sampling Approach",
+        "url": "",
+        "authors": [
+          "Tianbao Jiang",
+          "Weicong Ni",
+          "Gerard de Melo",
+          "Linlin Wang"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "DocTrace: Towards Traceable Long Document VQA via Hierarchical Evidence Graph Reasoning",
+        "url": "",
+        "authors": [
+          "Le Xiang",
+          "Zhicheng Guan",
+          "Hong Chen",
+          "Xiaocong Lin",
+          "Zhenghua Lei",
+          "Teng Hu",
+          "Bolei He",
+          "Long Zeng"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "ArtECulture: Benchmarking Culture-Conditioned Visual Emotion Understanding in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Xiaolin Chen",
+          "Xuemeng Song",
+          "Wenhao Shi",
+          "Xianjing Han",
+          "Mong-Li Lee",
+          "Wynne Hsu"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Screenshots or Tools? Eliciting Tool Use and Managing Multimodal Context in Hybrid GUI-MCP Computer-Use Agents",
+        "url": "",
+        "authors": [
+          "Siqi Fan",
+          "Minghao Li",
+          "Xiaoqian Ma",
+          "Wenhui Tan",
+          "Xiusheng Huang",
+          "Juntong Wu",
+          "Liujie Zhang",
+          "Shuo Shang",
+          "Weihang Chen"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "DataSpace: Benchmarking Data Agents for Verifiable Analytics over Heterogeneous Workspaces",
+        "url": "",
+        "authors": [
+          "Boyan Li",
+          "Zhuowen Liang",
+          "Yupeng Xie",
+          "Xiaotian Lin",
+          "Tianqi Luo",
+          "Xinyu Liu",
+          "Yizhang Zhu",
+          "Zhangyang Peng",
+          "Yuan Li",
+          "Zhengxuan Zhang",
+          "Jiayi Zhang",
+          "Nan Tang",
+          "Guoliang Li",
+          "Yuyu Luo"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "ChartAnno: Evaluating MLLMs for Chart Annotation Generation",
+        "url": "",
+        "authors": [
+          "Zhenghan Chen",
+          "Zekai Shao",
+          "Lidan Tan",
+          "Xin Lin",
+          "Xingchen Zeng",
+          "Yi Shan",
+          "Ziyue Lin",
+          "Xiaoliang Fu",
+          "Xinyuan Liu",
+          "Yuetong Guo",
+          "Fen Wang",
+          "Bongshin Lee",
+          "Siming Chen"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Dr. AGENTONOMICS: A Didactic Experiment of AGENTONOMICS",
+        "url": "",
+        "authors": [
+          "Fengjunjie Pan",
+          "Alois Knoll"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Rethinking Modality Reliability in Multimodal Sentiment Analysis with Incomplete Observations",
+        "url": "",
+        "authors": [
+          "Chunlei Meng",
+          "Jacqueline J. Pang",
+          "Pengbin Feng",
+          "Zhenyu Yu",
+          "Chun Ouyang",
+          "Zhongxue Gan"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Taming the Implicit: Dual-Channel Risk-Aware Reinforcement Fine-Tuning for Continual Multimodal Post-Training",
+        "url": "",
+        "authors": [
+          "Yibei Liu",
+          "Jiajun Chen",
+          "Qianle Zhang",
+          "Tangyue Jin",
+          "Mengying Zhu",
+          "Meng Xi",
+          "Yangyang Wu"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Failure-Informed Image Self-Augmentation for Multimodal Large Language Model Self-Improvement",
+        "url": "",
+        "authors": [
+          "Chunyang Jiang",
+          "Pingping Zhang",
+          "Yuzhi Zhao",
+          "Wenao Ma",
+          "Zhijian Hou",
+          "Mengyang Wu",
+          "Yiyang Cai",
+          "Senkang Hu",
+          "Sitong Cheng",
+          "Chi-Min Chan",
+          "Wei Xue",
+          "Yike Guo"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "KnowHal: A Knowledge-Driven Benchmark for Comprehensive Multimodal Hallucination Evaluation",
+        "url": "",
+        "authors": [
+          "Ruihan Li",
+          "Jiyang Tan",
+          "Kailin Jiang",
+          "Huining Li",
+          "Hengyang Lu",
+          "Yu Huang",
+          "Qian Li",
+          "Yuntao Du"
+        ],
+        "date": "2026-08-05"
+      },
+      {
+        "title": "Does Forgetting Transfer Across Modalities? A Real-World Benchmark for Cross-Modal Knowledge Unlearning Evaluation",
+        "url": "",
+        "authors": [
+          "Chunlin Liu",
+          "Junnian Chen",
+          "Haitong Jiang",
+          "Jianyu Zhao",
+          "Yingsen Pang",
+          "Jingchen Li",
+          "Jiabiao He",
+          "Youming Lu",
+          "Jinhe Bi",
+          "Yuntao Du"
+        ],
+        "date": "2026-08-05"
+      }
+    ]
+  }
+]
