@@ -1,0 +1,391 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-10",
+    "paperCount": 11,
+    "markdown": "# Mechanistic Interpretability: From Neuronal Circuits to Model Editing and Beyond\n\nThis digest explores a dynamic research landscape where interpretability has evolved beyond simple feature attribution toward causal intervention, geometric truthfulness, and actionable model editing. The papers span from activation-level analyses of misinformation detection and reward model internals to inverse problems in lesion studies and novel weight-decomposition techniques.\n\n## Geometry of Truth and Representation Spaces\n\n**Latent Fact-Checking via Activation Engineering** [1] reframes misinformation detection as a geometric problem rather than a linguistic or retrieval task. The authors elicit a \"misinformation direction\" in the residual stream by contrasting activations from paired truthful and false statements, then use this direction to classify new claims. This approach moves beyond surface features to exploit the latent geometry of transformer representations, offering a scalable and model-agnostic detection framework. By treating truthfulness as an identifiable axis in representation space, the work opens new avenues for both detection and potential interventions during generation.\n\n**Lesion Parameter Recovery in LLMs** [3] tackles the inverse problem of mechanistic interpretability: rather than describing what a lesion does to model behavior, they ask whether lesion parameters can be recovered from observed error profiles. Using aphasic picture naming as a testbed, the authors demonstrate that given an error profile resembling a stroke survivor's deficit, the specific lesion parameters that produced it can be inferred. This establishes a causal sufficiency criterion—that the internal state described by interpretability methods actually produces the observed behavior—marking an important step toward validating mechanistic accounts of transformer computation.\n\n## Expert Decomposition and Circuit Analysis\n\n**CoCo for MoE Reward Models** [2] addresses a critical blind spot in sparse Mixture-of-Experts interpretability: routing weights only show which prompts an expert receives, not how it judges them. The proposed Contribution-Contrast method provides response-level interpretation by examining the actual contribution of each expert to final predictions, contrasting how different experts evaluate the same prompt-response pairs. This reveals the specialized judging criteria within experts rather than merely their input specialization. For reward models central to RLHF pipelines, this enables more granular auditing of what drives preference predictions and can inform targeted corrections.\n\n**Tiled SVD Weight Decomposition** [8] challenges the dominant sparse-autoencoder paradigm by extracting \"mechanism mounts\" directly from linear weight sites using column-tiled SVD. Each mount is a triple (trigger, write, strength), assigning identity to the weight rule itself rather than to a learned dictionary. The authors evaluate mounts using a pre-registered suite judged on full-write energy lift, demonstrating on Gemma-2 that interpretable structure can be found directly in weights without proxy training. This offers a potentially more faithful and computationally efficient alternative to dictionary-based approaches, though the trade-offs between this method and learned dictionaries remain an open question.\n\n## Architectural Inductive Biases and Attention\n\n**Query-Key Parameterization Shapes Attention** [7] investigates how collapsed and factorized parameterizations of query-key and output-value circuits affect learned attention patterns in self-attention models. The work reveals that some parameterizations yield sharper attention to task-relevant tokens at similar training loss, showing that architectural choices impose inductive biases on the learning trajectory. By analyzing parameter trajectories in single-layer models, the authors provide mechanistic insight into how implementation details modulate emergent attention behaviors. These findings have practical implications for architecture design, suggesting that parameterization choices can serve as implicit regularizers for desired attention patterns.\n\n**LUCID for Interpretable Community Detection** [4] combines LLM reasoning with structured graph processing to achieve interpretable, training-free community detection. The framework symbolizes graph structure through LLM-generated structured processes, enabling the model to reason about cohesive groups without labeled data or gradient-based training. This addresses the trade-off between performance and interpretability in deep graph learning while eliminating the need for extensive training datasets. By leveraging world knowledge and reasoning capabilities, LUCID demonstrates that LLM-guided symbolic reasoning can compete with learned approaches while maintaining full transparency.\n\n## Application-Driven Interpretability\n\n**bioMoR: Biology-Guided Mixture-of-Recursions** [5] applies adaptive routing to genomic learning, identifying three integration points for structured biological knowledge within an MoR backbone. By refining token embeddings through graph-based information sharing and adding structural bias to self-attention, the framework achieves efficiency gains while maintaining interpretability through expert specialization. This represents an important step toward making transformer-based omics analysis both computationally tractable and biologically interpretable.\n\n**Interpretable RL via Decision-Tree Pruning** [10] addresses the persistent challenge of policy transparency by simplifying rule-based policies extracted from trained agents. The framework defines structural and usage-aware pruning operators, evaluating candidate edits by re-executing the policy to measure both return and interpretability proxies. This makes policy edits auditable and produces human-comprehensible decision trees that retain task performance. The approach is particularly valuable for safety-critical RL deployments where regulators and stakeholders require inspectable policies.\n\n**LLM World Models in Planning** [11] provides a sobering mechanistic account of why Transformers struggle with the flat-to-flat Tower of Hanoi variant despite succeeding on standard formulations. Through both small in-house models trained from scratch and large third-party models, the authors use interpretability tools to show that emergent world models are often shallow or task-specific rather than general-purpose planning engines. This work challenges optimistic claims about reasoning capabilities, demonstrating that apparent planning competence can mask fundamentally limited internal representations.\n\n## Key Takeaways\n\n- **Truthfulness as geometry**: Activation-difference directions in residual streams can serve as robust misinformation detectors, suggesting that high-level properties like factuality have identifiable geometric correlates [1]\n- **Causal sufficiency is testable**: Inverse problems—recovering interventions from behavioral outputs—provide a rigorous standard for validating mechanistic interpretability claims [3]\n- **Routing weights are insufficient**: Response-level contribution analysis reveals how experts actually judge inputs, moving beyond input-specialization to output-attribution [2]\n- **Weight-space interpretability is viable**: Tiled SVD offers a direct alternative to proxy dictionaries, potentially reducing the faithfulness gap between learned features and network weights [8]\n- **Architectural choices bias attention**: Parameterization of query-key circuits shapes learned attention patterns, implying that implementation details are not neutral design decisions [7]\n- **LLM-guided symbolic reasoning**: Training-free frameworks that leverage LLM reasoning can achieve interpretable performance comparable to learned models in structured tasks [4]\n- **Emergent world models are often illusory**: Mechanistic analysis reveals that apparent planning abilities can arise from shallow pattern matching rather than general reasoning, cautioning against over-attribution of competence [11]",
+    "papers": [
+      {
+        "title": "Latent Fact-Checking: Detecting Misinformation through Activation Engineering",
+        "url": "",
+        "authors": [
+          "Pedro Barcelos",
+          "Otávio Parraga",
+          "Marcelo M. Mussi",
+          "Lucas M. Fraga",
+          "Lucas S. Kupssinskü",
+          "Rodrigo C. Barros"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Beyond Routing Weights: Faithful Response-Level Interpretation of Mixture-of-Experts Reward Models via Contribution Contrast",
+        "url": "",
+        "authors": [
+          "Yifan Wang",
+          "Jinyi Mu",
+          "Mayank Jobanputra",
+          "Yu Wang",
+          "Soyoung Oh",
+          "Isabel Valera",
+          "Vera Demberg"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Recovering Lesion Parameters from Aphasic Picture Naming Error Profiles in Large Language Models",
+        "url": "",
+        "authors": [
+          "Yong Yang",
+          "Roger Newman-Norlund",
+          "Xiang Guan",
+          "Saeed Ahmadi",
+          "Regan Willis",
+          "Nadra Salman",
+          "Kalil Warren",
+          "Sophie Arheix-Parras",
+          "Srihari Nelakuditi",
+          "Leonardo Bonilha",
+          "Christopher Rorden",
+          "Rutvik H. Desai",
+          "Julius Fridriksson"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Interpretable Unsupervised Community Detection with LLM-Symbolized Structured Processes",
+        "url": "",
+        "authors": [
+          "Aoting Zeng",
+          "Kai Wang",
+          "Jianwei Wang",
+          "Yuxiang Sun",
+          "Yizhang He",
+          "Wenjie Zhang"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "bioMoR: Biology-Guided Mixture-of-Recursions for Effective Genomic Learning",
+        "url": "",
+        "authors": [
+          "Koushik Howlader",
+          "Tirtho Roy",
+          "Md Tauhidul Islam",
+          "Wei Le"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "CEDAR: Agent-Orchestrated Tree Search for Goal-Directed Optimization of Complex Systems",
+        "url": "",
+        "authors": [
+          "Yingtao Tian"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Faster Query-Key Learning Sharpens Attention in Self-Attention Models",
+        "url": "",
+        "authors": [
+          "Rahul Vashisht",
+          "Harish G. Ramaswamy"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Finding Usable Weight Mechanisms with Tiled SVD",
+        "url": "",
+        "authors": [
+          "Ash Manvi",
+          "Samreena Tajreen"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Beyond Foundation Models: Dimension-Aware Neural Architecture Search with Small-Data Representation Models for Cryocooler Lifetime Prediction",
+        "url": "",
+        "authors": [
+          "Gregor Molan",
+          "Grafika Jati",
+          "Francesco Barchi",
+          "Andrea Acquaviva",
+          "Aljaž Osterman",
+          "Martin Molan"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Interpretable reinforcement learning with decision-tree pruning",
+        "url": "",
+        "authors": [
+          "Mark Leon Ringer",
+          "Michel Tokic"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Transformers Struggle to Use Their Emergent World Models: Revisiting the Tower of Hanoi, and the Illusion of Thinking",
+        "url": "",
+        "authors": [
+          "Devin Pereira",
+          "Willem Zuidema"
+        ],
+        "date": "2026-08-10"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-10",
+    "paperCount": 2,
+    "markdown": "# Beyond Attention Weights: The Push for Symbolic and Causally Grounded Explainability\n\nToday's research landscape marks a critical pivot from correlational explainability—such as raw attention maps—toward causally dense, mathematically principled attribution methods. The field is converging on the idea that faithful explanations must be nonnegative, sparse, and encode directional evidence, while simultaneously exploring whether neural networks naturally evolve symbolic, rule-like internal representations.\n\n## Rethinking Attention: From Nonnegative Scores to Signed Attributions\n\n**Paper [1]** directly challenges the prevailing practice of using [CLS] token attention weights for interpretability in feature-tokenized transformers (e.g., BiomeGPT). The author identifies two fatal flaws in attention-based importance: scores are nonnegative (unable to distinguish disease-supporting from health-suppressing evidence) and are purely interpolative, lacking causal grounding. The proposed solution is a **Signed Integrated Gradients (SIG)** attribution method, adapted for the additive token structure T = S + A (species identity + abundance). By computing integrated gradients separately for identity and abundance components and then taking their signed sum, SIG produces positive and negative attribution scores. The key contribution is methodological: it enables practitioners to rank tokens not just by \"importance\" but by *directional* relevance, separating protective from pathogenic signals in microbiome classification. This matters because attention-based interpretability, while ubiquitous, is demonstrably misleading for clinical or biological decision-making where the sign of a feature's contribution is as critical as its magnitude.\n\n## The Emergence of Symbolic Patterns as a Law of Neural Computation\n\n**Paper [2]** tackles the deepest question in explainability: do neural networks, when trained, spontaneously organize their inference logic into sparse, symbolic, human-readable patterns? The authors argue this is not a fortunate accident but a mathematical inevitability. They propose that under broad conditions (e.g., ReLU-activated networks with sufficient sparsity regularization), the functional geometry of the network forces the emergence of symbolic patterns—essentially, the network re-parameterizes its internal decision boundaries into discrete, compositional rules. The results show that across a broad class of architectures and datasets, one can extract exhaustive and concise symbolic descriptions of network behavior, contradicting the black-box narrative. The contribution is twofold: a formal proof sketch (mathematical principles) and empirical validation (experimental discoveries) that symbolic emergence is a natural law rather than chance. This is a paradigm shift—it suggests that *exhaustive* explainability is not only possible but an inherent property of well-trained networks, potentially replacing post-hoc approximations with exact symbolic extraction.\n\n## Attribution Integrity Under Distribution Shift\n\nWhile neither paper explicitly focuses on robustness, both implicitly address a shared failure mode of post-hoc explainers: instability under input perturbation. Paper [1]'s SIG method, by integrating gradients along a straight-line path from a baseline, ensures that attribution sums to the model's output difference—a completeness property that attention weights lack. This makes attributions stable across sample-specific abundance variations, a common source of noise in metagenomic data. Paper [2]'s symbolic patterns, being discrete and rule-based, are inherently invariant to small continuous input perturbations, offering a form of \"explanation robustness\" that gradient-based maps cannot guarantee. Together, they suggest a design principle: good explanations must be *path-invariant* (integrated gradients) or *structure-invariant* (symbolic rules) to qualify as reliable evidence.\n\n## Computational Cost vs. Fidelity Trade-off\n\nA pragmatic tension emerges across both works regarding explanation granularity. Paper [1] demonstrates that SIG is computationally efficient for token-level attribution in large transformers, requiring only a few backward passes (typically 20–50 steps), making it practical for longitudinal microbiome cohorts. In contrast, Paper [2]'s symbolic extraction, while exhaustive, is computationally intensive—it involves combinatorial search over activation patterns and is best suited for smaller or distilled models. The field seems to be splitting into two service tiers: fast signed attribution for real-time diagnostics, and slow but complete symbolic extraction for model auditing and regulatory compliance. Neither paper resolves this trade-off, but their coexistence defines the current practical frontier for explainability tooling.\n\n## Bridging the Gap: From Token Scores to Network Logic\n\nThe most unifying insight is that both papers reject the notion that a single scalar importance map is sufficient. Paper [1] augments per-token scores with *sign* information, while Paper [2] abandons scalar maps entirely in favor of *structural rules* (e.g., \"if species A > threshold and species B < threshold, then disease\"). This reflects a broader movement toward **compositional explanations**: explanations that can be combined or decomposed, rather than pointwise relevance maps. In the context of the given abstracts, one can infer a future direction: applying SIG-like signed attribution to discover candidate symbolic rules (i.e., high-significance tokens become rule antecedents) and then validating those rules via Paper [2]'s symbolic extraction framework. This hybrid pipeline would provide both *local* directional evidence (SIG) and *global* deterministic logic (symbolic), covering both the \"which token\" and \"why logic\" questions.\n\n## Key Takeaways\n- **Attention weights are insufficient**: [1] proves they lack sign information and causal grounding, making them unsuitable for evidence-based decisions; signed integrated gradients provide a mathematically complete alternative.\n- **Symbolic patterns are not emergent accidents but possibly natural laws** [2]: with appropriate conditions, NNs can be reduced to exhaustive symbolic rules, challenging the black-box paradigm.\n- **Causality over correlation**: [1]'s completeness property (sum of attributions equals output) is a strict upgrade over attention's interpolative weights, enabling counterfactual reasoning.\n- **Directional attribution enables protective vs. risk factor discovery**: [1]'s signed outputs are essential for microbiome—pathogenic vs. commensal species must be distinguished, which attention masks fail to do.\n- **Explanation granularity is bimodal**: [1] offers fast, sample-level token scores; [2] offers slow, network-level symbolic logic—practitioners must choose based on deployment constraints (diagnostics vs. auditing).\n- **Both approaches share a common enemy—distributed, entangled representations**—and offer different weapons: gradient integration (smooth path) and discrete rule extraction (hard boundaries).\n- **Future work lies in hybridization**: using [1]'s signed attributions as a pruning heuristic to accelerate [2]'s symbolic search, enabling full logic extraction for large-scale models.",
+    "papers": [
+      {
+        "title": "Beyond Attention: Signed Integrated Gradients Attribution in a BiomeGPT-Style Microbiome Transformer",
+        "url": "",
+        "authors": [
+          "Oren Nelson"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Mathematical Principles and Experimental Discoveries of the Emergence of Symbolic Patterns in Artificial Neural Networks",
+        "url": "",
+        "authors": [
+          "Quanshi Zhang",
+          "Qihan Ren",
+          "Siyu Lou"
+        ],
+        "date": "2026-08-10"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-10",
+    "paperCount": 15,
+    "markdown": "# Navigating the Multimodal Frontier: Efficiency, Compositionality, and Human-Centric Alignment\n\nToday's research landscape reflects a maturing multimodal field focused on three interlocking frontiers: making large multimodal models dramatically more efficient through token pruning and agentic consolidation, establishing rigorous theoretical frameworks for composing frozen multimodal components with certifiable guarantees, and grounding multimodal systems in human-centered applications ranging from educational optimization to scientific discovery. Across these papers, we see a common thread of moving beyond raw capability demonstrations toward questions of reliability, controllability, and practical deployment.\n\n## Efficiency and Token Pruning in Multimodal LLMs\n\nThe computational burden of processing visual tokens remains a critical bottleneck for multimodal large language models (MLLMs), and several papers tackle this challenge through different pruning strategies. [1] addresses a key weakness in attention-based visual token pruning: the choice of which middle layer's attention to use is typically fixed and suboptimal. The authors propose learning to predict the most informative middle-layer attention, demonstrating that different inputs benefit from different layers and that adaptive layer selection improves pruning efficacy. [14] takes a meta-learning approach, asking whether LLMs themselves can automatically design visual token pruning algorithms. This AI4AI framework explores automated algorithm discovery, potentially replacing handcrafted heuristics with machine-generated strategies that adapt to specific architectures and budgets. Together, these papers suggest that the field is moving from static pruning rules toward adaptive, learned, and even self-generating approaches to token reduction.\n\n## Theoretical Foundations for Multimodal Composition\n\nTwo papers establish important theoretical ground for composing and merging multimodal systems. [2] introduces CertBind, a multiscale theory for certifiable composition of frozen multimodal encoder graphs via lightweight connectors. The work provides formal guarantees at three levels—node-scale task identification boundaries, edge-scale conformal rank control with family-wise error protection, and path-scale compositional behavior—addressing the critical problem of how connected routes can degrade native retrieval capabilities. [4] tackles Agentic MLLM merging, where consolidating specialized models into a generalist creates asymmetric capability preservation and behavior-critical forgetting. Their AgentPatch framework uses a coarse-to-fine weak-task repair strategy to identify and fix capabilities lost during merging, ensuring that long-horizon executions are not derailed by missing decisive actions. These papers represent a shift from empirical composition toward principled, verifiable multimodality.\n\n## Retrieval-Augmented Generation and Evidence Selection\n\n[7] challenges a core assumption in visual retrieval-augmented generation: that more retrieved evidence always helps. Through experiments with diffusion language models, the authors demonstrate a counterintuitive finding—while retrieving more pages improves answer-page coverage, unconditionally passing all evidence to the generator often reduces accuracy due to semantic conflict. A latent-source analysis reveals the mechanism: position-wise processing in parallel denoising suffers from source-coherence loss. This work has significant implications for RAG system design, suggesting that selective evidence curation is as important as retrieval breadth. The finding connects to broader questions about how generative models handle contradictory or competing information sources in multimodal contexts.\n\n## Domain-Specific Multimodal Applications\n\nSeveral papers demonstrate the power of multimodal approaches in specialized domains. [3] presents Shape Your Feed (SYF), an LLM-based agentic system for conversational recommendation that bridges the gap between passive behavioral ranking and explicit user articulation of interests. This represents a fundamental shift from implicit-signal inference to interactive preference steering in industrial recommendation systems. [6] introduces Surg-UniWorld, a unified surgical world model with multimodal control experts capable of synthesizing realistic instrument-tissue interactions through hierarchical surgical anchors. The work addresses the challenge of heterogeneous visual conditions causing anatomical distortion and temporal inconsistency. [8] tackles structured recipe generation through ReGraph, which learns to produce explicit graph representations of cooking procedures from food images, making procedural knowledge compositional and verifiable rather than merely plausible textual output. [5] presents a Japanese document understanding model that systematically studies capability injection and forgetting control—comparing parsing-centric SFT, mixed SFT, and parsing-centric reinforcement learning to preserve document VQA while adding structured parsing capabilities.\n\n## Human Perception, Behavior, and Evaluation\n\nUnderstanding human behavior and perception anchors several papers. [10] demonstrates that off-the-shelf language-vision encoders can effectively model gaze behavior in visual world experiments, connecting multimodal representations to psycholinguistic predictions without task-specific training. [12] introduces a large dataset of 29,870 walkability ratings capturing subjective variability across individuals, challenging the field's assumption of uniform perception—crucially, they use sidewalk-view rather than vehicle-mounted imagery to better reflect pedestrian experience. [9] presents Science Edge Evaluation (SEE), a benchmark of expert-curated multimodal questions spanning chemistry, biology, and materials science, finding that even the best MLLM reaches only 48.7% accuracy and that general-purpose models outperform science-specialized ones—a sobering result for claims of scientific reasoning capability. [11] argues for LMM modality transfer as a prerequisite for autonomous GIS agents, noting the field's over-reliance on text-only spatial reasoning despite human workflows being inherently multimodal. [13] addresses the overlooked coupling between missing-modality robustness and calibrated uncertainty through Modality-Conditioned Conformal Fusion (MCCF), treating both as aspects of a single architectural property rather than separate problems.\n\n## Key Takeaways\n\n- **Adaptive token pruning is emerging as a necessity**: fixed heuristics and predefined layer selections for visual token pruning are being replaced by learned, adaptive, and even LLM-generated pruning strategies that respond to input characteristics and architectural constraints [1][14].\n\n- **Composition requires formal guarantees**: as multimodal systems become composable through connectors and mergeable through weight arithmetic, researchers are developing multiscale theories and repair mechanisms to ensure task boundaries, error control, and capability preservation are certifiable rather than assumed [2][4].\n\n- **More evidence is not always better in RAG**: retrieval breadth and generation quality can diverge, particularly in diffusion language models where semantic conflict and source-coherence loss degrade accuracy—selective evidence curation is critical [7].\n\n- **Multimodal evaluation reveals significant gaps**: science-specialized models underperform general-purpose counterparts in expert-curated scientific benchmarks, and even top models achieve below 50% accuracy, highlighting the distance between multimodal competence and actual scientific reasoning capability [9].\n\n- **Subjective human perception resists aggregation**: walkability perception varies substantially across individuals, and models that assume uniform views miss essential variability—capturing this requires both appropriate visual perspectives (pedestrian-level) and individual-level modeling [12][13].\n\n- **Agentic and interactive paradigms are transforming applications**: from conversational recommendation systems that let users steer their feeds in natural language to surgical world models with multimodal control, the field is moving from passive inference toward interactive, controllable multimodal systems [3][6].\n\n- **Capability injection must balance with forgetting control**: adding new multimodal capabilities to existing models requires careful data mixing and training strategies to preserve prior competencies, whether in document understanding or agentic task execution [4][5].",
+    "papers": [
+      {
+        "title": "Learning to Predict Middle-Layer Attention in MLLMs for Visual Token Prunin",
+        "url": "",
+        "authors": [
+          "Yuyao Sun",
+          "Tao Deng",
+          "Shuang Li",
+          "Deqing Wang",
+          "Hao Geng",
+          "Minjun Yu"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "CertBind from Multimodal Connectivity to Certifiable Retrieval Decisions",
+        "url": "",
+        "authors": [
+          "Shuheng Cao",
+          "Zhenhao Zhang",
+          "Ruiqi Chen",
+          "Renjie Cao",
+          "Weijia Zhang",
+          "Siyu Zhang",
+          "Jiaxin Liu",
+          "Xiangyu Zeng",
+          "Haotian Geng",
+          "Fan Gu"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Shape Your Feed: An LLM-based Agentic System for Conversational Recommendation",
+        "url": "",
+        "authors": [
+          "Ziyun Xu",
+          "Bosen Ding",
+          "Yue Zhang",
+          "Ji Qi",
+          "Qingyuan Song",
+          "Jizhou Huang",
+          "Liwei Wang",
+          "Jefferey Santelli",
+          "Yue Weng",
+          "Qichao Que",
+          "Zhenheng Yang",
+          "Junfeng Pan",
+          "Linhong Zhu"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "AgentPatch: Coarse-to-Fine Weak-Task Repair for Merging Agentic Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Zibo Shao",
+          "Baochen Xiong",
+          "Chengdong Xu",
+          "Linhui Xiao",
+          "Kaichen Li",
+          "Haoran Gong",
+          "Yan Li",
+          "Yaguang Song",
+          "Xiaoshan Yang"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Stockmark-Nemotron-3-Nano-Omni-JapanDocReader: Structured Document Parsing via Capability Injection and Forgetting Control",
+        "url": "",
+        "authors": [
+          "Shi Chen",
+          "Hayato Aida",
+          "Makoto Morinaga",
+          "Shohei Tanaka",
+          "Kosuke Arima"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Surg-UniWorld: A Unified Surgical World Model with Multimodal Control Experts",
+        "url": "",
+        "authors": [
+          "Rulin Zhou",
+          "Wanhao Liu",
+          "Guoheng Ma",
+          "Liangjin Shao",
+          "Qiujie Song",
+          "Yidu Wang",
+          "Guankun Wang",
+          "Tong Chen",
+          "Long Bai",
+          "Luping Zhou",
+          "Hongliang Ren"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Does More Retrieved Evidence Help Visual Retrieval-Augmented Generation with Diffusion Language Models?",
+        "url": "",
+        "authors": [
+          "Jiankun Wang",
+          "Yisen Gao",
+          "Ziwei Zhang",
+          "Xingcheng Fu",
+          "Jiaxin Bai",
+          "Chen Gao"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "ReGraph: Learning to Generate Recipe Graphs from Food Images",
+        "url": "",
+        "authors": [
+          "Guoshan Liu",
+          "Bin Zhu",
+          "Pengkun Jiao",
+          "Jingjing Chen",
+          "Chong-Wah Ngo",
+          "Yu-Gang Jiang"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Science Edge Evaluation: SEE the Missing Step Toward Real Scientific Discovery",
+        "url": "",
+        "authors": [
+          "Taolin Han",
+          "Yuchen Zhang",
+          "Jinghang Wang",
+          "Yun Wu",
+          "Wai Yuet Chiu",
+          "Zhaohai Li",
+          "Yifei Zhang",
+          "Jinxin Wang",
+          "Yuhao Zhou",
+          "Chen Zhao",
+          "Jiajia Li",
+          "Jiaxin Li",
+          "Qile Jin",
+          "Kewei Sun",
+          "Shuang Wu",
+          "Weiqi Zhai",
+          "Renquan Lv",
+          "Junchao Li",
+          "Ruodan Chen",
+          "Qingteng Chen",
+          "Zhibo Yang",
+          "Hu Wei",
+          "Lin Qu",
+          "Shuai Bai",
+          "Bing Zhao"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Gaze Behavior in Visual World Experiments Can be Modeled With Off-the-shelf Language-Vision Encoders",
+        "url": "",
+        "authors": [
+          "Rahul Murali Shankar",
+          "Titus von der Malsburg",
+          "Sebastian Padó"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "LMM Modality Transfer: A Pre-requisite for Autonomous GIS Agents",
+        "url": "",
+        "authors": [
+          "Ivan Majic",
+          "Zexian Huang",
+          "Franziska Hübl",
+          "Krzysztof Janowicz",
+          "Meilin Shi",
+          "Mina Karimi",
+          "Zilong Liu",
+          "Alexandra Fortacz-Lazan"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Walkable to Whom? Capturing Subjective Variability in Walkability Perception Using Multimodal Deep Learning",
+        "url": "",
+        "authors": [
+          "Moloud Damandeh",
+          "Meead Saberi"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "Conformal Fusion Under Missing Modalities",
+        "url": "",
+        "authors": [
+          "Alireza Moayedikia"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "An AI4AI Framework for Visual Token Pruning",
+        "url": "",
+        "authors": [
+          "Zhen Liu",
+          "Wenli Huang",
+          "Wei Song",
+          "Yuhan Liu",
+          "Zhiqin Yang",
+          "Jingwen Fu"
+        ],
+        "date": "2026-08-10"
+      },
+      {
+        "title": "SetEasy: A Multi-Modal Classroom Engagement Assessment and Seating Optimization Framework",
+        "url": "",
+        "authors": [
+          "Zhihao Xie",
+          "Hongye Yang",
+          "Shien Liu"
+        ],
+        "date": "2026-08-10"
+      }
+    ]
+  }
+]
