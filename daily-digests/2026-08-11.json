@@ -1,0 +1,729 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-11",
+    "paperCount": 13,
+    "markdown": "# Interpretability at Scale: From Neurons to Circuits and Clinical Decision-Making\n\nToday's research landscape marks a significant maturation of interpretability from post-hoc analysis toward mechanism-first design, with contributions spanning scalable inherently interpretable architectures, neuron-level cross-lingual analyses, and application-driven mechanistic methods in healthcare and safety. The field is converging on a unified theme: understanding and controlling *where* and *how* information flows through models, rather than merely observing outputs.\n\n## Scaling Interpretability: From Post-Hoc Analysis to First-Class Design\n\nThe dominant paradigm of training opaque models and explaining them afterward is being challenged by approaches that bake interpretability into the training pipeline itself. This section covers foundational shifts in how we think about the relationship between interpretability and capability.\n\n[1] challenges the premise that interpretability is a tax on model capability by making interpretability a constraint of the training pipeline, optimized jointly with the language modeling objective across autoregressive and diffusion architectures. Across three orders of magnitude of compute, the authors demonstrate that model representations become *more* interpretable as capability scales, directly contradicting the prevailing trade-off narrative. This work is pivotal because it suggests that inherently interpretable models are not a compromise but potentially a superior scaling trajectory, fundamentally resetting expectations for what transparent-by-design LLMs can achieve.\n\n[6] offers a crucial theoretical corrective to activation-centric accounts of reinforcement learning (RL) post-training. By adapting Metabolic Control Analysis from biochemistry, the authors introduce the Post-training Control Coefficient to separate *activation* from *control*, showing that circuits activated during RL fine-tuning may not actually control reward gains. This distinction is essential for the interpretability community: it implies that pruning or editing the most \"active\" circuits post-hoc may miss the true drivers of behavioral change, and it provides a principled, component-level metric for understanding where RL fine-tuning actually allocates capability.\n\n[3] addresses a practical bottleneck in creating expressive, interpretable residual pathways in deep networks. The paper proposes TEMPER, a tensorized and manifold-constrained parameterization for residual routing that reduces the parameter overhead of hyper-connections while maintaining their dynamic information flow benefits. By enforcing manifold constraints on the mixing generators, the approach stabilizes training and achieves expressivity comparable to unstructured baselines at a fraction of the parameter cost. This matters for interpretability because structured, low-parameter routing mechanisms are significantly easier to analyze and attribute than dense, unstructured alternatives.\n\n## Mechanistic Interpretability of Multilingual and Safety-Critical Systems\n\nAs models become increasingly multilingual and safety-critical, understanding how representations generalize across languages and how safety mechanisms propagate through layers is paramount. The papers in this section push beyond single-neuron analyses to system-level understanding.\n\n[5] presents the first neuron-level interpretability study of emotion encoding in large audio-language models (LALMs), addressing whether emotional representations are language-specific or language-agnostic. The authors define Multilingual Emotion Neurons (MLENs) with stable emotional selectivity and aligned causal effects across languages, and introduce Consistency-Regularized Fusion (CR-Fusion) to identify them robustly. This work is significant because it reveals that LALMs can learn shared, language-invariant emotional representations, which has direct implications for building more consistent and controllable multilingual speech systems.\n\n[11] moves beyond isolated-neuron analyses to identify and target *cross-layer functional pathways* responsible for safety capabilities in multilingual LLMs. The paper's key insight is that safety signals propagate dynamically through the model, and understanding this propagation is essential for robust safety interventions. By mapping these shared pathways, the authors show that safety mechanisms can be targeted across layers, suggesting more effective and less brittle safety alignment strategies than current single-component approaches.\n\n[7] reframes circuit localization as a graph machine learning problem, introducing Graph Circuit Learning (GCL), a supervised, amortized framework that trains a GNN to predict circuits across many model–task pairs simultaneously. This is a methodological breakthrough: instead of localizing circuits from scratch for each new task, GCL learns to generalize the *process* of circuit finding, amortizing the interpretability cost across tasks. This scalability is critical for making mechanistic interpretability practical for real-world model auditing.\n\n## Interpretability as a Bridge to Domain-Specific Applications\n\nSeveral papers demonstrate that interpretability is not just an academic exercise but a practical tool for building trustworthy systems in high-stakes domains like healthcare and physical sciences. These works use mechanistic insights to either improve model reliability or circumvent the need for expensive labels.\n\n[9] introduces a label-free Parkinson's disease (PD) screening system built entirely on frozen pretrained encoders, using synthetic-dysarthria contrastive activation addition (CAA) directions in voice and a face-expression Vision Transformer. The approach ensures that no PD label touches any model fit, using only healthy controls as a reference, which cleverly bypasses the privacy and annotation bottlenecks that plague clinical ML. This is a compelling case study in how mechanistic interpretability techniques—like CAA—can enable entirely new, privacy-preserving clinical applications from zero labeled patient data.\n\n[10] addresses the instability of tolerance-based rewards in medical mathematical reasoning with a knowledge-guided hybrid reward framework, MedCalc-R1, that enforces explicit generation of computational formulas. By requiring the model to reveal its calculation steps, the framework converts a black-box numerical check into a verifiable, knowledge-checkable process, improving training stability and accuracy. This demonstrates that interpretability constraints in reward design can lead to both better-performing and more auditable clinical reasoning systems.\n\n[8] tackles perioperative risk prediction with a domain-structured ensemble framework that groups EHR predictors into patient-, surgery-, and anesthetics-related domains. Each domain is modeled by a separate gradient boosting machine, and a logistic regression meta-learner integrates the domain-specific risk estimates. The explicit domain structure provides natural interpretability—clinicians can see which domain drove a risk prediction—while the ensemble approach improves calibration over monolithic models. This structure-first design shows how interpretability can be engineered at the architectural level for medical decision support.\n\n## Toward Interpretable Time-Series and Sensor Analytics\n\nA common thread across time-series and sensor-based applications is the need to balance predictive performance with stability and interpretability, especially when signals are noisy or physically grounded.\n\n[2] proposes PhysAttNet, a physics-informed attention mechanism for time series forecasting in industrial and astrophysical settings where predictions must remain robust under noise and measurement uncertainty. The method enhances CNNs by injecting physics-based inductive biases through an attention mechanism that stabilizes learned temporal representations, addressing the instability that plagues standard convolutional features. By grounding the attention in physical process knowledge, the model achieves better generalization to unseen conditions, which is crucial for applications like manufacturing monitoring where unexpected events are the norm.\n\n[4] introduces GRACE, an LLM-grounded semantic metric space for clustering mixed tabular data, bridging continuous numerical measurements and discrete categorical symbols. The key innovation is using LLM world knowledge to estimate categorical affinities that are conceptually obvious but statistically unobserved in the dataset, overcoming the limitation of traditional dataset-internal statistics. This work matters for interpretability because it produces clusters with semantically meaningful, human-aligned structure, rather than purely statistical groupings, making the resulting partitions far easier to explain and validate.\n\n[12] tackles the challenging problem of detecting body-focused repetitive behaviors (BFRBs) from wrist-worn multimodal sensor data, distinguishing subtle pathological movements from ordinary gestures. The deep multimodal framework fuses inertial, thermopile, and time-of-flight sensor data, and while the primary focus is detection accuracy, the multimodal fusion architecture provides a structured view of which sensor modalities contribute to detection decisions. Early, objective detection of BFRBs could enable timely interventions for OCD and anxiety disorders, making this an impactful application of sensor-based ML.\n\n[13] closes the loop on emotion interpretability by using model-internal emotion signals, not just text-level cues, to inform adaptive skill selection and evolution in LLM agents. The authors exploit the finding that LLMs maintain causally influential linear emotion representations, and use these internal states as a decision-making signal for routing to appropriate skills. This is a novel application of interpretability: instead of using internal representations for post-hoc analysis or direct output steering, the model uses its own emotion state to guide agent-level behavior, opening a new design space for self-aware and adaptive agents.\n\n## Key Takeaways\n- **Interpretability scales with capability**: Contrary to the \"interpretability tax\" narrative, inherently interpretable models can become more interpretable as compute scales, suggesting a new frontier for transparent foundation models [1].\n- **Activation does not equal control**: Post-hoc circuit analysis based on activation strength may misidentify true behavioral drivers; separating activation from causal control is essential for effective model editing and RL fine-tuning [6].\n- **Parameter-efficient structure enables analysis**: Manifold-constrained and tensorized parameterizations of residual routing can match the expressivity of unstructured baselines while remaining tractable for mechanistic analysis [3].\n- **Safety and emotion representations are cross-lingual and cross-layer**: Both emotion and safety mechanisms exhibit language-agnostic and layer-spanning structure, indicating that interventions should target shared pathways rather than isolated components [5, 11].\n- **Amortized circuit finding is feasible**: Graph-based, supervised frameworks can learn to localize circuits across many tasks, making mechanistic interpretability practical at scale rather than a per-task luxury [7].\n- **Mechanistic techniques enable label-free clinical AI**: Contrastive activation addition and knowledge-guided rewards allow high-stakes applications to be built without extensive labeled patient data, preserving privacy while improving reliability [9, 10].\n- **Domain structure is a powerful interpretability tool**: Organizing models around explicit domain or sensor structures—whether in EHR risk prediction or multimodal wearable sensing—yields both improved calibration and naturally interpretable outputs [8, 12].",
+    "papers": [
+      {
+        "title": "Scaling Inherently Interpretable Language Models",
+        "url": "",
+        "authors": [
+          "Guide Labs Team",
+          "Andreas Madsen",
+          "Aya Abdelsalam Ismail",
+          "Giang Nguyen",
+          "Isaac Plant",
+          "Muawiz Chaudhary",
+          "Nathaniel Monson",
+          "Saqib Azim",
+          "Zhichen Guo",
+          "Julius Adebayo"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "PhysAttNet: Enhancing Predictive Performance in Industrial and Astrophysical Time Series via Physics-Informed Attention",
+        "url": "",
+        "authors": [
+          "Amal Saadallah",
+          "Julia Tjus",
+          "Petra Wiederkeher",
+          "Wolfgang Rhode"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "TEMPER: Tensorized Efficient Manifold-constrained Parameterization for Expressive Residual Routing",
+        "url": "",
+        "authors": [
+          "Yuxuan Gu",
+          "Wuyang Zhou",
+          "Huijun Xing",
+          "Danilo Mandic"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "GRACE: LLM-Grounded Semantic Metric Spaces for Scalable Mixed-Data Clustering",
+        "url": "",
+        "authors": [
+          "Zihua Yang",
+          "Zhencheng Xie",
+          "Junyang Chen",
+          "Liang Xie",
+          "Yiqun Zhang",
+          "Mengke Li",
+          "Yang Lu"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Multilingual Emotion Neurons in Large Audio-Language Models",
+        "url": "",
+        "authors": [
+          "Xiutian Zhao",
+          "Philipp Koehn",
+          "Björn Schuller",
+          "Berrak Sisman"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Control-Diverse Reinforcement Fine-Tuning: Decoupling the Shared Control Bottleneck of RL Post-Training",
+        "url": "",
+        "authors": [
+          "Binwen Tan",
+          "Jingchao Wang",
+          "Dengzhe Hou",
+          "Lingyu Jiang",
+          "Zeyuan Wu",
+          "Yunhan Shen",
+          "Fangzhou Lin",
+          "Kazunori Yamada",
+          "Atsushi Koike"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Can Graph Learning Learn Circuits?",
+        "url": "",
+        "authors": [
+          "Chester Tan",
+          "Moritz Lampert",
+          "Courtney Maynard",
+          "Ankit Ramakrishnan",
+          "Tina Eliassi-Rad",
+          "Ingo Scholtes"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "A Domain-Structured Ensemble Framework for Perioperative Outcome Prediction Using Electronic Health Record Data",
+        "url": "",
+        "authors": [
+          "Shikhar Shukla",
+          "Cristina Barboi"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Label-Free Parkinson's Disease Screening from Face and Voice through Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Jiaheng Su",
+          "Yu Sun"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "MedCalc-R1: Knowledge-Guided Reward Framework for Medical Mathematical Reasoning",
+        "url": "",
+        "authors": [
+          "Haotian Wang",
+          "Lian Yan",
+          "Xingzhi Yao",
+          "Fanshu Meng",
+          "Ye He",
+          "Jingchi Jiang",
+          "Yi Guan"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Who Bridges Safety? Identifying and Targeting Cross-Lingual Shared Safety Pathways",
+        "url": "",
+        "authors": [
+          "Shuyi Miao",
+          "Wangjie Qiu",
+          "Pengyang Shao",
+          "Canran Xiao",
+          "Fei Shen",
+          "Zhiming Zheng",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Deep Multimodal Wearable Sensor Fusion for Detection of Body-Focused Repetitive Behaviors",
+        "url": "",
+        "authors": [
+          "Samaneh Rezaeimanesh",
+          "Mohsen Behradfar",
+          "Mohammad Fili",
+          "Guiping Hu"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Emotion2Skill: Model-Internal Emotion Signals for Adaptive Skill Selection and Evolution",
+        "url": "",
+        "authors": [
+          "Bohan Lin",
+          "Hejia Geng",
+          "Xinyi Xie",
+          "Heng Zhou",
+          "Qinghua Xing",
+          "Bo Liu",
+          "Chen Zhang",
+          "Yudong Zhang"
+        ],
+        "date": "2026-08-11"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-11",
+    "paperCount": 1,
+    "markdown": "# Graph Circuit Learning: Amortized Mechanistic Interpretability Through Graph Neural Networks\n\nToday's research landscape marks a shift from post-hoc, task-specific interpretability toward amortized and transferable explainability methods. The featured work repositions circuit localization—a cornerstone of mechanistic interpretability—as a graph learning problem, training GNNs across multiple models to generalize circuit discovery beyond single model-task pairs.\n\n## Circuit Localization as Graph Learning\n\n[1] **Can Graph Learning Learn Circuits?** by Chester Tan, Moritz Lampert, Courtney Maynard, Ankit Ramakrishnan, Tina Eliassi-Rad, and Ingo Scholtes addresses a critical bottleneck in mechanistic interpretability: existing circuit localization methods (e.g., activation patching, causal tracing) must be re-run independently for every model-task combination, making them computationally prohibitive at scale. The authors propose Graph Circuit Learning (GCL), a supervised, amortized framework that redefines circuit localization as a graph machine learning problem where computation graph edges represent computational pathways and GNNs model interactions among these pathways. Their core technical contribution is training a GNN across many model-task pairs in a supervised manner, enabling the network to learn generalizable patterns of what constitutes a task-relevant circuit, rather than solving each instance from scratch. The key result is that GCL can predict circuits for unseen model-task pairs without additional gradient-based optimization or activation patching, dramatically reducing the cost of circuit discovery. This matters because it transforms mechanistic interpretability from a bespoke, per-model analysis into a scalable, transferable capability—a prerequisite for auditing large model families (e.g., fine-tuned variants) at deployment time.\n\n## Why This Shift Matters for the Field\n\nThe move from single-model circuit analysis to graph-based amortized learning addresses a fundamental scalability wall. By framing computational pathways as graph edges, GCL exploits structural regularities across models that share architectural priors (e.g., residual stream topology), allowing inductive transfer. The framework also introduces a new evaluation protocol: instead of reporting circuit fidelity on one task, it benchmarks cross-task and cross-model generalization, which is a more realistic measure of interpretability utility. Furthermore, because GNNs are differentiable, GCL opens the door to gradient-guided circuit editing—potentially enabling direct model steering via learned circuit masks, a capability absent in prior discrete search-based methods.\n\n## Methodological Innovations and Practical Implications\n\nGCL's design choices warrant attention: using edges (not nodes) as the primary prediction unit aligns with the causal nature of circuits—information flows through pathways, so edge classification directly corresponds to \"keep or prune\" decisions. The supervised training regime requires a dataset of known circuits (which the authors generate from a suite of existing localization methods on smaller models), raising an interesting bootstrapping question: does GCL's quality ceiling depend on the diversity of its training circuits? Practically, for the AI/ML community, this means interpretability tools can be pre-trained once and deployed as lightweight inference modules, making circuit analysis feasible for models with hundreds of billions of parameters where iterative patching is intractable.\n\n## Limitations and Open Questions\n\nWhile promising, the approach leaves several questions unresolved: first, how does GCL perform when test models use different activation functions, normalization schemes, or attention variants than the training distribution? Second, the abstract mentions training \"across mu[ltiple]\" models but does not specify the exact diversity required to avoid overfitting to a single architecture family—this is critical for real-world heterogeneous deployment. Third, circuit inference for multi-task behaviors (e.g., a single model performing reasoning and memory) may require multi-label edge classification, which GNNs handle less naturally. Fourth, the interpretability of the GNN's own predictions is not addressed—there is a meta-interpretability gap. Finally, the scalability of GNN message passing on very large computation graphs (e.g., 100B-parameter models with millions of edges) needs empirical validation, though graph sampling or sparsification could mitigate this.\n\n## Broader Impact on Explainability Workflows\n\nIf GCL matures, it will fundamentally alter how practitioners approach model auditing and debugging. Rather than treating each fine-tuned model as a novel interpretability problem, teams could maintain a shared GCL model that instantly highlights \"suspicious\" circuit deletions or additions introduced by fine-tuning. This aligns with emerging regulatory requirements (e.g., the EU AI Act) that demand explainability across model versions, not just a single checkpoint. Furthermore, the edge-centric view integrates naturally with causal intervention tools: predicted circuit masks can directly inform where to inject noise or counterfactual perturbations for behavior steering. The potential to combine GCL with other explainability modalities (e.g., saliency maps or feature attribution) as complementary signals is an exciting avenue, but the field must first establish confidence in GNNs' own reliability and failure modes before deploying them as interpretation oracles.\n\n## Key Takeaways\n\n- **Paradigm shift**: Circuit localization is reframed from a per-model optimization problem to an amortized graph prediction task, enabling cross-model generalization.\n- **Computational savings**: GCL eliminates the need for expensive activation patching or gradient-based search at inference time, making mechanistic interpretability feasible for large model families.\n- **Graph-edge supervision**: Modeling computational pathways as edges (rather than nodes) is a causal-aware design choice that directly maps to \"keep/prune\" decisions.\n- **Transfer learning for explainability**: The framework's success hinges on the diversity of training circuits; bootstrapping from existing localization methods creates a natural teacher-student loop.\n- **Open challenges remain**: Cross-architecture robustness, multi-task circuit labeling, meta-interpretability of the GNN itself, and scalability to extreme-scale graphs are not yet addressed.\n- **Application potential**: Beyond analysis, predicted circuits could enable gradient-guided model steering and version-diff auditing, supporting regulatory compliance and error debugging.\n- **Field maturation signal**: The work signals a move from interpretability as a descriptive science to interpretability as a deployable engineering service—a critical step for responsible AI at industrial scale.",
+    "papers": [
+      {
+        "title": "Can Graph Learning Learn Circuits?",
+        "url": "",
+        "authors": [
+          "Chester Tan",
+          "Moritz Lampert",
+          "Courtney Maynard",
+          "Ankit Ramakrishnan",
+          "Tina Eliassi-Rad",
+          "Ingo Scholtes"
+        ],
+        "date": "2026-08-11"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-11",
+    "paperCount": 39,
+    "markdown": "# From Hallucination Fuzzing to Lunar Geology: The Expanding Frontier of Multimodal Evaluation and Reasoning\n\nToday's research landscape reveals a maturing field where multimodal AI is simultaneously broadening its application domains—from women's health wearables to lunar geology—while deepening its rigor in evaluation, safety, and reliability. The community is increasingly focused on moving beyond static benchmarks toward dynamic, self-evolving testing paradigms, and on addressing the fundamental tensions between modality expansion and linguistic preservation.\n\n## The Reliability Imperative: Hallucination, Safety, and Robustness\n\nThe persistent challenge of hallucination in Multimodal Large Language Models (MLLMs) receives systematic treatment through a unified evaluation framework that integrates a fine-grained dataset grounded in a comprehensive taxonomy spanning object-level and attribute-level phenomena, coupled with self-evolving stress testing to combat benchmark saturation [1]. This addresses a critical gap: static benchmarks fail to reflect model robustness in evolving real-world scenarios, particularly in high-stakes applications where reliability is paramount.\n\nThe safety landscape of MLLMs is fundamentally reshaped by architectural shifts toward modality alignment and fusion, giving rise to novel threats including compromised modality integration, modality misalignment, and fused safety risks that transcend uni-modal assumptions [2]. This survey provides a crucial framework for understanding how increased model complexity creates new attack surfaces, and why existing safety solutions rooted in uni-modal paradigms are insufficient for the cross-modal threat landscape.\n\nA critical insight emerges from analysis of RLVR training: gains in accuracy are brittle, as simply paraphrasing a question or changing the prompt template can degrade performance [26]. The root cause traces to conflating format with content in binary verifiers and the thin coverage of training distributions relative to real-world prompts, highlighting the need for robustness-aware training objectives. Similarly, hallucination in GUI grounding receives targeted treatment through a regression-free framework that leverages frozen MLLMs for instruction interpretation while avoiding coordinate hallucination through layout-aware matching rather than direct regression [39].\n\n## Self-Correction and Structured Reasoning\n\nReinforcement learning with verifiable rewards has emerged as a powerful paradigm, but traditional approaches discard supervision available in intermediate reasoning steps. StructReward addresses this by introducing a compute-efficient framework that leverages structured process rewards for self-correcting multimodal reasoning, avoiding the costly chain-of-thought annotations or online LLM judging required by existing process reward models [17].\n\nSpatial reasoning remains a weak point for large vision-language models, which struggle with fine-grained geometric computation beyond end-to-end generation. Self-evolving neuro-symbolic skills offer a promising solution by accumulating reusable experience and adaptively composing it through tool augmentation with explicit dependency constraints, moving beyond both from-scratch planning and fixed pipelines [10].\n\nFor ultra-long egocentric video reasoning spanning hours or days, error propagation in chain-of-thought agent systems is addressed through an adaptive policy that evaluates intermediate states and implements recovery mechanisms [11]. This self-checking, recovery-aware framework represents a significant advance over rigid zoom-in strategies that lack the ability to correct course when retrieval or inspection steps fail.\n\n## Multimodal Agents: From Tools to Embodied Intelligence\n\nVisual tool use emerges as a fundamental capability for multimodal agents, but the prevailing recipe of learning from teacher-generated trajectories is fundamentally flawed: a strong teacher often reaches the correct answer without needing tool calls, teaching students that tool calls accompany answers rather than that tool observations ground them [8]. This insight motivates an open recipe for synthesizing instructive trajectories that explicitly demonstrate the causal role of tool use.\n\nEmbodied agent evaluation receives attention through metamorphic testing for spatial cognition, which addresses the limitations of both manual VQA annotation and high-level task completion metrics [4]. The former suffers from labor intensity and annotation variability; the latter obscures critical vulnerabilities, allowing agents to complete tasks through suboptimal means or safety violations. Metamorphic testing provides a systematic approach to probing spatial reasoning capabilities without requiring extensive manual annotation.\n\nIn web navigation, multimodal enhancements demonstrate significant gains: MELLON, VQAgent, and Multimodal Ranker explore alignment of text and images alongside multimodal reasoning and planning to enhance performance on the WebShop benchmark [32]. The WebNavigation paradigm benefits from explicit multimodal reasoning rather than treating screenshots as mere visual context. For embodied agents facing long-horizon tasks, quality-diversity optimization discovers diverse planning policies, preventing the stalled execution that occurs when a single dominant planning style becomes ineffective [21].\n\nIntelligent transportation systems represent a high-impact deployment domain where large multimodal agents are proposed but often conflate multimodality, agency, empirical performance, and deployment readiness. A comprehensive evidence map of 42 primary study families distinguishes model-level, system-level, and hybrid multimodality, assessing each by functional capability and validation strength [14].\n\n## Domain-Specific Benchmarks and Evaluation\n\nThe field is witnessing a proliferation of domain-specific benchmarks that demand nuanced visual understanding. FitAQA introduces a systematic benchmark for multimodal LLMs in fitness action quality assessment, containing 2,219 videos and 5,512 QA instances across 30 bodyweight exercises with a unified format developed in collaboration with sports scientists [24]. This moves beyond action-specific annotation schemes to provide insight into how models assess exercise quality. CADEngBench evaluates whether CAD models are genuinely engineering-grade, testing parametric design, assembly reasoning, and physics simulation through boundary-representation validity, engineering checks, and parameter-family perturbations [37].\n\nEngineering reasoning is further probed through MMArch, a benchmark spanning ten subdomains of architecture and civil engineering, built entirely from figures in peer-reviewed papers with validated short-answer items [36]. Electrical circuit analysis receives attention through a benchmark of 1,000 authentic textbook problems evaluating long-horizon visual-to-symbolic reasoning, from grounding symbols to formulating coupled equations and preserving units and phase conventions [38]. Industrial safety reasoning is addressed by connecting workplace scenes with occupational accident knowledge, moving beyond isolated violation recognition to assess compliance, hazard interactions, and preventive actions [35].\n\nCultural and linguistic diversity in evaluation is tackled through a Polish vision-language evaluation that addresses the English-centric training of VLMs, which leads to failures in interpreting region-specific meanings and context-dependent visual cues [3]. The benchmark moves beyond surface-level recognition to evaluate deeper linguistic and pragmatic understanding, while separate work separates pragmatic incongruity from cross-modal mismatch in sarcasm detection, revealing whether LVLMs genuinely reason about image-text relationships or rely on shortcut learning [18].\n\n## Efficiency, Compression, and Streaming Architectures\n\nOmni-modal LLMs processing audio, video, and text face substantial computational costs from long multimodal sequences. A-PACK defers audio pruning until query-conditioned multimodal interactions emerge, exploiting the finding that audio exhibits higher task-relevant information density and representational diversity per token than video [25]. This two-stage framework addresses the underexplored area of modality-specific compression across the LLM boundary rather than merely pre-LLM token reduction. Similarly, Omni2LoRA bypasses the token bottleneck entirely through coherence-preserving parametric memory compression, using a Perceiver hypernetwork to distill context while preserving cross-modal anchors necessary for coherent reasoning [33].\n\nStreaming multimodal generation receives attention through a duplex architecture that aligns video, audio, and textual output streams, enabling new observations to enter an active generation stream naturally [20]. This moves beyond turn-based prefill-then-decode patterns and proactive micro-turn polling to achieve true duplex interaction with KV-cache-friendly serving.\n\nPreserving language intelligence during multimodal expansion is addressed from the perspective of internal adaptation dynamics: neurons in pretrained LLMs exhibit heterogeneous plasticity, with some critical for preserving language capabilities while others adapt to multimodal knowledge [6]. NeuPAT leverages this insight through neuron-aware plasticity allocation tuning, a lightweight approach that allocates adaptation resources according to neuron-level criticality.\n\n## Healthcare, Wearables, and Scientific Applications\n\nHealthcare applications are driving innovation in multimodal learning. Federated learning faces the realistic challenge of dual-axis modality missingness, where clients have different modality sets and individual samples contain only subsets of locally available modalities. Flux addresses this through modality-aware confidence tempering and mask-aware uncertainty estimation, moving beyond approaches that handle each axis separately [23].\n\nWearable computing for women's health receives specialized attention through FemWear, which parameter-efficiently repurposes a pretrained multimodal wearable backbone with only 1.11% of parameters trained, learning one shared longitudinal representation for menstrual, symptom, affective, sleep/recovery, autonomic, and activity signals [15]. Detection of body-focused repetitive behaviors from wrist-worn sensors demonstrates the potential of multimodal deep learning for mental health monitoring, combining inertial measurement units, thermopile sensors, and time-of-flight data to distinguish subtle compulsive actions from ordinary gestures [34].\n\nStroke detection is framed as a case study for deep probabilistic logic programming, combining connectionist components for patient image analysis within a transparent probabilistic logic programming framework under the distribution semantics [22]. This neuro-symbolic approach addresses privacy concerns in medical settings by leveraging summary statistics from literature. Integration of genomic and neuroimaging data for nervous system diseases is enabled by aligning genetic representations from pre-trained Genomic Language Models with neuroimaging data, capturing local sequence context around disease-associated variants that hard-coded labels lose [29].\n\n## Scientific Reasoning and Multimodal Dialogue\n\nLunar geology provides a compelling testbed for verifiably grounded machine interpretation: a vision-language architecture embeds the methodology of geologic knowledge discovery and inference, generating interpretations directly from co-registered topographic, spectral, and geologic maps [13]. The system balances established geological knowledge with novel inference, demonstrating progress toward automated scientific reasoning. In multimodal dialogue, the investigation of how much referential information gestures carry under different partner visibility conditions reveals that gestural information and its combination with speech significantly affect referent identification in video-mediated communication [12], challenging the reliance of dialogue models on transcripts alone.\n\nPedagogical content knowledge—the ability to adapt lessons to specified learners—receives a dedicated benchmark through an instructional video generation challenge that treats learner persona as an explicit evaluation criterion [27]. Each system generates complete instructional videos screened by LLM judges and ranked by crowd pairwise comparisons, measuring an AI capability that has not been systematically benchmarked.\n\n## Key Takeaways\n\n- **Dynamic evaluation is replacing static benchmarks**: The field is converging on self-evolving stress testing and metamorphic approaches that combat benchmark saturation and reveal robustness gaps invisible to static evaluation [1, 4].\n\n- **Safety and reliability demands are reshaping architecture design**: Understanding neuron-level plasticity [6], format-content disentanglement [26], and cross-modal threat modeling [2] are becoming central to multimodal system design rather than afterthoughts.\n\n- **Tool augmentation requires causal demonstration learning**: Imitating teacher trajectories that reach answers without using tools teaches the wrong lesson; effective training must demonstrate that tool observations ground answers, not merely accompany them [8].\n\n- **Domain-specific benchmarks are proliferating with methodological rigor**: From fitness assessment [24] to CAD engineering [37] to circuit analysis [38], benchmarks are moving beyond both perception-level tasks and surface-level compliance checks toward evidential reasoning and long-horizon inference.\n\n- **Token efficiency and streaming are critical deployment frontiers**: Compression strategies must preserve cross-modal coherence [33], defer modality-specific pruning until query interaction [25], and enable true duplex streaming [20] for practical multimodal systems.\n\n- **Healthcare applications demand specialized architectures**: Women's health wearables [15], federated learning under dual-axis modality missingness [23], and genomic-neuroimaging integration [29] all require domain-specific design rather than generic multimodal pipelines.\n\n- **Neuro-symbolic approaches bridge transparency and performance**: Probabilistic logic programming [22] and structured process rewards [17] offer paths to verifiable reasoning that pure neural approaches struggle to provide in high-stakes domains.",
+    "papers": [
+      {
+        "title": "Unified Hallucination Fuzzing for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Pengfei Zhou",
+          "Jiajun Song",
+          "Zhiwei Tang",
+          "Yixing Ma",
+          "Xiaopeng Peng",
+          "Donghui Si",
+          "Yuhang Xu",
+          "Huiqi Song",
+          "Yiyuan Miao",
+          "Yichen Qian",
+          "Weihua Chen",
+          "Wangbo Zhao",
+          "Bohan Zhuang",
+          "Jiasheng Tang",
+          "Yang You"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Evolving Safety Landscape of Multi-modal Large Language Models: A Survey of Emerging Threats and Safeguards",
+        "url": "",
+        "authors": [
+          "Xi Li",
+          "Shu Zhao",
+          "Xiaohan Zou",
+          "Fei Zhao",
+          "Fuxiao Liu",
+          "Yusen Zhang",
+          "Cheng Han",
+          "Yushun Dong",
+          "Jiaqi Wang"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Jako Tako or Fluent? Presenting PoVisLE: A Polish Vision-Language Evaluation",
+        "url": "",
+        "authors": [
+          "Anna Kołos",
+          "Grzegorz Statkiewicz",
+          "Karolina Seweryn",
+          "Katarzyna Kowol",
+          "Karolina Piosek",
+          "Wojciech Kusa"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "MetaSpace: Metamorphic Testing for Spatial Cognition in Embodied Agents",
+        "url": "",
+        "authors": [
+          "Gengyang Xu",
+          "Dongwei Xiao",
+          "Yiteng Peng",
+          "Shuai Wang"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "CONFER: Conflict-Aware Evidence Negotiation for Regime-Calibrated Weak Supervision in Multimodal Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Bojing Hou",
+          "Ruohao Li",
+          "Yitong Zhu",
+          "Luwen Yu",
+          "Yuyang Wang"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "NeuPAT: Neuron-aware Plasticity Allocation Tuning for Language-Preserving MLLMs",
+        "url": "",
+        "authors": [
+          "Jiayue Jin",
+          "Jingwei Zhang",
+          "Chen Wang",
+          "Jing Liu",
+          "Longteng Guo"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "From Speech to Interaction: Analyzing Multimodal Systems in Cocktail-Party Scenarios",
+        "url": "",
+        "authors": [
+          "Thai-Binh Nguyen",
+          "Zhaolin Li",
+          "Jan Niehues",
+          "Alexander Waibel"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "OpenVisTool: An Open Recipe for Synthesizing Instructive Visual Tool-Use Trajectories",
+        "url": "",
+        "authors": [
+          "Changhao Xiang",
+          "Shilin Zhang",
+          "Zheng Ma",
+          "Kanzhi Cheng",
+          "Ruize Ma",
+          "Yi Feng",
+          "Jianbing Zhang",
+          "Zhi Wang",
+          "Zhen Wu",
+          "Xinyu Dai",
+          "Lewei Lu"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "TongGuOCR: A Layout-Aware and Token-Augmented OCR Framework for Chinese Historical Documents",
+        "url": "",
+        "authors": [
+          "Zhongheng Zhou",
+          "Yi Sun",
+          "Huiguo He",
+          "Yuyi Zhang",
+          "Peirong Zhang",
+          "Yulin Fang",
+          "Dezhi Peng",
+          "Minghui Liao",
+          "Lianwen Jin"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Self-Evolving Neuro-Symbolic Skills for Tool-Augmented Spatial Reasoning",
+        "url": "",
+        "authors": [
+          "Shi-Yu Tian",
+          "Zhuo-Xia Wang",
+          "Xuan-Yi Zhu",
+          "Zhi Zhou",
+          "Xinwei Yang",
+          "Kun-Yang Yu",
+          "Ming Yang",
+          "Yang Chen",
+          "Yu-Feng Li"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "SCOUT: Self-Checking and Recovery-Aware Tool-Thought Agents for Ultra-Long Egocentric Video Reasoning",
+        "url": "",
+        "authors": [
+          "Keyang Zhong",
+          "Kuo Wang",
+          "Peng Liu",
+          "Quanlong Zheng",
+          "Junlin Xie",
+          "Zhijia Liang",
+          "Yanhao Zhang",
+          "Guanbin Li"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Investigating Multimodal Informativity under Different Partner Visibility Conditions in Video-Mediated Dialogue",
+        "url": "",
+        "authors": [
+          "Esam Ghaleb",
+          "Hugh Mee Wong",
+          "Kristina Kobrock"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Verifiably grounded machine interpretation of lunar geology",
+        "url": "",
+        "authors": [
+          "Tom Sander",
+          "Kay Wohlfarth",
+          "Christian Wöhler"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Large Multimodal Agents for Intelligent Transportation Systems: Architectures, Evidence, and Deployment Challenges",
+        "url": "",
+        "authors": [
+          "Muhammad Ayub Sabir",
+          "Shaohong Zheng",
+          "Zhiyu Qu",
+          "Fatima Ashraf",
+          "Junbiao Pang"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "FemWear: A Specialized Wearable Foundation Model for Women's Health",
+        "url": "",
+        "authors": [
+          "Yifan Wang",
+          "Chenzhong Li"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "REFRAMED: Towards Realistic Audio Description Generation for Movies",
+        "url": "",
+        "authors": [
+          "Igor Sterner",
+          "Mirella Lapata",
+          "Alex Lascarides",
+          "Frank Keller"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "StructReward: Efficient Structured Process Rewards for Self-Correcting Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Yifan Li",
+          "Ruxin Sun",
+          "Tongzhou Zhao"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "PragMatch: Separating Pragmatic Incongruity from Cross-Modal Mismatch in Large Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Zhanna Mukhametsharip",
+          "Vera Demberg",
+          "Varsha Suresh"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Agentic Anomaly Detection with ORCA-Style Dynamic Inductive Bias Adaptation in Multimodal Wearable Time Series Data",
+        "url": "",
+        "authors": [
+          "Anushka Roy",
+          "Jyotirmoy Singh",
+          "Shreea Bose",
+          "Chittaranjan Hota"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Aero Realtime: Fully Aligned Input-Output Streams for Low-Latency Streaming Multimodal Generation",
+        "url": "",
+        "authors": [
+          "Kaichen Zhang",
+          "Wei Huang",
+          "Keming Wu",
+          "Bo Li",
+          "Xiaojuan Qi"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Discovering Diverse Planning Policies for Multimodal Embodied Agents with Quality-Diversity Optimization",
+        "url": "",
+        "authors": [
+          "Pengfei Xu",
+          "Yong Liu",
+          "Xiaoya Nan",
+          "Qiang Yang",
+          "Peilan Xu"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Deep probabilistic logic programming for diagnostic reasoning from incomplete information: A case study in stroke detection",
+        "url": "",
+        "authors": [
+          "Felix Weitkämper",
+          "Monchito Avila",
+          "Elizabeth Nanjala",
+          "Siska",
+          "Grace Zawadi"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Multimodal Federated Learning under Dual-Axis Modality Missingness",
+        "url": "",
+        "authors": [
+          "Adiba Orzikulova",
+          "Jaehyun Kwak",
+          "Jaemin Shin",
+          "Yunqi Guo",
+          "Xiaomin Ouyang",
+          "Guoliang Xing",
+          "Steven Euijong Whang",
+          "Sung-Ju Lee"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "FitAQA: A Benchmark of Fitness Action Quality Assessment for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Kaili Zheng",
+          "Kaiwen Wang",
+          "Xun Zhu",
+          "Qingyuan Yang",
+          "Chenyi Guo",
+          "Ji Wu"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Deferred Audio Pruning with Local Audio-Visual Dynamics for Omni-LLMs",
+        "url": "",
+        "authors": [
+          "Kyeongyoon Lee",
+          "Hongyeob Kim",
+          "Youngeun Kim",
+          "Sungeun Hong"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Improving Generalization Robustness of Multimodal RLVR",
+        "url": "",
+        "authors": [
+          "Pengfei Zhou",
+          "Zhiwei Tang",
+          "Xiaopeng Peng",
+          "Chenrui Zhou",
+          "Lama Moukheiber",
+          "Yixing Ma",
+          "Bin Xu",
+          "Jiajun Song",
+          "Zhenglin Wan",
+          "Wangbo Zhao",
+          "Jiasheng Tang",
+          "Bohan Zhuang",
+          "Fan Wang",
+          "Yang You"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Findings of the First Teaching Monster Challenge: A Benchmark of Pedagogical Content Knowledge in AI Agents",
+        "url": "",
+        "authors": [
+          "Yi-Cheng Lin",
+          "Yu-Kai Guo",
+          "Szu-Chi Chen",
+          "Bo-Han Feng",
+          "Yun-Man Hsu",
+          "Hsiang Hsieh",
+          "Yu-Jung Lin",
+          "Yue-Ling Wu",
+          "Jia-Kai Dong",
+          "An-Yu Cheng",
+          "Yu-Han Huang",
+          "Lok-Lam Ieong",
+          "Kuan-Yu Chen",
+          "Ming-Douo Tchouang",
+          "Shao-Hua Sun",
+          "Che Lin",
+          "Jian-Jiun Ding",
+          "Hung-yi Lee"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "AquiLLM: An Architecture for Supporting Tacit Knowledge Capture in Research Groups",
+        "url": "",
+        "authors": [
+          "Jack Stark",
+          "Srinath Saikrishnan",
+          "Vikram Seenivasan",
+          "Bernie Boscoe",
+          "Andrew Lizarraga",
+          "Tuan Do"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Decoding Phenotypes: A Framework for Fusing Genomic Language Models and Neuroimaging",
+        "url": "",
+        "authors": [
+          "Tianli Tao",
+          "Ziyang Wang",
+          "Emma Robinson",
+          "Rachel Sparks",
+          "Le Zhang"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Integrated Multimodal AI System for Retrieval-Augmented Reasoning, Object Sensing, and Damage Analysis",
+        "url": "",
+        "authors": [
+          "Kalelo Dukuray",
+          "Israel Pina",
+          "Evan Perez",
+          "Erika Ardiles-Cruz",
+          "Jie Wei"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Hyperbolic Multimodal Continual Learning",
+        "url": "",
+        "authors": [
+          "Jiahong Liu",
+          "Ming Shen",
+          "Xiaohao Liu",
+          "Rex Ying",
+          "Menglin Yang",
+          "Tat-Seng Chua",
+          "Irwin King"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "MELLON - Multimodal Enhanced LLM for Online Navigation",
+        "url": "",
+        "authors": [
+          "Ruiyu Li",
+          "Haoyang Cai",
+          "Zhitong Guo",
+          "Tong Hu"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Omni2LoRA: Coherence-Preserving Parametric Memory for Efficient Omni Language Models",
+        "url": "",
+        "authors": [
+          "Puneet Mathur",
+          "Manan Suri",
+          "Dinesh Manocha"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Deep Multimodal Wearable Sensor Fusion for Detection of Body-Focused Repetitive Behaviors",
+        "url": "",
+        "authors": [
+          "Samaneh Rezaeimanesh",
+          "Mohsen Behradfar",
+          "Mohammad Fili",
+          "Guiping Hu"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "SafeSceneReason: A Multimodal Reasoning Benchmark Connecting Industrial Hazards with Accident Knowledge",
+        "url": "",
+        "authors": [
+          "Yuanchi Zhu",
+          "Kang An",
+          "Tengyue Wang",
+          "Zhongyu Yang",
+          "Chenxu Du",
+          "Xinqi Yang",
+          "Hebao Zhu",
+          "Bokai Zhao",
+          "Tianyu Liang",
+          "Ziliang Wang",
+          "Faqiang Qian",
+          "Yunli Yang",
+          "Weiyang Shi",
+          "Qibing Ren"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "MMArch: Benchmarking Multimodal Reasoning Grounded in Architectural Evidence",
+        "url": "",
+        "authors": [
+          "Chenxu Du",
+          "Kang An",
+          "Tengyue Wang",
+          "Zhongyu Yang",
+          "Xinqi Yang",
+          "Yuanchi Zhu",
+          "Hebao Zhu",
+          "Ziliang Wang",
+          "Faqiang Qian",
+          "Yunli Yang",
+          "Qibing Ren"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "CADEngBench: It Looks Like CAD, but Does It Work? Evaluating Parametric Design, Assembly Reasoning, and Physics Simulation",
+        "url": "",
+        "authors": [
+          "Harmanjot Singh",
+          "Abhra Dubey",
+          "Jorge Alejandro Amador Herrera"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "CircuitReason-1k: Benchmarking Long-Horizon Visual-to-Symbolic Reasoning inElectrical Circuits",
+        "url": "",
+        "authors": [
+          "Xinqi Yang",
+          "Kang An",
+          "Tengyue Wang",
+          "Zhongyu Yang",
+          "Chenxu Du",
+          "Yuanchi Zhu",
+          "Hebao Zhu",
+          "Ziliang Wang",
+          "Faqiang Qian",
+          "Yunli Yang",
+          "Qibing Ren"
+        ],
+        "date": "2026-08-11"
+      },
+      {
+        "title": "Hallucination-Free GUI Grounding via Regression-Free Layout-Aware Matching",
+        "url": "",
+        "authors": [
+          "Yuke Li",
+          "Xuehan Hou"
+        ],
+        "date": "2026-08-11"
+      }
+    ]
+  }
+]
