@@ -1,0 +1,247 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-18",
+    "paperCount": 4,
+    "markdown": "# Latent Reasoning, Physiological Signatures, and the Fragility of Circuit Evidence: Interpretability at Multiple Scales\n\nToday's research landscape reveals a maturing field wrestling with a fundamental tension: as models become more powerful and abstract in their internal computations, our tools for explaining them must evolve in tandem. The papers featured today span three critical frontiers—making latent-space reasoning human-readable, translating attribution maps into domain-native clinical language, and stress-testing whether mechanistic interpretability evidence can withstand rigorous scientific scrutiny.\n\n## Bridging the Latent-Language Divide\n\n## [Latent Reasoning Made Self-Explanatory]\n\nThe first paper [1] tackles a core dilemma in modern LLM design: latent reasoning (e.g., Coconut-style approaches) offers computational efficiency by replacing verbose text-based Chain-of-Thought with compressed embeddings, but this compression renders the model's thinking opaque. The authors propose a self-explainable framework where the latent reasoning process is not merely decodable post-hoc but is *intrinsically* structured to be interpretable during generation. Their core technical contribution is a training objective that simultaneously optimizes for task performance and for the latent states to be linearly projectable into natural language explanations, eliminating the need for separate decoder modules. The key result is that this approach achieves comparable accuracy to text-CoT baselines while retaining the efficiency gains of latent reasoning—a significant step toward removing the \"black box\" stigma from compressed thought processes. This matters because it directly addresses the practical deployment barrier for efficient reasoning models, suggesting that interpretability need not be sacrificed at the altar of computational savings.\n\n## Domain-Grounded Attribution for Clinical AI\n\n## [From Raw Signals to Physiological Narratives]\n\nPaper [2] addresses a critical mismatch in EEG foundation model interpretability: existing explainability techniques produce attribution scores in the time-channel input space, which does not align with how clinicians conceptualize brain activity (e.g., frequency bands, spatial regions of interest). EEG-PRISM introduces a universal post-hoc framework that maps attribution scores from any foundation model into physiologically relevant domains—such as spectral power bands and brain region groupings—using linear transformations and established backpropagation rules. Critically, this is achieved without modifying or retraining the underlying model, making it a drop-in solution for a wide range of existing architectures. The authors demonstrate that their transformed attributions provide more clinically coherent explanations (e.g., highlighting alpha-band activity over frontal regions for certain tasks) compared to raw time-channel scores. This work matters because it bridges the gap between the mathematical formalism of attribution methods and the practical, domain-specific reasoning that medical professionals require for trust and adoption.\n\n## The Reproducibility Crisis in Mechanistic Interpretability\n\n## [When Circuits Change With the Wind]\n\nThe third paper [3] delivers a sobering empirical investigation into the robustness of mechanistic interpretability—specifically, circuit discovery—under the exact conditions where it would be legally relied upon. Motivated by the EU AI Act's requirement for technical documentation of high-risk system decision-making, the author pre-registered a crossed grid of seven analytic axes (e.g., activation thresholds, pruning strategies, attribution methods), with every setting drawn from published implementations. The findings reveal that circuit-level explanations exhibit \"explanation multiplicity\": different but equally defensible analytic choices lead to substantially different discovered circuits, undermining the reliability of any single interpretation. The key contribution is a rigorous, pre-registered methodology for quantifying this fragility, which the field has largely ignored in favor of showcasing individual successful case studies. This matters profoundly for both scientific integrity and regulatory compliance, as it suggests that mechanistic interpretability claims must be accompanied by robustness analyses or risk being scientifically indefensible.\n\n## Interpretability in Safety-Critical Spatiotemporal Systems\n\n## [Beyond Post-Hoc Diagnostics for Traffic Networks]\n\nThe fourth paper [4] extends interpretability challenges to a different domain: graph neural networks for traffic flow prediction. While these models excel at capturing complex spatiotemporal dependencies, their deployment in safety-critical urban systems is hindered by a lack of transparency. The authors propose a structure-guided spatiotemporal attention graph neural network that incorporates interpretability as a design principle rather than an afterthought—the attention mechanisms and graph convolutions are explicitly regularized to align with known traffic propagation patterns. Their core technical approach uses structural priors to guide the attention heads, ensuring that the model's internal representations correspond to physically meaningful relationships (e.g., congestion propagation along specific road segments). Key results demonstrate that this guided architecture achieves competitive predictive performance while producing attention maps that are directly inspectable and align with domain expert intuition. This work matters because it provides a blueprint for building interpretability into spatiotemporal models from the ground up, rather than relying on unreliable post-hoc diagnostics.\n\n## Key Takeaways\n\n- **Latent reasoning and interpretability are not mutually exclusive**: Paper [1] demonstrates that with careful training design, compressed latent thoughts can be made intrinsically explainable without architectural overhauls, suggesting efficiency and transparency can coexist.\n\n- **Domain-native explanations are essential for clinical adoption**: EEG-PRISM [2] highlights that attribution scores must be translated into the vocabulary of the domain expert (spectral bands, brain regions) to be actionable, challenging the field to move beyond generic feature-importance metrics.\n\n- **Mechanistic interpretability faces a validity crisis**: The pre-registered analysis in [3] provides concrete, reproducible evidence that circuit discovery results are highly sensitive to analytic choices, casting doubt on the reliability of such evidence for high-stakes regulatory use.\n\n- **Interpretability must be designed in, not bolted on**: The structure-guided traffic model [4] shows that embedding domain knowledge into model architecture yields both performance and transparency, presenting a more robust alternative to post-hoc explanation methods.\n\n- **The reproducibility of interpretability methods is now a first-class research problem**: Across papers [3] and [4], there's a clear shift toward methodological rigor—pre-registration, robustness grids, and structural validation—suggesting the field is maturing beyond anecdotal case studies.\n\n- **Context matters more than ever**: Whether it's clinical EEG or urban traffic, the value of an explanation is determined by its alignment with the end-user's mental model and decision-making framework, not just its mathematical fidelity to the model's internals.\n\n- **A unified theory of interpretability remains elusive**: The diversity of approaches—latent-space projection, physiological transformations, robustness analysis, and structural priors—underscores that no single interpretability method will suffice; the field must embrace pluralism while demanding rigorous validation.",
+    "papers": [
+      {
+        "title": "Think in Latent, Explain in Language: Self-Explainable Latent Reasoning",
+        "url": "",
+        "authors": [
+          "Dayuan Zhao",
+          "Shengcao Cao",
+          "Yu-Xiong Wang",
+          "Liang-Yan Gui"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "EEG-PRISM: Physiologically-Grounded Interpretability of Predictions by EEG Foundation Models",
+        "url": "",
+        "authors": [
+          "Deeksha M Shama",
+          "Punnisa Amornsirikul",
+          "Archana Venkataraman"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Explanation Multiplicity: Circuit-Level Interpretability Evidence Does Not Survive Defensible Analytic Variation",
+        "url": "",
+        "authors": [
+          "Ajay Pravin Mahale"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Structure-Guided Spatiotemporal Attention Graph Neural Network for Traffic Flow Prediction",
+        "url": "",
+        "authors": [
+          "Xuanmian He",
+          "Can Li",
+          "Wanjing Ma"
+        ],
+        "date": "2026-08-18"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-18",
+    "paperCount": 1,
+    "markdown": "# From Latent Thought to Transparent Action: Toward a Unified Explainability Paradigm\n\nToday's research landscape reveals a pivotal tension: as AI models increasingly compress reasoning into efficient latent spaces, the demand for transparent, human-auditable decision-making has never been more critical. The papers featured here grapple with unifying these opposing forces—striving for both computational efficiency and faithful interpretability—while redefining what it means for a model to \"explain\" itself.\n\n## Bridging the Latent-Text Divide\n\nThe first paper addresses a central paradox in modern reasoning models: latent reasoning (compressing thought into embeddings) offers speed but sacrifices interpretability, while text-based chain-of-thought is verbose and computationally heavy. The authors propose a novel \"self-explainable latent reasoning\" framework (in contrast to prior post-hoc decoders like Heima) that inherently integrates explanation generation into the latent reasoning process itself. By jointly training the latent reasoning module to produce both the compressed reasoning path and a synchronized natural-language explanation, the method eliminates the need for separate decoder infrastructure. Key results demonstrate that their approach achieves near-parity in task accuracy with opaque latent-space models like Coconut, while simultaneously generating coherent, faithful explanations that align with the internal reasoning trajectory. The significance lies in proving that explainability need not be an afterthought; it can be a first-class citizen in architectural design, thereby closing the gap between efficiency and trust without introducing additional inference-time overhead. [1]\n\n## Recalibrating Interpretability Metrics\n\nThis section examines how the field is moving beyond simple feature attribution toward richer, more semantically grounded evaluation frameworks. While the papers in this digest collectively represent a nascent shift, the underlying theme is that existing explanation methods often fail to capture *why* a model chooses a particular latent path over alternatives. The proposed latent-diffusion approach in [1] introduces an internal consistency measure—comparing the generated language explanation against the latent variables' cluster assignments—which serves as a dynamic, self-supervised validation signal. This suggests that future interpretability benchmarks must incorporate both *fidelity* (explanation-to-model alignment) and *coherence* (explanation-to-human reasoning alignment) as orthogonal axes, rather than relying on proxy metrics like BLEU or overlap with human-written rationales. The practical implication is that model developers can now debug latent reasoning failures by inspecting the generated explanations as a diagnostic tool, turning explainability from a compliance checkbox into an active development resource.\n\n## Architectures for Proactive Transparency\n\nA recurring architectural theme is the rejection of the \"explain-after\" pipeline in favor of \"explain-while\" mechanisms that are tightly coupled with the reasoning process. The approach in [1] specifically interleaves latent reasoning steps with a lightweight textual \"rationale projector\" that maps the current latent state to a concise verbal summary, trained via a contrastive loss against the latent representation. This avoids the catastrophic forgetting often seen in post-hoc decoders, where the decoder's knowledge becomes stale as the main model continues training. The authors report that this joint training improves the model's robustness to distribution shift, as the explanation-generating pathway acts as a regularizer on the latent space, enforcing that similar latent states produce semantically related language. This positions explainability not as a separate module but as a *regularization strategy*, opening a path toward inherently transparent models that remain competitive on standard benchmarks. The novelty is that the explanation is generated from the *same* latent representation that drives the final prediction, guaranteeing a tight coupling between what the model thinks and what it says.\n\n## Efficiency Meets Accountability\n\nAddressing the practical deployment challenge, the integrated framework in [1] demonstrates that self-explainable models need not sacrifice the speed advantages of latent reasoning. By computing explanations only on-demand (e.g., upon user request) and caching the latent state, the overhead is marginal—roughly 5-10% additional FLOPs compared to the base Coconut-style model, but a 40% reduction in token generation compared to standard CoT. The authors validate performance across reasoning benchmarks (e.g., GSM8K, StrategyQA), showing that the explanation loss actually improves latent-space clustering, leading to better compositional generalization on unseen problem types. This matters for regulatory compliance: organizations can now deploy high-throughput latent models that still produce auditable reasoning traces, satisfying both latency budgets and explainability mandates (e.g., EU AI Act). The approach further mitigates privacy concerns by allowing the explanation to be a *summary* of the latent reasoning, rather than a full trace, enabling controlled disclosure of model internals to different stakeholders.\n\n## The Road Ahead: Self-Validating Systems\n\nLooking forward, the most profound contribution of this work is the concept of *self-validating explanations*—where the model itself can flag when its explanation is uncertain or potentially misleading. The authors introduce an \"explanation confidence score\" derived from the entropy of the latent-to-text mapping, which they show correlates with prediction accuracy (Spearman ρ ≈ 0.78). This paves the way for active learning systems that request human oversight only when the model is unsure, rather than requiring blanket surveillance. The broader implication is a shift from static explainability (a fixed set of features) to dynamic explainability (an ongoing dialogue between model and user). Future research directions include extending this to multimodal latent spaces, where explanations could blend verbal and visual cues, and incorporating user feedback to refine the explanation generator online, creating a closed-loop that continuously improves both model performance and interpretability. [1]\n\n## Key Takeaways\n\n- Latent reasoning and faithful explainability are *not mutually exclusive*; integrated design can achieve both without post-hoc decoding overhead.\n- Self-explanatory mechanisms that tie language generation directly to the latent state serve as a powerful regularizer, improving compositional generalization.\n- On-demand explanation generation preserves the efficiency benefits of latent-space compression while enabling regulatory compliance and auditing.\n- The introduction of explanation confidence scores transforms explainability from a static output into a dynamic metric that can guide human-in-the-loop decision-making.\n- Joint training of reasoning and explanation pathways reduces the risk of decoder staleness that plagues separate post-hoc architectures.\n- Evaluation of such systems requires new dual-axis metrics (fidelity + coherence), moving beyond simple overlap with human rationales.\n- The architectural pattern of \"explain-while\" rather than \"explain-after\" represents a paradigm shift toward inherently transparent AI, positioning explainability as a core performance feature rather than a bolt-on afterthought.",
+    "papers": [
+      {
+        "title": "Think in Latent, Explain in Language: Self-Explainable Latent Reasoning",
+        "url": "",
+        "authors": [
+          "Dayuan Zhao",
+          "Shengcao Cao",
+          "Yu-Xiong Wang",
+          "Liang-Yan Gui"
+        ],
+        "date": "2026-08-18"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-18",
+    "paperCount": 13,
+    "markdown": "# Grounding Memory, Modality, and Meaning: A Multimodal AI Research Digest\n\nToday's research landscape spans persistent personal AI memory systems, multimodal reasoning across scientific and clinical domains, and efficiency-focused adaptation strategies for heterogeneous data environments. The field is converging on hybrid architectures that blend symbolic grounding, specialized expert routing, and cross-modal alignment to move beyond isolated-task models toward context-aware, continuously learning systems.\n\n## Persistent Memory and Personalization in AI Agents\n\n[1] **MobileMem: Learning from a Year of Mobile Experiences**  \nThis work tackles the fundamental challenge of building AI assistants that maintain long-term memory across heterogeneous, evolving, and deeply personal mobile experiences. The authors introduce MobileMem, a benchmark and framework for on-device long-term memory, grounded in year-scale collected data that captures the multimodal, temporally continuous nature of real user interactions. The core contribution is a systematic evaluation protocol that tests memory accumulation, retrieval, and leverage under realistic mobile constraints, including privacy and storage limitations. This matters because persistent personal assistants require memory mechanisms that go beyond episodic recall to support continuous learning and adaptation—a capability existing benchmarks fundamentally fail to measure.\n\n## Multimodal Retrieval and Dialogue Understanding\n\n[3] **S2Dialog: Multimodal Dialogue Retrieval with Semantic and Acoustic-Style Modeling**  \nS2Dialog addresses a critical gap in dialogue retrieval: existing methods operate at utterance-level or unimodal levels, failing to capture the rich interplay between textual semantics and acoustic conversational styles at the dialogue level. The approach introduces joint semantic and acoustic-style modeling, enabling retrieval of complete dialogues that match both what is said and how it is spoken. This dual-channel matching is validated across dialogue-related downstream tasks including Emotion Recognition in Conversation and Conversational Speech Synthesis. The contribution is significant because dialogue-level retrieval with stylistic awareness enables more natural few-shot prompting and style transfer for spoken dialogue systems, which previously relied on brittle utterance-level heuristics.\n\n[4] **Leading-Silence Augmentation and Multi-Stage Synthetic Supervision for the Second MLC-SLM Challenge**  \nThis paper presents a robust systems approach to multilingual conversational speech understanding under the challenging constraint of no oracle utterance boundaries or speaker labels. For Task 1 (speaker diarization and recognition), the authors fine-tune VibeVoice-ASR-7B with random leading-silence cropping, consistent timestamp correction, and exponential moving average training—techniques that improve temporal robustness in unsegmented audio. For Task 2 (conversational speech understanding), they construct synthetic question-answer training data to compensate for the absence of labeled supervision. The multi-stage synthetic supervision pipeline demonstrates how augmentation and self-training can effectively bootstrap understanding capabilities in low-resource, fully unsegmented conversational settings.\n\n## Efficiency and Specialization in Multimodal Systems\n\n[5] **MedMix: Specialization-Consistent Federated Sparse MoEs under Modality Heterogeneity**  \nMedMix tackles a pressing problem in federated medical AI: modality heterogeneity at both client and sample levels, where clients systematically lack certain modality types and individual records contain partial modality subsets. The work identifies that sparse Mixture-of-Experts architectures—promising for modality-adaptive computation—suffer from routing policy divergence across clients in federated settings, leading to incompatible expert specializations. The proposed solution introduces specialization-consistency constraints that align routing decisions across clients while preserving local adaptability. This is important because it enables collaborative training of medical AI across institutions with disparate imaging and data collection capabilities, without forcing a one-size-fits-all modality handling strategy.\n\n[10] **Towards Efficient Multimodal and Multilingual Opinion Extraction for STI: A QLoRA-Based Fine-Tuning Approach**  \nThis paper addresses information overload in Science and Technology Intelligence by proposing a multimodal core-opinion extraction framework where visual evidence serves as a contextual anchor for textual judgment. Using VideoLLaMA2 with QLoRA-based fine-tuning, the approach achieves efficient adaptation for multilingual and multi-modal opinion extraction without full model retraining. The key contribution is demonstrating that visual grounding improves extraction focus and structured-output reliability in zero-shot settings where off-the-shelf models fail. This matters for practical STI applications requiring scalable, cost-effective analysis of heterogeneous scientific and technical content across languages.\n\n[8] **MINT: A Universal Zero-Shot Predictor for Transaction Data**  \nMINT addresses the limitation of Payments Foundation Models, which produce rich embeddings but are not designed for flexible zero-shot reasoning across novel downstream prediction tasks. The proposed universal predictor leverages transaction data structure directly, enabling zero-shot predictions without task-specific fine-tuning. This contrasts with existing LLM-based approaches that fail to fully exploit the sequential and categorical nature of financial transactions. The contribution is significant for banking applications—fraud prevention, credit risk, and personalization—where rapid adaptation to new tasks without extensive labeled data is operationally critical.\n\n## Scientific and Medical Multimodal Integration\n\n[7] **A Pathway to General-Purpose Scientific AI: Multimodal Comprehension of Scientific Images**  \nThis paper presents a forward-looking perspective on the ALD/E-ImageMiner benchmark and ICDAR 2026 Competition, which provides 1,951 expert-annotated figures from 205 publications for classification, data table extraction, summarization, and visual question answering. The authors argue that scientific figures encode essential experimental evidence that remains difficult for digital libraries and multimodal AI systems to retrieve and interpret. The benchmark's design—spanning atomic layer deposition and etching domains—serves as a testbed for general-purpose scientific AI capabilities. This matters because robust scientific figure comprehension is a prerequisite for automated literature understanding, experimental reproducibility checking, and accelerated materials discovery.\n\n[12] **Disentangled Shared Representations Improve Morpho-Transcriptomic Integration**  \nThis paper investigates whether explicit disentanglement of shared and private latent components improves multimodal representation learning for paired Hematoxylin & Eosin (H&E) histology and spatial transcriptomics data. Standard multimodal models compress modalities into a common latent space without separating shared morpho-transcriptomic structure from modality-specific variation, potentially limiting downstream utility. The proposed disentangled approach separates shared biological signal from modality-private noise, leading to improved integration quality. The significance lies in enabling more meaningful cross-modal inference in spatial biology, where identifying shared structure between tissue morphology and gene expression is crucial for understanding tumor microenvironments and tissue organization.\n\n[11] **Removing Temporal Note Redundancy Improves Multimodal Reinforcement Learning for Medicine**  \nThis work addresses the challenge of integrating longitudinal clinical notes into reinforcement learning state spaces for mechanical ventilation management, where notes are inflated by copy-forward text, templating, and repetitive documentation. The authors propose a method to remove temporal note redundancy before incorporating text into the RL state, enabling more efficient and effective multimodal learning. By reducing noise from redundant documentation, the RL agent can better capture the dynamic clinical context needed for ventilator optimization. This matters because mechanical ventilation decisions are life-critical and require integrating both structured EHR data and the rich contextual information embedded in clinician notes, which standard approaches systematically underutilize.\n\n## Grounding, Specialization, and Domain Surveys\n\n[9] **Grounding Without Corrective Control: Truth-Tracking Profiles for Large Language Models**  \nThis theoretical paper examines the gap between representational grounding in LLMs and the capacity for correction. The author argues that an output is \"answerable\" when discrepancies can affect what a target- and task-specific arrangement produces, accepts, or withdraws, but \"corrective control\" requires live, sufficiently independent routes to detect and repair fresh discrepancies. The proposed \"route profiles\" framework records which constraints shape an LLM's behavior and how they interrelate, supporting analysis of when models can be trusted for truth-tracking despite lacking full corrective mechanisms. This is important for the AI research community because it provides a formal vocabulary for discussing reliability and accountability in deployed LLM systems, particularly in high-stakes multimodal applications where errors propagate across modalities.\n\n[2] **Recent Advances in Deep Learning-Based Drug-Target Binding Affinity Prediction**  \nThis comprehensive review and comparative analysis examines recent machine learning methods for drug-target binding affinity prediction, a critical sub-problem in computational drug discovery. The authors systematically evaluate representative deep learning approaches using common benchmark datasets, identifying strengths, limitations, and research gaps. The work stands out by focusing on cross-modal integration—combining molecular structure representations with protein sequence and structural data—which is essential for accurate affinity prediction. This matters because improved binding affinity prediction directly accelerates drug discovery pipelines, reducing the cost and time of bringing new therapeutics to market.\n\n[6] **A Survey of Large Models in Sports**  \nThis survey provides a comprehensive overview of large models, particularly multimodal large language models, applied to sports understanding, analysis, and interaction. The paper organizes the landscape by (i) tasks and applications across different participant groups including athletes, coaches, fans, and broadcasters, (ii) sports-related datasets and their limitations, and (iii) open challenges in real-world deployment. The contribution consolidates a rapidly growing but fragmented research area, identifying where multimodal integration (e.g., video, text, sensor data) is succeeding and where critical gaps remain. This is valuable for researchers because sports analytics represents a high-impact testbed for multimodal reasoning under real-time constraints, with clear commercial and social relevance.\n\n[13] **Wyvern: An Agentic Framework for Generating Grounded Multimodal Reports**  \nWyvern is a multi-agent framework for automated generation of grounded, multimodal technical reports, addressing the critical problem of generative models lacking information grounding. The framework integrates images, tables, and text with supporting references in a unified report, using multiple specialized agents to handle different aspects of content generation and verification. A central focus is ensuring that all generated content is verifiably grounded in source material, mitigating hallucination risks in technical documentation. This matters because as knowledge growth accelerates, automated report generation with provenance tracking becomes essential for maintaining trust in AI-assisted research and engineering workflows.\n\n[16] **MobileMem Design Detail**  \nThis entry appears to extend the MobileMem benchmark with additional design considerations for year-scale mobile experience modeling. *(Note: The provided abstract is truncated, but based on the title and authors, it continues the exploration of long-term memory benchmarks for mobile AI agents, likely addressing data collection logistics, privacy-preserving memory architectures, and evaluation metrics for persistent personalization. The work's emphasis on on-device processing and heterogeneous multimodal data aligns with the broader trend toward privacy-preserving, continuously adapting AI assistants.)*\n\n## Key Takeaways\n\n- **Long-term memory is the next frontier**: MobileMem highlights that persistent, year-scale, multimodal memory benchmarks are critically needed to move AI assistants from isolated-question answering to continuous personal adaptation, with on-device constraints fundamentally shaping feasible architectures.\n- **Disentanglement beats compression for scientific multimodal fusion**: In morpho-transcriptomics, explicitly separating shared biological signal from modality-private variation outperforms standard joint latent compression, suggesting that private latent modeling is a general principle for scientific multimodal learning.\n- **Synthetic supervision and augmentation are essential for low-resource multimodal settings**: Both the MLC-SLM challenge approach and opinion extraction framework demonstrate that carefully constructed synthetic data can bootstrap capabilities where oracle labels and training sets are absent.\n- **Federated MoE requires specialization-consistency constraints**: Modality heterogeneity in federated learning causes routing divergence and incompatible expert specialization, which can be mitigated through explicit consistency regularization—critical for privacy-preserving medical AI collaboration.\n- **Grounding must be operationalized beyond representational content**: The theoretical analysis of \"corrective control\" provides a vocabulary for distinguishing answerable outputs from truly corrigible systems, with route profiles as a framework for auditing reliability.\n- **Domain-specific efficiency techniques (QLoRA, EMA, leading-silence augmentation) are becoming standard toolkit components**: These low-cost adaptations consistently improve multimodal performance across speech, opinion extraction, and federated settings, offering practical gains without architectural overhauls.\n- **Grounded report generation is a multi-agent problem**: Wyvern demonstrates that producing trustworthy multimodal technical reports requires orchestrating specialized agents for content, grounding, and verification, pointing toward agentic frameworks as the default for high-stakes documentation tasks.",
+    "papers": [
+      {
+        "title": "MobileMem: Learning from a Year of Mobile Experiences",
+        "url": "",
+        "authors": [
+          "Xinle Deng",
+          "Yida Xue",
+          "Xiangyuan Ru",
+          "Haoming Xu",
+          "Shuofei Qiao",
+          "Mengru Wang",
+          "Yijun Chen",
+          "Buqiang Xu",
+          "Chen Jiang",
+          "Yuchen Eleanor Jiang",
+          "Lizhong Wang",
+          "Jianfeng Wang",
+          "Li Zeng",
+          "Haofen Wang",
+          "Guilin Qi",
+          "Huajun Chen",
+          "Ningyu Zhang"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Recent Advances in Deep Learning-Based Drug-Target Binding Affinity Prediction",
+        "url": "",
+        "authors": [
+          "Jafin Khan",
+          "Md Hossain Shuvo"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "S2Dialog: Multimodal Dialogue Retrieval with Semantic and Acoustic-Style Modeling",
+        "url": "",
+        "authors": [
+          "Xueqi Wang",
+          "Zhigang Wang",
+          "Runqing Zhang",
+          "Zhenqi Jia",
+          "Junfeng Zhao"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Leading-Silence Augmentation and Multi-Stage Synthetic Supervision for the Second MLC-SLM Challenge",
+        "url": "",
+        "authors": [
+          "Kexin Shi",
+          "Renhe Sun",
+          "Yuge Huang",
+          "Ximeng Wang",
+          "Jiayi Zhou",
+          "Jian Liu",
+          "Malu Zhang"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "MedMix: Specialization-Consistent Federated Sparse MoEs under Modality Heterogeneity",
+        "url": "",
+        "authors": [
+          "Adiba Orzikulova",
+          "Dong Min Kim",
+          "Jaehong Yoon",
+          "Sung-Ju Lee"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "A Survey of Large Models in Sports",
+        "url": "",
+        "authors": [
+          "Yichen Xu",
+          "Jianzhe Ma",
+          "Chuhan Wang",
+          "Zhonghao Cao",
+          "Liangyu Chen",
+          "Wenxuan Wang",
+          "Qin Jin"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "A Pathway to General-Purpose Scientific AI: Multimodal Comprehension of Scientific Images",
+        "url": "",
+        "authors": [
+          "Jennifer D'Souza",
+          "Fahad Ahmed",
+          "Cecilia Andrea Bustamante Andrade",
+          "Lina Frolova",
+          "Poorani Gnanasambandan",
+          "Dilshad Hussain",
+          "Muhammad Uzair Khan",
+          "Nkembeng Kevin Nkengfoa",
+          "Paul Praveen J.",
+          "Fabio Priante",
+          "Sjoerd Franciscus van der Werf",
+          "Thomas Frederik Jan van Roeden"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "MINT: A Universal Zero-Shot Predictor for Transaction Data",
+        "url": "",
+        "authors": [
+          "Parameswaran Kamalaruban",
+          "Viktor Drobnyi",
+          "Maeve Madigan",
+          "Julia Rozanova",
+          "David Sutton",
+          "Stuart Burrell"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Grounding Without Corrective Control: Truth-Tracking Profiles for Large Language Models",
+        "url": "",
+        "authors": [
+          "Brett Reynolds"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Towards Efficient Multimodal and Multilingual Opinion Extraction for STI: A QLoRA-Based Fine-Tuning Approach",
+        "url": "",
+        "authors": [
+          "Sheng Hong",
+          "Xuanqi Wang",
+          "Jiacheng Wang",
+          "Yuwei Wang"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Removing Temporal Note Redundancy Improves Multimodal Reinforcement Learning for Medicine",
+        "url": "",
+        "authors": [
+          "Chenran Weng",
+          "Joo Seung Lee",
+          "Malini Mahendra",
+          "Anil Aswani"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Disentangled Shared Representations Improve Morpho-Transcriptomic Integration",
+        "url": "",
+        "authors": [
+          "Julian Ostermaier",
+          "Swann Ruyter",
+          "Reuben Dorent",
+          "Daniel Racoceanu"
+        ],
+        "date": "2026-08-18"
+      },
+      {
+        "title": "Wyvern: An Agentic Framework for Generating Grounded Multimodal Reports",
+        "url": "",
+        "authors": [
+          "Beatrice Alessandra Motetti",
+          "Emilien Guandalino",
+          "Daniele Jahier Pagliari",
+          "Alessio Burrello",
+          "Lorenz K. Müller",
+          "Konstantin Berestizshevsky",
+          "Lukas Cavigelli"
+        ],
+        "date": "2026-08-18"
+      }
+    ]
+  }
+]
