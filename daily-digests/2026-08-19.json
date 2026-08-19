@@ -1,0 +1,242 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-19",
+    "paperCount": 7,
+    "markdown": "# Brain-Language Alignment, Prompt Interpretability, and the Geometry of Meaning: A Multi-Frontier View\n\nToday's research landscape reveals a field increasingly concerned with *why* models behave as they do, moving beyond performance metrics toward mechanistic and semantic interpretability. The papers span brain-language decoding, prompt optimization, latent manifold topology, clinical explanation validity, and domain-specific knowledge infusion—united by a common thread of making AI's internal representations and decisions more transparent, trustworthy, and human-aligned.\n\n## From Black-Box Decoding to Grounded Semantic Alignment\n\nThe challenge of verifying whether neural signals genuinely reflect semantic content—rather than being artifacts of a powerful generative decoder—is central to brain-language interface research. [1] addresses this ambiguity head-on by proposing MD-SigLIP, a margin-regularized structured semantic alignment framework that embeds both brain activity and text into a shared semantic space, enabling retrieval-based decoding rather than open-ended generation. This approach bypasses the \"reconstruction illusion\" problem where language models may hallucinate plausible outputs unrelated to actual neural representations. The margin regularization and structured alignment ensure that the semantic correspondence between brain and text embeddings is tight and verifiable, providing stronger evidence for genuine brain-language correspondence. This matters because it shifts brain decoding from a \"black-box generation\" paradigm to a measurable, retrieval-grounded framework that can serve as a more trustworthy window into neural semantics.\n\nIn a related vein, [3] tackles prompt optimization's ill-posedness, where perplexity-minimizing methods produce \"pseudoprompts\"—unintelligible token strings that achieve desired outputs but defy human comprehension. The authors reframe prompt optimization as Bayesian posterior inference over prompts, developing an efficient sampling algorithm that yields prompts balancing both efficiency (low perplexity) and human readability. By treating the prompt space probabilistically rather than through deterministic optimization, they address a fundamental trade-off between task performance and interpretability. This is significant because it provides a principled, probabilistic foundation for a task previously dominated by ad-hoc search, potentially enabling more transparent and controllable LLM behavior.\n\n## The Hidden Topology of Long-Context Reasoning\n\nUnderstanding how LLMs perform multi-hop reasoning over long contexts remains a frontier challenge, as traditional attention-based analysis often obscures true semantic proximity due to artifacts like attention sinks. [4] bypasses attention weights entirely, instead analyzing the dynamic geometry of hidden-state manifolds across long-context sequences. The key theoretical contribution is proving that deep LLM latent spaces natively self-organize into Small-World networks—characterized by high local clustering and short global path lengths—which directly explains the models' ability to make \"distant cognitive leaps\" efficiently. By sparsifying continuous similarity matrices, the authors measure topological compression, showing how information is reorganized across layers to enable rapid traversal between semantically related but textually distant concepts. This work matters because it provides a novel, attention-free interpretability lens that connects geometric topology to functional reasoning capacity, potentially informing architecture improvements for even longer contexts.\n\n## Explanations That Actually Explain: The Validity Gap in Clinical AI\n\nThe interpretability field often assumes that generative explanations inherently localize the underlying pathology, an assumption rarely tested rigorously. [5] confronts this gap directly by building an optimal-transport rectified flow between distributions of healthy and diseased patients, generating per-patient counterfactuals and explanation heatmaps from the geometry of the transport plan. The results are sobering: while the unsupervised malignancy score achieves strong discrimination (AUROC 0.91 on Breast Cancer Wisconsin tabular biomarkers), the corresponding heatmaps often fail to localize disease-specific features, revealing a dissociation between the generative model's discriminative power and its explanatory fidelity. This work highlights a critical methodological point—that transport geometry can encode class separation without meaningful feature attribution—and calls into question the reliability of many generative explanation frameworks. The implications for clinical deployment are profound: explanations must be validated against ground-truth localization, not just their ability to differentiate classes.\n\n## Semantic Infusion and Multi-Parameter Language Models\n\nTwo papers explore how external knowledge and linguistic theory can enhance model interpretability. [6] addresses the limitation of GNNs in spatio-temporal traffic forecasting that rely solely on sensor proximity or road topology, which neglects contextual environmental semantics. The proposed framework leverages a general-purpose knowledge graph (e.g., Wikidata) to construct semantic subgraphs around traffic sensors, generating knowledge graph embeddings that capture meaningful relationships beyond spatial adjacency. This semantic infusion improves sensor-level contextual understanding, demonstrating that external structured knowledge can complement purely topological inductive biases. While applied to forecasting, the framework's general principle—enriching geometric models with semantic context—has clear interpretability benefits for explaining *why* certain sensors behave similarly.\n\nChallenging the foundation of co-occurrence-based semantics, [7] argues that language encodes two independent parameters: amplitude (association strength from word co-occurrence counts) and phase (how coactivated meanings combine, which can reverse a meaning's contribution while it remains fully present). The paper claims that current embeddings and attention weights capture only the first parameter, summed across all writers in a corpus, missing the phase relations that determine compositional semantics. This theoretical contribution reframes interpretability at the linguistic level—suggesting that to truly understand model representations, we must account for context-dependent phase shifts that can invert semantic contributions. While speculative, this work opens a new dimension for analyzing how meaning emerges not just from *what* is activated but *how* activations interact.\n\n## Complexity-Aware Retrieval and Interpretable Legal Reasoning\n\n[2] addresses a domain-specific interpretability challenge: legal consultation questions exhibit multi-level complexity, and a single retrieval strategy either over-reasons for simple queries or underperforms for complex ones. CoAL-RAG constructs a multi-dimensional evaluation mechanism based on \"question essence\" and \"retrieval consistency\" to enable adaptive routing between retrieval strategies. This complexity-aware design means the system can automatically select an appropriate reasoning depth, providing answer quality and computational efficiency without sacrificing interpretability. In high-risk legal scenarios, where every reasoning step must be auditable, this routing mechanism offers a practical template for building retrieval-augmented generation systems that are both effective and explainable, adapting their internal process to the difficulty of the query.\n\n## Key Takeaways\n\n- Brain-language decoding must move from generative reconstruction to retrieval-based alignment to verify that decoded content genuinely reflects neural activity, as demonstrated by margin-regularized shared semantic spaces [1].\n- Prompt optimization formalized as Bayesian inference yields human-readable prompts, resolving the pseudoprompt problem where optimized token strings lack interpretability [3].\n- LLM latent spaces self-organize into Small-World networks, providing a topological explanation for multi-hop reasoning capabilities that attention analysis fails to capture [4].\n- Generative explanation heatmaps can achieve high discriminative performance while failing to localize disease-specific features, exposing a critical validity gap in clinical AI explanations [5].\n- Infusing external structured knowledge (e.g., knowledge graphs) into geometric models improves contextual understanding and provides semantic grounding for otherwise purely topological predictions [6].\n- The Small-World topology insight suggests that interpretability tools should analyze hidden-state geometry directly rather than relying on attention weights, which can be confounded by artifacts [4].\n- Current semantics models capture only \"amplitude\" (co-occurrence strength) but miss \"phase\" (how meanings combine and can invert contributions), pointing to a richer theory of meaning for future interpretability research [7].",
+    "papers": [
+      {
+        "title": "Margin-Regularized Structured Semantic Alignment for Brain-Language Correspondence",
+        "url": "",
+        "authors": [
+          "Jiaqi Wang",
+          "Huawen Hu",
+          "Shu Zhang"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "CoAL-RAG: A Complexity-Aware Legal Retrieval-Augmented Generation Method",
+        "url": "",
+        "authors": [
+          "Jin Su",
+          "Zhuofeng Zhao",
+          "Huanhuan Wang",
+          "Hao Chen"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "BayesPrompt: human readable prompts that make sense",
+        "url": "",
+        "authors": [
+          "Franky Kevin Nando Tezoh",
+          "Ali Hussaini Umar",
+          "Alessandro Laio",
+          "Guido Sanguinetti",
+          "Riccardo Rende"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Do Large Language Models Play Six Degrees of Separation? Measuring Topological Compression in Long-Context Manifolds",
+        "url": "",
+        "authors": [
+          "Md. Faiyaz Abdullah Sayeedi"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Pathology Transport: Optimal-Transport Explanations for Clinical Data, and When Their Heatmaps (Fail to) Localize Disease",
+        "url": "",
+        "authors": [
+          "Lalit Kumar"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "General Semantic Knowledge Infusion for Spatio-Temporal Traffic Forecasting",
+        "url": "",
+        "authors": [
+          "Mattis thor Straten",
+          "Yannick Wolker",
+          "Steffen Strohm",
+          "Prathvish Mithare",
+          "Ralf Krestel",
+          "Matthias Renz"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Language Has Two Parameters: Narrative-Induced Semantic Plasticity and Phase-Sensitive Interpretation",
+        "url": "",
+        "authors": [
+          "Hollis Robbins"
+        ],
+        "date": "2026-08-19"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-19",
+    "paperCount": 2,
+    "markdown": "# Bridging the Gap: From Actionable Explanations to Trustworthy AI Systems\n\nToday's research landscape is characterized by a fundamental tension: while explainability methods proliferate, their practical utility—particularly in debugging complex AI systems like reinforcement learning agents—remains largely unvalidated. The field is also increasingly driven by the need for domain-specific, resource-efficient models that can operate under real-world constraints, signaling a shift from purely theoretical transparency toward pragmatic, application-oriented interpretability.\n\n## Rethinking Evaluation Paradigms for Explainable RL\n\nThe dominant trend in this section is a critical reflection on how we measure the success of explainability methods. Instead of relying on indirect proxies, there is a strong push toward evaluating explanations based on their tangible impact on the downstream task of AI debugging and repair. This represents a methodological pivot from \"does the explanation look good?\" to \"does the explanation actually help us fix the problem?\"\n\nAdditionally, while not an explainability paper per se, the hybrid ML approach for IC design highlights a crucial theme: even in domains where transparency is not the primary goal, choosing interpretable model components (like decision trees) in a hybrid architecture can lead to significant performance gains. This suggests that interpretability and high performance are not mutually exclusive, and that simpler, more transparent models can often outperform complex black-box baselines when combined intelligently.\n\n### Paper [1]: Evaluating RL Explainability Methods by How Much They Help Fix Bugs in Agents\n**Problem:** Current Explainable RL (XRL) evaluation methods rely on proxy metrics (faithfulness, compactness, or human ratings) that may not correlate with real-world utility. There is no benchmark that tests whether an explanation method actually helps practitioners diagnose and fix broken agents.  \n**Approach:** The authors propose *EvalXRL*, a novel benchmark framework where a large language model (LLM) coding agent is given a malfunctioning RL agent and must use different XRL methods to diagnose the root cause. The primary metric is the *effectiveness of the explanations in enabling successful debugging*, moving beyond subjective assessment to measurable task performance.  \n**Key Results:** This is a preliminary, position-style paper that outlines the benchmark design rather than presenting empirical results. The core contribution is the novel evaluation paradigm itself, which reframes XRL assessment around functional utility (bug-fixing success) instead of statistical fidelity.  \n**Why it matters:** This work could fundamentally shift how the RL interpretability community validates its methods. By tying explainability to the concrete outcome of \"did it help fix the bug?\", it provides a standardized, objective yardstick for comparing XRL techniques, which could accelerate the adoption of these methods in safety-critical RL deployments where debugging is paramount.\n\n### Paper [2]: Hybrid ML for Lightweight Pre-Route Delay Estimation in Open-Source IC Design\n**Problem:** Accurate delay estimation before routing is challenging in IC design due to limited physical information, leading to timing violations and design iterations. Existing OpenLane estimates have high error rates, and complex ML models may be computationally prohibitive for this lightweight task.  \n**Approach:** The authors develop a hybrid model combining a decision tree with linear regression to enhance pre-route delay predictions. The decision tree likely captures non-linear, categorical relationships while the linear regression handles continuous, smooth variations, offering a balance of interpretability and predictive power within the OpenLane RTL-to-GDSII flow.  \n**Key Results:** The proposed hybrid model achieves an 80% reduction in error compared to OpenLane's default estimates, and demonstrates a 71% improvement in prediction accuracy. This significant leap in performance underscores the effectiveness of combining simpler, transparent models synergistically rather than relying on opaque deep learning architectures.  \n**Why it matters:** This paper demonstrates that hybrid, transparent ML approaches can deliver state-of-the-art accuracy in engineering workflows with minimal computational overhead. For the AI research community, it reinforces the value of model transparency in high-stakes engineering: the decision-tree component's interpretability allows designers to trust and verify the model's logic, which is often a barrier to deploying pure black-box neural networks in hardware design.\n\n## The Case for Purpose-Driven Transparency\n\nA unifying insight across these papers is that explainability is not an abstract virtue but a functional requirement with measurable outcomes. The first paper operationalizes this by making bug-fixing efficiency the benchmark metric for RL explanations. The second paper implicitly validates this principle by showing that a transparent model (decision tree) can be practically superior to more complex alternatives, suggesting that simpler, explainable structures often carry hidden efficiencies. Together, they advocate for a \"purpose-driven\" approach to transparency: we understand models not merely to understand them, but to act effectively—whether that means fixing a policy bug or correcting a timing violation. The future of explainability lies in benchmarks that measure this practical impact and model designs that bake interpretability into the architecture from the start.\n\n## Key Takeaways\n- **Utility over fidelity:** XRL evaluation is shifting away from statistical proxies (faithfulness) toward task-oriented metrics, specifically measuring how much an explanation accelerates the debugging and repair of faulty agents [1].\n- **LLMs as evaluation agents:** Using LLM coding agents as automated \"debuggers\" in benchmarks (as proposed in EvalXRL) offers a scalable, objective way to standardize XRL assessments across different methods [1].\n- **Actionable benchmarks are critical:** The proposal of EvalXRL underscores a growing need for shared, reproducible benchmarks that directly tie explainability methods to their downstream impact on system reliability [1].\n- **Hybrid architectures win in practice:** Combining interpretable models (decision trees) with other regressors can yield drastic performance improvements (80% error reduction) over baseline tools, proving that \"simple\" models are not a compromise but an advantage [2].\n- **Interpretability and performance are compatible:** The IC design case shows that transparency need not come at the cost of accuracy; in fact, the structure of interpretable models can often lead to better generalization and domain-specific tuning [2].\n- **Domain-specific constraints drive transparency:** The need for lightweight models in resource-constrained environments (like EDA tools) naturally favors transparent, efficient algorithms, reinforcing that interpretability is often the pragmatic choice, not just an ethical one [2].\n- **Explainability as a debugging tool:** The underlying theme links both works: the true test of an explanation is its ability to facilitate targeted interventions—whether that is patching an RL policy or correcting a delay model in chip design [1][2].",
+    "papers": [
+      {
+        "title": "Evaluating RL Explainability Methods by How Much They Help Fix Bugs in Agents",
+        "url": "",
+        "authors": [
+          "Ram Rachum",
+          "Yotam Amitai",
+          "Bálint Gyevnár",
+          "Reuth Mirsky",
+          "Cameron Allen"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Hybrid ML for Lightweight Pre-Route Delay Estimation in Open-Source IC Design",
+        "url": "",
+        "authors": [
+          "Marvin Castro Castro",
+          "Erick Carvajal Barboza"
+        ],
+        "date": "2026-08-19"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-19",
+    "paperCount": 11,
+    "markdown": "# Multimodal Intelligence in Flux: From Uncertainty to Actionable Decision-Making\n\nToday's research landscape reveals a field maturing beyond basic multimodal fusion toward robust, uncertainty-aware, and task-adaptive systems. The papers span healthcare forecasting, conversational AI, social media auditing, and decentralized reasoning, highlighting both the broadening application scope and the persistent challenge of reliable, interpretable multimodal integration.\n\n## Uncertainty, Reliability, and Trust in Multimodal Systems\n\nThe growing deployment of multimodal large language models (MLLMs) raises critical questions about when and how these systems can be trusted, particularly when answers depend on diverse evidence sources. [1] presents a comprehensive survey organizing uncertainty-aware MLLM research around a decision-centered framework, systematically mapping uncertainty sources—from perceptual errors and modality conflicts to distribution shift—to observable signals and mitigation strategies. The survey's key contribution is its structured taxonomy that connects failure modes to deployable countermeasures, making it an essential reference for practitioners building reliable multimodal systems. Meanwhile, [5] empirically investigates modality reallocation in vision-language models under controlled conflict conditions, degrading image or text legibility across four levels while tracking preference shifts. Using constructed conflicts from GSM8K and SVAMP alongside the novel ChartQA-Conflict benchmark, the authors reveal task-dependent reliance patterns that challenge assumptions about static modality weighting—demonstrating that models dynamically reallocate attention based on relative input quality rather than fixed priors.\n\nThe question of whether multimodal foundation models process emotions through shared or modality-specific mechanisms is addressed by [3], which identifies emotion-sensitive neurons (ESNs)—sparse decoder units selectively associated with emotion categories—across three MFMs: Gemma-4-12B-it, MiniCPM-o-4.5, and Qwen2.5-Omni-7B. Through complementary probes of speech emotion recognition and facial expression recognition, the authors find evidence of partially shared affective functional units, suggesting that emotion abstraction occurs at intermediate representational levels before modality-specific decoding. This finding has implications for transfer learning and efficient fine-tuning, as interventions targeting shared ESNs could potentially improve emotional intelligence across modalities simultaneously.\n\n## Healthcare and Clinical Decision Support\n\nClinical applications continue to drive innovation in multimodal sequential modeling, with two papers tackling the challenge of temporal dynamics in healthcare data. [2] introduces Mr.Dec (Multimodal Readmission-risk prediction Decoder), which treats each hospital admission as a natural chronological sequence rather than compressing longitudinal history into fixed representations. By capturing day-level clinical signals that reflect evolving physiological states, Mr.Dec addresses the critical limitation of existing approaches that lose granular temporal information essential for assessing patient stability and predicting 30-day readmission. The multimodal framing—integrating vitals, lab values, and clinical notes across hospital days—provides a more faithful representation of how clinical risk accumulates during hospitalization. In parallel, [4] proposes MultiSigBERT, a unified framework for multimodal sequential survival modeling in oncology built on path signature methods. This approach handles the heterogeneous nature of electronic health records—narrative clinical reports, numerical measurements, and structured variables—while exploiting the temporal structure of patient trajectories. The path signature formalism offers a principled way to encode sequential information that prior survival models, typically limited to single modalities or static representations, fail to capture.\n\n## Forecasting, Reasoning, and Collaborative Agents\n\nMultimodal time series forecasting and agentic reasoning represent frontiers where integrating diverse information sources can unlock new capabilities. [7] presents SCENARIODIFF, a hierarchical contextual reasoning framework for multimodal time series forecasting that explicitly addresses noisy and weakly aligned textual documents. Rather than asking LLMs to predict numerical values directly or fusing text implicitly, SCENARIODIFF introduces scenario-level guidance that makes contextual influence interpretable and controllable—a significant advance over existing methods that obscure how news, reports, and logs affect forecasts. The framework's explicit scenario decomposition enables practitioners to audit and steer how external events influence predictions, which is particularly valuable when future dynamics are driven by events not yet visible in historical values. [6] proposes DeAR (Decentralized Agentic Reasoning), shifting from centralized protocols to autonomous peer-to-peer collaboration for complex multimodal queries. DeAR's three mechanisms—decentralized capability grounding for query-dependent agent specialization, thought map navigation for targeted peer interactions, and topology update for adaptive error correction—address routing bottlenecks and static role allocations that plague centralized designs. Evaluations across nine diverse benchmarks demonstrate that decentralized collaboration can match or exceed centralized approaches while offering greater scalability and fault tolerance.\n\n## Auditing and Benchmarking at Scale\n\nThe deployment of multimodal systems at societal scale demands rigorous auditing and evaluation frameworks that extend beyond academic benchmarks. [8] conducts a cross-national, age-stratified audit of TikTok's content recommendation systems using multimodal LLMs to scale harmful content annotation. Collecting 36,971 videos from France, Italy, and Sweden across four age personas (13, 16, 19, 40), the study validates four multimodal LLMs against native-speaker labels on a 300-video reference set, finding Gemini 2.5 Flash with eight sampled frames performs best. This work demonstrates how multimodal language models can enable large-scale platform auditing at a fraction of the cost of human annotation, while highlighting moderation judgment variations across languages—a critical consideration for global platform governance. [11] introduces BEAR-Bench, a bilingual enterprise and academic reasoning benchmark addressing the underrepresentation of Russian in multimodal evaluation. Moving beyond information extraction and external-knowledge-dependent benchmarks, BEAR-Bench provides self-contained reasoning tasks over text-dense professional documents, filling a gap for evaluating MLLMs on real-world document understanding in non-English contexts. The benchmark's emphasis on professional documents as a primary rather than secondary setting reflects the growing importance of document intelligence in enterprise applications.\n\n## Conversational AI and Learning Paradigms\n\nThe evolution from text-only to multimodal conversational systems and the development of scalable learning paradigms represent foundational advances. [9] provides a comprehensive review of multi-turn conversational AI spanning text-only dialogue, AudioLLMs, and speech-native systems, addressing the distinct challenges of maintaining memory, grounding responses across modalities, and adapting across languages and cultures. The study's contribution lies in synthesizing data, models, and evaluation frameworks for sustained multimodal interaction, where users naturally clarify goals, revise requests, and introduce new evidence—behaviors that stress-test context preservation. [10] introduces Co-RL, a multi-agent reinforcement learning framework that demonstrates unsupervised reasoning emergence through diverse cohort training. By addressing the limitations of self-rewarding RL—which can reinforce existing biases and suboptimal behaviors—Co-RL leverages diversity across agents to derive reward signals without ground-truth supervision. This approach is particularly significant for reasoning tasks where verifiable rewards become increasingly scarce as capabilities advance beyond human evaluation reliability, offering a path toward scalable self-improvement in vision-language models.\n\n## Key Takeaways\n\n- Uncertainty-aware decision-making is emerging as a central paradigm for MLLMs, with structured taxonomies [1] and empirical studies of modality reallocation [5] providing actionable frameworks for building more reliable systems\n- Healthcare applications are driving innovation in temporal multimodal modeling, with day-level clinical trajectories [2] and path signature methods [4] capturing granular longitudinal signals that fixed representations lose\n- Contextual interpretability in multimodal forecasting is achievable through explicit scenario-level guidance [3], while decentralized agent collaboration [6] offers an alternative to routing-bottlenecked centralized architectures\n- Multimodal LLMs are becoming practical tools for large-scale platform auditing, with validation against native-speaker labels demonstrating viability for cross-national content moderation studies [8]\n- Benchmark development is expanding beyond English-centric, information-extraction-focused evaluation toward bilingual professional document reasoning [11] and sustained multi-turn interactive scenarios [9]\n- Learning paradigms are evolving to reduce dependence on ground-truth supervision, with diverse-cohort multi-agent RL [10] showing promise for unsupervised reasoning emergence\n- The field is converging on shared representational structures across modalities, as evidenced by emotion-sensitive neurons [3] that bridge speech and facial affect recognition",
+    "papers": [
+      {
+        "title": "Uncertainty-Aware Decision Making in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Abderrahmene Boudiaf",
+          "Irfan Hussain",
+          "Sajid Javed"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Mr.Dec: Daily-Scale Longitudinal Multimodal Modeling for 30-Day Readmission Prediction",
+        "url": "",
+        "authors": [
+          "Minjun Kim",
+          "Jong Hak Moon"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Emotion Across Speech and Faces: Shared Affective Mechanisms in Multimodal Foundation Models",
+        "url": "",
+        "authors": [
+          "Xiutian Zhao",
+          "Luqi Sun",
+          "Björn Schuller",
+          "Berrak Sisman"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "MultiSigBERT: Beyond Survival Analysis through Multimodal and Sequential Modeling in Oncology",
+        "url": "",
+        "authors": [
+          "Paul Minchella",
+          "Stéphane Chrétien",
+          "Guillaume Metzler",
+          "Loïc Verlingue",
+          "Rémi Vaucher"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Which Source Wins? Task-Dependent Reliance in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Rodela Ghosh",
+          "Aviral Gupta",
+          "Guangjing Wang"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "DeAR: Decentralized Agentic Reasoning via Capability Grounding and Collaborative Thought Navigation",
+        "url": "",
+        "authors": [
+          "Xing Wei",
+          "Changmeng Zheng",
+          "XiaoYong Wei",
+          "Xiufen Ye",
+          "Qing Li"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "SCENARIODIFF: A Scenario-level Guidance Framework for Multimodal Time Series Forecasting--Extended Version",
+        "url": "",
+        "authors": [
+          "Tuan-Binh Tran",
+          "Dat Nguyen Cong",
+          "Duc-Trong Le",
+          "Thanh Trung Huynh",
+          "Tung Kieu"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Auditing Exposure to Harmful Content on TikTok using Multimodal Language Models: A Cross-National, Age-Stratified Study",
+        "url": "",
+        "authors": [
+          "Hamidreza Saffari",
+          "Francesco Pierri"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Multi-turn Conversational AI from Text to Multimodal Interaction: Data, Models, Evaluation, and Open Challenges",
+        "url": "",
+        "authors": [
+          "Syeda Faiza Ahmed",
+          "Zien Sheikh Ali",
+          "Hunzalah Hassan Bhatti",
+          "Firoj Alam",
+          "Shammur Absar Chowdhury"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "Co-RL: Unsupervised Reasoning Emerges from Diverse Cohort in Multi-agent RL",
+        "url": "",
+        "authors": [
+          "Yunhao Yang",
+          "Yuexin Bian",
+          "Yunjie Tian",
+          "Di Fu",
+          "Tianjin Huang",
+          "Yuanyuan Shi",
+          "Ziang Xiao",
+          "Nuno Vasconcelos",
+          "Yijiang Li"
+        ],
+        "date": "2026-08-19"
+      },
+      {
+        "title": "BEAR-Bench: A Bilingual Enterprise and Academic Reasoning Benchmark for Multimodal Models",
+        "url": "",
+        "authors": [
+          "Liubov Chubarova",
+          "Alexandra Kuleshova",
+          "Daniil Volkov",
+          "Kirill Sultanov",
+          "Alexey Zaytsev"
+        ],
+        "date": "2026-08-19"
+      }
+    ]
+  }
+]
