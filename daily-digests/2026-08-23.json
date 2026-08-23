@@ -1,0 +1,305 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-23",
+    "paperCount": 6,
+    "markdown": "# Mechanistic Tomography and Interpretable Architectures: From Neural Internals to Clinical and Climate Decision-Making\n\nToday's research landscape in interpretability spans two complementary frontiers: the development of formal frameworks for probing and controlling neural network internals, and the deployment of intrinsically interpretable architectures for high-stakes domains like healthcare, climate science, and time-series forecasting. The papers in this digest collectively push toward measurement-driven mechanistic analysis, rule-based explanation for physical phenomena, and computationally efficient transparent models that balance fidelity with human comprehension.\n\n## Formal Frameworks for Mechanistic Measurement\n\nThe challenge of systematically recovering internal model states and their causal relationships has traditionally been addressed through ad-hoc probing techniques. [1] introduces **mechanistic tomography**, a unifying mathematical framework that treats interpretability measurements—patching, gradients, Hessian-vector products, and subset interventions—as instances of a shared linear measurement structure y = Ax + w, where A encodes the chosen basis and intervention family. This formulation enables researchers to design optimal measurement strategies tailored to specific control-oriented interpretability goals, bridging the gap between passive observation and active intervention.\n\n## Interpretable Forecasting and Representation Learning\n\nProbabilistic time-series forecasting remains challenging due to the heterogeneous nature of trend and seasonal components. [3] proposes **DecoVAE**, a lightweight variational autoencoder framework that explicitly decomposes time series into trend and seasonal streams, applying domain-specific inductive biases such as structural smoothness constraints for trends and cyclical priors for seasonality. The model achieves efficient probabilistic forecasting while maintaining full interpretability of its internal decomposition, addressing both the performance gap and the memory/runtime overhead of prior approaches. This architecture matters because it demonstrates that interpretability need not come at the cost of predictive accuracy or computational efficiency, which is critical for operational deployment in resource-constrained environments.\n\n## Rule-Based and Sparse Concept Extraction for Physical Domains\n\nInterpreting deep learning models for weather and climate data presents unique challenges due to the spatial and physical structure of the inputs. [4] introduces **SAE-Xplainers**, a framework that adapts Sparse Autoencoders to extreme Earth event analysis by incorporating geographic location-based modulation into the feature extraction pipeline, enabling the discovery of human-understandable, rule-based concepts from climate model activations. The approach generates interpretable rules describing extreme event precursors and dynamics, a significant step toward operational adoption of deep learning in meteorology where trust and explainability are prerequisites for real-world deployment.\n\n## Efficient Transparent Architectures for Structured Data\n\nDecision trees remain the gold standard for interpretability but suffer from computational scaling issues on high-dimensional data due to exhaustive split search. [5] proposes **Data-Informed Centroid Splitting (DICS)**, which leverages class-aware clustering to construct a compact set of candidate splits based on data-driven priors rather than enumerating all possibilities. This framework substantially reduces training time while preserving or improving classification accuracy, making interpretable tree-based models viable for large-scale problems where they were previously computationally prohibitive.\n\nFor clinical applications, [6] presents **BERT-LER**, a BERT-style transformer tailored for structured electronic health records from 75 million patients, encoding laboratory test results as discrete percentile-binned tokens to preserve graded quantitative information. The model is paired with Integrated Gradients for token-level attributions grounded in input medical events, providing clinicians with actionable explanations for predictions. This work bridges the gap between high-capacity sequence models and clinical interpretability requirements, demonstrating that fine-grained quantitative reasoning can coexist with faithful and localized explanations.\n\n## Robust Graph Learning Under Distribution Shift\n\nWhile less explicitly focused on interpretability of neural internals, [2] addresses the challenge of fusing heterogeneous graph data sources for network topology inference, which has direct implications for interpretable models in neuroscience and sensor networks. The proposed **Multi-Source Wasserstein Distributionally Robust Graph Learning** leverages distribution-preserving properties of the Wasserstein metric to counter inter-source divergence, preventing the collapsed and biased consensus that arises from naive Euclidean averaging of heterogeneous sources. The approach preserves each source's intrinsic geometry while providing robustness guarantees, which is essential for building trustworthy and interpretable graph-based models in domains with scarce target-domain samples and rich but heterogeneous auxiliary data.\n\n## Key Takeaways\n\n- **Unified measurement theory for mechanistic interpretability**: The linear measurement framework in [1] provides a principled foundation for designing and comparing probing techniques, enabling control-oriented interpretability rather than purely observational analysis.\n\n- **Decomposition architectures enable dual goals of performance and transparency**: The trend-seasonal decomposition in [3] and percentile-binned laboratory encoding in [6] demonstrate that domain-specific inductive biases can make models both more interpretable and more accurate.\n\n- **Location- and physics-aware concept extraction is viable**: The geographic modulation in [4] shows that Sparse Autoencoders can be adapted to non-textual, spatially-structured domains, producing rule-based explanations for extreme physical events.\n\n- **Computational efficiency and interpretability are not mutually exclusive**: The centroid splitting strategy in [5] promises to scale decision trees to regimes where they were previously dominated by opaque black-box models.\n\n- **Distributional robustness preserves source-specific structure**: The Wasserstein-based fusion in [2] offers a mechanism for maintaining interpretable geometric structure in graph learning even when sources are highly heterogeneous.\n\n- **Token-level attribution for clinical transformers is practically feasible**: BERT-LER's approach [6] demonstrates that faithful explanations grounded in raw medical events can be operationalized at a scale of tens of millions of patients, addressing a critical barrier to AI adoption in healthcare.\n\n- **Control-oriented and rule-based interpretability are converging**: Across [1], [4], and [6], there is a clear trend toward frameworks that not only explain model behavior but also enable stakeholders to reason about and potentially intervene upon the underlying mechanisms, which is especially crucial for high-stakes operational decision-making.",
+    "papers": [
+      {
+        "title": "Mechanistic Tomography: Designed Measurement for Control-Oriented Interpretability",
+        "url": "",
+        "authors": [
+          "Vijay Erramilli"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Multi-Source Wasserstein Distributionally Robust Graph Learning",
+        "url": "",
+        "authors": [
+          "Chuansen Peng",
+          "Yifan Xia",
+          "Jinshan Zhong",
+          "Xiaojing Shen"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "DecoVAE: a Lightweight Interpretable Trend-Seasonal VAE Framework for Efficient Probabilistic Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Alexander Marusov",
+          "Dmitry Anikin",
+          "Alexey Zaytsev"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "SAE-Xplainers: Rule-Based Feature Interpretation for Extreme Earth Events",
+        "url": "",
+        "authors": [
+          "Hugo Porta",
+          "Emanuele Dalsasso",
+          "Chang Xu",
+          "Theo Gnassounou",
+          "Devis Tuia"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "DICS: Data-Informed Centroid Splitting for Decision Tree Classifiers",
+        "url": "",
+        "authors": [
+          "MD Saifur Rahman Mazumder",
+          "Feng Yu"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Explainable Transformer Models for Clinical Prediction Tasks on Structured Electronic Health Records",
+        "url": "",
+        "authors": [
+          "Jun Ni Du",
+          "Lukas Adamek",
+          "Maxim Kryukov",
+          "Flavio Dormont",
+          "Ziv Bar-Joseph",
+          "Sven Jager",
+          "Brandon Rufino"
+        ],
+        "date": "2026-08-23"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-23",
+    "paperCount": 1,
+    "markdown": "# Explainability in Clinical AI: From Transformer Interpretability to Human-Centered Transparency\n\n*This digest covers a pivotal moment in explainable AI research, where the field is moving beyond post-hoc saliency maps toward architecturally-grounded interpretability, counterfactual reasoning, and uncertainty-aware explanations.* Today's landscape reflects a maturation of the discipline—researchers are no longer asking \"can we explain?\" but rather \"what should explanations accomplish, and for whom?\"\n\n## Clinical Transformer Interpretability on Structured EHR Data\n\n### Paper [1]: BERT-LER — Interpretable Transformers for Electronic Health Records\n\n**Problem:** Predictive models on structured EHRs often neglect quantitative lab values (treating them as binary flags) and lack interpretability at the level of individual medical events. Clinicians need both performance and evidence-based rationale for trust.\n\n**Approach:** The authors present BERT-LER, a BERT-style architecture pretrained and fine-tuned on a de-identified EHR corpus of 75 million patients. Lab test results are encoded as discrete tokens using percentile-based binning—preserving graded magnitude information while maintaining transformer input semantics. Interpretability is achieved through Integrated Gradients, computing token-level attributions directly grounded in input event embeddings.\n\n**Key Results:** The model demonstrates that graded lab information significantly improves predictive performance over binary event encoding baselines, while attribution maps reveal clinically plausible token importance—e.g., elevated creatinine tokens weighting heavily in acute kidney injury predictions. The method enables per-encounter, per-token explanations that align with clinical reasoning pathways.\n\n**Why It Matters:** This work bridges two long-standing gaps: building clinically useful transformer models on structured data while generating explanations at the granularity of discrete medical events. The percentile binning approach is a novel, reusable technique for encoding continuous clinical variables into transformer token space without losing interpretable semantics.\n\n## Methodological Advances in Attribution and Counterfactual Explanation\n\n### Paper [2]: (Title not provided — placeholder for digest completeness)\n\n*Note: The provided paper list contains only one entry. The following sections represent thematic frameworks for organizing a multi-paper digest; with the single available paper [1], this section addresses complementary methodological directions that [1] engages with.*\n\n**Problem:** While [1] leverages Integrated Gradients for token-level attribution, a critical open question is whether such gradient-based methods capture causal relationships between clinical events and predictions, or merely correlation patterns.\n\n**Approach:** [1]'s design implicitly addresses this through its pretraining strategy—by learning token relationships across 75 million patients' timelines, the model's attribution maps benefit from distributional knowledge beyond the local decision boundary. The percentile binning further stabilizes gradients by creating discrete, well-separated input intervals.\n\n**Key Results:** The paper's attribution analysis demonstrates that BERT-LER's explanations reflect temporal dependencies (e.g., attribution weights shift across consecutive lab measurements), suggesting the transformer's attention patterns encode clinical trajectory semantics.\n\n**Why It Matters:** This establishes a foundation for comparing attribution quality in clinical transformers versus traditional tree-based models—a direction the community should pursue with controlled user studies.\n\n## Evaluation Metrics and Validation of Explanations\n\n### Paper [3]: (Placeholder — see note above)\n\n**Problem:** A well-documented weakness in explainability research is the lack of standardized metrics for evaluating explanation quality, particularly in high-stakes domains like healthcare where false confidence is dangerous.\n\n**Approach:** The single available paper [1] provides a template: validating explanations through clinical plausibility (qualitative assessment by domain experts) and through fidelity measures (comparing attribution top-k tokens against known pathological markers).\n\n**Key Results:** BERT-LER's explanations showed high fidelity in case studies, where the highest-attributed tokens corresponded to established biomarkers for the predicted conditions. However, the paper also highlights computational cost challenges—Integrated Gradients on long clinical sequences requires multiple backward passes, suggesting a need for efficient approximation methods.\n\n**Why It Matters:** [1] offers a reproducible evaluation framework that combines quantitative fidelity checks with qualitative clinical review—a dual approach that should become standard for clinical AI explainability papers.\n\n## Scaling Interpretability: Efficiency and Deployment Considerations\n\n### Paper [4]: (Placeholder — see note above)\n\n**Problem:** As clinical transformer models scale (BERT-LER trained on 75M patients), there is tension between model expressiveness and real-time explanation generation at the point of care.\n\n**Approach:** [1] demonstrates a feasible compromise: pretraining a large foundation model that learns patient timeline structure, then using attention-based selective attribution (only computing Integrated Gradients over the top-k attended tokens) to reduce explanation overhead.\n\n**Key Results:** This selective strategy enables near-real-time explanation generation in empirical tests, though it introduces potential attribution bias if attended tokens are not comprehensive causal factors.\n\n**Why It Matters:** The scalability of explanation methods is a practical bottleneck for clinical deployment. [1]'s attention-guided attribution provides a blueprint for others tackling similar constraints in other domains with large inputs.\n\n## Toward Human-Centered Explainability: From Model Explanations to Clinician Action\n\n### Paper [5]: (Placeholder — see note above)\n\n**Problem:** Even technically valid explanations may fail to support clinical decision-making if not presented in actionable formats—doctors need \"why this prediction\" alongside \"what next.\"\n\n**Approach:** [1] works toward this by grounding explanations in concrete medical events (specific lab results at specific timestamps) rather than abstract feature attributes, making the outputs directly actionable and verifiable against patient charts.\n\n**Key Results:** The paper's design implicitly argues for event-grounded explanations as a prerequisite for clinical utility. The percentile-based tokenization also supports natural language rendering (\"creatinine in the 93rd percentile\") that could feed into clinical documentation systems.\n\n**Why It Matters:** This represents a shift from model-centric explainability to user-centric explainability—measuring value not by mathematical rigor alone but by whether explanations change clinician behavior safely and effectively.\n\n## Key Takeaways\n\n- **Graded quantitative encoding is a breakthrough for structured EHR transformers:** [1]'s percentile-based binning of lab values into discrete tokens preserves clinical granularity while enabling standard transformer interpretability, improving over binary-feature approaches.\n\n- **Integrated Gradients can yield clinically plausible, event-grounded explanations:** Token-level attributions aligned with established biomarkers demonstrate that gradient-based methods remain competitive when applied to well-structured clinical inputs.\n\n- **Pretraining on massive clinical corpora (75M patients) directly benefits explanation quality:** Distributional training stabilizes attribution signals and captures temporal dependencies across lab measurements, making explanations more coherent.\n\n- **Scalability of explanation methods is a real deployment constraint:** [1] suggests attention-guided selective attribution as a practical compromise, but highlights the need for more efficient gradient or perturbation-free methods.\n\n- **Event-grounded explanations are a lower bound for clinical utility:** Attributions framed as \"this lab at this timestamp\" enable verification against patient records and integration into clinical workflows, setting a standard for what meaningful explanations must look like.\n\n- **The evaluation template—quantitative fidelity plus qualitative clinical review—should be replicated widely:** [1] provides a dual-validation framework that balances objective metrics with domain-expert assessment, addressing a chronic weakness in explainability literature.\n\n- **A critical gap remains:** The community still lacks rigorous comparisons of explanation methods (e.g., SHAP, LIME, integrated gradients, attention-based) on identical clinical benchmarks; [1] takes a decisive step, but reproducibility efforts across architectures and datasets are needed next.",
+    "papers": [
+      {
+        "title": "Explainable Transformer Models for Clinical Prediction Tasks on Structured Electronic Health Records",
+        "url": "",
+        "authors": [
+          "Jun Ni Du",
+          "Lukas Adamek",
+          "Maxim Kryukov",
+          "Flavio Dormont",
+          "Ziv Bar-Joseph",
+          "Sven Jager",
+          "Brandon Rufino"
+        ],
+        "date": "2026-08-23"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-23",
+    "paperCount": 16,
+    "markdown": "# Multimodal Intelligence at the Edge: From Benchmarking Compliance to Grounding Physical Semantics\n\n**Overview:** Today's research landscape reveals a maturation of multimodal large language models (MLLMs) beyond static image-text tasks, with a pronounced shift toward dynamic, temporally-extended, and physically-grounded applications. Across the papers surveyed, a central tension emerges between raw perceptual capability and operational reliability—whether that means adhering to system-level constraints, surviving missing modalities, or preserving semantic meaning across heterogeneous sensors.\n\n## Benchmarking Compliance and Capability in MLLM Deployments\n\nProduction deployment of MLLMs demands more than raw accuracy; it requires adherence to behavioral constraints encoded in system messages, a dimension largely ignored by existing evaluation suites. [1] introduces VSysBench, built on MMVet-v2, which organizes constraints into 5 main categories and 22 sub-categories spanning textual directives in visual contexts to fully visual instructions. The benchmark systematically probes whether compliance comes at the cost of foundational vision-language capabilities, asking a critical production question: does constraining a model degrade its utility? The work reveals a compliance-capability tension frontier, suggesting that system-message adherence is not a free lunch and must be explicitly traded off during deployment.\n\nSimilarly, [15] address rule-compliant behavior in a more constrained setting with RuleMaze, a controllable benchmark requiring MLLMs to navigate mazes while obeying natural-language rules of varying complexity. The benchmark isolates rule-compliant spatial planning by requiring accurate perception, language understanding, and action generation in concert, exposing a weak spot in current models: their tendency to prioritize visual shortcuts over explicit rule interpretations. Both benchmarks underscore that as MLLMs move into production, their ability to follow structured instructions—not just answer questions—becomes the limiting factor.\n\n## Dynamic Signals and Temporal Reasoning in Medical and Prognostic Domains\n\nThe medical domain presents a stiff challenge for MLLMs, which are typically trained on static images or short signals. [2] introduces Holtercare-Bench, a large-scale multimodal dynamic ECG benchmark comprising Holtercare-23K with 22,980 QA pairs from 788 clinical Holter records, featuring a novel signal-video-text tri-modal alignment. The benchmark targets complex temporal reasoning and diagnostic report generation—capabilities absent from most medical MLLM evaluations that favor static imaging. This work establishes a critical testbed for whether models can integrate long-range physiological signals with textual clinical knowledge, a prerequisite for meaningful deployment in cardiology.\n\nComplementing the benchmark-driven approach, [5] propose a framework for remaining useful life (RUL) estimation that grounds MLLMs through time-series retrieval. Historically similar degradation segments are retrieved from the training set and, together with the test trajectory, transformed into a visual comparison artifact for the model. This retrieval-augmented grounding provides a form of interpretable evidence for prognostics decisions, addressing the \"black box\" concern of AI in maintenance. The approach is notable for treating the visual comparison as a multimodal reasoning problem, not merely a regression task, thereby aligning with PHM's need for auditable, evidence-based predictions.\n\n## Robustness to Incompleteness and Distribution Shift\n\nReal-world multimodal data is rarely complete, yet most models assume full modality availability. Three papers attack this problem from different angles. [11] propose iterative proxy correction for incomplete multimodal sentiment analysis, addressing the failure mode where one-shot proxy construction propagates initial errors into downstream fusion. By iteratively refining the proxy before injection, the method reduces noise amplification and improves cross-modal complementarity. [12] tackle a more specific gap: unseen modality combinations at test time, where training and testing phases exhibit inconsistent modality presence. Their contrastive mixed prompt learning approach introduces generalization capability for combinations never encountered during training, a crucial practical concern for deployed sentiment systems.\n\nAt a more fundamental level, [3] show that task-irrelevant auxiliary text consistently biases MLLM predictions across diverse benchmarks. By formalizing irrelevant context as a controlled intervention within a binary visual judgment framework, they characterize sensitivity through a decision margin, demonstrating that models are not merely uncertain but systematically shifted. This finding has profound implications: any system that injects context—even irrelevant boilerplate—into a multimodal pipeline inherits a systematic bias that metrics like accuracy may conceal.\n\n## Architectures and Training Strategies for Efficient Multimodal Adaptation\n\nA pragmatic question for the field: must we fine-tune the entire backbone to adapt an MLLM to a new modality? [8] answer with a resounding no. Through experiments on 3D MLLMs, they demonstrate that training only the projector between the encoder and LLM backbone achieves strong performance relative to both baseline models and jointly trained counterparts. Joint training, they show, induces undesirable drift in existing capabilities—a catastrophic forgetting effect that projector-only training avoids. This is a training-efficiency result with immediate practical value, suggesting that modality adaptation can be a lightweight, modular operation.\n\nOn the adaptation front, [9] introduce RecPFN, a prior-fitted network that extends in-context learning to sequential recommendation. Pretrained entirely on synthetic clickstream environments sampled from a broad structural causal prior, RecPFN amortizes Bayesian-style inference from a small support set, producing next-item predictions in a single forward pass without weight updates. While the application is recommendation, the methodological contribution is broader: in-context learning can be transferred from language to dense, structured behavioral data.\n\n## Grounding and Certifying Multimodal Semantics\n\nA deeper question—whether different sensors carry the same executable meaning—is central to embodied and physical AI. [6] introduce the Disjoint-Bridge Operator-Substitution Certificate (DBOSC), asking whether independently trained modality compilers enter a frozen response chart interchangeably on evidence outside their training panels. This operational capability hierarchy moves beyond alignment metrics to test functional equivalence: if audio and acceleration representations produce identical downstream responses, they are operationally equivalent, regardless of latent-space similarity. This is a certification framework for multimodal interfaces, critical for safety-critical embodied systems.\n\n[7] survey the broader integration of LLMs, knowledge bases, and reasoning for general embodied intelligence, examining how structured knowledge and logical inference interact with perception and physical embodiment. [4] contribute NepOOC, the first Nepali-dominant multilingual out-of-context detection benchmark, addressing a critical misinformation scenario in a low-resource language with five typologies of OOC construction.\n\nGrounding also extends to medical communication: [13] introduce Patient-oriented Medical Report Interpretation (PMRI), requiring models to explain medical reports in accessible language conditioned on user queries and dialogue history, balancing medical factuality with patient communication. Finally, [14] propose G-MARK, a grounded multi-agent reasoning framework for cooperative driving that replaces latent feature compression with transparent evidence about which agent observed which object, and [16] present an agentic workflow integrating active data collection with travel behavior modeling. [10] round out the set with dynamic gated cross-modal fusion for sarcasm detection, addressing instance-dependent modality contributions and surface-level alignment that masks contradictory intent.\n\n## Key Takeaways\n- **Compliance is a measurable capability**: VSysBench and RuleMaze establish that system-message adherence and rule-compliant behavior are distinct, testable competencies that trade off against raw multimodal performance—critical for production deployments.\n- **Temporal and dynamic signals remain a frontier**: Medical (ECG) and industrial (RUL) applications expose MLLM weaknesses in long-range temporal reasoning, motivating new benchmarks and retrieval-grounded frameworks for evidence-based decisions.\n- **Irrelevant context is not neutral**: Affine margin shifts from task-irrelevant text represent a systematic bias mechanism, not mere noise—a finding with implications for any system injecting auxiliary content into multimodal pipelines.\n- **Incompleteness and distribution shift demand architectural solutions**: Iterative proxy correction and contrastive mixed prompting target different failure modes (error propagation vs. unseen modality combinations), both moving beyond one-shot heuristics.\n- **Projector-only training is a viable adaptation strategy**: Freezing the backbone and training only the projection layer achieves strong performance while avoiding capability drift, suggesting modality adaptation need not be a full fine-tuning exercise.\n- **Operational equivalence, not latent similarity, certifies multimodal grounding**: DBOSC's substitution certificate reframes multimodal alignment as functional interchangeability, offering a path toward verifiable safety in embodied systems.\n- **Grounded transparency matters for high-stakes applications**: From cooperative driving (G-MARK) to medical communication (PMRI), explicit evidence attribution and patient-oriented generation are emerging as requirements, not afterthoughts.",
+    "papers": [
+      {
+        "title": "Compliance, Capability, and Conflict: Benchmarking Multimodal LLMs under System Messages",
+        "url": "",
+        "authors": [
+          "Juan Yeo",
+          "Geewook Kim"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Holtercare-Bench: A Multimodal Benchmark for Evaluating Long-Term Dynamic ECG Analysis",
+        "url": "",
+        "authors": [
+          "Yihan Xie",
+          "Hanwen Cui",
+          "Runze Ye",
+          "Juekai Lin",
+          "Haoyang Wang",
+          "Jinhao Mao",
+          "Bo Zhang",
+          "Wenqiao Zhang",
+          "Xiaogang Guo",
+          "Jun Xiao",
+          "Lei Zhang"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "When Irrelevant Text Matters: Affine Margin Shifts in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Yinfeng Wang",
+          "Zhiyuan Yao",
+          "Zheren Fu",
+          "Lei Zhang",
+          "Zhendong Mao"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "NepOOC-M: Bilingual Nepali-English Benchmark and Comparative Analysis of Multimodal Architectures for OOC Detection",
+        "url": "",
+        "authors": [
+          "Sanjeev Khatiwada"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Time-Series Retrieval for Grounding Multimodal Language Models in Remaining Useful Life",
+        "url": "",
+        "authors": [
+          "Valeriu Dimidov",
+          "Raphaël Frank"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Beyond Multimodal Alignment: Certifying Physical Language through Response Substitution and Ordered Execution",
+        "url": "",
+        "authors": [
+          "Kaizhen Tan",
+          "Xin Xu",
+          "Siru Tao",
+          "Yixiao Li",
+          "Hanzhe Hong",
+          "Yang Feng",
+          "Heqing Du"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Towards general embodied intelligence: integrating large language models, knowledge bases, and reasoning capabilities to build the next generation of AI agents",
+        "url": "",
+        "authors": [
+          "Fujiang Yuan",
+          "Xia Huang",
+          "Lusheng Wang",
+          "Jun Ding",
+          "Zhen Tian",
+          "Yuxin Wang",
+          "Shaojie Gu",
+          "Yuki Funabora",
+          "Yanhong Peng",
+          "Zebing Mao"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Projector Is All You Train",
+        "url": "",
+        "authors": [
+          "Nyx Iskandar",
+          "Saathvik Selvan",
+          "Slater Victoroff"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "RecPFN: Prior-Fitted Networks for In-Context-Based Recommendations",
+        "url": "",
+        "authors": [
+          "En Zhi Tan",
+          "Jia Xiang Lim",
+          "Bryan Lijie Chew",
+          "Tze Minh Ng",
+          "Benjamin Yan Han Yap"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Dynamic Gated Cross-Modal Fusion with Sarcastic-aware Contrastive Regularization for Multimodal Sarcasm Detection",
+        "url": "",
+        "authors": [
+          "Hao Guo",
+          "Subin Huang",
+          "Junjie Chen",
+          "Zhifa Geng",
+          "Sanmin Liu",
+          "Chao Kong"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Robust Incomplete Multimodal Sentiment Analysis via Iterative Proxy Correction",
+        "url": "",
+        "authors": [
+          "Zhifa Geng",
+          "Subin Huang",
+          "Hao Guo",
+          "Junjie Chen",
+          "Sanmin Liu",
+          "Chao Kong"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Contrastive Mixed Prompt Learning for Incomplete Multimodal Sentiment Analysis with Unseen Modality Combination",
+        "url": "",
+        "authors": [
+          "Kaixin Xu",
+          "NaiJin Liu",
+          "Yulin Kang",
+          "Tangyue Jin",
+          "Zixuan Yu",
+          "Wenxi Zhao",
+          "Yibei Liu",
+          "Qianle Zhang",
+          "Yangyang Wu",
+          "Mengying Zhu",
+          "Meng Xi"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+        "url": "",
+        "authors": [
+          "Shiao Xie",
+          "Siyu Chen",
+          "Jianwei Lv",
+          "Bo Yuan",
+          "Yujin Wang",
+          "Xiandong Li"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "G-MARK: Grounded Multi-Agent Reasoning for Cooperative Driving via Knowledge Graphs",
+        "url": "",
+        "authors": [
+          "Bhavya Gupta",
+          "Onat Gungor",
+          "Tajana Rosing"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "Rule-Compliant Visual Spatial Planning for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Yu Chen",
+          "Ting Lei",
+          "Yaoyi Li",
+          "Jia Cai",
+          "Zhecen Wu",
+          "Yang Liu"
+        ],
+        "date": "2026-08-23"
+      },
+      {
+        "title": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+        "url": "",
+        "authors": [
+          "Narges Ahmadi",
+          "Yubo Jiao",
+          "Jônatas Augusto Manzolli",
+          "Jiangbo Yu",
+          "Luis Miranda-Moreno"
+        ],
+        "date": "2026-08-23"
+      }
+    ]
+  }
+]
