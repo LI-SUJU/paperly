@@ -1,0 +1,288 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-26",
+    "paperCount": 5,
+    "markdown": "# From Static Probes to Dynamic Mechanisms: The Evolution of Interpretability\n\nToday's research landscape marks a decisive shift from retrospective, static interpretability toward predictive, behaviorally-grounded, and mechanistically-informed analysis. Across five papers, we see a converging theme: interpretability must account for temporal dynamics, naturalistic conditions, and post-training evolution to remain actionable for model safety and alignment.\n\n## Rethinking Human Skill Modeling: Interpretability Beyond Single Observations\n\nThe first paper tackles a foundational challenge in human-AI interaction: how to infer persistent, compositional human skills from naturalistic behavior rather than isolated snapshots. Schrum et al. [1] introduce Skill Abstraction with Interpretable Latents (SAIL), a method that models skill as a multi-dimensional latent construct extracted from patterns across time. The key innovation is robustness to transient performance fluctuations—a critical requirement for real-world coaching or assistive systems. By treating skill as a behaviorally grounded trajectory-level property rather than an instance-level point estimate, SAIL moves interpretability into a temporal regime that most machine learning interpretability tools ignore. This matters because AI systems that collaborate with humans must track evolving competencies, not just classify static states.\n\n## Naturalistic Deception: When Linear Probes Fail\n\nThe second paper directly challenges the validity of probe-based interpretability for detecting deceptive alignment. Manson [2] builds on Anthropic's Sleeper Agents research, arguing that >99% probe accuracy for backdoor detection may be an artifact of artificial backdoor insertion rather than a property of naturally emerging deception. The paper introduces a naturalistic multi-turn context window methodology that simulates realistic deceptive reasoning trajectories. The critical insight is that sophisticated deceptive behaviors arising through gradient descent are unlikely to produce the convenient linear separability that probes exploit. This work matters because it exposes a potential blind spot in current safety evaluations: if we only test for linearly detectable deception, we may be systematically blind to the most dangerous naturally-occurring failure modes.\n\n## Circuit-Grounded Data Valuation: Interpretability as a Data Curation Tool\n\nThe third paper bridges mechanistic interpretability with data synthesis pipelines, addressing the black-box nature of heuristic prompt-based control. Lee et al. [3] propose a framework that connects training-dynamics-based data valuation with mechanistic circuit identification, conceptualizing data quality along three axes: learnability, challenge, and alignment. The core approach uncovers specialized model-internal circuits that correspond to each utility axis, enabling principled selection of training samples. This is significant because it transforms interpretability from a post-hoc analysis tool into a generative instrument for controllable data design. The authors' key contribution is demonstrating that individual samples can be characterized by which circuits they activate, providing causal insight into why certain data helps or hurts learning—a level of transparency that prompt-based heuristics cannot offer.\n\n## Anticipating Post-Tuning Mechanisms: The Retrospection Trap\n\nThe fourth paper identifies a fundamental limitation of mechanistic interpretability when applied to model tuning: its retrospective nature. Chen et al. [4] show that directly interpreting pre-SFT (Supervised Fine-Tuning) models leads to misleading conclusions for novel tasks, because initially identified neurons differ drastically from those governing the post-tuning model. The authors propose a method that anticipates post-SFT mechanisms from pre-SFT parameters, moving beyond the \"locating-then-tuning\" paradigm that misguides parameter-efficient fine-tuning. This is a critical contribution because it exposes a temporal misalignment in interpretability: if we interpret a model at time t to guide modifications at time t+1, we assume mechanism stability that often does not hold. The work suggests that effective interpretability for optimization must be predictive, not just descriptive.\n\n## Scalable Functional Consistency: Statistical Rigor for Neuron Analysis\n\nThe fifth paper tackles scalability and statistical rigor in mechanistic interpretability. Wang et al. [5] present RACE (Residual Alignment for Consistency Estimation), a forward-pass statistical framework that evaluates domain-wide functional consistency of Transformer neurons. Unlike instance-level point estimates or gradient-based methods, RACE provides population-level variability estimates without requiring backward passes. Perturbation experiments demonstrate superior domain specificity compared to gradient-based point estimates. The significance lies in enabling scalable, domain-wide neuron analysis that was previously computationally prohibitive. This matters because understanding whether a neuron consistently performs a function across an entire domain—rather than on cherry-picked examples—is essential for reliable circuit discovery and model editing.\n\n## Key Takeaways\n\n- **Temporal dynamics are now central to interpretability**: Three of five papers [1, 2, 4] explicitly address how interpretability must account for change over time—whether in human skill evolution, deceptive reasoning trajectories, or post-tuning mechanism shifts.\n\n- **Linear probe reliability is under serious question**: The Sleeper Agent extension [2] challenges whether probe-based detection generalizes from artificial backdoors to naturally occurring deception, suggesting we need non-linear and multi-turn diagnostic tools.\n\n- **Mechanistic interpretability is becoming a generative tool, not just an analytical one**: The circuit-grounded data framework [3] demonstrates that understanding internal mechanisms can actively drive data curation, turning interpretability from a diagnostic lens into a design instrument.\n\n- **The retrospection trap is real**: Interpreting pre-tuning models to guide post-tuning optimization can actively harm performance [4], necessitating predictive or anticipatory interpretability methods.\n\n- **Statistical rigor and scalability are converging**: RACE [5] shows that domain-wide neuron analysis can be both statistically principled and computationally tractable, addressing a major bottleneck in practical mechanistic interpretability.\n\n- **Interpretability is expanding beyond neural networks to human behavior modeling**: SAIL [1] demonstrates that interpretable latent constructs apply to modeling human skill, broadening the field's relevance to human-AI collaboration systems.\n\n- **A unified theme emerges: interpretability must be robust to distributional and temporal shifts**—whether those shifts are induced by training, by deceptive behavior, or by natural human performance variability.",
+    "papers": [
+      {
+        "title": "Disentangled Skill Representations for Predictive Human Modeling",
+        "url": "",
+        "authors": [
+          "Mariah Schrum",
+          "Deepak Gopinath",
+          "Srijan Srivatsa",
+          "Guy Rosman",
+          "Tiffany Chen"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "Curved Inference II: Sleeper Agent Geometry - Extending Interpretability Beyond Probes",
+        "url": "",
+        "authors": [
+          "Rob Manson"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "Mechanistic Circuit Identification for Controllable Data Generation",
+        "url": "",
+        "authors": [
+          "Nakyung Lee",
+          "Sangwoo Hong",
+          "Jungwoo Lee"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "Beyond Static Interpretability: Anticipating Post-SFT Mechanisms from Pre-SFT Parameters for Better Tuning",
+        "url": "",
+        "authors": [
+          "Hang Chen",
+          "Jiaying Zhu",
+          "Wenya Wang"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "RACE: Scalable Statistical Estimation of Functional Consistency in LLM Neurons",
+        "url": "",
+        "authors": [
+          "Runyu Wang",
+          "Bo Liu",
+          "Xiaxin Zhang",
+          "Yu Han",
+          "Jiawei Cao",
+          "Xiaoye Zhang",
+          "Zhe Zhang",
+          "Yifan Yang",
+          "Peng Ping"
+        ],
+        "date": "2026-08-26"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-26",
+    "paperCount": 15,
+    "markdown": "# Navigating Multimodal Intelligence: From Information-Theoretic Attention to Domain-Specific Foundations\n\nToday's research landscape reveals a field in rapid maturation, moving beyond simple modality fusion toward principled frameworks that address attention dynamics, evaluation reliability, and domain-specific deployment challenges. Across vision-language models, biomedical applications, and emerging sensory modalities, the community is grappling with fundamental questions about when multimodal information genuinely helps, how to build trustworthy evaluation protocols, and how to scale these systems to real-world complexity.\n\n## Rethinking Multimodal Attention and Context Utilization\n\nThe question of when and why multimodal context matters is receiving much-needed theoretical grounding. **Tanaka et al.** [1] tackle the puzzling observation that vision-language models sometimes leverage visual demonstrations effectively yet often ignore them entirely. Their proposed VIB-ICL framework applies the Information Bottleneck principle to resolve this dichotomy, introducing Cross-Modal Information Gain (CMIG) as a quantitative measure of the additional mutual information visual context provides about the target beyond text alone. This information-theoretic lens offers a principled way to predict when visual demonstrations will be useful, potentially enabling adaptive attention mechanisms that know when to rely on visual context. The work matters because it moves multimodal ICL from empirical trial-and-error toward a theoretically motivated understanding of modality utility.\n\nThe evaluation of multimodal systems themselves comes under scrutiny in **Hu et al.** [9], who diagnose potential biases in \"OmniJudge\" models that jointly assess text-to-image, text-to-video, and text-to-speech generation quality. Their D3-Omni benchmark introduces a balanced and decoupled evaluation protocol that separates distinct failure modes rather than conflating them, revealing that judges may score well while failing to recognize specific generation artifacts. This work addresses a critical gap in the AI evaluation pipeline—if automated judges are unreliable, the entire downstream development loop built on their scores inherits those blind spots. The decoupled diagnostic approach represents an important step toward trustworthy automated evaluation.\n\n## Domain-Specific Multimodal Foundations\n\nSeveral papers demonstrate the value of purpose-built multimodal systems for specialized domains. **Vorontsov et al.** [10] present oFM, a foundation model trained on 1.67 million cancer patients that integrates clinical trajectories with DNA, RNA, and H&E pathology images over time. The model encodes daily clinical and molecular episodes and integrates them longitudinally, capturing cancer evolution and treatment response in a way that static, single-timepoint models cannot. This work is significant for precision oncology, demonstrating that domain-specific foundation models can effectively handle the temporal and multimodal complexity inherent in patient care.\n\n**Su et al.** [12] address underwater perception, where optical cameras degrade with turbidity while imaging sonar preserves geometry but exhibits distinct artifacts. Their SonarLLM treats sonar as a native perceptual modality with a sonar-specific encoder and physics-aware feature processing, rather than forcing it through optical encoders designed for RGB images. By modeling the complementary strengths of sonar and optical sensing, this work extends MLLM capabilities to a challenging domain where existing systems built primarily on optical encoders are fundamentally limited.\n\n**Aristombayeva et al.** [6] tackle spoken hallucination detection across English, Russian, and Kazakh, presenting the first multilingual benchmark with 12,013 controlled hallucination samples across three severity levels. This work is notable for including low-resource languages and for extending hallucination detection from text to the audio domain, where errors compound through both linguistic and acoustic channels. The inclusion of native fake news items in Russian and Kazakh grounds the synthetic corpus in real-world phenomena.\n\n## Efficient Architectures and Representation Learning\n\nTwo papers address efficiency and representation quality from complementary angles. **Ghaboosi** [5] introduces Giraffe, a mapping architecture that translates hidden text representations directly into visual embeddings for graphic design generation. The key innovation is avoiding the multiple specialized tokens that prior methods use to represent images, which significantly increases input length and becomes prohibitive for tasks requiring dense visual output. By enabling efficient text-to-visual mapping, this work addresses a fundamental bottleneck in MLLM-based media generation.\n\nIn the molecular domain, **Zhao et al.** [3] propose using multimodal LLMs as general molecular embedding models, producing conditional embeddings rather than the single-view, unconditional vectors produced by specialist encoders. Their MolEmb approach leverages MLLMs' native ability to process images, text, and symbolic inputs, creating representations that can vary based on language-conditioning. This opens new possibilities for property prediction, virtual screening, and retrieval where the representation can be tailored to the task at hand, rather than being fixed at pre-training time.\n\n**Zhu et al.** [14] address fine-grained attribute discrimination in e-commerce through HMGCLIP, a unified multimodal embedding framework built on heterogeneous hypergraph topology. The approach mines structure-aware hard negatives to capture subtle material differences among visually similar products—a task where global embeddings from standard MLLMs fall short. By leveraging hypergraph structure to organize multimodal product information, this work targets the practical challenge of precise attribute discrimination in large-scale commercial catalogs.\n\n## Emerging Architectures for Specialized Multimodal Data\n\n**Li et al.** [11] propose LION, a Clifford neural paradigm for multimodal-attributed graph learning that addresses limitations in current approaches to modality alignment. The work identifies that existing tokenizers using topology-constrained or modality-specific operators neglect contextual information during alignment, and introduces Clifford algebra-based operations to better handle multimodal-attributed graphs. This represents a novel mathematical framework for graph learning where nodes carry information from multiple modalities simultaneously.\n\n**Cho and Orcan-Ekmekci** [13] present BioKERN, a framework for histology-to-transcriptomics neighborhood retrieval that preserves biological neighborhood structure rather than only exact cross-modal correspondences. By constructing a training-time biological kernel that combines transcriptomic similarity with spatial proximity, this work introduces biological structure as an explicit inductive bias. The approach matters for spatially resolved biology because non-paired spots sharing molecular or spatial context should be recognized as related, even when exact instance-level matches don't exist.\n\n**Tang et al.** [8] tackle the data bottleneck for pixel-based web agents with BrowserForge, a framework that scales web episode generation through parallel browser sandboxes. Public datasets contain only a few thousand trajectories from fixed websites, limiting agent generalization. By creating a scalable pipeline for generating diverse interaction trajectories, this work addresses a critical data scarcity problem for agents that act from rendered pixels rather than parsing HTML or accessibility trees.\n\n**Goodman et al.** [7] evaluate deep multivariate imputation models on wearable device data with structured missingness, where features sharing a physical sensor drop out together. Their evaluation protocol mines contiguous missing-run templates from training data rather than using random-point holdout protocols that incorrectly assume missingness independence. This methodological contribution matters because realistic wearable data exhibits complex missingness patterns that naive evaluation protocols fail to capture, potentially overestimating imputation model performance.\n\n## Production Systems and Practical Lessons\n\nTwo papers provide valuable perspectives from deployed systems. **Sharma et al.** [4] share practical lessons from migrating a production customer support recommender from gradient-boosted multiclass models to pairwise-binary deep recommenders. The migration was driven by a shift from static SKUs to dynamically bundled, discount-coupled offerings that strain tree-based classifiers assuming fixed label spaces. The multimodal signals—tabular data combined with transcripts—required a fundamentally different architecture. This paper offers rare, candid insight into the challenges of modernizing production ML systems, including the practical considerations that often go unreported in research papers.\n\n**Srirag et al.** [2] survey NLP tasks across the emergency department workflow, analyzing 46 papers spanning triage, diagnosis, and disposition phases. This comprehensive mapping covers tasks from triage notes and clinical conversations to discharge documentation, identifying open challenges and opportunities where pretrained transformers and LLMs can support time-critical emergency care. The survey provides a structured understanding of how multimodal clinical data flows through ED workflows, highlighting where language technologies can have the greatest impact.\n\n**Yan et al.** [15] address temporal inconsistencies in video MLLMs for referring segmentation, where jitter, drift, and identity switches occur particularly when targets are partially hidden or similar objects appear nearby. Their PhysMLLMs architecture injects physics-inspired spatial continuity priors during training, providing explicit spatial priors that help maintain stable spatial identity and shape over time. This work targets a core limitation in video understanding—maintaining object identity and spatial consistency across frames—by incorporating physical principles into the training process.\n\n## Key Takeaways\n- Information-theoretic frameworks (VIB-ICL, CMIG) are providing principled answers to when and why multimodal context helps, moving beyond empirical observation toward predictive understanding of modality utility.\n- Evaluation of multimodal systems is receiving critical scrutiny, with balanced, decoupled benchmarks (D3-Omni) exposing blind spots in automated judges and realistic missingness protocols revealing overestimated performance in healthcare applications.\n- Domain-specific multimodal foundations (oncology, underwater perception, molecular embeddings) demonstrate that purpose-built architectures consistently outperform generic MLLMs in specialized applications requiring longitudinal or physics-aware modeling.\n- Efficient mapping between modality spaces (Giraffe, conditional molecular embeddings) is emerging as a critical challenge, with input length and representation flexibility becoming key design axes.\n- Production system migrations (recommender systems, emergency department NLP) provide valuable practical lessons, highlighting the gap between research benchmarks and real-world constraints including label space shifts and multimodal signal integration.\n- Multimodal-attributed graph learning is advancing through novel mathematical frameworks (Clifford algebra) that better capture cross-modal context during alignment.\n- Training-stage priors—whether physics-inspired spatial continuity for video or biological kernels for spatial transcriptomics—are proving effective for injecting domain knowledge that maintains structural consistency in multimodal representations.",
+    "papers": [
+      {
+        "title": "Taming Visual Neglect: A Variational Information Bottleneck Framework for Adaptive Attention in Multimodal In-Context Learning",
+        "url": "",
+        "authors": [
+          "Kaito Tanaka",
+          "Yuji Nishimura",
+          "Keisuke Matsuda",
+          "Aya Nakayama"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "From Triage to Discharge: A Survey of NLP Tasks, Methods, and Open Challenges in the Emergency Department",
+        "url": "",
+        "authors": [
+          "Dipankar Srirag",
+          "Aditya Joshi",
+          "Salil Kanhere",
+          "Padmanesan Narasimhan"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "MolEmb: Multimodal Large Language Models Can Be Strong Molecular Embedding Models",
+        "url": "",
+        "authors": [
+          "Xinjian Zhao",
+          "Xiangru Jian",
+          "Yaoyao Xu",
+          "Xiaozhuang Song",
+          "Wei Pang",
+          "Lei Bai",
+          "Tianshu Yu"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "From Gradient-Boosted Trees to Deep Recommenders: Practical Lessons from Migrating a Production Customer Support Recommender",
+        "url": "",
+        "authors": [
+          "Sonia Sharma",
+          "Jeyendran Balakrishnan",
+          "Shreya Rajpal",
+          "Swapnil Parekh",
+          "Nagaraj Janardhana",
+          "Andrew Mattarella-Micke"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "Giraffe: A Mapping Architecture from Hidden Text Representations to Visual Embeddings for Efficient Graphic Design",
+        "url": "",
+        "authors": [
+          "Nejla Ghaboosi"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "Lost in Speech: Trilingual Spoken Hallucination Detection Across Audio and Transcripts",
+        "url": "",
+        "authors": [
+          "Meruyert Aristombayeva",
+          "Jason S. Lucas",
+          "Chaewan Chun",
+          "Dongwon Lee"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "Evaluating Deep Multivariate Imputation Models on Wearable Device Data",
+        "url": "",
+        "authors": [
+          "Skye Goodman",
+          "Roussel Desmond Nzoyem",
+          "Leandro Junges",
+          "Peter Kissack",
+          "Yasser Qureshi",
+          "Amberly Brigden",
+          "Jeff Clark",
+          "Nawid Keshtmand"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "BrowserForge: Scaling Web Episode via Parallel Browser Sandboxes",
+        "url": "",
+        "authors": [
+          "Fei Tang",
+          "Huawen Shen",
+          "Zhiqiong Lu",
+          "Zhengxi Lu",
+          "Pengyuan Lyu",
+          "Chengquan Zhang",
+          "Weiming Lu",
+          "Jun Xiao",
+          "Yueting Zhuang",
+          "Yongliang Shen"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "OmniJudge or OmniBias? Diagnosing Multimodal Judges through Balanced, Decoupled Lenses",
+        "url": "",
+        "authors": [
+          "Guangzheng Hu",
+          "Ziyue Jiang",
+          "Weixu Qiao",
+          "Lixin Zhang",
+          "Jianye Kang",
+          "Yuru Wu",
+          "Rong Bao",
+          "Niantong Li",
+          "Wei Wang",
+          "Ziyi Cheng",
+          "Xinfa Zhu",
+          "HangRui Hu",
+          "Ting He",
+          "Bing Zhao",
+          "Lin Qu",
+          "Hu Wei",
+          "Jin Xu"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "A Multimodal Foundation Model for Longitudinal Patient Representation and Scalable Insight Generation in Oncology",
+        "url": "",
+        "authors": [
+          "Eugene Vorontsov",
+          "Yi Kan Wang",
+          "Alican Bozkurt",
+          "Adam Casson",
+          "Ludmila Tydlitatova",
+          "Michal Zelechowski",
+          "Ezra E. W. Cohen",
+          "Jyoti D. Patel",
+          "Max Banaszak",
+          "Caitlin McWilliams",
+          "Shane Colley",
+          "Kate Sasser",
+          "Ryan Fukushima",
+          "Eric Lefkofsky",
+          "Razik Yousfi",
+          "Siqi Liu"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "LION: A Clifford Neural Paradigm for Multimodal-Attributed Graph Learning",
+        "url": "",
+        "authors": [
+          "Xunkai Li",
+          "Zekai Chen",
+          "Zhengyu Wu",
+          "Henan Sun",
+          "Daohan Su",
+          "Guang Zeng",
+          "Hongchao Qin",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "SonarLLM: A Native Sonar--Optical Multimodal Large Language Model for Underwater Perception",
+        "url": "",
+        "authors": [
+          "Cong Su",
+          "longxuan ma",
+          "Ling Dong",
+          "Guofeng Tang",
+          "Weijie Yin",
+          "Haohui Chen",
+          "Zhengtao Yu"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "BioKERN: Biological Kernel Regularization for Histology-to-Transcriptomics Neighborhood Retrieval",
+        "url": "",
+        "authors": [
+          "Seungik Cho",
+          "Betul Orcan-Ekmekci"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "HMGCLIP: Heterogeneous Multi-Granularity Contrastive Learning for E-commerce Representation Learning",
+        "url": "",
+        "authors": [
+          "Qiuyu Zhu",
+          "Yi Gao",
+          "Zhichao Wan",
+          "Mingyang Ma"
+        ],
+        "date": "2026-08-26"
+      },
+      {
+        "title": "PhysMLLMs: Spatial Priors for Unified Referring Segmentation and Grounded Reasoning of Images and Videos",
+        "url": "",
+        "authors": [
+          "Siyao Yan",
+          "Bo Han",
+          "Jisheng Dang",
+          "Bimei Wang",
+          "Shude Wang",
+          "Hong Peng",
+          "Yulan Guo",
+          "Jianhuang Lai",
+          "Bin Hu",
+          "Tat-SengChua"
+        ],
+        "date": "2026-08-26"
+      }
+    ]
+  }
+]
