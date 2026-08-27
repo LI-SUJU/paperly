@@ -1,0 +1,434 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-27",
+    "paperCount": 6,
+    "markdown": "# Faithful Representations and Robust Interpretability: From Clinical Probes to Compressed Models\n\nToday's research landscape reveals a maturing field where interpretability is no longer a post-hoc afterthought but a design principle interwoven with model architecture, evaluation, and deployment. The papers span clinical diagnostics, speech recognition, e-commerce ranking, behavioral modeling, and model compression, collectively underscoring that transparent AI must balance predictive fidelity with human-aligned explanations across heterogeneous data modalities and operational constraints.\n\n## Probing Clinical and Behavioral Representations\n\nThe first cluster of papers investigates how interpretability techniques can illuminate specialized models in high-stakes domains. [1] examines the DAPF framework for dementia detection from spoken language, where diagnosis is cast as masked-token prediction. Using probing and analysis techniques across model layers, the authors find that DAPF achieves state-of-the-art accuracy (0.83 macro-F1) while the [MASK] token's representation encodes diagnosis-related information in a recoverable form, suggesting that prompt-based fine-tuning naturally concentrates task-relevant features into a single, analyzable position. This work matters because it demonstrates that task-specific probes can mitigate the opacity of prompt-based domain adaptation, offering a path toward clinically trustworthy screening tools.\n\n[2] tackles interstitial lung disease classification using a hierarchical mixture-of-experts (MoE) architecture that fuses a frozen imaging backbone with structured EHR data. The two-stage gating mechanism—first assigning modality-level weights, then decomposing the EHR branch into clinically defined feature groups—provides inherent interpretability by exposing which data sources and feature subgroups drive each patient's prediction. By achieving competitive diagnostic accuracy while maintaining transparency at both the modality and feature-group levels, this approach illustrates how architectural choices can bake interpretability into multi-modal medical AI rather than requiring post-hoc explanation.\n\n[5] proposes a quantum-inspired representation of driver behavior that simultaneously captures continuity, probability, context-dependence, and history-dependence without sacrificing interpretability. The key innovation is treating behavioral variables as interacting quantum-like states rather than fixed, independent features, which allows the model to express superposition and interference effects that conventional models absorb as noise. This matters for traffic modeling and autonomous driving because it offers a principled, still-interpretable framework for the heterogeneity and temporal dynamics that define real-world driver behavior.\n\n## Rethinking Evaluation and Causal Objectives\n\n[3] delivers a systematic comparison of generative (decoder-only) versus encoder-based LLMs for ASR evaluation, analyzing how BERTScore and SemDist correlate with human judgments across different layers and pooling strategies. The findings reveal that both metric families can achieve strong human correlation when properly configured, but the optimal layer and pooling choices differ substantially between encoder and decoder architectures. This work is significant because it moves beyond WER as the de facto ASR metric, providing practical guidance for practitioners who must choose evaluation models that align with human semantic judgments.\n\n[4] addresses the granularity mismatch between item-level ranking scores and user-level long-term objectives in e-commerce search through direct causal effect optimization (DCEO). Rather than relying on manually designed multi-objective fusion, DCEO models the causal pathway from item exposure to cumulative user value (e.g., n-day GMV), learning embeddings that capture the long-term effect of ranking decisions. The contribution is a principled framework that replaces proxy objectives with causally grounded optimization, which matters for industrial systems where interpretable, deployable solutions must balance short-term engagement with sustained user value.\n\n## Compressing Models Without Losing Interpretability\n\n[6] investigates the underexplored intersection of pruning and sparse autoencoders (SAEs) in LLMs, asking whether post-hoc compression destroys the interpretability that SAEs are designed to provide. The authors theoretically prove that a fixed SAE's functionality under pruning degrades according to perturbation energy—a covariance-weighted norm—which reveals why magnitude pruning fails: it ignores activation geometry. Activation-aware methods like Wanda preserve SAE behavior more effectively, and the paper's systematic study provides practical guidance for maintaining interpretability through compression. This matters because as deployed LLMs are increasingly pruned for efficiency, ensuring that our interpretability tools remain valid on compressed models is critical for safe deployment.\n\n## Key Takeaways\n- Prompt-based fine-tuning (DAPF) can concentrate diagnostic information into a single [MASK] token, enabling targeted probing of clinically relevant features in low-resource dementia screening [1].\n- Hierarchical MoE architectures with two-stage gating (modality-level then feature-group-level) offer a template for building interpretability into multi-modal medical AI rather than explaining it post-hoc [2].\n- Quantum-inspired representations can capture heterogeneity, context-dependence, and history effects in behavioral modeling while preserving interpretability, challenging the assumed trade-off between flexibility and transparency [5].\n- For ASR evaluation, both encoder and decoder LLMs can achieve human-level correlation with semantic metrics, but optimal layer selection and pooling strategies differ by architecture family—standardized configurations are not transferable [3].\n- Causal effect optimization at the user level can replace manual multi-objective fusion in e-commerce ranking, grounding long-term value modeling in identifiable causal pathways rather than proxy heuristics [4].\n- The impact of pruning on sparse autoencoders is governed by covariance-weighted perturbation energy, explaining why activation-aware compression (Wanda) outperforms magnitude pruning for preserving LLM interpretability [6].\n- Across domains, interpretability is increasingly treated as an architectural or evaluative property—embedded via gating mechanisms, prompt design, or perturbation theory—rather than a separate explanation layer.",
+    "papers": [
+      {
+        "title": "Behind the [MASK]: Disentangling Representation and Faithfulness in DAPF-Based Dementia Detection",
+        "url": "",
+        "authors": [
+          "Pardis Ranjbar-Noiey",
+          "Natalie Parde"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Hierarchical MoE for Multi-Modal ILD Diagnosis",
+        "url": "",
+        "authors": [
+          "Alec K. Peltekian",
+          "Gorkem Durak",
+          "Halil Ertugrul Aktas",
+          "Carrie Lynn Richardson",
+          "Mary Carns",
+          "Kathleen Aren",
+          "GR Scott Budinger",
+          "Anthony J. Esposito",
+          "Alexander Misharin",
+          "Alok Nidhi Choudhary",
+          "Ankit Agrawal",
+          "Ulas Bagci"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Generative vs. Encoder Large Language Models for ASR Evaluation: A Comparative Study",
+        "url": "",
+        "authors": [
+          "Thibault Bañeras-Roux",
+          "Shashi Kumar",
+          "Driss Khalil",
+          "Sergio Burdisso",
+          "Petr Motlicek",
+          "Shiran Liu",
+          "Mickael Rouvier",
+          "Jane Wottawa",
+          "Richard Dufour"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "DCEO: Direct Causal Effect Optimization for Long-Term User Value Modeling in E-commerce Search",
+        "url": "",
+        "authors": [
+          "Junzhao Zhang",
+          "Tao Zhang",
+          "Liren Yu",
+          "Feiyi Dong",
+          "Zhixuan Zhang",
+          "Dan Ou",
+          "Haihong Tang"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Quantum-Inspired Modeling of Driving Behavior",
+        "url": "",
+        "authors": [
+          "Mohammad Elayan",
+          "Omid Armantalab",
+          "Wissam Kontar"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "When Pruning Meets Interpretability: Preserving Sparse Autoencoder Robustness in LLMs",
+        "url": "",
+        "authors": [
+          "Suchit Gupte",
+          "Xueru Zhang",
+          "Mohammad Mahdi Khalili"
+        ],
+        "date": "2026-08-27"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-27",
+    "paperCount": 4,
+    "markdown": "# From Local Attributions to Causal Narratives: The Evolving Landscape of Explainable AI\n\nToday's research landscape reflects a maturing field: explainability is moving beyond simple feature attributions toward unified frameworks that capture temporal dynamics, causal validation, and multivariate interactions. The community is simultaneously addressing the fragmentation of the explainability tool ecosystem and the need for rigorous, validation-aware methods in high-stakes deployment scenarios.\n\n## Bridging the Attribution-Counterfactual Divide in Time Series\n\nTime series explainability faces a fundamental tension: attributing predictions to historical inputs versus describing how inputs must change to alter outcomes. Current research shows that these two paradigms—previously studied in isolation—are converging toward unified frameworks that can provide both diagnostic and prescriptive insights.\n\n[3] proposes a unified Information Bottleneck framework that bridges attribution-based and counterfactual-based explanations for time series models. The core insight is that attribution methods, which identify temporal regions responsible for predictions, lack causal validation, while counterfactual methods, which reveal necessary input modifications, can benefit from attribution's temporal specificity. By formulating both explanation types under a single information-theoretic objective, the framework enables practitioners to obtain complementary views of model behavior without the inconsistency that arises from using disparate tools. This unification is particularly significant because it allows for mutual validation: attributions can be tested via counterfactuals, and counterfactual search can be guided by attribution saliency maps, creating a closed-loop explanation pipeline.\n\n[1] introduces NVExplain, a model-agnostic framework that explains forecasting predictions through latent trajectory analysis and structure-preserving surrogates. The method addresses the common failure of post-hoc explainers to respect temporal dependence and provide horizon-specific explanations. By modeling forecasting as a latent trajectory and introducing \"semantic flow\"—a measure of how information evolves across internal representations—the framework attributes each forecast horizon to its temporally relevant historical lags. This approach ensures that explanations are not only accurate but also preserve the temporal structure of the data, which is critical for stakeholders who need to understand why a model predicted, for instance, a spike in energy demand three days ahead versus one day ahead.\n\n## Navigating the Explainability Tool Ecosystem\n\nAs explainability methods proliferate, the practical challenge of tool selection and comparison has become as important as method development itself. The field is responding with systematic frameworks that help practitioners—including non-experts—make informed choices about which tools to employ for their specific Transformer-based models.\n\n[2] presents Virgil, an interactive system designed to help practitioners and researchers navigate the increasingly fragmented ecosystem of explainability tools for Transformer-based language models. The system is built on a curated knowledge base that organizes tools by functionality, model compatibility, and use case, enabling users to discover and compare options within a unified interface. This addresses a critical usability gap: while the number of explainability methods has grown rapidly, their documentation and interoperability have not kept pace, making it difficult for non-experts to select and apply appropriate tools. Virgil matters because it treats the explainability tool landscape itself as an information retrieval and decision-support problem, reducing the barrier to entry for responsible AI deployment.\n\n## Beyond Single-Concept Auditing: Multivariate Explanation\n\nModel auditing requires understanding how multiple concepts jointly influence predictions, yet existing concept-based explainability methods evaluate each concept in isolation. This limitation can lead to false conclusions about shortcut learning when concepts are correlated with one another, as is common in real-world datasets.\n\n[4] introduces ICON decomposition, a method that quantifies how much of a network layer's variance each concept explains after accounting for all other concepts and the outcome variable. This multivariate approach prevents the common failure mode where methods mistake correlations between concepts (e.g., patient sex and scanner settings) as evidence that the model uses either one for prediction. The technical contribution is a decomposition framework that partitions explained variance into unique, shared, and outcome-related components, providing a more nuanced view of which concepts genuinely drive representations. This is particularly critical for clinical and scientific applications, where misattributing importance to a correlated-but-causal concept could lead to incorrect conclusions about model bias or enable shortcut learning to go undetected.\n\n## From Explanation to Validation: The Causal Turn\n\nA recurring theme across these papers is the shift from descriptive explanations to validation-oriented frameworks. Explainability is no longer just about visualizing what a model attends to; it is about testing hypotheses, confirming causal relationships, and ensuring that explanations are robust to confounding factors.\n\n[3]'s unified Information Bottleneck framework exemplifies this shift by embedding causal validation directly into the explanation generation process. The framework ensures that attribution explanations are not merely correlational but are grounded in the model's actual decision boundary. Similarly, [4]'s multivariate variance decomposition provides a statistical foundation for auditing that accounts for confounds, which is a prerequisite for using explanations as evidence in regulatory or scientific contexts. This trend suggests that the next generation of explainability methods will need to interface with formal hypothesis testing and causal inference methodology to meet the demands of high-stakes deployment.\n\n## Key Takeaways\n\n- The field is actively converging on unified explainability frameworks that combine attribution and counterfactual reasoning, moving beyond isolated methods toward complementary explanation pipelines.\n- Temporal structure in time series forecasting requires specialized explanation methods that respect horizon-specific dependencies, as demonstrated by NVExplain's latent trajectory approach.\n- The explainability tool ecosystem has reached a complexity that demands meta-level navigation systems like Virgil, which lower the expertise barrier for responsible AI adoption.\n- Concept-based auditing must account for multivariate correlations; single-concept evaluations can produce false positives about shortcut learning in real-world datasets.\n- Information Bottleneck methodology is emerging as a promising theoretical foundation for unifying diverse explanation types under a single principled objective.\n- Causal validation is becoming an expected property of explanation methods, not an optional add-on, particularly for high-stakes applications.\n- The papers collectively signal a maturation of explainability from a visualization aid to a rigorous, hypothesis-testing infrastructure for model auditing and regulatory compliance.",
+    "papers": [
+      {
+        "title": "NVExplain: Explaining Time Series Forecasting with Latent Trajectory Analysis and Structure-Preserving Surrogates",
+        "url": "",
+        "authors": [
+          "Muyan Anna Li",
+          "Manikandan Ravikiran",
+          "Aditi Gautam"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Virgil: Navigating Explainability for Transformer-based Language Models",
+        "url": "",
+        "authors": [
+          "Martino Ciaperoni",
+          "Sezer Kutluk",
+          "Benedetta Muscato",
+          "Marta Marchiori Manerba",
+          "Fosca Giannotti"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Towards A Unified Information Bottleneck Framework for Time Series Explanations",
+        "url": "",
+        "authors": [
+          "Xu Zheng",
+          "Zichuan Liu",
+          "Zhuomin Chen",
+          "Mayur Akewar",
+          "Janki Bhimani",
+          "Jason Liu",
+          "Mo Sha",
+          "Jingchao Ni",
+          "Wei Cheng",
+          "Dongsheng Luo"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "ICON Decomposition: Multivariate Concept-Level Explanations of Deep Representations for Model Auditing",
+        "url": "",
+        "authors": [
+          "Roshan Prakash Rane",
+          "Marco Simnacher",
+          "Manuel Pfeuffer",
+          "Marc-Andre Schulz",
+          "Nys Tjade Siegel",
+          "Maximilian Dreyer",
+          "Frederik Pahde",
+          "Wojciech Samek",
+          "Sonja Greven",
+          "Kerstin Ritter"
+        ],
+        "date": "2026-08-27"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-27",
+    "paperCount": 20,
+    "markdown": "# Multimodal Intelligence at Scale: From Physics Reasoning to Agentic Systems\n\nToday's research landscape reveals a field in rapid maturation, where multimodal AI is moving beyond static benchmarks toward agentic, self-evolving, and risk-aware systems that operate in real-world settings. Across 20 papers, we observe a convergence of three critical themes: the development of rigorous evaluation frameworks for multimodal reasoning, the engineering of robust training dynamics that mitigate modality imbalance, and the deployment of multimodal systems for high-stakes applications from healthcare to planetary-scale geospatial modeling.\n\n## Advancing Multimodal Reasoning and Evaluation Benchmarks\n\nThe evaluation of multimodal capabilities is undergoing a paradigm shift from static QA toward agentic, tool-using, and discipline-specific assessments. PhysElite [7] addresses the scarcity of olympiad-level physics benchmarks by introducing a large-scale dataset with comprehensive coverage of visual forms, knowledge points, and step-by-step solution processes, revealing that current LLMs struggle with expert-level physical reasoning. Similarly, OmniPhys [9] provides a unified benchmark spanning middle school through university-level physics from Chinese educational corpora with 15,246 questions and 19,850 images, enabling fine-grained analysis of reasoning processes across educational levels. For scientific instruction following, SciMIF [14] introduces a taxonomy of 10 constraint groups derived from 22 tasks across 5 scientific disciplines, capturing both general functional requirements and discipline-specific constraints that MLLMs must satisfy. The EASEL benchmark [13] targets the underexplored capability of dexterous visual tool use—fine-grained, closed-loop parameterized visual action where models must infer tool parameters directly from visual evidence. LifePlanner [5] enriches geospatial planning evaluation by integrating large-scale social media data with map data through an MCP toolset, testing agents on grounded tool use, noisy evidence retrieval, and multi-constraint reasoning across four task categories and three difficulty levels.\n\n## Controlling Neural Dynamics and Mitigating Multimodal Training Failures\n\nSeveral papers tackle the fundamental instability of multimodal training dynamics through architectural and optimization innovations. CAT-GS [2] identifies three coupled failure modes in multimodal training—modality imbalance, unstable gating, and fusion interference—and proposes a Calibrated, Adaptive, Thresholded Gating with Fusion Surgery framework that acts as a neural dynamics-based optimization controller. The authors demonstrate that addressing these coupled failures simultaneously rather than in isolation leads to significantly more stable and effective multimodal learning. The Drift Variation Autoencoder [12] unifies generation and representation learning by treating the conditional posterior as a common statistical object, training a masked encoder with a conditional flow decoder using Flow Matching loss, and decomposing the ideal conditional KL into generator approximation and representation deficiency terms. MSR-IVA [6] addresses the challenge of state-aware fusion of structural MRI and dynamic functional network connectivity, proposing a masked structural residual IVA framework that handles subjects who do not express every dynamic state while preserving state-specific structural relationships. For multimodal regression, Difference-Quotient Clustering [17] resolves the mean-collapse pathology by partitioning data to minimize intra-cluster output-vs-input discrepancy, enabling conditional networks to capture multi-modal output distributions rather than collapsing to the conditional mean.\n\n## Robust Multimodal Architectures for Domain-Specific Applications\n\nDomain-specific multimodal systems are becoming increasingly sophisticated in their handling of heterogeneous data sources and uncertainty. The hierarchical MoE for interstitial lung disease classification [10] integrates a frozen pre-trained imaging expert with structured EHR via two-stage gating, where a modality-level gate assigns patient-specific weights to imaging and EHR predictions while a sub-gating module decomposes the EHR branch into clinically defined feature groups. For tennis injury risk prediction [11], multimodal integration combines wearable device data with traditional subjective assessments, addressing a gap in sports analytics where similar approaches exist for soccer, basketball, and wrestling but remain unexplored for tennis. DUMoE [20] tackles drift-aware multimodal user representation learning through a temporal dynamics-aware backbone that integrates static profiles, short-term behavioral signals, and long-term dependencies, combined with a sparse mixture-of-experts mechanism for capturing diverse co-existing interests. The Hierarchical MoE approach [10] demonstrates particular promise in healthcare, where heterogeneous medical data modalities require learned routing to leverage patient heterogeneity effectively. For e-commerce, CVE-SAI [3] introduces counterfactual visual evidence-guided selective attribute indexing, which infers ontology-constrained candidates from product images and attribute questions while implementing explicit risk control over factually incorrect or visually unsupported values.\n\n## Scaling Multimodal Systems: Retrieval, Agents, and Production Deployment\n\nProduction-scale multimodal systems are pushing the boundaries of what is technically feasible while managing computational costs. The retrieve-then-match cascade for product linking [4] explicitly addresses the billion-record scale challenge by spending computation in proportion to difficulty: retrieval surfaces candidates, cross-encoders match, and agentic VLMs escalate hard cases, providing a practical template for cost-aware multimodal entity resolution. The Planetary Prediction Engine [16] represents an ambitious autonomous geospatial prediction system that executes end-to-end workflows from natural-language queries, synthesizing multimodal datasets on the fly through intelligent data selection and foundation model embeddings. For graph-based retrieval, multi-granularity context-enhanced RAG over multimodal knowledge graphs [15] moves beyond single-granularity context extraction to leverage structured knowledge across modalities, enhancing hallucination mitigation in MLLMs. VISA [18] reformulates multimodal instruction synthesis as a self-evolving loop where each round analyzes images to filter incompatible constraints, discovers new verifiable ones, and samples diversity- and difficulty-aware constraints based on verifier outcomes and target-model errors. The tunable tool-call rates work [8] demonstrates that whether an instruction-tuned model calls a tool can be controlled by a single linear direction in its representation space, enabling inference-time tunability of the cost-accuracy tradeoff without expensive post-training or prompt engineering.\n\n## Theoretical Foundations and Spectral Analysis\n\nA deeper theoretical understanding of when and why multimodal techniques work is emerging. The dual-branch, spectrally-gated architecture (DBSG-PINN) [1] examines when frequency decomposition benefits physics-informed neural networks, challenging the assumption that Fourier feature embeddings and sinusoidal activations help across all spectral regimes. The paper introduces a spectral gating mechanism that selectively applies frequency decomposition based on the spectral characteristics of the PDE solution, providing a principled approach to addressing spectral bias in PINNs. The investigation into why graph learning fails to fully benefit from text teachers [19] explores the interplay between self-supervised GNN pretraining and alternating optimization of language and graph modules, revealing that the naive integration of these complementary approaches often fails due to misaligned optimization dynamics and representation spaces.\n\n## Key Takeaways\n\n- **Evaluation is shifting from static benchmarks to agentic, tool-using, and closed-loop settings** [5, 7, 9, 13, 14], with a growing emphasis on dexterous visual tool use, expert-level reasoning difficulty, and discipline-specific constraint satisfaction that better reflect real-world deployment.\n\n- **Multimodal training instability stems from coupled failure modes—modality imbalance, unstable gating, and fusion interference—that require joint optimization** [2, 12, 17], rather than treating each in isolation, with techniques like calibrated gating, conditional posterior flow matching, and difference-quotient clustering showing particular promise.\n\n- **Cost-aware computation allocation is critical for production-scale multimodal systems** [3, 4, 16], with retrieve-then-match cascades, proportional computation based on difficulty, and autonomous data selection enabling billion-record entity resolution and planetary-scale geospatial prediction.\n\n- **Healthcare and scientific domains demand architectures that respect domain structure and uncertainty** [6, 10, 11], such as hierarchical routing for heterogeneous medical data, state-aware fusion for neuroimaging, and careful integration of wearable data with expert assessments.\n\n- **Self-evolving and feedback-driven data synthesis is replacing one-pass generate-and-filter pipelines** [4, 16, 18], with agentic frameworks that actively incorporate verifier outcomes, target-model errors, and diversity-aware constraint sampling to produce higher-quality training data.\n\n- **Spectrally-aware and theoretically grounded approaches challenge \"one-size-fits-all\" assumptions in multimodal learning** [1, 12, 15, 19], revealing that techniques like frequency decomposition, knowledge graph integration, and cross-modal distillation require careful analysis of when and why they benefit specific architectures and data distributions.\n\n- **Representation-level control offers a lightweight alternative to post-training for adjusting model behavior** [8, 19], with single linear directions in representation space enabling inference-time tuning of tool-call rates and better understanding of cross-modal teacher-student dynamics.",
+    "papers": [
+      {
+        "title": "When Does Frequency Decomposition Benefit Physics-Informed Neural Networks? A Preliminary Ablation Study",
+        "url": "",
+        "authors": [
+          "Shubham Rai"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "CAT-GS: Balanced Multimodal Learning via Calibrated Gating and Fusion Surgery",
+        "url": "",
+        "authors": [
+          "Mahir Shahriar Tamim",
+          "Sharjil Khan",
+          "Md. Samiul Alim",
+          "Tanvir Ahmed Khan",
+          "Shafin Rahman",
+          "Nabeel Mohammed"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "CVE-SAI: Counterfactual Visual Evidence-Guided Selective Attribute Indexing for Risk-Controlled E-commerce Search",
+        "url": "",
+        "authors": [
+          "Xiaolong Sun",
+          "Qichao Wang",
+          "Hangyu Li",
+          "Liang Chen"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Retrieve, Match, Escalate: Accurate and Scalable Product Linking with VLM-Distilled Cross-Encoders and Agentic VLMs",
+        "url": "",
+        "authors": [
+          "Jian Wang",
+          "Steven Xu",
+          "Sanjyot Thete",
+          "Maryam Barouti",
+          "Tom Tang",
+          "Elaine Wu",
+          "Charu Sareen",
+          "Kyle MacDonald"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "LifePlanner: Evaluating LLM Agents for Geo-spatial Planning with Social Media Data",
+        "url": "",
+        "authors": [
+          "Zhen Dong",
+          "Yuning Peng",
+          "Yutao Shi",
+          "Lei Zhong",
+          "Yongsen Mao",
+          "Yuan Liu",
+          "Haiping Wang"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "MSR-IVA: Masked Structural Residual Independent Vector Analysis for State-Aware Fusion of Structural MRI and Dynamic Functional Network Connectivity",
+        "url": "",
+        "authors": [
+          "Victor Solomon",
+          "Zening Fu",
+          "Rafal Angryk",
+          "Vince D. Calhoun",
+          "Jingyu Liu"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "PhysElite: How Far Are LLMs from Solving Olympiad-Level Physics Problems?",
+        "url": "",
+        "authors": [
+          "Ruoran Xu",
+          "Wending Gao",
+          "Liyunfeng Chen",
+          "Aixin Shi",
+          "Haoyu Cheng",
+          "Zixiang Fang",
+          "Yiqiang Zou",
+          "Qiufeng Wang"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Tunable Tool-Call Rates in LLM Agents via Representation Steering",
+        "url": "",
+        "authors": [
+          "Yuqi Chen",
+          "Vincent Siu",
+          "Yang Liu",
+          "Dawn Song",
+          "Chenguang Wang"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "OmniPhys: A Unified Multimodal Benchmark for Physics Understanding and Generation from Chinese Educational Corpora",
+        "url": "",
+        "authors": [
+          "Hao Chen",
+          "Yumin Lin",
+          "Nadila Yushanjiang",
+          "Xin Lin",
+          "Min Zhang"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Hierarchical MoE for Multi-Modal ILD Diagnosis",
+        "url": "",
+        "authors": [
+          "Alec K. Peltekian",
+          "Gorkem Durak",
+          "Halil Ertugrul Aktas",
+          "Carrie Lynn Richardson",
+          "Mary Carns",
+          "Kathleen Aren",
+          "GR Scott Budinger",
+          "Anthony J. Esposito",
+          "Alexander Misharin",
+          "Alok Nidhi Choudhary",
+          "Ankit Agrawal",
+          "Ulas Bagci"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Multimodal Injury Risk Prediction in Tennis",
+        "url": "",
+        "authors": [
+          "Francisco Erramuspe Alvarez",
+          "Shobharani Polasa",
+          "Weihao Qu",
+          "Jay Wang",
+          "Ling Zheng"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Drift Variation Autoencoder: Unifying Generation and Representation Learning through Conditional Posterior Flow Matching",
+        "url": "",
+        "authors": [
+          "Jiarui Cao"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Paint What You See: Benchmarking Dexterous Visual Tool Use in Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Shudong Liu",
+          "Dongyang Chen",
+          "Enci Zhang",
+          "Jinwei Liang",
+          "Zheng Ma",
+          "Lewei Lu"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "SciMIF: Understanding Multimodal Instruction Following in Scientific Domains",
+        "url": "",
+        "authors": [
+          "Ye Shen",
+          "Yuting Zheng",
+          "Dun Pei",
+          "Zijian Chen",
+          "Wenlong Zhang",
+          "Qi Jia",
+          "Guangtao Zhai"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Multi-Granularity Context-Enhanced RAG over Multimodal Knowledge Graphs",
+        "url": "",
+        "authors": [
+          "Zongyu Wu",
+          "Yilong Wang",
+          "Xiaochen Wang",
+          "Minhua Lin",
+          "Zhichao Xu",
+          "Fenglong Ma",
+          "Xiang Zhang",
+          "Suhang Wang"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Planetary Prediction Engine: Autonomous Geospatial Prediction via Intelligent Data Selection and Foundation Model Embeddings",
+        "url": "",
+        "authors": [
+          "Evelyn Ma",
+          "Rama Kumar Pasumarthi",
+          "Kishwar Shafin",
+          "Mandar Sharma",
+          "Mimi Sun",
+          "Hamed Sadeghi",
+          "Dav M. Ebengo",
+          "Mbulayi Onesime",
+          "Rouslan Solomakhin",
+          "John Wamburu",
+          "William Ogallo",
+          "Aisha Walcott-Bryant",
+          "Sanxing Chen",
+          "Arbaaz Muslim",
+          "Yael Mayer",
+          "Ronald Ho",
+          "Roy Lee",
+          "Ruth Alcantara",
+          "Abdoulaye Diack",
+          "Monica Bharel",
+          "Lambert Rosique",
+          "Jeremy Amez-Droz",
+          "Christopher Haire",
+          "James Manyika",
+          "Yossi Matias",
+          "Niv Efron",
+          "Gautam Prasad",
+          "Shravya Shetty"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Resolving Multi-Modal Regression by Difference-Quotient-Based Clustering:Fast Coarse Conditional-Label Assignment",
+        "url": "",
+        "authors": [
+          "Huang Weiquan"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "VISA: Agentic Self-Evolving Data Synthesis for Multimodal Instruction Following",
+        "url": "",
+        "authors": [
+          "Min Zeng",
+          "Guanxin Tan",
+          "Libin Cen",
+          "Yawei Wen",
+          "Rui Hu",
+          "Liuyang Bian",
+          "Xiaolong Chen",
+          "Xiaoxin Chen"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Why Does Graph Learning Fail to Fully Benefit from a Text Teacher?",
+        "url": "",
+        "authors": [
+          "Fumiaki Kimino",
+          "Ryoma Sato"
+        ],
+        "date": "2026-08-27"
+      },
+      {
+        "title": "Drift-Aware Multimodal User Representation Learning via Multi-Scale Temporal Modeling and Sparse Mixture-of-Experts",
+        "url": "",
+        "authors": [
+          "Ziqing Qian",
+          "Haohang Chen",
+          "Shengqi Dang",
+          "Yuhan Xiong",
+          "Canyu Shen",
+          "Jiaying Lei",
+          "Nan Cao"
+        ],
+        "date": "2026-08-27"
+      }
+    ]
+  }
+]
