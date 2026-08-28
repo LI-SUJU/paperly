@@ -1,0 +1,631 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-28",
+    "paperCount": 10,
+    "markdown": "# From Black Boxes to Blueprints: The 2026 Push for Mechanistic and Behavioral Transparency in AI Systems\n\nToday's research landscape reflects a maturing interpretability field that is shifting from post-hoc analysis toward *built-in* transparency—integrating reasoning, causal circuits, and human-aligned rationales directly into model training and evaluation. Across eight papers, we see a convergence on two frontiers: making neural systems explainable *by design* (neuro-symbolic frameworks, training-time rationale alignment, circuit condensation) and developing *diagnostic tools* that reveal what models have actually learned (logit differencing, reward-conditioned feature analysis, controlled latent variable probing).\n\n## Neuro-Symbolic Integration for High-Stakes Prediction\n\n**[1] EduRiskX** tackles the dual problem of early academic risk detection and the \"black-box\" trust crisis in educational analytics. The framework combines a temporal Transformer that models longitudinal student activity sequences with F-Logic symbolic reasoning, enabling rule-based verification of neural predictions. By integrating neural pattern recognition with symbolic constraints, EduRiskX achieves improved early detection capability while providing interpretable logical justifications for each risk classification—critical for pedagogical stakeholders who require actionable, accountable interventions. This work demonstrates the viability of neuro-symbolic hybrids in domains where trust is a prerequisite for adoption.\n\n**[7] Self-Improving RAG** addresses the gap between standard retrieval-augmented generation and the rigorous requirements of expert financial QA, which demands numeric hallucination detection and audit trails. The system decomposes document QA into three specialized agents—Retrieval, Reasoning, and Judge—coordinated by an orchestrator that triggers feedback-driven retries with escalated strategies when confidence thresholds are not met. This framework directly confronts interpretability as a *regulatory* requirement, showing how self-correction loops can provide both accuracy improvements and transparent decision chains that satisfy compliance audits.\n\n## Causal Circuit Analysis and Post-Training Optimization\n\n**[8] Circuit Condensation** tackles a scalability bottleneck in mechanistic interpretability: frozen causal circuit discovery often yields hundreds of edges that are impractical to inspect or verify. The method post-trains models by iteratively pruning low-attribution edges and training low-rank adapters to match the original behavior through the remaining connections, with quality gates ensuring task performance and general capability survive each round. Across four behaviors and eight models, condensed circuits achieve significant graph reduction while preserving behavior, making exhaustive human verification feasible. This work effectively bridges the gap between circuit discovery (analysis) and circuit optimization (synthesis), suggesting a future where interpretability constraints are baked into the training loop itself.\n\n**[5] Diff Mining** introduces a lightweight diagnostic framework for identifying what finetuning actually changes, addressing the opacity of behavioral shifts during this ubiquitous but under-understood process. By comparing logits of a finetuned model against its base model, the method surfaces salient tokens that are amplified or suppressed, effectively exposing the \"objective signature\" of the finetuning procedure. This simplicity is its strength: Diff Mining can be applied post-hoc to any finetuned model without requiring internal access or training modifications. The technique provides a practical audit tool for detecting unwanted behavioral drift—a growing concern as finetuning becomes the default mechanism for customizing increasingly capable models.\n\n**[4] Reward-Informed Sparse Autoencoders** probes whether SAEs trained on reward-split trajectories genuinely capture reasoning quality or merely reflect a confound. The authors split GRPO trajectories into high-reward and low-reward continuations, train JumpReLU SAEs on the resulting activations, and evaluate the degree to which the resulting feature separation corresponds to actual solution completeness. On Llama-3.1-8B, a sparse subset of 16,384 features does separate the classes (with measurable silhouette scores), but the work critically examines whether this separation reflects genuine reasoning quality or trivial surface-level differences—the \"solution-completeness confound.\" This study is a cautionary tale for the interpretability community, emphasizing that feature-based analyses must be validated against causal or behavioral ground truth to avoid overclaiming semantic content.\n\n## Multilingual and Cross-Lingual Transparency Challenges\n\n**[3] Training-Time Explainability for Multilingual Hate Speech Detection** directly addresses the sociotechnical challenge of moderating culturally coded anti-Muslim hate in multilingual contexts. The proposed framework aligns model reasoning with human-annotated rationales *during training*, rather than explaining post-hoc, improving both classification performance and interpretability simultaneously. Evaluated on HateXplain (English) and BullySent (Hinglish), the work demonstrates that rationale alignment can mitigate the opaque, context-detached behavior of conventional moderation systems. This paper highlights a critical insight: for content moderation, interpretability is not merely an analytical nicety but a *safety requirement* to prevent over-censorship, under-moderation, and bias.\n\n**[6] Double Trouble** challenges a foundational assumption in multilingual interpretability: that shared-language representations across models are directly comparable after embedding alignment. Through controlled pretraining of paired 310M-parameter models (English-only vs. bilingual) across eight typologically diverse languages, the authors show that token embeddings align well superficially yet harbor latent language-conditioned differences in downstream behavioral tasks. By separately controlling for English exposure, total compute, and document overlap, the study isolates the *bilingual pretraining itself* as the causal factor for these divergences. This work has significant implications for cross-lingual transfer, probing studies, and any interpretability analysis that relies on representational alignment across model variants.\n\n**[10] Latent Variable Planting** moves belief-state testing from toy synthetic data to natural-looking text, addressing a long-standing gap in evaluating whether LLMs genuinely track probabilistic beliefs about latent world-states. The method uses an LLM teacher that writes ordinary text while being \"subliminally\" steered along one of K=8 latent variables, creating controlled text that resembles natural language yet contains an embedded ground truth. This allows the first empirical connection between belief-state tracking and concept geometry—the features that interpretability methods extract from activations. The work bridges two previously disconnected research threads, offering a realistic testbed for evaluating whether feature geometry corresponds to genuine probabilistic reasoning.\n\n## Multimodal Heterogeneity and Domain-Specific Interpretability\n\n**[9] MM-Spectrum** addresses the specific challenge of multimodal molecular structure elucidation, where directly concatenating multispectral sequences causes anomalous performance degradation due to modal heterogeneity and imbalance. The proposed sparse Mixture-of-Experts framework routes information to specialized expert modules that each handle different spectral modalities, mitigating the negative transfer that plagues naive fusion approaches. While primarily a performance-focused contribution, the MoE routing provides inherent structural interpretability—the expert selection patterns reveal which spectral modality dominates decisions for which molecular classes. This suggests that, in scientific domains, interpretability can emerge from architecture design rather than post-hoc analysis.\n\n**[2] Large Models for Battery Prognostics** surveys the transformative potential of Transformer-based large models for battery health management, identifying interpretability as one of the four critical challenges (alongside computational efficiency, cross-domain generalization, and labeled data dependence). The review charts a roadmap for how self-supervised pretraining and foundation-model approaches could address the opacity of task-centric deep learning methods in this safety-critical domain. By framing interpretability as a *first-class design requirement* rather than an afterthought, this roadmap signals a broader industry shift toward trustworthy AI in infrastructure applications.\n\n## Key Takeaways\n\n- **Post-hoc interpretability is being replaced by training-time and architectural transparency**: From rationale-aligned hate speech detection [3] to neuro-symbolic educational risk prediction [1], the field is moving toward methods that bake explainability into the learning objective itself rather than explaining black boxes after the fact.\n- **Causal validation is becoming the gold standard for feature-based analyses**: The reward-conditioned SAE study [4] and the multilingual representation alignment work [6] both demonstrate that superficially meaningful feature separations or embedding similarities can be confounded or misleading absent causal or behavioral verification.\n- **Circuit analysis is shifting from discovery to optimization**: Circuit Condensation [8] transforms mechanistic interpretability from a descriptive exercise to a prescriptive one, suggesting that model editing via condensed circuits could become a practical tool for behavior control.\n- **Finetuning audits are emerging as a critical interpretability application**: Diff Mining [5] shows that simple logit comparisons can expose finetuning objectives, providing a crucial tool for detecting unwanted behavioral drift in an era where finetuning is ubiquitous.\n- **Multilingual interpretability requires controlling for pretraining artifacts**: The paired-model study [6] demonstrates that bilingual pretraining creates language-conditioned representational differences that confound cross-lingual comparisons, demanding more rigorous experimental controls in probing and transfer research.\n- **Interpretability is a prerequisite for deployment in high-stakes and regulated domains**: Financial QA audit trails [7], battery health management [2], and content moderation [3] all frame explainability as a non-negotiable requirement for real-world adoption, not an academic luxury.\n- **A gap persists between feature-level interpretability and behavioral-level reasoning**: The latent-variable planting study [10] represents an initial step toward connecting concept geometry with genuine belief-state tracking, but the field still lacks comprehensive methods that link internal representations to formal reasoning guarantees.",
+    "papers": [
+      {
+        "title": "EduRiskX: A Neuro-Symbolic Framework with F-Logic Reasoning for Early Academic Risk Prediction",
+        "url": "",
+        "authors": [
+          "Yu Fu",
+          "Yongqi Kang",
+          "Yong Zhao",
+          "Rongfang Bie"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Large Models for Battery Prognostics and Health Management: A Review and Future Roadmap",
+        "url": "",
+        "authors": [
+          "Jiale Liu",
+          "Huan Wang",
+          "Weicheng Wang",
+          "Rong Zhu",
+          "Qiqi Wang",
+          "Min Xie"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Training-Time Explainability for Multilingual Hate Speech Detection: Aligning Model Reasoning with Human Rationales",
+        "url": "",
+        "authors": [
+          "Muhammad Deedahwar Mazhar Qureshi",
+          "Sannaan Khan",
+          "Muhammad Atif Qureshi",
+          "Wael Rashwan"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Reward-Informed Sparse Autoencoders and the Solution-Completeness Confound",
+        "url": "",
+        "authors": [
+          "Tanvi Nagilla",
+          "Alexander Jameson",
+          "Daniel Manta",
+          "Shayaan Uddin"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Diff Mining: Logit Differences Reveal Finetuning Objectives",
+        "url": "",
+        "authors": [
+          "Greg Kocher",
+          "Robert West",
+          "Clément Dumas",
+          "Julian Minder"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Double Trouble: Bilingual Pretraining Leaves Language-Conditioned Effects in Shared-Language Representations",
+        "url": "",
+        "authors": [
+          "Anjishnu Mukherjee",
+          "Ziwei Zhu",
+          "Antonios Anastasopoulos"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Towards Expert Financial QA via Self-Improving RAG",
+        "url": "",
+        "authors": [
+          "Junjie Xiong",
+          "Shawheen Ghezavat",
+          "Aum Hirpara"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Circuit Condensation: Post-Training that Concentrates a Behavior's Causal Circuit",
+        "url": "",
+        "authors": [
+          "Sai Adith Senthil Kumar"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "MM-Spectrum: Multimodal Multi-spectral Molecular Structural Elucidation with a Stable MoE Framework",
+        "url": "",
+        "authors": [
+          "Hai-tao Yu",
+          "Nan Min",
+          "Zheng Fang",
+          "Hongyu Zhan",
+          "Yusen Tan",
+          "Yuhan Wang",
+          "Jun Xia"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Planting a Latent Variable in Natural-Looking Text: a More Realistic Test of Belief States in LLMs and Their Link to Concept Geometry",
+        "url": "",
+        "authors": [
+          "Alexandru-Iulius Jerpelea"
+        ],
+        "date": "2026-08-28"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-08-28",
+    "paperCount": 2,
+    "markdown": "# Aligning Machine Reasoning with Human Values: The Emerging Frontiers of Explainable NLP\n\nToday's research landscape reveals a critical tension: as NLP systems grow more powerful and multilingual, their decision-making processes become increasingly opaque, particularly for low-resource languages and culturally nuanced content. The papers featured here collectively argue that post-hoc explanation methods are insufficient, pushing instead toward training-time alignment, human-centered evaluation, and language-specific diagnostic frameworks to bridge the gap between model behavior and human understanding.\n\n## Bridging the Gap: Training-Time Explainability for Culturally Nuanced Content\n\nThe first paper tackles a pressing real-world problem: the detection of anti-Muslim hate speech that frequently appears in culturally coded, multilingual forms, which evades both traditional moderation systems and conventional explainability techniques. The authors [1] propose a training-time explainability framework that aligns model reasoning with human-annotated rationales, rather than relying on post-hoc interpretations. This approach is evaluated on both HateXplain (English) and BullySent (Hinglish), demonstrating improvements in both classification performance and interpretability. The key innovation here is the shift from \"explaining after the fact\" to \"building explanations into the training objective itself,\" which addresses the persistent issue of post-hoc methods being unreliable or detached from actual model computations. This matters because it offers a pathway toward more trustworthy moderation systems that can justify their decisions in culturally aware ways, potentially reducing both over-censorship and under-moderation harms.\n\nThe second paper [2] provides a critical survey of the explainability gap in Arabic NLP, arguing that the field suffers from three distinct deficiencies: a method gap, a task gap, and what appears to be a language-specific cultural gap. The authors identify that Arabic XAI relies heavily on a narrow set of post-hoc techniques—LIME, SHAP, attention visualization, and saliency—while broader NLP XAI literature offers richer diagnostic, counterfactual, probing, rationale-based, and human-centered methods. They also note a task concentration issue, with most Arabic XAI work focused on classification tasks like sentiment analysis, hate speech detection, fake news, and spam, leaving other important tasks underserved. This survey is significant because it provides a structured roadmap for future research, highlighting that XAI methods developed for English cannot be naively transferred to Arabic without considering morphological complexity, dialectal variation, and diglossia. The practical implication is that the AI community cannot claim to build \"explainable\" systems if entire language families remain in an explainability dark age.\n\n## The Technical Landscape: From Post-Hoc to Intrinsic Explanations\n\nExamining the methodological evolution across both papers, we observe a clear paradigm shift in what constitutes meaningful explanation in NLP. The training-time approach in [1] represents a departure from the predominant reliance on attention weights or saliency maps as explanatory tools—methods that have been heavily criticized for their instability and lack of faithfulness to actual model decisions. Instead of treating explanation as an extraction problem, the authors treat it as an alignment problem: how do we make the model's internal reasoning process approximately match the rationales that human annotators would provide? The evaluation on multilingual data also highlights the growing recognition that explainability cannot be divorced from cultural context—the same utterance may require different rationales across languages and communities.\n\nFrom a technical standpoint, [2]'s survey reveals a critical diagnostic finding: the \"explainability gap\" is not merely about having fewer available tools, but about the inadequacy of current tools for the linguistic properties of Arabic. The method gap analysis suggests that the NLP community's exploration of counterfactual explanations, probing classifiers, and rationale-based approaches has not yet been systematically extended to Arabic despite its rich morphological system and complex root-pattern derivations. The authors' framing of three connected gaps (method, task, and presumably cultural) provides a useful taxonomy for other under-resourced language communities as well, offering a template for how to audit the explainability readiness of any language's NLP ecosystem.\n\n## Critical Assessment and Future Directions\n\nSeveral critical observations emerge from synthesizing these contributions. First, there is an implicit tension between the two papers' philosophical approaches: [1] seeks to align models with human rationales, effectively imposing a human-centric explanation structure, while [2] suggests that we need a more diverse toolkit that includes diagnostic methods capable of revealing fundamentally different kinds of model behavior. This raises the question: should explanations always be human-compatible, or are there cases where faithful machine-oriented explanations (e.g., via probing) are more honest, even if less intuitive? The future research agenda should address how to reconcile these views—perhaps by distinguishing between explanations for end-users versus explanations for developers and auditors.\n\nA second observation is the urgent need for standardized evaluation metrics for explainability that work across languages. Both papers implicitly acknowledge this gap but neither fully addresses it: [1] measures success via improved classification performance plus alignment with human rationales (but how exactly is alignment quantified?), and [2] identifies the problem but does not propose solutions. The research community would benefit significantly from cross-lingual explainability benchmarks that could be applied uniformly across English, Arabic, Hinglish, and other languages, enabling apples-to-apples comparisons of explanation quality.\n\n## Key Takeaways\n\n- **Training-time alignment is emerging as a superior alternative to post-hoc explanation**: [1] demonstrates that incorporating human rationale alignment into the training objective yields both better performance and more interpretable models, challenging the default assumption that explanation must occur after training.\n\n- **The explainability gap is not uniform across languages**: [2]'s survey reveals that Arabic NLP suffers from a triple deficiency in methods, tasks, and presumably cultural fit, emphasizing that XAI research must be localized, not just translated.\n\n- **Cultural and linguistic context cannot be an afterthought in explanation design**: Both papers converge on the insight that what constitutes a good explanation depends heavily on the community it serves, from anti-Muslim hate speech detection to Arabic dialectal variation.\n\n- **Post-hoc methods are reaching their limits**: [2] documents the field's over-reliance on LIME, SHAP, and attention visualization, while [1] implicitly critiques these methods by choosing training-time alignment instead—together they signal a methodological shift.\n\n- **Low-resource and multilingual scenarios demand novel explainability frameworks**: The combination of multilingual data (English and Hinglish in [1]) and under-resourced language analysis (Arabic in [2]) suggests that explainability research must expand beyond the English-centric paradigm that has dominated the field.\n\n- **Task diversity in XAI is dangerously narrow**: [2]'s finding that Arabic XAI concentrates on classification tasks (sentiment, hate speech, fake news, spam) highlights a broader trend where explainability research lags for generation, retrieval, and question-answering tasks.\n\n- **The path forward requires interdisciplinary collaboration**: Both papers implicitly call for closer collaboration between NLP researchers, linguists, domain experts (e.g., in hate speech moderation), and end-user communities to design explanations that are simultaneously faithful, meaningful, and actionable.",
+    "papers": [
+      {
+        "title": "Training-Time Explainability for Multilingual Hate Speech Detection: Aligning Model Reasoning with Human Rationales",
+        "url": "",
+        "authors": [
+          "Muhammad Deedahwar Mazhar Qureshi",
+          "Sannaan Khan",
+          "Muhammad Atif Qureshi",
+          "Wael Rashwan"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Why Current XAI Is Not Enough for Arabic NLP: A Critical Survey of the Explainability Gap",
+        "url": "",
+        "authors": [
+          "Salima Lamsiyah",
+          "Ruslan Mitkov"
+        ],
+        "date": "2026-08-28"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-28",
+    "paperCount": 37,
+    "markdown": "# Multimodal Intelligence at Scale: From Safety-Critical Fusion to Efficient Reasoning\n\nToday's research landscape reflects a maturing multimodal AI field grappling with foundational tensions: how to balance expressive capacity with computational efficiency, how to maintain safety and reliability in deployment, and how to bridge linguistic and cultural gaps in representation learning. Across vision-language models, healthcare AI, and agentic systems, researchers are increasingly moving beyond benchmark accuracy toward robustness, interpretability, and practical utility.\n\n## Safety, Alignment, and Trustworthy Multimodal Systems\n\nThe safety evaluation and alignment of multimodal systems has emerged as a critical research frontier, with work spanning jailbreak detection, hate speech identification, and safety-gated generation.\n\nNeuronFuzz introduces a white-box fuzzing framework that exploits internal safety neurons in LLMs to guide jailbreak prompt generation, addressing the sparse feedback problem in strongly aligned models where response-level evaluation provides limited guidance [1]. By leveraging activation-level signals rather than output-level feedback, the method enables more efficient and effective safety testing, representing a significant shift from black-box to interpretable safety evaluation.\n\nAnian presents a safety-gated multimodal AI backend for perinatal mental-health support that places generative AI downstream of structured state representation, conservative risk fusion, and response gating [5]. The system distinguishes when supportive conversation is appropriate from when free-form generation should be blocked, addressing the critical challenge of deploying generative models in safety-critical healthcare contexts without replacing clinical care.\n\nA qualitative analysis of four state-of-the-art vision-language models for hate speech detection in memes reveals that while these models achieve strong performance on multimodal tasks, they consistently fail to incorporate contextual cues, irony, and subtle visual-textual interactions essential for identifying hateful content [8]. This work highlights a persistent gap between benchmark performance and real-world robustness in safety-critical content moderation.\n\nThe Multi2AV-Safety benchmark introduces a systematic framework for evaluating safety in multimodal-to-audio-video generation, where harmful intent emerges from interactions across modalities and time rather than residing in any single input [21]. This compositional safety perspective represents an important evolution beyond prompt-centric evaluation, addressing the unique risks introduced by multimodal conditioning in generative systems.\n\n## Efficient Architectures and Reasoning in Multimodal LLMs\n\nSeveral papers tackle the computational bottlenecks of multimodal large language models through novel architectural innovations, token compression strategies, and adaptive reasoning mechanisms.\n\nAdaThinking-E introduces one-token entropy regulation for adaptive thinking in multimodal document reasoning, enabling models to dynamically determine when to engage deep reasoning based on question complexity [6]. By regulating a single entropy token, the method reduces computational overhead on simple tasks while maintaining performance on challenging ones, addressing the inefficiency of uniform deep reasoning across heterogeneous query difficulties.\n\nPosition Is All You Need reveals a surprising finding: token compression methods that work well for general MLLM tasks cause significant performance degradation in Referring Expression Segmentation [7]. Through extensive analysis, the authors demonstrate that position information plays a crucial role in maintaining segmentation quality under compression, leading to a free lunch strategy that preserves spatial semantics while reducing computational cost.\n\nVision-Free Adaptation (VFA) decouples multilingual language enhancement from visual alignment by composing complementary task vectors over a shared LLM backbone, addressing the scarcity of high-quality non-English image-text supervision [13]. This approach leverages abundant multilingual text data without disrupting vision-language alignment or inducing catastrophic forgetting, offering a practical path toward multilingual MLLMs.\n\nActivation Outliers Matter presents a systematic study of low-bit quantization schemes across video generation and reasoning MLLMs, revealing that MXFP8 achieves near-lossless performance while aggressive 4-bit quantization causes significant degradation [14]. The analysis identifies activation outliers as a primary culprit in quantization error, providing actionable insights for hardware-software co-design of efficient multimodal systems.\n\n## Healthcare and Clinical Multimodal Intelligence\n\nMultimodal healthcare applications represent a rapidly growing focus, with papers addressing neonatal risk prediction, depression detection, respiratory monitoring, and clinical EEG analysis.\n\nNeoTriFuse addresses neonatal mortality risk prediction through a reliability-aware multimodal fusion framework that treats missingness as an explicit reliability signal rather than a preprocessing issue [3]. By dynamically modulating modality contributions based on data quality, the framework handles extreme class imbalance, heterogeneous clinical risk factors, and multi-scale temporal dynamics in bedside monitoring data, offering a more principled approach to clinical fusion.\n\nHealthCUES introduces a streaming pipeline for paralinguistic respiratory monitoring in real-time conversational agents, detecting cough events through a rolling buffer aligned with dialogue turn boundaries [5]. This capability, absent from prior dialogue systems that treat coughs as acoustic noise, enables sub-second event detection without interrupting conversational flow, opening new possibilities for continuous health monitoring in everyday interactions.\n\nThe EEG-to-Report framework presents a browser-based annotation and feature-text system linking routine EEG review with AI-ready dataset construction, addressing the manual and time-consuming nature of clinical EEG reporting [4]. By integrating multi-format EEG ingestion, channel standardization, and structured feature-text generation, the framework enables the creation of high-quality supervision data needed for training language models on clinical EEG.\n\nCARE introduces causally-aligned reasoning exploration for medical LLMs, addressing the \"Right Answer, Wrong Reason\" trap where outcome-based reinforcement learning reinforces spurious correlations rather than valid clinical deduction [10]. By aligning reasoning paths with causal structures in medical knowledge, the method mitigates autoregressive credit assignment failure and gradient variance explosion, producing models that reason through valid clinical pathways.\n\n## Multimodal Representation Learning and Fusion\n\nAdvancements in representation learning and fusion strategies address fundamental challenges in how multimodal information is integrated, compressed, and aligned.\n\nOmni-Interactive Universal Embedder (OmniUE) proposes the first unified embedding space across text, video, and audio by leveraging intermediate-layer representations from LLM-based embedders [32]. By extending beyond the dominant language-image paradigm to incorporate video and audio modalities with instruction-following capabilities, this work expands the scope of multimodal representation learning toward truly omnimodal systems.\n\nInverted Asymmetric Fusion addresses strong-modality collapse in multimodal learning, where the dominant modality's pathway accuracy degrades during integration (e.g., text dropping from 74.9% to 56.4% after fusion) [20]. The proposed approach inverts the typical fusion paradigm to protect and amplify strong modalities rather than diluting them, explaining why many multimodal models fail to surpass unimodal baselines.\n\nMM-Spectrum introduces a sparse Mixture-of-Experts framework for multimodal multispectral molecular structural elucidation, addressing anomalous performance degradation from directly concatenating heterogeneous spectral sequences [31]. By adapting to information characteristics under multispectral imbalance, the framework effectively integrates complementary yet highly heterogeneous signals for chemistry applications.\n\nGraphMemix models long-term multimodal agent memory as query-aware evidence-forest construction through combinatorial optimization, addressing the limitations of question-agnostic offline summaries and naive embedding similarity matching [30]. The framework expands multi-view seed memories through schema and semantic relations, providing query-aware, complete, and non-redundant context for multimodal agents.\n\n## Cross-Modal Understanding and Cultural Adaptation\n\nPapers in this section address the challenges of cross-modal and cross-cultural understanding, including translation, transcreation, and multilingual applications.\n\nTransMeme presents a multi-agent framework for cross-cultural meme transcreation that jointly preserves communicative intent, adapts culture-dependent meaning, and maintains text-image coherence [38]. By decomposing the transcreation process across specialized agents, the framework addresses a central challenge in multimodal online communication where users span diverse linguistic and cultural backgrounds.\n\nThe cross-modal instability benchmark introduced by Mousi et al. systematically evaluates whether semantically equivalent queries yield consistent judgments across modalities (text vs. speech) and languages (English vs. Arabic) [36]. Using 10,150 culturally grounded images from 18 MENA countries with contrastive triplets, the study reveals significant instability in multimodal foundation models, with implications for speech-first assistants that must interpret spoken queries and produce visually grounded decisions.\n\nSAGE proposes variate-wise semantic augmentation for vision-language time series forecasting, addressing the gap between raw numerical sequences and domain expert knowledge [19]. By grounding each variate's physical meaning, statistical behavior, and temporal dynamics through a CLIP-based framework, the method bridges heterogeneous semantics across individual variables without the computational expense of LLM-at-inference approaches.\n\nCase2Flow introduces a retrieval task for matching patient cases to relevant guideline flowcharts, addressing the underuse of flowcharts in clinical decision support despite their ability to encode actionable pathways [23]. By building on multimodal retrieval techniques, the work enables clinicians to locate specific decision artifacts within and across medical guidelines.\n\n## Key Takeaways\n- **Safety evaluation is moving from black-box to interpretable**: White-box approaches using internal model signals (e.g., safety neurons, activation patterns) promise more efficient and effective safety testing than response-level feedback alone.\n- **Missingness is a signal, not noise**: Multiple papers treat data absence as meaningful information for fusion and prediction, particularly in clinical settings where missingness correlates with care quality and patient state.\n- **Efficiency and quality need not be orthogonal**: Token compression, adaptive reasoning, and quantization studies show that careful architectural choices can significantly reduce computational costs while maintaining or even improving performance.\n- **Multimodal fusion has failure modes**: Strong-modality collapse, heterogeneity-induced degradation, and cross-modal instability are systemic issues that require principled solutions beyond naive concatenation or symmetric attention.\n- **Cultural and linguistic diversity remains underserved**: From Arabic XAI gaps to Bengali medical conversations and MENA-region visual grounding, there is a growing recognition that multimodal AI must be culturally grounded to be truly effective.\n- **Healthcare applications demand reliability-aware design**: Clinical multimodal systems are increasingly incorporating reliability signals, causal alignment, and safety gating to move beyond benchmark performance toward deployable decision support.\n- **Agentic multimodal systems require new memory and reasoning architectures**: Long-term memory organization, evidence routing, and process-level evaluation are emerging as critical components for multimodal agents operating in complex, real-world scenarios.",
+    "papers": [
+      {
+        "title": "NeuronFuzz: Safety Neuron Guided Fuzzing for LLM Safety Evaluation",
+        "url": "",
+        "authors": [
+          "Zhiyuan Xu",
+          "Muhammad Firhard Roslan",
+          "Joseph Gardiner",
+          "Sana Belguith",
+          "Lichao Wu"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Large Models for Battery Prognostics and Health Management: A Review and Future Roadmap",
+        "url": "",
+        "authors": [
+          "Jiale Liu",
+          "Huan Wang",
+          "Weicheng Wang",
+          "Rong Zhu",
+          "Qiqi Wang",
+          "Min Xie"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "NeoTriFuse: Reliability-Aware Multimodal Fusion under Missingness Heterogeneity for Neonatal Mortality Risk Prediction",
+        "url": "",
+        "authors": [
+          "Jiyuan Tian",
+          "Qincheng Shen",
+          "Ye Lin",
+          "Yu Gao",
+          "Haohui Lu"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "EEG-to-Report: An Annotation and Feature-Text Framework for Training Language Models on Clinical EEG",
+        "url": "",
+        "authors": [
+          "Xuan-The Tran",
+          "Le Trung Kien Nguyen"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "A Safety-Gated Multimodal AI Backend for Mental-Health Support: Hierarchical State Representation, Conservative Risk Fusion, and Controlled Generation in Anian",
+        "url": "",
+        "authors": [
+          "Lei Wang",
+          "Xiao Wang",
+          "Lei Li"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "AdaThinking-E: One-Token Entropy Regulation for Adaptive Thinking",
+        "url": "",
+        "authors": [
+          "Zining Wang",
+          "Tongkun Guan",
+          "Boming Chen",
+          "Zhentao Guo",
+          "Jianqiang Liu",
+          "Chao Jin",
+          "Chen Duan",
+          "Kai Zhou",
+          "Pengfei Yan",
+          "Wei Shen",
+          "Xiaokang Yang"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Position Is All You Need: A Free Lunch Token Compression Strategy for MLLM-based Referring Expression Segmentation",
+        "url": "",
+        "authors": [
+          "Yuhan Liu",
+          "Yixiong Zou",
+          "Yuhua Li",
+          "Ruixuan Li"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Beyond Accuracy: A Qualitative Analysis of Vision-Language Models for Hate Speech Detection in Memes",
+        "url": "",
+        "authors": [
+          "Muhammad Jawad Chowdhury",
+          "Adiba Hasan",
+          "Ishrak Hossain",
+          "Shahriar Ivan",
+          "Sabbir Ahmed"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Why Current XAI Is Not Enough for Arabic NLP: A Critical Survey of the Explainability Gap",
+        "url": "",
+        "authors": [
+          "Salima Lamsiyah",
+          "Ruslan Mitkov"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "CARE: Causally-Aligned Reasoning Exploration for Medical Large Language Models",
+        "url": "",
+        "authors": [
+          "Yucheng Zhou",
+          "Peng Luo",
+          "Qianning Wang",
+          "Chengzhong Xu",
+          "Jianbing Shen"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Towards Interpretable Depression Detection: Linking Acoustic Features to DSM-5 Indicators",
+        "url": "",
+        "authors": [
+          "Jonas Länzlinger",
+          "Katharina O. E. Müller",
+          "Burkhard Stiller",
+          "Bruno Rodrigues"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Chart2SVG: Editable SVG Generation from Raster Chart Images",
+        "url": "",
+        "authors": [
+          "Jinning Cui",
+          "Lu Chen",
+          "Haoyan Shi",
+          "Yue He",
+          "Chenglong Wang",
+          "Mengyu Zhou",
+          "Weidong Huang",
+          "Yunhai Wang"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "VFA: Empowering Multilingual MLLMs via Vision-Free Adaptation",
+        "url": "",
+        "authors": [
+          "Yixia Li",
+          "Yaqing Shi",
+          "Zhiwen Ruan",
+          "Dongdong Zhang",
+          "Lingjie Jiang",
+          "Shaohan Huang",
+          "Yun Chen",
+          "Guanhua Chen",
+          "Furu Wei"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Activation Outliers Matter: Robust Recovery for Quantized Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Tanzila Rahman",
+          "Mehran Taghian Jazi",
+          "Yunke Peng",
+          "Zhuang Ma",
+          "Anandharaju Durai Raju",
+          "Yao Wang",
+          "Xing Huang",
+          "Hei Yi Mak",
+          "Shadan Golestan",
+          "Hoang Le",
+          "Yonghan Dong",
+          "Wei Guo",
+          "Yaoyuan Wang"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Structured Evidence Routing for Incident Risk Prediction from Multimodal Longitudinal EHRs",
+        "url": "",
+        "authors": [
+          "Animesh Agarwal",
+          "Meysam Ghaffari",
+          "Nina Fatehi",
+          "Carlos Morato"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "AffectOmni: RL-Verifiable People-Centric Grounded Affective Reasoning for Social and Art-Related Scenes",
+        "url": "",
+        "authors": [
+          "Yibo Wang",
+          "Rui Yang",
+          "Jisheng Dang",
+          "Bimei Wang",
+          "Yitao Wu",
+          "Pengfei Cao",
+          "Wencan Zhang",
+          "Hong Peng",
+          "Bin Hu",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "From Sound to Symptom: Real-Time Respiratory Signal Understanding for Conversational Healthcare Agents",
+        "url": "",
+        "authors": [
+          "Tanmay Laud",
+          "Herprit Mahal",
+          "Subhabrata Mukherjee"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Simple Actors and Deep Critics for Scalable Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Guhyeon Kang",
+          "Jaehwi Lee",
+          "Minhae Kwon"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "SAGE: Variate-Wise Semantic Augmentation for Vision-Language Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Haizhao Fan",
+          "Xinyi Le"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Mitigating Strong-Modality Collapse in Multimodal Learning via Inverted Asymmetric Fusion",
+        "url": "",
+        "authors": [
+          "Mary Ogbuka Kenneth",
+          "Foaad Khosmood",
+          "Abbas Edalat"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Multi2AV-Safety: Benchmarking Safety in Multimodal-to-Audio-Video Generation",
+        "url": "",
+        "authors": [
+          "Kaichao Jiang",
+          "Changtao Miao",
+          "Baiqi Wu",
+          "Zhiyuan Lu",
+          "Kang Yang",
+          "Peiwei Zhao",
+          "Junchi Chen",
+          "Yunfeng Diao",
+          "He Liu",
+          "Qi Chu",
+          "Tao Gong",
+          "Nenghai Yu"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Graph-Based Pseudo-multimodal Contrastive Learning for 12-Lead ECG Representations",
+        "url": "",
+        "authors": [
+          "Mengyu Wang",
+          "Kozo Okada",
+          "Takafumi Goto",
+          "Natsuko Jinba",
+          "Hiroki Yamaya",
+          "Kiyoshi Hibi",
+          "Tomoki Hamagami"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Case2Flow: Bridging Patient Cases and Guideline Flowcharts through Multimodal Retrieval",
+        "url": "",
+        "authors": [
+          "Jiale Wei",
+          "Yufan Chen",
+          "Alexander Jaus",
+          "Zdravko Marinov",
+          "Julian Friedrich",
+          "Simon Reiß",
+          "Jens Kleesiek",
+          "Rainer Stiefelhagen"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "DEEPCHART: How Far are LLMs from Faithful Data-Science Chart Generation?",
+        "url": "",
+        "authors": [
+          "Jiahui tang",
+          "Kuicai Dong",
+          "Dexun Li",
+          "Hongchao Gu",
+          "Haocheng Yu",
+          "Wei Han",
+          "Chen Zhang",
+          "Yong Liu",
+          "Hao Wang",
+          "Enhong Chen"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Dependency-Aware Revocable Decoding for Efficient Diffusion Large Language Model Inference",
+        "url": "",
+        "authors": [
+          "Wooje Park",
+          "Insu Lee",
+          "Minyoung Noh",
+          "Jaeyun Jang",
+          "Sungmin Lee",
+          "Kyuhong Shim",
+          "Byonghyo Shim"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Not Just Reason, Not Just Scan: Reinforcement Learning for Proactive Scientific Error Verification over Academic Paper",
+        "url": "",
+        "authors": [
+          "Rongjin Li",
+          "Yuanxin Liu",
+          "Hao Zhou",
+          "Fandong Meng",
+          "Jie Zhou",
+          "Xu Sun"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Information-Guided Frontier Decoding: Contextual Utility-Driven Commitment in dMLLMs",
+        "url": "",
+        "authors": [
+          "Xingyou Fang",
+          "Jingxing Zhong",
+          "Xiaosong Yuan",
+          "Xiaofeng Zhang"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Diffusion Policies for Short-Horizon Planning in Robot Crowd Navigation",
+        "url": "",
+        "authors": [
+          "Wendong Li",
+          "Jochen Garcke"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "From Atomic to Agentic: Towards Interpretable Evaluation of LLMs' Agentic Mathematical Capabilities",
+        "url": "",
+        "authors": [
+          "Jiayi Kuang",
+          "Yinghui Li",
+          "Yunze Song",
+          "Keyu Chen",
+          "Zhifeng Shen",
+          "Yangning Li",
+          "Yidong Wang",
+          "Di Yin",
+          "Ruizhi Qiao",
+          "Xing Sun",
+          "Kai Jin",
+          "Ying Shen",
+          "Liang Lin",
+          "Philip S. Yu"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "GraphMemix: Query-Aware Evidence Forests for Long-Term Multimodal Agent Memory",
+        "url": "",
+        "authors": [
+          "Geng Li",
+          "Yuhao Wang",
+          "Dong Li",
+          "Jianye Hao",
+          "Yuxin Peng"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "MM-Spectrum: Multimodal Multi-spectral Molecular Structural Elucidation with a Stable MoE Framework",
+        "url": "",
+        "authors": [
+          "Hai-tao Yu",
+          "Nan Min",
+          "Zheng Fang",
+          "Hongyu Zhan",
+          "Yusen Tan",
+          "Yuhan Wang",
+          "Jun Xia"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Omni-Interactive Universal Embedder",
+        "url": "",
+        "authors": [
+          "Wei-Yao Wang",
+          "Kazuya Tateishi",
+          "Shuyang Cui",
+          "Christian Simon",
+          "Takashi Shibuya",
+          "Shusuke Takahashi",
+          "Yuki Mitsufuji"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "TransMeme: A Multi-Agent Framework for Cross-Cultural Meme Transcreation",
+        "url": "",
+        "authors": [
+          "Jingyi Zheng",
+          "Yule Liu",
+          "Zifan Peng",
+          "Tianyi Hu",
+          "Yuemeng Zhao",
+          "Xinhu Zheng",
+          "Xinlei He"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Mapping Written Words to Spoken Words in a Different Language Using Only Visual Grounding",
+        "url": "",
+        "authors": [
+          "Gabriel Pirlogeanu",
+          "Dan Oneata",
+          "Horia Cucu",
+          "Herman Kamper"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "DocTalkBN: A Novel Dataset of Expert Telemedicine Conversations in Bengali",
+        "url": "",
+        "authors": [
+          "Anik Saha",
+          "Fahmida Sultana Naznin",
+          "Sadatul Islam Sadi",
+          "Ananya Shahrin Promi",
+          "Wahid Al Azad Navid",
+          "Rifat Shahriyar"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "Said Aloud, Read Different: Cross-Modal Instability in Multimodal Models",
+        "url": "",
+        "authors": [
+          "Basel Mousi",
+          "Fahim Dalvi",
+          "Shammur Chowdhury",
+          "Firoj Alam",
+          "Nadir Durrani"
+        ],
+        "date": "2026-08-28"
+      },
+      {
+        "title": "RCMN: Understanding Misleadingness in Influential Public Discourse",
+        "url": "",
+        "authors": [
+          "Peiling Yi"
+        ],
+        "date": "2026-08-28"
+      }
+    ]
+  }
+]
