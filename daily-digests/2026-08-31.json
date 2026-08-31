@@ -1,0 +1,244 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-08-31",
+    "paperCount": 6,
+    "markdown": "# From Priors to Rubrics: The Multi-Faceted Quest for Interpretability in Modern AI Systems\n\nToday's research landscape reveals a fundamental shift: interpretability is no longer just about understanding neural network internals, but about diagnosing *what models expect* versus *what they perceive*, and building structured frameworks that bridge opaque reward signals and human-understandable criteria. From audio-visual reasoning failures to medical uncertainty estimation, the field is converging on the insight that true interpretability requires both behavioral probing and mechanistic understanding.\n\n## Diagnosing Knowledge Sources: Context Reliance and Prior Dominance\n\nThe question of whether models derive answers from input context or internal priors has emerged as a central diagnostic challenge. Two papers tackle this from different angles, revealing that prior dominance is a systemic issue across modalities.\n\n[2] Majmudar and Filatova introduce the Question Damage Score, a diagnostic framework leveraging UK Linguistics Olympiad puzzles where all answers derive exclusively from expert-designed context examples. By systematically removing individual context examples and measuring performance degradation on affected questions, they isolate which inputs are truly load-bearing for linguistic reasoning. This controlled setting enables precise attribution of model answers to specific context elements, providing a rigorous methodology for distinguishing genuine context comprehension from knowledge recall—a distinction critical for evaluating whether LLMs actually reason from provided materials.\n\n[3] Sudheer et al. identify a striking failure mode they term \"prior dominance\" in audio-visual LLMs under cross-modal conflict conditions. On VideoLLaMA 2-7B-AV, models remain near-chance on exact-string Yes/No subsets of AVHBench despite substantial shifts in output priors across alignment configurations, while InternVideo2 shows a 32.3% accuracy decrease under conflict accompanied by 17.3% instruction-following failures. The work demonstrates that compositional reasoning across modalities fails precisely when synchronized but semantically incompatible inputs require joint evidence evaluation, suggesting that late-layer representations disproportionately weight prior expectations over conflicting multimodal evidence.\n\n[4] Cherep, Maes, and Singh propose an elegant solution to reconstructing what multimodal LLMs actually expect: Gibbs sampling with interpretable generative controls. Traditional interpretability holds inputs fixed and examines responses, but this reveals only what models *can* represent, not what they *expect*. By leveraging generative controls in a Gibbs sampling framework, they reconstruct the prior distribution over stimuli that MLLMs implicitly expect, offering a behavioral route to modeling internal priors. This approach bridges mechanistic and behavioral interpretability by treating the prior distribution itself as the object of study.\n\n## Structured Reward Design and Automated Feature Discovery\n\nInterpretability in training signals and feature engineering addresses the *source* of model behavior rather than post-hoc diagnosis. These papers propose structural solutions to opaque decision-making.\n\n[1] Shan and Shao's survey on rubric-guided reinforcement learning positions structured evaluation criteria as a corrective to RLHF's scalar reward opacity. They introduce a Bayesian framework defining constitutions as structured priors over reward components, enabling interpretable reward decomposition and feedback generation. By replacing monolithic reward signals with rubric-defined multi-criteria evaluation, this approach makes the optimization target transparent and auditable—addressing a core interpretability gap in the alignment pipeline that has become increasingly critical as RLHF scales across deployment scenarios.\n\n[6] Cheng et al. present SymboLLM-FE, which accelerates symbolic regression for automated feature engineering on tabular data while preserving interpretability. Where traditional AutoFE relies on blind mathematical transformations that yield opaque features, and LLM-based approaches require costly multi-round iterations, SymboLLM-FE uses LLM acceleration to generate compact symbolic expressions. The framework maintains the expressivity of automated discovery while ensuring that generated features remain human-readable symbolic forms—critical for domains where feature-level interpretability is a regulatory or trust requirement.\n\n## Uncertainty with Explanation: The Medical Frontier\n\n[5] Wang et al. address a deployment-critical gap in medical AI: uncertainty estimation and explainability have been treated as separate concerns, providing no feature-level insight into *why* a prediction is uncertain or which tests would reduce that uncertainty. Their explainable uncertainty estimation framework unifies these paradigms, quantifying prediction confidence while attributing uncertainty to specific input features. This dual capability directly addresses the trust barrier in clinical adoption, enabling practitioners to see not just that a model is uncertain, but precisely which patient features drive that uncertainty and what additional information would resolve it—a fundamentally interpretability-driven approach to reliability.\n\n## Key Takeaways\n\n- **Prior dominance is a systemic failure mode**: Across audio-visual LLMs [3] and context-reliance evaluations [2], models exhibit measurable, sometimes dramatic, over-reliance on internal priors over input evidence, with audio-visual conflicts causing up to 32.3% accuracy degradation.\n\n- **Behavioral prior reconstruction is tractable**: Gibbs sampling with generative controls [4] offers a practical methodology for estimating what multimodal models expect, complementing mechanistic probes that only reveal representational capacity.\n\n- **Controlled puzzle benchmarks enable precise attribution**: The Question Damage Score [2] demonstrates that carefully constructed problems where answers derive solely from context can isolate whether models genuinely reason from provided material versus retrieved knowledge.\n\n- **Structured rewards are an interpretability intervention**: Rubric-guided RL [1] reframes alignment optimization as multi-criteria decision-making with interpretable components, challenging the scalar-reward paradigm that has dominated RLHF.\n\n- **Conflicting evidence is a diagnostic goldmine**: Cross-modal conflict tests [3] expose compositional reasoning gaps that standard benchmarks miss, suggesting that adversarial alignment configurations should be a standard interpretability evaluation tool.\n\n- **Feature engineering and uncertainty can both be interpretable**: Symbolic expressions [6] and feature-attributed uncertainty [5] demonstrate that transparency is achievable in automated pipelines without sacrificing performance or reliability.\n\n- **The field is converging on expectation-vs-input as a core axis**: Across medical AI [5], multimodal reasoning [3, 4], and alignment [1], interpretability is increasingly framed as making explicit the implicit priors and evaluation criteria that shape model behavior.",
+    "papers": [
+      {
+        "title": "A Survey on Rubric-Guided Reinforcement Learning for Language Models",
+        "url": "",
+        "authors": [
+          "Zifei Shan",
+          "Fangning Shao"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "Load-Bearing Context: The Question Damage Score for Evaluating Context Reliance in Linguistic Reasoning",
+        "url": "",
+        "authors": [
+          "Neh Majmudar",
+          "Elena Filatova"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "Compositional Failure in Audio-Visual LLMs: Late-Layer Prior Dominance Under Cross-modal Conflict",
+        "url": "",
+        "authors": [
+          "Adarsh Sudheer",
+          "David Li",
+          "Omar Elbanna",
+          "Ishaan Kodarapu",
+          "Arjun Bahuguna",
+          "Vasu Sharma"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "Probing Perceptual Priors of MLLMs via Gibbs Sampling with Interpretable Generative Controls",
+        "url": "",
+        "authors": [
+          "Manuel Cherep",
+          "Pattie Maes",
+          "Nikhil Singh"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "Explainable Uncertainty Estimation for Reliable Medical AI",
+        "url": "",
+        "authors": [
+          "Li Rong Wang",
+          "Jamie Duell",
+          "Xinran Xu",
+          "Thomas C. Henderson",
+          "Yu Yue Hew",
+          "Pik Wan Erica Chiang",
+          "Xiao Wei Alstar Ang",
+          "Bingwen Eugene Fan",
+          "Xiuyi Fan"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "SymboLLM-FE: LLM-Accelerated Symbolic Regression for Automated Feature Engineering on Tabular Data",
+        "url": "",
+        "authors": [
+          "Zi-Jian Cheng",
+          "Zi-Yi Jia",
+          "Zhi Zhou",
+          "Yu-Feng Li",
+          "Lan-Zhe Guo"
+        ],
+        "date": "2026-08-31"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-08-31",
+    "paperCount": 13,
+    "markdown": "# Multimodal Intelligence at the Frontier: From Reasoning Diagnostics to Agentic Discovery\n\nToday's research landscape reflects a maturing multimodal AI field, shifting from single-task benchmarks toward integrated systems that reason, act, and adapt across modalities. The papers presented span diagnostic evaluation of relational reasoning, agentic frameworks for scientific discovery and web interaction, safety moderation, generative translation, and continual learning—collectively pushing toward more robust, interpretable, and deployable multimodal AI.\n\n## Diagnostic Benchmarks and Evaluation Frameworks\n\nThe community is increasingly focused on rigorous, multidimensional evaluation of multimodal systems, moving beyond simple accuracy metrics to capture reasoning depth, real-world complexity, and cross-modal coherence.\n\n**SciReC** [1] introduces a diagnostic benchmark for multimodal large language models (MLLMs) targeting relational reasoning—analogical, structural, and cause-effect inference. The framework employs model-adaptive interaction, where the benchmark dynamically adjusts difficulty based on the model's performance, enabling fine-grained profiling of reasoning capabilities. By decomposing relational reasoning into distinct categories and probing each through academic dialog, SciReC provides a nuanced diagnostic tool that identifies specific reasoning failure modes rather than aggregate scores, which is critical for targeted improvement of MLLM architectures.\n\n**DualEvasion** [7] tackles the underexplored problem of evasion detection in earnings calls, arguing that evasive behavior is inherently multimodal. The benchmark contains 505 annotated question-answer pairs with independent textual and vocal evasion labels, enabling joint modeling of what executives say and how they say it. By demonstrating that vocal cues carry complementary information to textual content, this work establishes a new evaluation axis for multimodal understanding in high-stakes financial communication and opens avenues for cross-modal fusion research.\n\n**MAP** [12] presents the first benchmark for evaluating multimodal AI as accessibility assistants for real-world place planning. The framework includes two novel assessment tasks: claim verification (checking if stated accessibility features are supported) and visual evidence retrieval (finding images that corroborate or refute accessibility claims). This work addresses a socially impactful application domain while introducing evaluation methodology that requires joint visual-linguistic reasoning over heterogeneous web content, a challenging and underexplored capability.\n\n## Agentic Frameworks and Interactive Systems\n\nSeveral papers advance the frontier of agentic AI, where multimodal systems must plan, act, and reason over extended horizons in dynamic environments.\n\n**MAGE** [9] introduces a multimodal agentic framework for discovering governing partial differential equations (PDEs) from observational data, organizing the process as a confidence-governed hypothesis validation loop. The system alternates between generating candidate equations, testing them against data, and refining hypotheses—inspired by the scientific cycle of observation, hypothesis, and validation. By integrating multimodal data sources and iterative refinement, MAGE addresses limitations of sparse-regression and symbolic-regression approaches, potentially accelerating scientific discovery across physics, biology, and engineering domains.\n\n**WeAgent-MMSearch** [10] targets a critical bottleneck in multimodal search agents: the loss of visual information when tool-returned images are omitted from subsequent reasoning context. The proposed WeAgent-Harness natively preserves text-vision interaction across long-horizon trajectories while addressing practical failures like tool-call errors, timeouts, and budget exhaustion. By making the full multimodal evidence available to the agent throughout its reasoning process and providing robust failure recovery, this work enables more reliable and visually-grounded web search agents—a step toward practical deployment.\n\n**RetailAgent** [13] studies whether LLM trading agents exhibit predictable directional structure in financial markets through a self-conditioned experimental framework. The system observes anonymized intraday equity price histories and repeatedly chooses between long and flat positions, with returns compared across decision types to detect systematic patterns. This work bridges multimodal perception, sequential decision-making, and market microstructure analysis, offering insights into how AI agents might inadvertently reveal trading strategies and the implications for market efficiency.\n\n## Efficient Adaptation and Continual Learning\n\nParameter-efficient methods for continual multimodal learning are essential for deploying models in evolving real-world environments without catastrophic forgetting or prohibitive storage costs.\n\n**CoRe-MoE** [8] questions whether full expert expansion is necessary for every new task in continual multimodal instruction tuning with Mixture-of-Experts architectures. Through SVD analysis of task-specific LoRA updates, the authors discover substantial overlap in input- and output-side LoRA direction subspaces across tasks. This insight motivates a compact, reusable MoE design that shares subspace components across tasks, dramatically reducing parameter overhead while maintaining performance—enabling more scalable continual learning for multimodal LLMs.\n\n**PACE** [2] addresses the trade-off between accuracy, scalability, and adaptability in web content extraction for LLM pipelines. The system employs agentic automation to build publisher-adaptive parsers that handle metadata, images, and tables while adapting to publisher-specific layouts. By combining the flexibility of LLM-based extraction with the efficiency of structured parsing, PACE reduces human engineering effort while improving extraction quality—a practical contribution to data pipeline construction for multimodal LLM training.\n\n## Safety, Alignment, and Social Intelligence\n\nAs multimodal systems deploy broadly, ensuring safety, alignment, and social awareness becomes paramount.\n\n**Nemotron 3.5 Content Safety Moderator** [5] presents a compact 4B vision-language model for joint safety classification of user prompts, images, and assistant responses across multiple languages. The system handles diverse input types—images, documents, screenshots—under domain-varying policies while maintaining low computational cost. By combining broad coverage, custom policy control, and efficiency in a single small model, this work enables practical safety moderation for edge deployment and real-time applications.\n\n**The Shape of Power** [11] introduces a theoretically grounded multilingual framework for studying social power reasoning in dialogues, built from movie screenplays with native-speaker annotation. The framework integrates social science theory, structured annotation pipelines, and a custom interface for scalable data collection across languages and cultures. This work addresses the gap in cross-cultural computational studies of power dynamics, providing resources and methodology for training and evaluating models on nuanced social reasoning—a capability increasingly important for human-AI interaction.\n\n**Rubric-guided reinforcement learning** [3] surveys a paradigm shift from scalar reward signals to structured, interpretable rubrics in LLM alignment. The paper introduces a Bayesian framework formalizing how constitutions and rubrics guide reward design, feedback generation, and policy optimization. By making evaluation criteria explicit and multidimensional, this approach enhances interpretability and control over model behavior, addressing limitations of traditional RLHF and enabling more principled alignment of multimodal systems.\n\n## Generative Translation and Bidirectional Models\n\n**BIT** [6] proposes Bidirectional Image-Text Diffusion Bridges for multimodal translation, addressing limitations of unidirectional generative paths in existing approaches. The method directly interpolates from text to images, providing source-aware generative paths that enable diverse sampling algorithms and natural inversion (image-to-text). By establishing bidirectional capability, BIT expands the flexibility of multimodal generation while enabling new applications in image editing, style transfer, and cross-modal retrieval.\n\n## Key Takeaways\n\n- **Diagnostic evaluation is displacing aggregate metrics**: Benchmarks like SciReC [1], DualEvasion [7], and MAP [12] decompose capabilities into specific reasoning types, modalities, and tasks, enabling targeted model improvement rather than opaque performance scores.\n\n- **Agentic frameworks are becoming multimodal-native**: MAGE [9] and WeAgent-MMSearch [10] demonstrate that preserving full multimodal information through long-horizon reasoning and action loops is critical for scientific discovery and web interaction, moving beyond text-only agent reasoning.\n\n- **Parameter efficiency remains a bottleneck for continual learning**: CoRe-MoE [8] shows that careful analysis of task-specific parameter updates reveals substantial redundancy, enabling compact, reusable architectures that scale continual multimodal instruction tuning.\n\n- **Safety and alignment are expanding to multimodal domains**: Nemotron 3.5 [5] demonstrates that compact models can handle the complexity of multimodal, multilingual, policy-aware safety moderation, while rubric-guided RL [3] provides a structured path toward interpretable alignment.\n\n- **Bidirectional generative models unlock new capabilities**: BIT [6] shows that designing diffusion bridges that naturally support both forward and inverse mappings enables flexible sampling and cross-modal editing without architectural changes.\n\n- **Social intelligence requires cultural and linguistic diversity**: The Shape of Power [11] highlights that computational studies of social phenomena must be grounded in theoretical frameworks and multilingual data to be robust, pointing toward more culturally aware AI systems.\n\n- **Practical deployment concerns drive research**: PACE [2] and RetailAgent [13] address real-world constraints—extraction reliability, market predictability, computational cost—showing that multimodal research is increasingly validated against deployment realities rather than isolated benchmarks.",
+    "papers": [
+      {
+        "title": "SciReC: Diagnostic Evaluation of Multimodal, Multi-Turn Relational Reasoning with Adaptive Interaction",
+        "url": "",
+        "authors": [
+          "Nilay Yilmaz",
+          "Naga Sai Abhiram Kusumba",
+          "Stella Wenxing Liu",
+          "Yezhou Yang"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "PACE: Publisher-Adaptive Content Extraction via Agentic Automation",
+        "url": "",
+        "authors": [
+          "Zhanlin Liu",
+          "Munirathnam Srikanth"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "A Survey on Rubric-Guided Reinforcement Learning for Language Models",
+        "url": "",
+        "authors": [
+          "Zifei Shan",
+          "Fangning Shao"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "Benchmarking General Mobile Assistants in Challenging Real-World Scenarios",
+        "url": "",
+        "authors": [
+          "Yiqi Zhu",
+          "Feiyu Gao",
+          "Jiaxing Fan",
+          "Jiahui Zeng",
+          "Minggang Wu",
+          "Chenliang Li",
+          "Haiyang Xu",
+          "Peng Li",
+          "Ming Yan",
+          "Yang Liu"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "Nemotron 3.5 Content Safety Moderator: A Compact Multimodal, Multilingual, and Reasoning Enabled Content Safety Moderator",
+        "url": "",
+        "authors": [
+          "Varun Singh",
+          "Anuj Doshi",
+          "Makesh Narsimhan Sreedhar",
+          "Shaona Ghosh",
+          "Katherine Luna"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "There and Back Again: Bidirectional Diffusion Bridges for Multimodality Translation",
+        "url": "",
+        "authors": [
+          "Gabe Guo",
+          "Elon Litman",
+          "Thanawat Sornwanee",
+          "Jose Blanchet",
+          "Stefano Ermon"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "A Shaky Voice Is Not Always a Dodge: Benchmarking Textual and Vocal Evasion Detection in Earnings Calls",
+        "url": "",
+        "authors": [
+          "Mirae Kim",
+          "Seonghun Jeong",
+          "Youngjun Kwak"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "CoRe-MoE: Compact Reusable MoE for Continual Multimodal Instruction Tuning",
+        "url": "",
+        "authors": [
+          "Runze Liu",
+          "Naibin Gu",
+          "Mingxu Ai",
+          "Yuqing Li",
+          "Peng Fu",
+          "Zheng Lin",
+          "Weiping Wang"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "See, Hypothesize, Validate: Multimodal Agentic Framework for Discovering Governing PDEs",
+        "url": "",
+        "authors": [
+          "Sarang Manoj Pekhale",
+          "Amartya Roy",
+          "Rajat Sarkar",
+          "Souvik Chakraborty"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "WeAgent-MMSearch: Native Text-Vision Interaction for Multimodal Search Agents",
+        "url": "",
+        "authors": [
+          "Zongkai Liu",
+          "Hui Zhang",
+          "Liqiang Niu",
+          "Zhen Cao",
+          "Han Li",
+          "Juntao Liu",
+          "Wenchao Chen",
+          "Chengduo Zhao",
+          "Chao Yu",
+          "Fandong Meng"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "The Shape of Power: A Multilingual Framework for Social Power Reasoning in Dialogues",
+        "url": "",
+        "authors": [
+          "Farah Atif",
+          "Sougata Saha",
+          "Monojit Choudhury"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "MAP: A Benchmark on Multimodal Accessibility Planning for Real World Places",
+        "url": "",
+        "authors": [
+          "Jason Armitage",
+          "Ioannis Tsochantaridis",
+          "Linda Mazzone",
+          "Chuqiao Yan",
+          "Srini Narayanan",
+          "Sarah Ebling"
+        ],
+        "date": "2026-08-31"
+      },
+      {
+        "title": "RetailAgent: Structured Adverse Timing in Self-Conditioned Multimodal LLM Trading Agents",
+        "url": "",
+        "authors": [
+          "Yupeng Zhang",
+          "Liuyuan Jiang",
+          "Hongyi Huang",
+          "Bingheng Li",
+          "Lisha Chen"
+        ],
+        "date": "2026-08-31"
+      }
+    ]
+  }
+]
