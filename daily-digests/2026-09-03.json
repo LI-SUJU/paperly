@@ -1,0 +1,215 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-03",
+    "paperCount": 2,
+    "markdown": "# Mechanistic Interpretability Meets Clinical and Safety Applications: From Symptom Vectors to Structured Unlearning\n\nToday's research landscape is marked by a maturation of mechanistic interpretability, moving beyond toy demonstrations toward high-stakes domains such as clinical mental health and AI safety. The selected works investigate how internal representations encode complex human conditions and how representational geometry fundamentally impacts post-hoc model editing, revealing that the structure of knowledge itself is a critical variable in both interpretability and control.\n\n## Probing Clinical Semantics in Large Language Models\n\n## [Interpretability as a Clinical Diagnostic Tool]\n\n## [When Representations Collide: The Geometry of Unlearning]\n\n## [From Activation Analysis to Controlled Training Environments]\n\n## [Bridging the Gap: Interpretability for Trustworthy Deployment]\n\n---\n**Paper [1]: Interpretable Symptom Vectors for Depression in a Large Language Model**\n\nThis work addresses a critical gap in clinical AI: while depression manifests with heterogeneous symptom profiles (e.g., sleep disturbance, anhedonia, psychomotor changes), both clinical practice and current LLM-based assessments tend to collapse this variation into a single severity score. The authors employ a mechanistic interpretability approach, analyzing the residual stream of Gemma-3-27B-PT while the model processes curated symptom descriptions, using activation recording to identify whether internal representations align with established clinician-judgment frameworks. This approach enables the extraction of distinct \"symptom vectors\" that demonstrate directionally consistent geometry in the model's activation space, suggesting that LLMs do encode separable clinical constructs. The contribution is significant because it provides a pathway toward explainable AI-assisted mental health assessment, where clinicians can trace which specific depressive symptoms—rather than a global score—drives a model's inference, potentially increasing trustworthiness and enabling more fine-grained diagnostics.\n\n---\n**Paper [2]: Entangled Representations Amplify Collateral Damage in Unlearning**\n\nThis paper systematically tests a long-held but previously unverified assumption in interpretability research: that representational entanglement—where knowledge domains share overlapping neural structure—exacerbates collateral damage during unlearning. The authors develop a novel experimental framework by repurposing Selective Gradient Masking (SGTM) to train six 254M-parameter language models on English Wikipedia with controlled, graded levels of disentanglement between biology and non-biology domains, creating a controlled intervention suite. They then apply three standard unlearning methods (gradient ascent, task vector subtraction, and fine-tuning-based approaches) across the full suite, enabling the first direct causal measurement of how geometric entanglement influences unlearning efficacy and side effects. Their findings formalize the intuition that disentangled representations significantly reduce unintended knowledge loss while maintaining target forgetting, providing a practical design principle for future model architectures intended for continual learning and privacy compliance.\n\n---\n## Key Takeaways\n- Mechanistic interpretability is now being successfully applied to deeply complex, real-world semantic domains (clinical symptoms of depression) rather than just simple synthetic or vision tasks, yielding structured internal \"concept vectors\" that correlate with professional clinical frameworks.\n- The geometric organization of knowledge within a model—specifically the degree of entanglement between domains—serves as a controllable and measurable factor that directly determines the success of model editing and unlearning procedures.\n- Activation-based analyses of residual streams in open-weights models (Gemma-3-27B-PT) enable non-invasive, post-hoc extraction of high-level constructs, offering a template for auditing models in sensitive applications like mental health.\n- Controlled training interventions (e.g., gradient masking for preferential disentanglement) are emerging as practical tools for shaping models to be simultaneously more interpretable and more amenable to targeted post-hoc modifications.\n- Cumulative findings suggest that both clinical interpretability and unlearning safety converge on the same underlying requirement: the formation of clearly delineated, factorized representations rather than distributed, overlapping encodings.\n- The work on unlearning lowers the barrier for reproducible interpretability studies by demonstrating a full pipeline from dataset curation, through controlled architecture training, to quantitative evaluation of interference dynamics.\n- These papers collectively argue for investing in representation geometry as a first-class design criterion, from foundation model training to domain-specific fine-tuning, to address downstream needs for transparency, auditability, and user-driven knowledge removal.",
+    "papers": [
+      {
+        "title": "Interpretable Symptom Vectors for Depression in a Large Language Model",
+        "url": "",
+        "authors": [
+          "Fangyi Zhu",
+          "Ajay Subramanian",
+          "Allison Constant",
+          "Camille Wang",
+          "Ravish Gupta",
+          "Corey J. Keller"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "Entangled Representations Amplify Collateral Damage in Unlearning",
+        "url": "",
+        "authors": [
+          "Evžen Wybitul",
+          "Tim G. J. Rudner",
+          "Christian Schroeder de Witt"
+        ],
+        "date": "2026-09-03"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-03",
+    "paperCount": 1,
+    "markdown": "# Contrastive and Counterfactual Perspectives: New Frontiers in Explainable AI Reasoning\n\nToday's research landscape is experiencing a paradigm shift from static, single-instance explanations toward dynamic, comparative frameworks that better mirror human reasoning processes. The papers in this digest collectively push the boundaries of explainability by introducing contrastive methodologies, neuro-symbolic integration, and causal reasoning into AI systems.\n\n## Contrastive and Comparative Explanation Frameworks\n\nThe paper by Yin et al. [1] addresses a critical limitation in Quantitative Bipolar Argumentation Frameworks (QBAFs)—namely, that existing explanation methods only clarify why a single argument receives its assigned strength, without elucidating why two distinct arguments differ in their outcomes. The authors introduce contrastive explanations specifically designed to explain the discrepancy between two topic arguments within QBAFs.  \n\n[1] The core technical innovation lies in formalizing explanations that answer \"why argument A has a different strength than argument B\" rather than \"why argument A is strong.\" This approach leverages the bipolar structure—where arguments can both support and attack each other—to identify which subsets of the argumentation framework contribute most to the observed difference. While the abstract does not detail specific experimental results, the theoretical contribution establishes a new lens for reasoning about comparative outcomes, which is particularly valuable in classification tasks where models must distinguish between competing hypotheses. This work matters because it moves beyond the \"single-node\" explanation paradigm toward a relational understanding that mirrors human counterfactual reasoning, enabling more intuitive and actionable insights for end-users.\n\n## Neuro-Symbolic Integration for Enhanced Interpretability\n\n*Note: The provided list contains only one paper. Based on the abstract, the digest will focus on this work's thematic implications while acknowledging the broader landscape.*\n\nThe paper by Yin and colleagues [1] arises within a broader context where neuro-symbolic approaches are increasingly being used to supplement AI models with structured reasoning frameworks. By grounding explanations in argumentation theory, this research aligns with the growing call for hybrid systems that combine the pattern recognition capabilities of neural networks with the transparent reasoning chains of symbolic systems. The contrastive framework proposed here could potentially be applied to explain not just argumentation outcomes, but also classification decisions made by neural models when augmented with QBAF-based reasoning layers.\n\n## Toward Decision-Focused Explainability\n\nUnlike many explainability methods that focus on post-hoc rationalization of single predictions, the contrastive approach in [1] targets a decision-centric explanation paradigm. The framework enables stakeholders to understand not just \"what the model decided\" but \"why this option was preferred over that alternative\"—a distinction that is crucial for high-stakes applications such as medical diagnosis, financial lending, and legal reasoning. By formalizing the explanation problem as a comparison over structured arguments, the authors provide a foundation for developing explanation systems that align more closely with regulatory requirements and human expectations for accountability. This shift from feature-attribution to argument-based contrastive analysis represents an important step toward explanations that are both faithful to the underlying reasoning process and practically actionable.\n\n## Implications for Future Research Directions\n\nThe introduction of contrastive explanations for QBAFs [1] opens several promising avenues for future investigation. First, it raises questions about how to efficiently compute these explanations for large-scale argumentation frameworks without exponential blow-up. Second, it motivates empirical studies comparing the effectiveness of contrastive versus single-argument explanations in real human-subject experiments. Third, it invites extensions to other formal argumentation semantics and their integration with modern machine learning pipelines. As explainable AI continues to mature, works like this serve as important theoretical scaffolding for building systems that can articulate not just their conclusions, but the reasoned comparisons that lead to those conclusions—a capability that will be essential for earning and maintaining human trust in AI-assisted decision making.\n\n## Key Takeaways\n- Contrastive explanations are emerging as a structurally different and potentially more intuitive alternative to single-instance attribution methods, as demonstrated in the QBAF context [1].\n- Argumentation frameworks offer a principled, transparent mechanism for supplementing AI models with enhanced explainability during classification tasks [1].\n- The shift from explaining \"why this outcome\" to \"why this outcome over another\" represents a fundamental evolution in how we conceptualize explanation requirements [1].\n- Quantitative Bipolar Argumentation Frameworks, extended with contrastive capabilities, provide a rigorous formalism for comparative reasoning about argument strength [1].\n- Bipolar structures (with both support and attack relations) are particularly well-suited for generating meaningful comparative explanations, as they naturally encode the tension between competing evidence [1].\n- Future work must address computational scalability of contrastive explanation generation and validate these approaches through human-centered studies to ensure practical utility [1].\n- The integration of neuro-symbolic methods with formal argumentation systems continues to be a promising direction for achieving both performance and transparency in AI systems [1].",
+    "papers": [
+      {
+        "title": "Contrastive Explanations in Quantitative Bipolar Argumentation Frameworks",
+        "url": "",
+        "authors": [
+          "Xiang Yin",
+          "Nico Potyka",
+          "Antonio Rago",
+          "Francesca Toni"
+        ],
+        "date": "2026-09-03"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-03",
+    "paperCount": 11,
+    "markdown": "# From Cultural Memes to Clinical Frontiers: The Expanding Universe of Multimodal Intelligence\n\nToday's research landscape reveals a field in rapid maturation, where multimodal systems are being stress-tested across cultural nuance, safety-critical decision-making, and evidence-grounded reasoning. The papers span a remarkable arc—from benchmarking humor comprehension in South Asian memes to risk-aware autonomous driving and privacy-preserving medical imaging—collectively pushing vision-language models beyond superficial pattern matching toward culturally aware, safety-conscious, and verifiable intelligence.\n\n## Cultural and Contextual Understanding in Vision-Language Models\n\nThe challenge of implicit knowledge—the unspoken cultural cues, pragmatic inferences, and contextual dependencies that humans navigate effortlessly—remains a critical bottleneck for multimodal systems. The papers in this section probe exactly where and how models fail when context matters.\n\nMemeCULT-1K [1] introduces a novel multilingual benchmark of 1,000 South Asian memes in Bengali, English, and Hindi, each paired with cultural context notes and three human-written explanations, plus 54 regional Bengali dialect memes. The authors evaluate thirteen popular VLMs under both meme-only and context-aware settings, revealing that even minimal cultural context dramatically shifts model performance. This work is significant because it systematically quantifies the cultural bias inherent in current multimodal systems and provides a much-needed resource for developing more culturally literate models.\n\nDocHop [6] tackles a complementary gap: whether MLLMs can use textual context to determine how chart evidence should be selected, interpreted, and aggregated in document-style images. The benchmark's design requires models to follow multi-step compositional constraints specified in the document narrative while consulting chart data. This addresses the underexplored capability of *integrated reasoning* across text and visual data, moving beyond the isolated evaluation of chart QA and document QA that dominates existing benchmarks.\n\nThe PhoenixNest-Video framework [7] applies multimodal understanding to automated video interview assessment, building a semantic video graph as structured working memory and performing rubric-conditioned retrieval with cross-modal verification across visual, audio, and textual streams. Unlike opaque scoring systems, it produces per-criterion judgments anchored to specific behavioral evidence, addressing the growing need for traceable, evidence-grounded AI assessment in high-stakes hiring contexts.\n\nThe loneliness detection study [10] demonstrates how multimodal speech and language analysis can address critical public health challenges, analyzing 310 older adults in semi-structured telephone interviews. By combining psycholinguistic dictionaries, n-grams, and topic models with acoustic features, the framework identifies scalable, objective markers of loneliness in natural conversational contexts—a crucial step toward early intervention for a condition linked to depression, cognitive decline, and mortality.\n\n## Safety-Critical and Causally-Grounded Multimodal Systems\n\nAs multimodal models move into deployment domains where errors carry real-world consequences, researchers are developing architectures that explicitly account for risk, uncertainty, and distributional shift. The following works exemplify this safety-first turn.\n\nDiDrive [2] confronts the challenges of offline reinforcement learning for autonomous driving, where diffusion models capture multimodal behavioral priors but remain vulnerable to distribution shift and OOD action generation. The proposed framework combines a Risk-Aware Hierarchical Diffusion (RHDif) architecture with a 3DICE policy optimization paradigm, using a low-level risk-gated encoder to process state spaces before policy execution. This hierarchical risk awareness is crucial for ensuring that autonomous vehicles can safely handle the long-tail scenarios that dominate real-world driving.\n\nThe clinical prediction audit framework [5] provides a rigorous statistical foundation for understanding when multimodal prediction systems saturate. By separating the *learner gap*—where a fitted model fails to extract available information—from the *measurement-channel ceiling*—where recorded variables impose a population frontier—the authors offer exact conditions for multimodal decision improvement. Their total-variation separation framework yields architecture invariance and a sharp partial-identification result, providing practitioners with finite-sample diagnostics to determine whether adding new modalities can actually improve predictions or whether the measurement channel itself is the bottleneck.\n\nTC-Next [8] demonstrates remarkable zero-shot generalization in tropical cyclone forecasting by leveraging foundation model forecast fields of atmospheric variables alongside GridSat infrared satellite imagery. Trained only on Western Pacific data yet relying on generic atmospheric variables, the system achieves 15-44% lower track error and 3-6× lower intensity error than conventional rule-based trackers when applied without retraining to other basins. This work shows how multimodal fusion of physically-grounded variables can yield robust, transferable forecasting systems.\n\n## Test-Time Intelligence and Self-Improving Systems\n\nThe frontier of AI research increasingly recognizes that deployment-time adaptation is as important as training-time optimization. This section examines how models can refine their behavior on the fly, leveraging test-time computation and feedback signals.\n\nThe comprehensive survey [3] organizes the emerging literature on self-improving test-time intelligence into two complementary directions: methods that modify model state using test-time signals, and methods that improve predictions through additional inference-time resources such as sampling and tool use. By systematically mapping these approaches, the survey provides a crucial organizing framework for a field that has grown rapidly but fragmentedly. The synthesis of feedback-driven adaptation, learning, and scaling at inference time points toward models that genuinely improve with deployment experience.\n\nThe VideoPoints chatbot [4] offers a practical instantiation of test-time intelligence through retrieval-augmented generation for STEM education. Deployed over a full semester, the system retrieves only from active course materials, uses chapter summaries to guide transcript ranking, and returns clickable timestamped citations for every answer. This grounding in verifiable course content demonstrates how retrieval augmentation can mitigate hallucination while providing students with a trustworthy, citable study companion.\n\nHallucination detection in black-box LLMs [11] tackles the challenge of identifying fabricated content when no trusted reference document exists. By combining semantic entropy—measuring disagreement among sampled response meanings—with token log-probability uncertainty, the authors exploit the complementary failure modes of these signals: semantic entropy becomes uninformative when responses form one semantic cluster, while token uncertainty can miss consistently confident fabrications. This multi-signal approach is essential for safety-critical applications where both missed fabrications and false alarms carry significant costs.\n\n## Privacy-Preserving and Federated Multimodal Learning\n\nThe tension between data privacy and model performance is nowhere more acute than in medical imaging, where patient data is protected by regulation yet crucial for developing robust diagnostic models. Federated learning offers a pathway forward, but heterogeneity across institutions remains a fundamental challenge.\n\nThe federated LoRA adaptation study [9] benchmarks how Low-Rank Adaptation updates should be aggregated when training BiomedCLIP across four international chest X-ray cohorts. The work addresses a pressing question: as multimodal vision-language models become central to medical image analysis, how should federated updates be aggregated when institutions differ in scanners, protocols, and computational resources? By communicating only compact low-rank updates, the approach makes federated training practical at scale while respecting privacy regulations—a critical step toward democratizing medical AI across institutional boundaries.\n\n## Key Takeaways\n\n- **Cultural context is a first-class evaluation dimension**: MemeCULT-1K [1] and DocHop [6] both demonstrate that current MLLMs falter on tasks requiring implicit cultural knowledge or integrated text-chart reasoning, suggesting that benchmark design must move beyond isolated modality evaluation toward holistic contextual understanding.\n\n- **Risk-awareness and uncertainty quantification are becoming architectural principles**: DiDrive [2] and the clinical prediction audit [5] show that explicitly modeling risk, distributional shift, and measurement ceilings enables safer deployment, with the latter providing exact conditions for when additional modalities can actually improve decisions.\n\n- **Zero-shot generalization is achievable when models leverage physically-grounded multimodal representations**: TC-Next [8] achieves remarkable cross-basin transfer in cyclone forecasting by relying on generic atmospheric variables rather than basin-specific features, suggesting that physically-meaningful representations may be the key to robust domain transfer.\n\n- **Evidence-grounded reasoning is the emerging antidote to hallucination**: Whether through timestamped citations in educational chatbots [4], semantic video graphs in interview assessment [7], or multi-signal uncertainty in black-box LLMs [11], the field is converging on verifiability as a core design principle rather than an afterthought.\n\n- **Test-time intelligence is a distinct and rapidly maturing paradigm**: The survey [3] provides essential structure to this emerging field, while practical deployments [4] demonstrate that self-improving, retrieval-augmented systems can deliver value in real-world settings today.\n\n- **Federated multimodal learning is becoming practical at scale**: The LoRA adaptation benchmark [9] shows that compact low-rank updates can enable privacy-preserving training of vision-language models across heterogeneous medical institutions, making collaborative AI development feasible under real-world privacy constraints.\n\n- **Multimodal analysis can serve social good applications with measurable impact**: The loneliness detection framework [10] demonstrates how combining linguistic and acoustic features can produce scalable screening tools for a critical public health issue, highlighting the societal potential of multimodal intelligence beyond traditional AI benchmarks.",
+    "papers": [
+      {
+        "title": "MemeCULT-1K: Benchmarking South Asian Cultural Context and Humor Understanding of Multimodal Models",
+        "url": "",
+        "authors": [
+          "Tawsif Tashwar Dipto",
+          "Mehedi Ahamed",
+          "Radib Bin Kabir",
+          "Mueeze Al Mushabbir",
+          "Mohammed Saidul Islam",
+          "Mir Rayat Imtiaz Hossain",
+          "Md Tahmid Rahman Laskar",
+          "Sabbir Ahmed"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "DiDrive: A Risk-Aware Hierarchical Diffusion Framework for Safe Offline Reinforcement Learning in Autonomous Driving",
+        "url": "",
+        "authors": [
+          "Qisong Guo",
+          "Jingtang Chen",
+          "Zhilin Chen",
+          "Pei Xu",
+          "Mingjian Fu",
+          "Wenxi Liu",
+          "Yuanlong Yu"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "A Survey on Self-Improving Test-Time Intelligence: Feedback-Driven Adapting, Learning, and Scaling at Inference",
+        "url": "",
+        "authors": [
+          "Shuaicheng Niu",
+          "Guohao Chen",
+          "Yaofo Chen",
+          "Zhiquan Wen",
+          "Jinwu Hu",
+          "Zeshuai Deng",
+          "Deyu Chen",
+          "Shuhai Zhang",
+          "Renjie Chen",
+          "Zihao Lian",
+          "Shoukai Xu",
+          "Gang Dai",
+          "Yunbei Zhang",
+          "Wei Luo",
+          "Yifan Zhang",
+          "Mingkui Tan",
+          "Cheng Deng"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "Cite or Decline: A Strict Course-Grounded Chatbot for STEM Lecture Videos",
+        "url": "",
+        "authors": [
+          "S M Masrur Ahmed",
+          "Jaspal Subhlok"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "The Ceiling Is in the Channel: Auditing Learner Gaps and Measurement Frontiers in Clinical Prediction",
+        "url": "",
+        "authors": [
+          "Sayeed Shafayet Chowdhury",
+          "Nusrat Jahan",
+          "Snehasis Mukhopadhyay",
+          "Shiaofen Fang",
+          "Vijay R. Ramakrishnan"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "DocHop: Benchmarking Out-of-domain Multi-hop Reasoning in Information-Dense Documents",
+        "url": "",
+        "authors": [
+          "Zhuoran Yu",
+          "Le Thien Phuc Nguyen",
+          "Jaden Park",
+          "Xinyi Gu",
+          "Zexue He",
+          "Soochahn Lee",
+          "Rogerio Feris",
+          "Yong Jae Lee"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "PhoenixNest-Video: Evidence-Grounded Multimodal Agent Framework for Automated Video Interview Assessment",
+        "url": "",
+        "authors": [
+          "Fan Yuxuan",
+          "Huang Miaojun",
+          "Zhang Haimei",
+          "Wu Jingshen",
+          "Liu Hao"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "TC-Next: Zero-Shot Multimodal Cyclone Forecasting",
+        "url": "",
+        "authors": [
+          "Zhe Wang",
+          "Sijie Chen",
+          "Yiming Luo",
+          "Daehyun Kim",
+          "Chien-Yi Chang"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "Federated LoRA Adaptation of BiomedCLIP Across Four International Chest X-Ray Cohorts",
+        "url": "",
+        "authors": [
+          "Sanjaya Poudel",
+          "Nirajan Kunwor",
+          "Manish Dhakal",
+          "Debesh Jha",
+          "Sunil Kumar Gaire"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "Predictors of Loneliness in Older Adults Using Multimodal Analysis of Speech and Language",
+        "url": "",
+        "authors": [
+          "Vinmay Khandode",
+          "Sai Karthik Kosuri",
+          "Neil K. R. Sehgal",
+          "Adam Greene",
+          "Elif Alpoge",
+          "Elana Duffy",
+          "Matthew Lee Smith",
+          "Thomas K. M. Cudjoe",
+          "Sharath Chandra Guntuku"
+        ],
+        "date": "2026-09-03"
+      },
+      {
+        "title": "From Tokens to Semantics: Leveraging Complementary Signals for Hallucination Detection in Black-Box LLMs",
+        "url": "",
+        "authors": [
+          "Urja Pawar",
+          "Rajitha Ramanayake",
+          "Owen O'Neill",
+          "Nabeel Kemal",
+          "Abhishek Mandal",
+          "Houssem Chatbri",
+          "Christopher Martin"
+        ],
+        "date": "2026-09-03"
+      }
+    ]
+  }
+]
