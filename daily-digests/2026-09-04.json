@@ -1,0 +1,247 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-04",
+    "paperCount": 8,
+    "markdown": "# From Explanation to Intervention: The Evolving Science of Model Transparency\n\nToday's research landscape marks a critical shift in interpretability: from passive explanation toward active validation, where the field asks not just \"what does a model attend to?\" but \"can we trust this explanation enough to act on it?\" Across mechanistic circuit analysis, reasoning trace evaluation, and explainable anomaly detection, we see a consistent theme—interpretability claims are being stress-tested against behavioral ground truth, structural perturbations, and downstream decision quality.\n\n## Mechanistic Interpretability: From Observation to Intervention\n\nThe first cluster of papers interrogates whether internal model estimates can safely guide real-world actions, moving beyond correlation-based explanations toward causal, intervention-ready understanding.\n\n[1] \"ObserverBench\" addresses a critical gap in mechanistic interpretability: an internal estimate that is accurate on average may still lead to poor interventions. The authors propose a benchmark framework that evaluates whether an internal \"observer\" (estimator) is adequate for the specific intervention, control, or safety task it directs, by fixing the model, information boundary, allowed actions, decision rule, held-out cases, and loss function. Crucially, the framework disentangles estimation accuracy from the actual loss incurred by the chosen action, revealing scenarios where high-fidelity estimates fail catastrophically in downstream use. This matters because it reframes interpretability evaluation from \"how well does this explain the model?\" to \"how well does this explain enable safe control?\"—a necessary maturity step as activation steering and circuit removal move from research curiosities to deployment tools.\n\n[5] This paper presents a mechanistic account of plural reference in LLMs, investigating how models represent and retrieve singular versus plural entities for coreference prediction. Using a combination of causal intervention techniques and attention pattern analysis, the authors identify a dedicated set of attention heads responsible for three subtasks: representing coreference information in the input, identifying entities that form a plural referent, and retrieving the correct pronoun. The head-level decomposition offers a rare, fully traced circuit for a contextual reasoning task, demonstrating that plural reference is not a diffuse property but a localized, modular computation. This contributes to the growing library of \"circuit diagrams\" for LLMs, providing concrete targets for surgical intervention and a template for studying number agreement across languages and architectures.\n\n[2] Yang et al. tackle a blind spot in knowledge conflict research: prior work focuses on parametric versus contextual conflicts, but real-world ambiguity often arises from contradictions *within* provided context itself. They introduce a taxonomy of six contextual conflict types—factual, inferential, temporal, granularity, perspective, and ambiguity—and contribute ContextConflict, a 5,781-sample dataset spanning reasoning and summarization tasks with both explicit contradictions and implicit conflicts requiring multi-step reasoning. By shifting focus to intra-context conflicts, this work reveals that LLMs' robustness to external knowledge injection does not generalize to internally inconsistent evidence, a finding with direct implications for retrieval-augmented generation and multi-source summarization systems.\n\n## Structural Sensitivity and Reasoning Robustness\n\nThis section examines how models respond when the surface form changes but the underlying meaning does not—a stress test for whether models reason over semantics or pattern-match on syntax.\n\n[3] This paper probes the structural sensitivity of multilingual LLMs using two linguistically grounded perturbation settings—constrained constituent reordering and active-passive voice transformation—in Hindi and Malayalam, both relatively free word-order languages. The authors introduce IndicReStruct, comprising GSM8K-Reordered and GSM8K-Voice variants that preserve semantic meaning while disrupting canonical surface structures. Their findings reveal significant performance degradation under semantics-preserving structural variation, indicating that LLMs' multilingual reasoning is partly anchored to syntactic surface forms rather than purely abstract semantic representations. This has implications for evaluating LLM robustness in morphologically rich languages and for designing training strategies that encourage true semantic generalization.\n\n[6] Alkhder et al. reframe machine translation from a single-output generation task to a structured decision space explored by autonomous agents, specifically targeting low-resource dialect generation where multiple linguistically valid outputs coexist. Rather than analyzing one translation, they model distinct translation pathways as agents operating over a shared decision space, where each pathway reflects a different trade-off among lexical authenticity, register, and structural stability. This multi-agent perspective makes the implicit decision trajectories of decoding explicit, offering a framework for comparing translation alternatives and for steering outputs toward desired dialectal properties. The approach matters for low-resource settings where \"correctness\" is not binary but a space of sociolinguistic choices that a single beam search cannot adequately represent.\n\n## Explanation Validity: Trusting the Trace\n\nThe papers here challenge the assumption that model outputs—whether textual reasoning chains or numeric feature attributions—faithfully reflect underlying computational processes.\n\n[8] Du et al. confront a foundational assumption in chain-of-thought interpretability: that the *legibility* of reasoning traces (how plausible they appear to human or LLM judges) reflects their *functional importance* to the model's computation. They operationalize step importance as \"advantage\"—the change in expected reward when that step is intervened upon—and compare this ground-truth measure against judged importance from LLM evaluators. Their results expose a systematic disconnect: textually legible steps are not necessarily causally important steps, and vice versa. This is a foundational challenge to process reward models, generative critics, and error-diagnosis workflows that treat reasoning traces as transparent windows into model computation, suggesting that trace-based supervision may optimize for persuasive narratives rather than faithful computation.\n\n[7] WAND tackles the explainability problem in unsupervised anomaly detection, where dominant detectors (isolation forests, autoencoders) produce scores without feature-level attribution, and post-hoc explainers like SHAP or LIME must re-query the detector thousands of times per point, yielding only approximations. WAND is explainable by design: it organizes computation around directions on the unit sphere, scoring each point by how far its projection escapes the typical range, so the anomaly score and its explanation arise from the same geometric operation. This design means explanations are exact, locally faithful, and computationally cheap, addressing a practical bottleneck in high-throughput anomaly monitoring where explanation cost is a deployment constraint.\n\n## Data and Diversity in Interpretability Evaluation\n\nThis brief section bridges interpretability with data quality and domain forecasting, noting that interpretable systems are only as reliable as the data distributions they reason over.\n\n[4] While focused on cloud resource forecasting, this paper highlights a methodological lesson for interpretability: models that directly predict resource usage from historical traces overlook the causal chain from customer demand to resource consumption. The authors propose a two-stage system that first forecasts customer service requests (transactions per second) and then predicts CPU workload conditioned on that demand forecast. This explicit modeling of intermediate causal variables improves forecast accuracy and, critically, makes the prediction pipeline more interpretable—each stage corresponds to a distinct, meaningful process that operators can monitor and validate independently.\n\n## Key Takeaways\n\n- **Interpretability claims require behavioral validation**: Across mechanistic interpretability [1] and chain-of-thought reasoning [8], the field is converging on the need to validate internal estimates against actual model behavior (e.g., via advantage-based interventions), not just against human intuition or textual plausibility.\n- **Explanations are not interchangeable with control**: ObserverBench [1] demonstrates that an estimate with high average accuracy can still catastrophically fail at guiding interventions, pushing evaluation toward task-specific, loss-aware metrics rather than generic faithfulness scores.\n- **LLM reasoning is partially surface-bound**: Structural perturbations in free word-order languages [3] and intra-context knowledge conflicts [2] both reveal that models often rely on syntactic patterns and contextual consistency rather than purely abstract semantic or logical representations.\n- **Mechanistic circuits are becoming tractable for linguistic phenomena**: The identification of dedicated attention heads for plural reference [5] suggests that complex contextual reasoning tasks may be decomposable into localized, intervenable circuits, enabling targeted model editing.\n- **Legibility is a poor proxy for computational importance**: The advantage-based analysis of reasoning traces [8] poses a serious challenge to process reward models and LLM-as-judge workflows that assume text explains function.\n- **Explainability can be a design principle, not a post-hoc patch**: WAND [7] shows that building anomaly detection around explainable geometric primitives yields both stronger interpretability and comparable detection performance without the computational overhead of approximation-based explainers.\n- **Interpretability and system design benefit from modeling causal intermediates**: Whether forecasting CPU workload via customer demand [4] or explaining anomalies via projection distances [7], decomposing a black-box mapping into meaningful intermediate stages enhances both accuracy and human oversight.",
+    "papers": [
+      {
+        "title": "ObserverBench: Testing Mechanistic Estimates for Intervention and Control",
+        "url": "",
+        "authors": [
+          "Vijay Erramilli"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Large Language Models in Resolving Contextual Knowledge Conflicts",
+        "url": "",
+        "authors": [
+          "Xinye Yang",
+          "Zhenyang Liu",
+          "Ruisi Li",
+          "Yuanyuan Lei"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Lost in Reordering: Structural Sensitivity of Multilingual LLMs under Semantics-Preserving Perturbations",
+        "url": "",
+        "authors": [
+          "Karthika Nhayakkat",
+          "Rajat Verma",
+          "Maharaj Brahma",
+          "Vetcha Gnana Mahesh",
+          "Maunendra Sankar Desarkar",
+          "Ganesh Ramakrishnan",
+          "Rohit Saluja"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "A Two-Stage Forecasting System for CPU Workload Prediction in Private Clouds",
+        "url": "",
+        "authors": [
+          "Ashir Javeed",
+          "Anton Borg",
+          "Håkan Grahn",
+          "Lars Lundberg",
+          "Dhyey Patel",
+          "Sogand Shirinbab"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "A Circuit for Plural Reference: How LLMs Represent and Retrieve Singular and Plural Entities",
+        "url": "",
+        "authors": [
+          "Anh Danh",
+          "Rick Nouwen",
+          "Massimo Poesio"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Translation as a Decision Space: A Multi-Agent Perspective on Low-Resource Dialect Generation",
+        "url": "",
+        "authors": [
+          "Hasan Alkhder",
+          "Mohammad Abboush",
+          "Igor Tchappi",
+          "Ahmet Zengin",
+          "Amro Najjar"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Witnesses Explain Anomalies",
+        "url": "",
+        "authors": [
+          "Lamine Diop"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Legibility is Not Interpretability: Comparing Judged and Actual Importance in Chain-Of-Thought Reasoning",
+        "url": "",
+        "authors": [
+          "Kevin Du",
+          "Alexander Hoyle",
+          "Laura Ruis",
+          "Acyr Locatelli"
+        ],
+        "date": "2026-09-04"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-04",
+    "paperCount": 2,
+    "markdown": "# Balancing Explanation Fidelity and Computational Tractability in Causal and Privacy-Preserving AI\n\nToday's research landscape is defined by a fundamental tension: as machine learning models grow more complex and are deployed in sensitive domains, the demand for rigorous, causally-grounded explanations is colliding with the practical constraints of computation, privacy, and dynamic training environments. The papers featured today push the boundaries of explainability by either re-architecting when and how explanations are generated during training, or by developing novel theoretical frameworks that reconcile the depth of causal analysis with scalable, probabilistic reasoning.\n\n## Dynamic Explainability and Privacy in Distributed Training\n\nThe first paper addresses a critical operational gap in federated learning (FL) systems that employ differential privacy (DP). While DP is essential for protecting data confidentiality, the injected noise severely degrades the quality of model explanations, which is problematic for high-stakes applications like clinical diagnosis. The authors identify that prior approaches relied on static, post hoc feature-importance signals, which prevented the system from adapting noise levels based on real-time explanation quality. The proposed framework, XCal-FL, introduces a closed-loop control mechanism that dynamically calibrates DP noise based on the ongoing fidelity of model explanations during the training process itself. By using explainability signals as a real-time feedback metric, XCal-FL permits a more granious trade-off between privacy guarantees and interpretability, ensuring that the model maintains trustworthy decision boundaries without sacrificing data confidentiality. This work is pivotal as it shifts explainability from a passive, post-training evaluation tool to an active, integrated component of the training loop, which is a necessary evolution for deploying interpretable AI in privacy-regulated sectors [1].\n\n## Bridging the Gap Between Causal Theory and Practical Attribution\n\nThe second paper confronts a long-standing schism in the field of explainability: the divide between the principled but computationally intractable theory of actual causality (AC) and scalable but causally-naive attribution methods like SHAP. The authors note that AC provides rigorous \"blame\" and \"credit\" assignments but is limited to toy models because it requires exhaustive enumeration of counterfactual scenarios. Conversely, popular scalable methods often ignore the generative causal structure of the data, leading to conclusions that may contradict a careful causal analysis. They introduce a novel framework for Probabilistic Causal Imputation-based Explanation (or similar, given the abstract cut-off), which offers a computationally feasible pathway to compute causal probabilistic explanations. This approach likely leverages probabilistic graphical models or variational inference techniques to approximate the necessary counterfactual distributions without enumerating all possibilities, thereby scaling to real-world problem sizes. The key contribution is a formal bridge that suggests researchers no longer have to choose between causal correctness and scalability; instead, they can utilize a framework that respects the underlying data-generating process while remaining practical for deployment. This is a substantial step forward for scientific and policy applications where the \"why\" of an outcome is as critical as the prediction itself [2].\n\n## Thematic Analysis: Convergence on Closed-Loop and Causal Systems\n\nA closer look at both papers reveals two converging themes that are defining the next era of explainability research. The first is the move toward *closed-loop* and *dynamic* systems. In the first paper, explanations are not just outputs but are inputs to a control system that modulates privacy noise. This implies a future where models continuously self-assess their own interpretability and adjust their learning parameters to maintain a user-defined threshold of explanation quality. This is distinct from static interpretability audits and suggests a future of adaptive, self-correcting AI.\n\nThe second theme is the \"causal turn\" in attribution. The second paper signals a clear trajectory away from correlation-based saliency maps and toward frameworks that explicitly model causation. By proposing a computationally tractable method for probabilistic causal explanation, it addresses the primary bottleneck that has kept causal analysis out of production systems. This shift is critical because as AI is used for decision-making in medicine, economics, and justice, explanations that merely highlight correlated features are insufficient—and potentially harmful—compared to those that identify true causal levers. Together, these papers suggest that the future of explainability lies not in better visualizations or saliency maps, but in integrating explanation objectives directly into the optimization and inference pipelines of complex, real-world systems.\n\n## Key Takeaways\n- **Explainability is becoming a first-class citizen in training loops**: The XCal-FL framework demonstrates that explanation fidelity can be used as a real-time, dynamic control signal, rather than merely a post hoc evaluation metric [1].\n- **Privacy and transparency are not a zero-sum game**: By dynamically calibrating differential privacy noise in response to explanation quality, it is possible to maintain strong privacy guarantees while preserving the utility of model explanations [1].\n- **The scalability bottleneck for causal explanation is being addressed**: The proposed probabilistic causal framework in the second paper offers a path to apply principled actual causality analysis to models and datasets that are far too large for traditional brute-force counterfactual enumeration [2].\n- **Correlation-based attribution is insufficient for high-stakes decisions**: The critique of SHAP and similar methods underscores a growing consensus that explanations must respect the causal structure of the data to be truly trustworthy and actionable [2].\n- **Interdisciplinary approaches are bridging theory and practice**: The combination of philosophical theories of causality with modern probabilistic machine learning techniques highlights a trend where deep theoretical insights are being transformed into usable software and algorithms [2].\n- **Domain-specific constraints drive innovation**: The motivation behind the federated learning paper—assistive clinical diagnosis—illustrates that the most impactful advances in explainability will likely be driven by the strict requirements of regulated, safety-critical industries [1].",
+    "papers": [
+      {
+        "title": "Pushing the (Decision) Boundaries: Dynamically Calibrating Differentially Private Noise to Explainability in Federated Learning",
+        "url": "",
+        "authors": [
+          "Michael Khavkin",
+          "Kichang Lee",
+          "Jaeho Jin",
+          "JeongGil Ko",
+          "Eran Toch"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "A Computationally Feasible Framework for Causal Probabilistic Explanation",
+        "url": "",
+        "authors": [
+          "Rafal Urbaniak",
+          "Sam Witty",
+          "Daniel Waxman",
+          "Andy Zane",
+          "Poorva Garg",
+          "Emily Bunnapradist",
+          "Sankaran Vaidyanathan",
+          "Jack Feser",
+          "Drew Lehe",
+          "Eli Bingham"
+        ],
+        "date": "2026-09-04"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-04",
+    "paperCount": 8,
+    "markdown": "# When to Refuse, What to Know, and How to Measure: Grounding Multimodal Systems in Real-World Constraints\n\nToday's research landscape reveals a maturing field where multimodal models are no longer celebrated for raw benchmark performance alone, but are being rigorously stress-tested for failure modes—from GUI agents that cannot recognize infeasible instructions to medical and legal systems that must operate under high-stakes conditions. Across these papers, a consistent theme emerges: the gap between impressive task performance and reliable, context-aware, culturally-grounded decision-making remains the central frontier for multimodal AI research.\n\n## Diagnosing Overcompliance and Knowledge Gaps in Multimodal Reasoning\n\nThe first cluster of papers attacks a fundamental weakness in current systems: their tendency to act confidently even when instructions conflict with reality or when their performance stems from superficial pattern matching rather than genuine understanding.\n\n[1] Huang et al. tackle the problem of GUI agents that blindly execute conflicting or infeasible instructions from users. While prior work focuses on improving action accuracy, these authors note that an equally important capability is knowing when *not* to act. They introduce CONFLICTGUI, a benchmark specifically designed around two conflict types: instruction-internal contradictions and instruction-GUI context mismatches. Their evaluation of existing agents reveals what they term \"execution-biased overcompliance\"—models that score highly on feasible tasks fail catastrophically when instructions become conflicting, highlighting a critical safety gap for real-world deployment of autonomous GUI systems.\n\n[2] Zeng et al. question whether multimodal language models truly possess cultural knowledge or merely excel at visual pattern recognition. Their CulturalMenuBench probes this distinction with 4,870 items across 10 languages and 18 regions, pairing dish and step-by-step cooking images with ingredients, procedural text, and regional labels. Evaluating 12 models, they expose a substantial \"knowledge-application gap\": systems exceeding 94% on standard recognition tasks show significantly degraded performance on process-grounded cultural attribution when visual cues alone cannot provide answers. This work provides an important methodological framework for distinguishing memorized visual associations from genuine cross-modal semantic understanding.\n\n[5] Ranum et al. deliver a similar wake-up call for sign language translation (SLT) evaluation. They demonstrate that BLEU-4, the standard metric borrowed from spoken-language translation, is fundamentally inadequate for assessing sign language proficiency because it allows models to exploit spoken-language priors and spurious correlations. Through systematic evaluation of six SLT models on Phoenix-2014T and CSL-Daily, they show that BLEU-4 gains do not correspond to genuine spatio-temporal understanding of sign language, arguing for a paradigm shift in how SLT benchmarks should be designed and scored.\n\n## Domain-Specific Grounding: Medical, Legal, and Industrial Applications\n\nA second theme addresses the critical need for domain-specialized multimodal models that move beyond general-purpose capabilities into high-stakes professional settings where accuracy is not optional.\n\n[3] Liu et al. present NeoRed, the first multimodal large language model specifically designed for neonatal respiratory disease diagnosis. Their work addresses two fundamental obstacles: the domain shift caused by training primarily on adult medical data and insufficient integration of multidimensional clinical context. They contribute two real-world clinical datasets (NeoCXR and NeoCXR-EV) and architect NeoRed with a knowledge-logic-alignment mechanism that systematically incorporates clinical reasoning patterns. This represents a significant step toward trustworthy AI assistance in a clinical domain where both underdiagnosis and overdiagnosis carry severe consequences.\n\n[4] Hasan et al. tackle an extraordinary technical challenge: reading handwritten Bengali legal land records (RS Khatians) that use the Ana-Ganda-Kora-Kranti-Til system—a base-16 positional fraction notation rendered in bespoke Unicode glyphs unsupported by any mainstream font, tokenizer, or OCR pipeline. Their KhatianDoc benchmark, built from 107 real records from the Munshiganj land office, spans four tasks from symbol recognition through document-level understanding. This work is remarkable not only for its technical contribution but also because it addresses a document type that remains the authoritative title record for millions of parcels and a frequent subject of civil litigation, giving the work profound socioeconomic significance.\n\n[6] Shen et al. investigate a deceptively simple yet notoriously difficult problem for MLLMs: reading measurement instruments in industrial settings. Their InSituMeasure benchmark moves beyond existing gauge-reading tests by embedding measurements in realistic situated contexts—with specialized instruments, real-world noise, sequential measurement operations, and matched diagnostic annotations for root-cause analysis. By revealing that current MLLMs remain unreliable for continuous-valued measurement despite strong performance on general multimodal benchmarks, this work underscores that industrial deployment demands evaluation protocols far closer to task reality than current standard benchmarks provide.\n\n[7] Chatzidimitriou and Tserpes address a finer-grained problem in sports analytics: determining injury-associated sessions from minute-resolution athlete monitoring data where injury labels exist only at session level. Their innovation is a fixed-landmark, one-representation-per-athlete-session formulation that circumvents the incorrect assumption that injury status is known at each minute. This methodologically careful approach to temporal label granularity provides a template for other domains where high-frequency sensor data must be reconciled with sparse, session-level outcomes.\n\n## The Question of Training Methodology\n\n[8] Park and Chang isolate a technical but crucial question in the RL-based post-training of reasoning models: how much can principled replay selection alone improve training efficiency? They introduce Headroom-Drift Replay, a technique that addresses the growing bottleneck of fresh rollout generation in agentic settings where environment interaction dominates computational cost. By testing whether replay can be disentangled from the exploration strategies, experience restructuring, and mixed-policy optimization that typically accompany it, this work provides the community with a clean primitive for understanding one component of what has become a complex, interdependent training pipeline. While the abstract cuts off mid-sentence without full results, the contribution of isolating replay selection from larger frameworks offers value to researchers seeking a controllable knob on training cost.\n\n## Key Takeaways\n\n- **Overcompliance is a safety issue**: GUI agents that succeed on feasible tasks often fail to detect and refuse conflicting instructions, highlighting that \"when to abstain\" is as important as \"how to act\" for reliable autonomy.\n\n- **High benchmark scores can mask shallow understanding**: Across culinary reasoning and sign language translation, models achieving near-ceiling performance on standard metrics reveal significant knowledge gaps when tasks are redesigned to require genuine cross-modal understanding rather than visual or linguistic pattern matching.\n\n- **Domain specialization requires architectural and data-level innovation**: High-stakes applications (neonatal medicine, land records, industrial measurement) need bespoke benchmarks built on real-world data, paired with models whose inductive biases align with domain knowledge—not just larger general-purpose systems.\n\n- **Underserved languages and scripts reveal structural gaps in multimodal AI**: Bengali legal land records and sign language both expose tokenization, OCR, and evaluation gaps that stem from prioritizing spoken/written high-resource languages in model and benchmark design.\n\n- **Metric choice determines research direction**: The demonstration that BLEU-4 inadequately reflects sign language proficiency serves as a broader warning that the community must continuously interrogate whether its evaluation instruments actually measure the capabilities they claim to.\n\n- **Situated realism changes model rankings**: Moving from isolated visual tasks to context-rich scenarios—whether reading gauges in industrial settings or understanding cooking procedures across cultures—produces substantially different conclusions about model competence.\n\n- **Efficient RL training can be decomposed and studied**: Headroom-drift replay demonstrates that individual components of complex RL post-training pipelines can be isolated and analyzed, enabling the community to build principled understanding rather than relying on monolithic, hard-to-interpret training recipes.",
+    "papers": [
+      {
+        "title": "Do GUI Agents Know When Not to Act? Enabling Conflict-Aware Termination for Multimodal GUI Agents",
+        "url": "",
+        "authors": [
+          "Zhaoyuan Huang",
+          "Tianjie Ju",
+          "Pengzhou Cheng",
+          "Zheng Wu",
+          "Yansi Li",
+          "Chuanbiao Song",
+          "Jun Lan",
+          "Huijia Zhu",
+          "Weiqiang Wang",
+          "Zhuosheng Zhang"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "CulturalMenuBench: Probing the Knowledge-Application Gap in Multimodal Culinary Reasoning",
+        "url": "",
+        "authors": [
+          "Bo Zeng",
+          "Linfeng Gao",
+          "Peiqin Lin",
+          "Yu Zhao",
+          "Mingyan Zeng",
+          "Yu Tong",
+          "Xintong Wang",
+          "Linlong Xu",
+          "Longyue Wang",
+          "Weihua Luo",
+          "Qinggang Zhang",
+          "Jinsong Su"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "NeoRed: A Knowledge-Logic-Alignment Multimodal Large Language Model for Neonatal Respiratory Disease Diagnosis",
+        "url": "",
+        "authors": [
+          "Yinan Liu",
+          "Hongtai Xia",
+          "Haoran Xu",
+          "Jiankang Hong",
+          "Jingkuan Song",
+          "Ye Luo"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "KhatianDoc: A Human-Verified Benchmark Diagnosing Multimodal LLM Failure on Bengali Legal Land Records",
+        "url": "",
+        "authors": [
+          "Tasmiad Hasan",
+          "Arafat Zaman Ratul",
+          "Sarker Sadman Saalim",
+          "S. M. Shah Nawaz Hossain",
+          "Khan Raiyan Ibne Reza",
+          "Sumaiya Tabassum Nimi"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Beyond BLEU: A Case for Redefining Sign Language Translation Benchmarks",
+        "url": "",
+        "authors": [
+          "Oline Ranum",
+          "Edward Fish",
+          "Simon Hadfield",
+          "Richard Bowden"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "InSituMeasure: Probing Situated Measurement Grounding in Industrial Scenes with Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Chao Shen",
+          "Xinyuan Li",
+          "Yunfan Zhou",
+          "Jianguo Yao",
+          "Haibing Guan",
+          "Zhihai Wang",
+          "Xijun Li"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Landmark-Based Discrimination of Injury-Associated Athlete-Sessions from Minute-Resolution Multimodal Football Monitoring Data",
+        "url": "",
+        "authors": [
+          "Evangelos Chatzidimitriou",
+          "Konstantinos Tserpes"
+        ],
+        "date": "2026-09-04"
+      },
+      {
+        "title": "Headroom-Drift Replay: A Primitive for Principled Replay Control in GRPO",
+        "url": "",
+        "authors": [
+          "Hyun Bin Park",
+          "Du-Seong Chang"
+        ],
+        "date": "2026-09-04"
+      }
+    ]
+  }
+]
