@@ -1,0 +1,235 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-08",
+    "paperCount": 7,
+    "markdown": "# Bridging Symbolic and Subsymbolic: New Frontiers in Mechanistic Interpretability\n\nToday's research landscape reveals a maturing field where interpretability techniques are being stress-tested across architectures, languages, and application domains. From extending mechanistic interpretability to Turing machines and state-space models, to systematically evaluating multilingual metrics and questioning attribution faithfulness, these papers collectively push beyond transformer-centric analysis toward more universal and robust interpretability frameworks.\n\n## Extending Mechanistic Interpretability Beyond Transformers\n\nThe interpretability toolkit has been predominantly developed for transformer architectures, but two papers challenge this narrow focus by investigating whether established techniques transfer to fundamentally different computational paradigms. [2] takes the concept of susceptibility—originally developed for neural networks—and demonstrates its applicability to Turing machines, providing both theoretical proofs and empirical validation that algorithmic structure can be probed through local loss landscape analysis. They establish that symmetries and path separations in implemented algorithms manifest as permutation symmetries and low-rank blocks in susceptibility matrices, validated on deterministic finite automata. This work is significant because it suggests a universal principle: the geometry of the loss landscape encodes algorithmic structure regardless of the computational substrate.\n\nComplementing this architectural generalization, [3] investigates whether refusal behavior in language models survives the transition from transformers to state-space models (SSMs). The authors discover that a single rigid rotation—which can only reorient a representation space without reshaping it—successfully aligns safety representations between architectures, implying that refusal mechanisms are not artifacts of attention but rather emergent properties of the training objective. This finding has profound implications for safety tooling: if safety representations are architecture-agnostic, interpretability and alignment techniques developed for transformers may transfer more readily to novel architectures than previously assumed. However, the paper also raises questions about whether other behavioral mechanisms exhibit similar cross-architectural persistence or if refusal is uniquely robust.\n\n## Symbolic Recovery and Continuous Optimization\n\nThe tension between continuous optimization and discrete symbolic structure represents one of the oldest challenges in interpretable machine learning. [1] introduces SMILE, a hybrid framework that addresses symbolic regression's fundamental limitations: slow convergence in combinatorial search spaces and inadequate exploitation of compositional structure. The approach operates in three stages—first analyzing data structure to identify compositional hierarchies, then performing continuous optimization, and finally recovering discrete symbolic forms. This bridging strategy is particularly compelling because it acknowledges that purely discrete search methods (like genetic programming) suffer from sample inefficiency, while purely continuous methods struggle with the inherent discreteness of symbolic structures. By unifying both paradigms, SMILE potentially offers faster convergence while maintaining the interpretability guarantees of closed-form expressions, addressing a critical bottleneck in deploying symbolic regression at scale.\n\n## Systematic Evaluation of Interpretability Methods\n\nTwo substantial empirical studies address a growing concern in the interpretability community: methods are often developed in isolation, and their disagreements may reflect measurement artifacts rather than genuine model properties. [4] conducts a comprehensive comparison of four cross-lingual sharing metrics (CKA, ANC, GMM dominance, and ILO) across 21 base models spanning five families and sizes from 125M to 14B parameters. The authors correlate each metric with cross-lingual transfer performance on five downstream tasks, revealing that these methods differ significantly in their quantification of representation sharing. Crucially, they identify anisotropy—the phenomenon where representations occupy a narrow cone in embedding space—as a driving factor behind metric disagreements, suggesting that many interpretability conclusions about multilingual models may be confounded by geometric properties of the representation space rather than genuine linguistic structure.\n\nSimilarly, [6] proposes a novel influence score that combines directional influence on logits with structural contribution within the residual stream for transformer interpretability. Applied to prompt injection detection using DeBERTa, the method enables multi-scale analysis across heads, layers, and networks, revealing distinct decision behaviors between correct and erroneous predictions. The authors position this as a compromise between fine-grained circuit analysis (which is computationally expensive and requires careful dissection) and purely attribution-based methods (which may miss structural information). This work addresses the practical need for interpretability tools that balance granularity with computational tractability, particularly for safety-critical applications like prompt injection detection.\n\n## Faithfulness and Validity in Applied Interpretability\n\nTwo papers grapple with the critical question of whether interpretability methods actually deliver what they promise in applied settings. [5] provides a counterfactual study of attribution methods for sales forecasting using a WaveNet-style dilated convolutional network trained on the full Corporacion Favorita grocery dataset (174,685 series over 1,688 days). The proposed post-hoc, architecture-agnostic counterfactual layer decomposes forecasts into contributions that sum exactly to the predicted value, avoiding the allocation artifacts observed with additive SHAP-style attribution. This exact-sum property is crucial for building trust in interpretability outputs, as approximate methods can systematically misallocate credit across features. The evaluation focuses on faithfulness—whether the attributions genuinely reflect the model's decision process rather than post-hoc rationalizations.\n\n[7] addresses a different form of validity in the context of agent-based models (ABMs) for energy policy analysis. Rather than using interpretability to understand deep models, the authors confront the opposite problem: when should large language models be used to generate behavioral assumptions, and how can we ensure those assumptions remain interpretable and reproducible? Their hybrid framework integrates bounded behavioral rubrics and structured scenario specifications into calibrated ABMs, deliberately avoiding the direct replacement of adoption models with LLM reasoning. This constraint reflects a sophisticated understanding that LLM-generated content, while rich and flexible, poses challenges for interpretability, reproducibility, and behavioral validity—properties that are non-negotiable in policy-relevant simulation. The approach suggests a middle path: LLMs augmenting structured models rather than substituting for them, preserving the interpretability guarantees of mechanistic models while benefiting from LLM-assisted exploration of behavioral and techno-economic scenarios.\n\n## Key Takeaways\n\n- **Mechanistic interpretability is architecture-agnostic**: Susceptibility analysis transfers from neural networks to Turing machines [2], and refusal directions in transformers align with state-space models via simple rotations [3], suggesting that algorithmic structure is encoded in loss landscape geometry regardless of computational substrate.\n\n- **Symbolic and continuous approaches need not be adversaries**: SMILE's hybrid framework [1] demonstrates that bridging continuous optimization with discrete symbolic recovery can potentially overcome the combinatorial search bottlenecks that have limited symbolic regression's scalability.\n\n- **Metric disagreement signals confounds, not necessarily model properties**: The systematic comparison of multilingual sharing metrics [4] reveals that anisotropy in representation spaces can drive interpretability methods to disagree, implying that geometric properties of embeddings must be carefully controlled before drawing conclusions about cross-lingual structure.\n\n- **Faithfulness requires exact accounting**: Attribution methods that provide approximate credit assignment (like SHAP-style approaches) can introduce allocation artifacts [5], highlighting the importance of exact-sum decompositions for building trustworthy interpretability tools in forecasting applications.\n\n- **Safety representations may transfer across architectures**: The finding that refusal mechanisms in transformers can be aligned to SSMs via rigid rotation [3] has significant implications for safety tooling, suggesting that alignment techniques developed for one architecture class may generalize more broadly than currently assumed.\n\n- **Practical interpretability requires balancing granularity and tractability**: The influence score framework [6] demonstrates that multi-scale analysis of attention heads can provide decision-relevant insights without the computational overhead of full circuit analysis, addressing a critical gap for deployed safety systems.\n\n- **Interpretability constraints should guide LLM integration**: Hybrid frameworks that use LLMs to enrich structured models while preserving interpretability guarantees [7] offer a principled path forward for domains where reproducibility and behavioral validity are essential, such as policy analysis.",
+    "papers": [
+      {
+        "title": "SMILE: Bridging Continuous Optimization and Discrete Symbolic Recovery",
+        "url": "",
+        "authors": [
+          "Mansooreh Montazerin",
+          "Antonio Ortega",
+          "Ajitesh Srivastava"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "Interpretability for Turing Machines",
+        "url": "",
+        "authors": [
+          "Billy Snikkers",
+          "Rumi Salazar",
+          "Daniel Murfet",
+          "Will Troiani"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "Locating and Steering Refusal Beyond Attention",
+        "url": "",
+        "authors": [
+          "Preethi Carmel Bosco",
+          "Gopalakrishnan Srinivasan"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "A Systematic Comparison of Multilingual Interpretability Methods Reveals Anisotropy-Driven Failures",
+        "url": "",
+        "authors": [
+          "Oskar Holmström",
+          "Marcel Bollmann",
+          "Marco Kuhlmann"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "How Faithful Is Attribution for Sales Forecasting? A Counterfactual Study",
+        "url": "",
+        "authors": [
+          "Glib Kechyn"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "Influence Score and Transformers interpretability: Measure of the Effective Impact of Attention Heads at inference time",
+        "url": "",
+        "authors": [
+          "Lisa Bouger",
+          "Yannick Teglia",
+          "Philippe Loubet Moundi"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "LLM-Assisted Behavioural and Scenario Augmentation for Agent-Based Energy Adoption Models",
+        "url": "",
+        "authors": [
+          "Iias Faiud",
+          "Hossein Khaleghy",
+          "Michael Schukat",
+          "Karl Mason"
+        ],
+        "date": "2026-09-08"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-08",
+    "paperCount": 3,
+    "markdown": "# Interpretable AI: From Feature Attribution to Structured, Verifiable Reasoning\n\nToday's research landscape shifts explainability beyond simple feature saliency toward structured, compositional representations and verifiable reasoning chains. The papers span model-agnostic explanation frameworks, enterprise knowledge grounding, and verifier-guided reasoning for transparent AI systems.\n\n## Structured Representations for Human-Interpretable Explanations\n\n## [1] ProToMEx: Topic-Based Explanation Paradigms\n\nProToMEx introduces Probabilistic Topic Models as a new paradigm for post-hoc explainability, addressing the fundamental limitation of feature-attribution methods in capturing combinatorial decision patterns. The framework learns latent \"topics\" representing distinct high-level reasons for classification, moving beyond feature importance to reveal the compositional logic behind model decisions. This model-agnostic approach provides rapid, interpretable explanations that articulate complex decision pathways in human-understandable terms, making it particularly valuable for domains where multiple interacting features drive outcomes. The work matters because it bridges the gap between statistical feature importance and the semantic reasoning humans naturally employ when explaining decisions.\n\n## Enterprise-Grounded Reasoning and Auditable AI\n\n## [2] Corporate Language Model: Sovereign Enterprise Intelligence\n\nThis paper diagnoses enterprise AI failures as stemming from missing structured organizational knowledge substrates rather than model limitations. The proposed CLM architecture treats tacit-knowledge capture, ontological grounding, sovereign deployment, and auditable actuation as co-designed from the start, addressing where RAG systems remain brittle and static playbooks cannot reason or adapt. The framework transforms fragmented enterprise knowledge into an executable intelligence layer with firm-specific ontological priors, enabling models to understand how organizations decide, negotiate, and execute. This approach matters for explainability because it makes enterprise AI decisions auditable and grounded in explicit organizational logic, solving the opacity problem in high-stakes business deployments.\n\n## Verifier-Guided Reasoning for Transparent Question Answering\n\n## [3] Gold-Anchored Explainable Reasoning with Symbolic Verification\n\nThis framework addresses the persistent problem of LLM explanations that are inconsistent or weakly grounded by integrating verifier-guided reasoning into the generation process. The approach combines gold-anchored QLoRA fine-tuning, task-aware symbolic routing between FOL/Z3 and physics solvers, and group-relative reinforcement learning from verifier feedback. Qwen2.5-3B-Instruct is adapted with field-weighted supervision anchored to authoritative answers, enabling transparent educational question answering where each response is associated with a verifiable reasoning path. This contribution matters for explainability in educational AI because it ensures that explanations are not just plausible but provably correct, using symbolic verification as an external grounding mechanism beyond the model's own confidence.\n\n## Methodological Advances in Explanation Verification\n\nThe combined insights from these papers suggest a trajectory from descriptive explanations toward normative, verifiable reasoning frameworks. ProToMEx provides the semantic vocabulary for human-interpretable explanations, CLM establishes the enterprise substrate for auditable decision-making, and the verifier-guided approach offers the technical mechanism for grounding explanations in external truth. Together, they address the three fundamental challenges of explainability: expressiveness (capturing combinatorial logic), grounding (anchoring to domain knowledge), and verification (ensuring correctness of stated reasoning).\n\n## Key Takeaways\n- Explanation methods are evolving from feature attribution toward structured topic-based representations that better capture combinatorial decision patterns [1]\n- Enterprise AI explainability requires architectural co-design of knowledge capture, ontological grounding, and auditability from the start [2]\n- Verifier-guided reasoning with symbolic solvers (FOL/Z3, physics engines) provides external grounding for LLM explanations, ensuring correctness beyond plausibility [3]\n- Mixture-of-experts routing combined with gold-anchored fine-tuning creates task-aware explanation pipelines that adapt reasoning strategies to domain requirements [3]\n- The convergence of probabilistic topic models with LLM reasoning suggests a hybrid approach where statistical patterns and semantic structures complement each other\n- Auditable AI systems require both interpretable intermediate representations and explicit decision logic that stakeholders can inspect and validate\n- The field is moving toward \"explanation as verification\" paradigms, where explanations are not post-hoc rationalizations but integral to the reasoning process itself",
+    "papers": [
+      {
+        "title": "ProToMEx: Rapid, Interpretable Explanations via Structured Representations",
+        "url": "",
+        "authors": [
+          "Athina Georgara",
+          "Adarsh Valoor",
+          "Sarvapali D. Ramchurn"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "Corporate Language Model (CLM): Transforming Tacit and Fragmented Enterprise Knowledge into a Sovereign, Auditable, and Executable Corporate Intelligence Layer",
+        "url": "",
+        "authors": [
+          "Fabricio C. Avini",
+          "Guilherme Trez"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "A Verifier-Guided Explainable Reasoning Framework with Gold-Anchored QLoRA, Task-Aware Mixture-of-Experts, and Group-Relative RLVR",
+        "url": "",
+        "authors": [
+          "Thi Kim Trang Vo",
+          "Nam Tien Le",
+          "Thi Kim Nguyet Vo",
+          "Minh Khang Tran",
+          "Duy Phuong Tran"
+        ],
+        "date": "2026-09-08"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-08",
+    "paperCount": 9,
+    "markdown": "# From Benchmarks to Bedside: Mapping the Multimodal AI Frontier Across Enterprise, Clinical, and Scientific Domains\n\nToday's research landscape reveals a decisive shift from generic multimodal capabilities toward domain-specific evaluation and deployment—spanning enterprise knowledge architectures, clinical physiological monitoring, veterinary medicine, and scientific document understanding. Across these papers, we see convergent efforts to diagnose *when* models fail (misbinding, misauthorization, causal disconnection), while simultaneously expanding evaluation coverage across languages, modalities, and adversarial conditions.\n\n## Advancing Clinical and Physiological Multimodal Benchmarks\n\nThe clinical domain receives substantial attention this cycle, with new benchmarks and biomarkers targeting critical gaps in evaluation coverage. [5] introduces MMTClinic, a benchmark specifically designed to evaluate LLMs on complex multimodal, multilingual, time-series-grounded clinical reasoning tasks—addressing the scarcity of datasets that reflect real-world complexity spanning temporal dynamics, multiple modalities, and linguistic diversity. The benchmark fills a critical void by testing whether medical AI systems can reason over longitudinal patient data in languages beyond English, making it a foundational resource for developing clinically reliable and linguistically inclusive diagnostic systems. In a complementary vein, [2] presents BioSync, which fuses cardiac, neural, behavioral, and speech measurements from wearables into a continuous composite digital biomarker (BSI) using multi-head self-attention over modality tokens augmented with a linear branch. Its architecture—grounded in latent-variable measurement theory—captures joint information across modalities that would be inaccessible to standard feature concatenation alone, with applications including remote patient monitoring and early detection of physiological deterioration. Together, these works underscore the growing expectation that clinical AI must integrate heterogeneous temporal modalities and perform robustly across linguistic contexts, not merely process static images or text.\n\nBeyond human medicine, [3] presents PetQA, a Korean long-form QA benchmark containing 10,076 text-only and 8,751 multimodal question-answer pairs for veterinary knowledge and clinical reasoning, grounded in expert-validated responses for dogs and cats. The benchmark uniquely provides annotations for question types and clinical conditions in its PetQA-Bench test split, and evaluates eighteen models across factuality and helpfulness dimensions. This contributes to expanding multimodal evaluation beyond human-centric domains, enabling the assessment of LLMs and LVLMs in specialized veterinary applications—representing an underserved but practically important direction for clinical reasoning research.\n\n## Diagnosing Failure Modes in Multimodal Systems\n\nA second thread focuses on precisely characterizing *how and why* multimodal systems fail, moving beyond aggregate accuracy metrics to mechanistic understanding. [6] formalizes the concept of *record authorization* in personalized multimodal models, identifying when a retrieved record may legitimately condition an answer through three joint conditions: subject presence, record-edge validity, and answer support. The authors construct RecordAuth-Diag, a 3,690-case matched diagnostic suite that isolates visual memory misbinding (VMM) failures by systematically perturbing image–record edges while controlling for other variables, with card removal and nonce relabeling analyses attributing these failures to the supplied records themselves. [8] takes a complementary causal approach, applying layer-wise causal interventions on video-text attention pathways to trace cross-modal information flow in generative multiple-choice settings spanning spatial, causal, and temporal visual reasoning. The finding that visual information is primarily integrated while processing candidate answers—rather than during initial video encoding—has direct implications for architecture design and training strategies, suggesting that current models may substantially underutilize visual evidence during early inference stages.\n\nFor a research community focused on building trustworthy multimodal systems, these diagnostic frameworks provide precisely the instrumentation needed to identify architectural and training bottlenecks. [8]'s causal tracing methodology and [6]'s targeted diagnostic suites represent templates that can be adapted to other multimodal tasks where understanding failure provenance—not just failure rates—is essential for systematic improvement.\n\n## Expanding Evaluation Coverage: Multilingual, Adversarial, and Workflow-Centered Paradigms\n\nCurrent evaluation practice undergoes significant pressure testing on multiple fronts this cycle. [7] presents MM-IFEval-Pro, a multilingual (Chinese and English) benchmark for instruction-following in vision-language models that addresses two critical gaps: limited language coverage and insufficient adversarial safety scenarios in existing multimodal instruction-following benchmarks. [9] offers a workflow-centered alternative paradigm in SciDocBench—124 expert-authored questions organized into seven research-assistant capability groups and 19 subtasks across five scientific domains—which evaluates whether models can support realistic scientific reading workflows requiring joint reasoning over text, equations, figures, tables, code, and datasets while preserving evidence provenance. This orientation toward functional task performance represents a substantive advance over isolated capability testing, more faithfully reflecting the complex multi-step processes that scientific document understanding systems must support in practice. Critically, it also introduces an accompanying data pipeline that may be reused to construct further benchmarks with similar rigor.\n\nThe breadth of these evaluation frameworks signals the field's maturation: it is no longer sufficient to demonstrate that a model *can* perform a task in a single language on curated examples; the research community now demands evidence of capability across languages, adversarial settings, and ecologically valid multi-step workflows.\n\n## Enterprise and Edge Architectures for Multimodal Agentic AI\n\nTwo papers reimagine the *deployment substrate* for multimodal and agentic systems. [1] introduces the Corporate Language Model (CLM) framework, arguing that enterprise AI failures stem not from model inadequacy but from the absence of a structured substrate encoding firm-specific decision-making, negotiation protocols, and execution logic. CLM co-designs tacit-knowledge capture, ontological grounding, sovereign deployment, and auditable actuation from the start, positioning itself as an alternative to brittle RAG pipelines that lack executable paths. The framework addresses a fundamental limitation of generic LLMs—\"no firm-specific ontological priors\"—by transforming fragmented enterprise knowledge into an auditable intelligence layer, with implications for compliance, governance, and organizational memory. [4] surveys diffusion language models (DLMs) as non-autoregressive alternatives for mobile edge agentic AI, where partial refinement, early exit, and controllable generation enable favorable quality-latency trade-offs compared to fixed sequential decoding of autoregressive Transformers. For edge agents operating under resource constraints, DLMs' ability to update multiple uncertain tokens in parallel and exploit bidirectional context offers a compelling architectural alternative.\n\n## Key Takeaways\n\n- **Domain-specific benchmarks are proliferating and maturing**: PetQA (veterinary) and MMTClinic (multilingual clinical time-series) extend evaluation beyond well-trodden general-purpose vision-language datasets, emphasizing expert annotation and real-world complexity.\n- **Failure-mode diagnosis is becoming a first-class research objective**: Work on visual memory misbinding [6] and causal information-flow tracing [8] shifts focus from aggregate performance metrics to mechanistic accounts of *where and why* multimodal reasoning breaks down.\n- **Multilingual and adversarial evaluation coverage remains inadequate**: MM-IFEval-Pro [7] highlights that instruction-following capability in VLMs is critically under-assessed outside English-dominant, safety-neutral settings.\n- **Workflow-centered evaluation paradigms represent a meaningful advance**: SciDocBench [9] asks whether models can support *realistic scientific-reading processes*—requiring joint reasoning over heterogeneous document elements—rather than isolated capabilities in artificial task demarcations.\n- **Multimodal physiological monitoring is moving toward composable biomarker architectures**: BioSync's [2] attention-based fusion over diverse physiological modalities provides a template for deriving clinically actionable indices from noisy wearable data.\n- **Deployment architectures are diverging productively**: CLM [1] emphasizes sovereign, auditable enterprise knowledge substrates while DLM-based edge agents [4] pursue flexible quality-latency trade-offs, reflecting that multimodal-agentic AI deployment must be contextualized by infrastructure constraints and governance requirements.",
+    "papers": [
+      {
+        "title": "Corporate Language Model (CLM): Transforming Tacit and Fragmented Enterprise Knowledge into a Sovereign, Auditable, and Executable Corporate Intelligence Layer",
+        "url": "",
+        "authors": [
+          "Fabricio C. Avini",
+          "Guilherme Trez"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "BioSync: Transformer-Based Cross-Modal Fusion for a Multimodal Physiological Digital Biomarker",
+        "url": "",
+        "authors": [
+          "Seyed Mahmoud Sajjadi Mohammadabadi"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "PetQA: Benchmarking Veterinary Knowledge and Clinical Reasoning",
+        "url": "",
+        "authors": [
+          "Taegyun Kim",
+          "Youngwook Ham",
+          "Jungwook Rhim",
+          "Ju-Hyun An",
+          "Sungkyu Park",
+          "Kunwoo Park"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "Diffusion Language Models for Mobile Edge Agentic AI: Foundations, Applications, and Challenges",
+        "url": "",
+        "authors": [
+          "Chenqi Li",
+          "Minghui Min",
+          "Dusit Niyato",
+          "Wei Ni"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "MMTClinic: Multimodal, Multilingual Time Series Question Answering and Reasoning Benchmark for Clinical Domain",
+        "url": "",
+        "authors": [
+          "Sourav Malakar",
+          "Harshit Nigam",
+          "Akash Ghosh",
+          "Sriparna Saha",
+          "Amlan Chakrabarti",
+          "Saptarsi Goswami",
+          "Priti Singh"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "Whose record is this? Diagnosing and authorizing record use in personalized multimodal models",
+        "url": "",
+        "authors": [
+          "Xinyu Mao",
+          "Junsi Li",
+          "Chenyang Liu",
+          "Haoji Zhang",
+          "Ming Sun"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "MM-IFEval-Pro: A Multilingual and Attack-Resistant Benchmark for Instruction-Following in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Changming Xiao",
+          "Zhenliang Ni",
+          "Jinhui He",
+          "Han Shu",
+          "Jie Hu"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "From Vision to Language: Investigating Causal Information Flow in Multimodal Decision-Making",
+        "url": "",
+        "authors": [
+          "Davide Testa",
+          "Hugh Mee Wong",
+          "Alessandro Lenci",
+          "Bernardo Magnini",
+          "Albert Gatt"
+        ],
+        "date": "2026-09-08"
+      },
+      {
+        "title": "SciDocBench: A Workflow-Centered Benchmark and Data Pipeline for Scientific Document Understanding",
+        "url": "",
+        "authors": [
+          "Shenxi Wu",
+          "Yuhong Liu",
+          "Haosong Zhang",
+          "Tongjin Zou",
+          "Yanxun Zhang",
+          "Gaochang Chen",
+          "Dun Liang",
+          "Jiaqi Wang",
+          "Zhecan James Wang",
+          "Yuhang Zang",
+          "Dahua Lin"
+        ],
+        "date": "2026-09-08"
+      }
+    ]
+  }
+]
