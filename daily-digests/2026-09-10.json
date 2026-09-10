@@ -1,0 +1,199 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-10",
+    "paperCount": 5,
+    "markdown": "# Interpretability Research Digest — September 10, 2026\n\nToday's interpretability research spans a remarkably wide methodological spectrum, from optimal tree induction and sparse-autoencoder-based topic modeling to LLM-as-a-judge frameworks and deployed clinical triage systems. A common thread is the push beyond surface-level explanations—top words, opaque reasoning chains, or greedy heuristics—toward structures that are simultaneously more expressive, more auditable, and more rigorously evaluable.\n\n## Optimal and Interpretable Tree-Based Models\n\n**Literati** [1] tackles a fundamental limitation of decision trees: while greedy top-down induction is fast, it produces suboptimal and unnecessarily complex trees, and existing optimal methods are restricted to axis-aligned threshold splits that cannot compactly capture non-linear feature effects. The authors introduce Literati, which extends optimal decision tree learning to Shape Generalized Trees (SGTs)—trees whose nodes learn univariate shape functions rather than simple thresholds—using an AO* search framework. The key claim is \"anytime optimality\": the method can return a provably optimal SGT under its search formulation while allowing interruptible, progressively improving solutions. This matters because it unites two usually opposing desiderata—global optimization guarantees and the node-level expressivity needed for compact, interpretable trees on tabular data.\n\n## Auditing and Evaluating Explanations\n\n**Auditable Emergency Triage for Maternal and Newborn Care in India** [2] addresses a concrete deployment problem at Noora Health, where nurses field over 50,000 WhatsApp medical queries monthly and must rapidly identify emergencies. The system uses an LLM to classify messages as emergencies and generate rationales, but the authors found the system opaque: mistake analysis required manually reading reasoning chains, which does not scale, and any prompt change forced full re-evaluation. The contribution is a redesign toward auditable triage, where interpretability is treated as an operational requirement—enabling systematic error analysis and efficient iteration—rather than an afterthought. This is a valuable case study in how interpretability constraints are shaped by real clinical workflows and human-in-the-loop escalation.\n\n**XAI-Arena** [3] confronts the evaluation bottleneck in explainable AI: comparing explanation quality typically depends on subjective human judgment, hurting reproducibility, scalability, and cross-study comparability. The authors propose an LLM-as-a-judge framework that performs multidimensional, stakeholder-sensitive assessments of XAI explanation quality in a scalable and reproducible manner. By structuring evaluation as an arena-style comparative protocol, XAI-Arena enables systematic head-to-head comparisons between explanation methods under configurable criteria. If validated, this could standardize how the field benchmarks explanations, though it also raises the recursive question of how much we can trust LLM judges—an issue the framework itself must address.\n\n## Interpretable Features Beyond Words\n\n**MonoTM** [4] investigates topic modeling through the lens of monosemantic features extracted by sparse autoencoders, motivated by the observation that top-ranked words give only a shallow picture of topic semantics. The framework explicitly decouples two roles that are usually conflated: document–topic mixture estimation and semantic interpretation of topics. Across three benchmark corpora, the authors show that these two objectives favor *different* SAE configurations—meaning the best SAE for inference is not necessarily the best for interpretability. This is an important negative-ish result for the \"one model, all purposes\" assumption and offers practical guidance for practitioners choosing SAE settings depending on whether downstream use is prediction or human sense-making.\n\n## Explainable ML in Scientific and Biomedical Domains\n\n**An Explainable Machine Learning Framework for Predicting Blood-Brain Barrier Permeability** [5] targets a pivotal problem in CNS drug development: identifying drug candidates that can cross the blood-brain barrier. Using the MoleculeNet BBBP dataset and RDKit, the author extracts fifteen physicochemical descriptors from 2,039 compounds and trains four supervised algorithms, including logistic regression, within an explainable framework. The work emphasizes transparency of descriptor contributions, connecting predictions to chemically meaningful properties rather than black-box scores. Its significance lies in demonstrating how lightweight, explainable models can support early-stage therapeutic screening where mechanistic insight into *why* a molecule is predicted permeable is as valuable as the prediction itself.\n\n## Key Takeaways\n- Interpretability is increasingly engineered into model *structure* (SGTs in Literati [1], auditable triage pipelines [2]) rather than bolted on post hoc as an explanation layer.\n- Optimality and expressivity are no longer treated as mutually exclusive: Literati [1] shows anytime-optimal search over learnable node functions is feasible, enabling compact trees on complex tabular data.\n- Deployment realities reshape interpretability requirements—Noora Health's system [2] treats explanation as an operational tool for error analysis and iteration at 50,000+ queries/month scale.\n- LLM-as-a-judge is emerging as infrastructure for XAI evaluation [3], promising reproducibility and scalability but introducing a new trust dependency on the judge model itself.\n- SAE-based topic modeling (MonoTM [4]) reveals that interpretability and inference quality are partially decoupled objectives, cautioning against single-configuration pipelines.\n- Domain science continues to be a stronghold of explainable ML [5], where descriptor-level transparency directly supports decision-making in drug discovery.\n- Across all five papers, the field is converging on evaluation and auditing—not just explanation generation—as the central open problem for trustworthy interpretability.",
+    "papers": [
+      {
+        "title": "Literati: Towards Anytime Optimal Shape Generalized Trees via AO*",
+        "url": "",
+        "authors": [
+          "Nakul Upadhya",
+          "Eldan Cohen"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "Auditable Emergency Triage for Maternal and Newborn Care in India",
+        "url": "",
+        "authors": [
+          "Shobhit Jagga",
+          "Aman Dalmia",
+          "Niharika Priyadarshini",
+          "Neelima Devadas",
+          "Amrita K Prasen",
+          "Nikhil Nalin",
+          "Santhosh SJ",
+          "Sreeram Nurani Ramasubramanian",
+          "Muhammed Afeer K",
+          "Anubhav Arora"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "XAI-Arena: Can LLMs Assess the Quality of XAI Explanations?",
+        "url": "",
+        "authors": [
+          "Yanfei Hu Fleischhauer",
+          "Alona Zharova",
+          "Nadja Klein",
+          "Stefan Feuerriegel"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "Beyond Top Words: MonoTM for Topic Modeling with Interpretable Monosemantic Features",
+        "url": "",
+        "authors": [
+          "Una Joh",
+          "Bei Yu"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "An Explainable Machine Learning Framework for Predicting Blood-Brain Barrier Permeability Using Molecular Descriptors",
+        "url": "",
+        "authors": [
+          "Fatemeh Mahmoudi"
+        ],
+        "date": "2026-09-10"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-10",
+    "paperCount": 9,
+    "markdown": "# Multimodal Research Digest: Benchmarks, Agentic Reasoning, and Robust Adaptation\n\nToday's multimodal research landscape is dominated by a push toward rigorous evaluation of speech and vision-language systems across underrepresented domains, alongside novel architectures for agentic reasoning and reliable deployment. A notable convergence emerges around treating multimodal understanding not as passive perception but as an active, structured reasoning process—whether through symbolic parsing, memory-driven loops, or contrastive path alignment.\n\n## Speech and Audio Understanding Benchmarks\n\nThe evaluation of speech-capable multimodal models is expanding beyond English-centric paradigms, with new benchmarks targeting geographic and domain-specific gaps. These efforts reveal that current systems struggle when confronted with linguistic diversity or specialized scientific terminology, underscoring the need for targeted evaluation infrastructure.\n\n**SEA-SpeechBench** [1] addresses the severe underrepresentation of Southeast Asian languages in speech understanding evaluation. The authors introduce the first large-scale multitask benchmark covering 11 SEA languages, comprising 97,194 samples across 99 evaluation sets and 597 hours of curated audio spanning 9 tasks in 3 categories including speech processing and semantic understanding. This benchmark fills a critical gap by providing standardized evaluation for a linguistically diverse region that has been largely ignored by existing English-centric frameworks, enabling more equitable assessment of audio and multimodal LLMs.\n\n**S³-Bench** [2] tackles the underexplored domain of scientific voice assistants powered by speech interaction models. The benchmark systematically evaluates MLLMs on scientific interactions, which introduce formidable challenges including rare technical terminology, spoken norms of abbreviations, and natural verbalization of symbolic expressions. By exposing performance gaps in specialized scientific domains, this work highlights that strong general voice assistant capabilities do not automatically transfer to technical fields, motivating domain-aware model development.\n\n## Medical and Clinical Multimodal Systems\n\nClinical applications of multimodal learning face unique constraints around data privacy, modality fusion, and the need for spatially or diagnostically meaningful outputs. Recent work addresses these challenges through federated architectures and source-level analysis frameworks.\n\n**EEGBind** [3] targets source-level detection of interictal epileptiform discharges (IEDs), which is relevant for presurgical evaluation and treatment planning. Unlike simple IED presence detection, this task requires assigning IED-positive activity to clinically meaningful brain-region categories—a challenge complicated by subtle source-region evidence, subject variability, class imbalance, and imperfect multimodal context. EEGBind introduces an EEG-centric multimodal binding approach to address these difficulties, advancing the clinical utility of automated EEG analysis beyond binary detection.\n\n**OmniMed-FL** [4] presents a robust multimodal federated learning framework for clinical diagnosis that simultaneously assesses medical imaging and patient records while complying with HIPAA and GDPR constraints. The system performs five-class clinical condition classification (Normal, Pneumonia, COVID-19, Pleural Effusion, Cardiomegaly) without centralized aggregation of sensitive patient data. This controlled systems study demonstrates that secure fusion of visual and textual context across distant networks is feasible, addressing a crucial void in privacy-preserving clinical AI deployment.\n\n## Agentic and Reasoning-Enhanced Video Understanding\n\nVideo understanding is shifting from fixed-context, single-pass inference toward adaptive, agentic frameworks that can actively acquire evidence and maintain memory across reasoning steps. This represents a fundamental reconceptualization of how multimodal models should process temporally distributed information.\n\n**VLX-VR** [5] introduces an agentic-aware video reasoning model trained within a Think–Memory–Observation loop framework. At each step, the model determines needed evidence, invokes read_memory or write_memory operations, incorporates returned observations, and decides whether to continue reasoning. This approach addresses the limitations of fixed video context and single-pass inference, enabling adaptive evidence acquisition when observations are incomplete, ambiguous, or conflicting—a critical capability for real-world video understanding where relevant information is distributed across visual, audio, textual, and temporal modalities.\n\n## Multimodal In-Context Learning and Reasoning Alignment\n\nMultimodal in-context learning methods often suffer from surface-level imitation of demonstrations rather than genuine reasoning path alignment. New frameworks address this by combining contrastive objectives with structured reasoning, while complementary work explores symbolic approaches to geometric reasoning that rival end-to-end multimodal models.\n\n**Beyond Surface Imitation** [6] proposes a contrastive modeling framework for reasoning path alignment in multimodal in-context learning. Existing MLLM ICL methods rely on surface-level imitation of demonstrations, making it difficult to align responses with the reasoning path required by multimodal inputs—a limitation that becomes more pronounced in complex tasks. The proposed framework combines contrastive learning to encourage deeper reasoning alignment, potentially unlocking further performance improvements in multimodal ICL.\n\n**From Symbolic Perception to Logical Deduction** [7] demonstrates that a pure LLM equipped with specialized modules can rival state-of-the-art LMMs on complex plane geometry problems. The framework integrates a Geometric Vision Parser that translates diagrams into symbolic form with a Symbolic Solver performing formal deductions, mitigating hallucination and opacity issues common in computationally intensive LMMs. This work suggests that structured symbolic pipelines remain competitive with end-to-end multimodal approaches for domains requiring rigorous logical deduction.\n\n## Robust Adaptation and Reliable Deployment\n\nDeploying multimodal systems in real-world settings requires addressing distribution shift, data quality issues, and the need for calibrated confidence estimates. Recent contributions tackle these challenges through on-policy distillation, lightweight uncertainty estimation, and adaptive training strategies.\n\n**OnPoKD** [8] introduces an on-policy distillation framework for vision-language model adaptation that treats distillation target construction as a dynamic training decision rather than a fixed recipe. Current methods construct targets uniformly from teacher predictions across all samples, which becomes unreliable under class and domain shifts and low-quality multimodal data. By making target construction adaptive and policy-driven, OnPoKD improves knowledge transfer from task-adapted teachers to compact students, addressing a key bottleneck in efficient VLM deployment.\n\n**ProbPlug** [9] addresses the underexplored problem of confidence calibration for LLM-based binary classification, introducing a lightweight confidence estimation framework that predicts output correctness using internal token features from a frozen LLM. The framework employs self-attention mechanisms to aggregate these features into reliable confidence scores. Given that prediction reliability remains a major obstacle to deployment in high-stakes scenarios, ProbPlug offers a practical solution for improving trustworthiness without requiring model retraining.\n\n## Key Takeaways\n\n- **Evaluation is becoming more inclusive and domain-specific**, with SEA-SpeechBench [1] and S³-Bench [2] exposing critical gaps in speech understanding for Southeast Asian languages and scientific domains respectively, challenging the field's English-centric and general-purpose assumptions.\n\n- **Agentic frameworks are reshaping video understanding**, as VLX-VR [5] demonstrates that Think–Memory–Observation loops enable adaptive evidence acquisition superior to fixed-context, single-pass inference for handling incomplete or conflicting multimodal observations.\n\n- **Symbolic and structured approaches remain competitive** with end-to-end multimodal models; the geometric reasoning framework [7] shows that pure LLMs with specialized parsing and solving modules can rival state-of-the-art LMMs while avoiding hallucination and opacity.\n\n- **Clinical multimodal AI is advancing toward privacy-preserving deployment**, with OmniMed-FL [4] demonstrating federated learning for joint image-text diagnosis and EEGBind [3] enabling source-level epileptiform discharge detection for presurgical planning.\n\n- **Reasoning path alignment, not surface imitation, is key to multimodal ICL**, as the contrastive framework [6] argues that aligning with required reasoning paths unlocks performance improvements that surface-level demonstration matching cannot achieve.\n\n- **Robust adaptation under distribution shift requires dynamic strategies**, exemplified by OnPoKD [8] treating distillation target construction as an adaptive decision rather than a fixed recipe, particularly important for low-quality multimodal data.\n\n- **Reliable confidence estimation is essential for high-stakes deployment**, with ProbPlug [9] offering a lightweight, frozen-LLM-compatible solution for calibrated binary classification confidence.",
+    "papers": [
+      {
+        "title": "SEA-SpeechBench: A Large-Scale Multitask Benchmark for Speech Understanding Across Southeast Asia",
+        "url": "",
+        "authors": [
+          "Jingyi Liao",
+          "Wenyu Zhang",
+          "Zhuohan Liu",
+          "Yingxu He",
+          "Geyu Lin",
+          "Xunlong Zou",
+          "Shuo Sun",
+          "Syed Ali Redha Alsagoff",
+          "Ai Ti Aw"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "$S^3$-Bench: Evaluating Speech Interaction Models as Scientific Voice Assistants",
+        "url": "",
+        "authors": [
+          "Heyang Liu",
+          "Jiayi Huang",
+          "Wenyang Xiao",
+          "Ziyang Cheng",
+          "Lixin Zhang",
+          "Zhen Liu",
+          "Miao He",
+          "Ronghua Wu",
+          "Qunshan Gu",
+          "Yanfeng Wang",
+          "Yu Wang"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "EEGBind: Detecting Source-Level Interictal Epileptiform Discharges via EEG-Centric Multimodal Binding",
+        "url": "",
+        "authors": [
+          "Muchen Li",
+          "Anglin Liu",
+          "Xuetian Gao",
+          "Ruijian Xu",
+          "Jintai Chen"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "VLX-VR: An Agentic-Aware Video Reasoning Model",
+        "url": "",
+        "authors": [
+          "Sheng Li",
+          "Peng Liu",
+          "Qianqian Zhang",
+          "Tiancheng Zhao"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "ProbPlug: A Plugin Uncertainty Network for Reliable Confidence in LLM Binary Classification",
+        "url": "",
+        "authors": [
+          "Jianzong Wang",
+          "Chuhang Liu",
+          "Botao Zhao",
+          "Zuheng Kang",
+          "Xulong Zhang",
+          "Xiaoyang Qu",
+          "Junqing Peng",
+          "Zhiewei Ye",
+          "Yayun He"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "Beyond Surface Imitation: Contrastive Modeling for Reasoning Path Alignment in Multimodal In-Context Learning",
+        "url": "",
+        "authors": [
+          "Mingbo Yang",
+          "Wenqiang Wang",
+          "Zhaolu Kang",
+          "Peng Chen",
+          "Yannan Chen",
+          "Sunshang Wang",
+          "Yan Xiao"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "From Symbolic Perception to Logical Deduction: A Framework for Guiding Language Models in Geometric Reasoning",
+        "url": "",
+        "authors": [
+          "Weichen Dai",
+          "Rafael Medeiros Cabral",
+          "Ziyi Shou",
+          "Yan Cao",
+          "Xin Shen",
+          "Dongcai Lu",
+          "Yi Zhou"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "On-Policy Distillation for Vision-Language Model Adaptation, an Effective Paradigm on Low-Quality Multimodal Data",
+        "url": "",
+        "authors": [
+          "Hongyuan Zhang",
+          "Xianda Guo",
+          "Yanlun Peng",
+          "Qianlong Yang",
+          "Yubin Guo",
+          "Pinhan Fu",
+          "Mulin Chen",
+          "Xiaozhen Qiao",
+          "Ping Luo"
+        ],
+        "date": "2026-09-10"
+      },
+      {
+        "title": "OmniMed-FL: A Robust Multimodal Federated Learning Framework for Clinical Diagnosis",
+        "url": "",
+        "authors": [
+          "Ayush Debnath",
+          "Ruelia Saha",
+          "Sudip Misra"
+        ],
+        "date": "2026-09-10"
+      }
+    ]
+  }
+]
