@@ -1,0 +1,312 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-11",
+    "paperCount": 5,
+    "markdown": "# Interpretability Across Reasoning, Search, and Science: A Multi-Domain Technical Digest\n\nToday's interpretability research spans an unusually wide methodological range—from rule-chaining symbolic solvers and graph-based audit tools to role-structured multi-agent architectures and diffusion-based neural decoding. A common thread is the conviction that *process-level* transparency, not just final-answer accuracy, is the true measure of an interpretable system.\n\n## Symbolic and Rule-Based Reasoning\n\n**Paper [1]** tackles the Abstraction and Reasoning Corpus (ARC), a benchmark explicitly designed to test cognitive generalization—the ability to infer abstract rules from only a handful of examples. Kar proposes a multi-stage rule-chaining framework that performs compositional reasoning simultaneously across symbolic, structural, and conceptual levels. The system integrates three complementary solvers: a deterministic rule-discovery module that induces atomic transformations via geometric, color, and object-based analysis, and a pattern-composition engine that reconstructs outputs through block merging, repetition, and spatial heuristics. The core contribution is demonstrating that interpretability need not come at the expense of compositional generality—explicitly chained rules make the reasoning trace inspectable at every stage, which is precisely what black-box ARC solvers cannot offer.\n\n## Auditing Agentic Search and Multi-Agent Systems\n\n**Paper [2]** introduces SearchAtlas, motivated by a sharp critique of current evaluation practice: LLM search agents are judged almost exclusively on final-answer accuracy, leaving the *process* of evidence retrieval entirely opaque. The framework converts long, difficult-to-parse search trajectories into structured graphs whose edges represent how evidence propagates across the reasoning trace—from the retrieving query to the final answer. Their automated parsing pipeline achieves a mean edge F1 of 86.0%, making graph-level analysis of search strategies practically viable. This matters because it reframes search-agent evaluation from outcome scoring to process auditing, revealing *how* credible evidence is marshaled against question constraints rather than merely whether the answer was right.\n\n**Paper [3]** addresses tactical coordination in multi-agent reinforcement learning for air combat, identifying two limitations: the absence of structured relational modeling that would let agents capture complex, time-varying interactions among battlefield entities, and the inability of flat architectures to explicitly model tactical roles and leadership structure. DRG-MAPPO responds with a hierarchical dynamic role-graph MARL architecture that imposes interpretable relational and role structure on the learned policy. The design makes the coordination logic inspectable—roles and entity relations become first-class, analyzable objects rather than emergent artifacts of a flat policy network. For interpretability research, this is a compelling case of architecture-level inductive bias serving as an explainability mechanism in safety-critical autonomous systems.\n\n## Generative Models for Neural Representation\n\n**Paper [4]** observes that multimodal brain state decoding has overwhelmingly focused on fusing paired modalities for prediction, largely ignoring how cross-modal correspondence could enrich training data and improve representation learning. CoMA-DiT is a bidirectional cross-modal Diffusion Transformer for latent augmentation that treats paired modalities as sources of *mutual generative supervision* rather than mere fusion inputs. The model conditions velocity prediction on the paired modality through cross-modal attention and adaptively injects the result, effectively using one modality to generate plausible latents for the other. The interpretability payoff is a more transparent account of how modalities inform one another—useful for understanding what a brain-state decoder has actually learned versus which paired signals it merely memorized.\n\n## Human-in-the-Loop and LLM-Based Model Auditing\n\n**Paper [5]** confronts a persistent tension in symbolic regression: genetic programming and grammatical evolution can derive explicit equations from multivariate data, but evolved models are frequently too complex or scientifically inconsistent to count as genuinely interpretable or plausible. The authors investigate whether LLMs can serve as post-hoc auditors of *physiological plausibility* in these symbolic models, evaluated through a clinician-facing case study. This positions LLMs not as model builders but as plausibility critics layered atop an already-symbolic pipeline—an intriguing inversion of the usual interpretability workflow. The clinician-evaluated design matters because it grounds the auditing question in domain expertise, testing whether LLM judgment aligns with what practitioners actually consider scientifically credible.\n\n## Key Takeaways\n- Process-level transparency is ascendant: SearchAtlas [2] and DRG-MAPPO [3] both argue that final-answer or final-reward metrics hide the reasoning structures that actually matter for trust.\n- Structured intermediates—rule chains [1], evidence graphs [2], role graphs [3]—recur as the mechanism by which interpretability is operationalized across otherwise unrelated domains.\n- Compositional generalization and interpretability can be jointly pursued: the rule-chaining framework [1] suggests explicit symbolic staging is a viable path on ARC rather than a handicap.\n- Architectural inductive bias is an underappreciated interpretability tool; encoding roles and relations [3] makes coordination logic auditable by design rather than by post-hoc probing.\n- Generative augmentation [4] offers a route to understanding cross-modal influence, reframing paired modalities as mutual supervision rather than static fusion inputs.\n- LLMs are emerging as meta-level auditors [5], evaluating the plausibility of other models' outputs—an inversion of the usual \"explain the LLM\" framing.\n- Human/clinical evaluation remains essential grounding: the plausibility question in [5] cannot be settled by automated metrics alone, suggesting interpretability research increasingly needs domain-expert validation loops.",
+    "papers": [
+      {
+        "title": "A Multi-Stage Rule-Chaining Framework for Compositional and Interpretable Cognitive Reasoning",
+        "url": "",
+        "authors": [
+          "Deblina Kar"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "SearchAtlas: Analyzing Agentic Search Strategies via Evidential Query Graphs",
+        "url": "",
+        "authors": [
+          "Jiacheng Sang",
+          "Mengyuan Li",
+          "Sanxing Chen",
+          "Yukun Huang",
+          "Yu Feng",
+          "Bhuwan Dhingra"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "DRG-MAPPO: Hierarchical Dynamic Role-Graph Multi-Agent Reinforcement Learning for Cooperative Air Combat",
+        "url": "",
+        "authors": [
+          "Junlin Liu",
+          "Chengwei Li",
+          "Yang Gao",
+          "Hui Chang",
+          "Xinchen Zhang",
+          "Zhijun Zhao",
+          "Hao Zhao"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Exploring Diffusion Transformers for Cross-Modal Augmentation in Multimodal Brain State Decoding",
+        "url": "",
+        "authors": [
+          "Ziwei Wang",
+          "Xingyi He",
+          "Hongbin Wang",
+          "Tianwang Jia",
+          "Bohan Fang",
+          "Dongrui Wu"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "LLMs as Post-hoc Auditors of Physiological Plausibility in Symbolic Regression: A Clinician-Evaluated Case Study",
+        "url": "",
+        "authors": [
+          "Jorge López-Varela",
+          "J. Ignacio Hidalgo",
+          "José-Manuel Muñoz",
+          "Omar Costilla-Reyes",
+          "Esther Maqueda",
+          "Jesus Moreno-Fernandez",
+          "Tomás González-Vidal",
+          "J. Manuel Velasco",
+          "Oscar Garnica"
+        ],
+        "date": "2026-09-11"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-11",
+    "paperCount": 2,
+    "markdown": "# Explainability's Pragmatic Turn: From Dashboards to Dialogue and Domain Auditing\n\nToday's papers reflect a maturation in explainability research, moving beyond generic saliency methods toward domain-aware, interactive, and multi-method auditing systems. The unifying thread is a recognition that explanations must be validated by the stakeholders who use them—clinicians, building operators, and model developers—not just measured by automated proxies.\n\n## Conversational and Interactive Explanation Interfaces\n\n**Explainability Assistant** [2] tackles the usability gap in XAI for energy forecasting, where complex symbolic regressors and black-box models are opaque to facility managers and building operators who lack ML expertise. The authors build a conversational interface that lets users query model behavior in natural language, addressing the rigidity of prior systems like TalkToModel, which relied on fixed custom grammars and constrained query templates. By loosening these constraints, the assistant supports dynamic, context-aware inquiry suited to operational decision-making in buildings. This matters because it reframes XAI as a dialogue rather than a static report, lowering the expertise barrier for the people who actually act on predictions.\n\n## LLMs as Explanation Auditors in Scientific Domains\n\n**LLM post-hoc auditing of symbolic regression** [1] confronts a persistent tension in genetic programming and grammatical evolution: evolved equations may be accurate yet scientifically implausible, undermining the interpretability that justified symbolic regression in the first place. The authors investigate whether LLMs can serve as post-hoc auditors of physiological plausibility, evaluated by clinicians rather than automated metrics alone. This clinician-in-the-loop design is the key methodological contribution, testing whether LLM judgments align with genuine domain expertise in a medical context. The work matters because it proposes a scalable plausibility filter for interpretable models, while honestly subjecting the LLM's own reliability to expert scrutiny.\n\n## Explanation Quality, Faithfulness, and Evaluation\n\nA recurring concern across this set is that explanation quality cannot be assumed from the existence of an explanation method. The conversational assistant [2] implicitly critiques dashboard-style XAI for providing \"limited flexibility,\" suggesting that explanation utility is a function of user context, not just technique. Similarly, the auditing study [1] treats plausibility as a property requiring external validation, not something intrinsic to an evolved equation's form. Together, these papers argue that explanation evaluation must incorporate the downstream consumer—whether a facility manager or a clinician—as the arbiter of whether an explanation is good enough.\n\n## Domain-Grounded Explainability in High-Stakes Applications\n\nBoth papers situate explainability in operational domains where misinterpretation carries cost: energy management [2] and clinical physiology [1]. In energy forecasting, explanations must translate into actionable building decisions for non-specialists; in symbolic regression for health data, equations must be not only predictive but physiologically coherent. This domain grounding pushes explainability away from benchmark-centric evaluation toward situated, stakeholder-validated assessment. It also highlights a shared design pattern: pairing a generative or symbolic model with an interpretive layer (conversational agent or LLM auditor) tailored to the domain.\n\n## Human-in-the-Loop Validation of Explanations\n\nThe most striking convergence is the elevation of human judgment as the ground truth for explanation quality. Paper [1] explicitly uses clinician evaluation to assess LLM plausibility auditing, while paper [2] designs for end-user inquiry by non-experts. This human-centric stance represents a methodological shift: instead of asking \"does this explanation satisfy a formal property?\", these works ask \"does this explanation help this person do their job correctly?\" That reframing has implications for how the field benchmarks XAI, favoring user studies and expert panels over purely computational faithfulness metrics.\n\n## Key Takeaways\n- Explainability is shifting from static dashboards to conversational, context-aware interfaces that lower the expertise barrier for non-ML stakeholders [2].\n- LLMs are being repurposed as post-hoc auditors of model plausibility, but their judgments are being validated against human domain experts rather than trusted by default [1].\n- Symbolic regression's interpretability promise is conditional: evolved equations can be accurate yet scientifically implausible, requiring explicit plausibility checks [1].\n- Prior conversational XAI systems like TalkToModel were limited by rigid query grammars; relaxing these constraints enables more flexible, dynamic inquiry [2].\n- Domain grounding—energy operations and clinical physiology—is driving evaluation toward situated, actionable explanations rather than benchmark scores [1][2].\n- Human-in-the-loop validation is emerging as the gold standard for explanation quality, complementing or replacing automated faithfulness metrics [1][2].\n- A common architectural pattern is pairing a predictive/symbolic model with an interpretive layer (conversational agent or LLM auditor) specialized to the domain [1][2].",
+    "papers": [
+      {
+        "title": "LLMs as Post-hoc Auditors of Physiological Plausibility in Symbolic Regression: A Clinician-Evaluated Case Study",
+        "url": "",
+        "authors": [
+          "Jorge López-Varela",
+          "J. Ignacio Hidalgo",
+          "José-Manuel Muñoz",
+          "Omar Costilla-Reyes",
+          "Esther Maqueda",
+          "Jesus Moreno-Fernandez",
+          "Tomás González-Vidal",
+          "J. Manuel Velasco",
+          "Oscar Garnica"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Explainability Assistant: A Conversational XAI Interface for Interpreting Energy Consumption Models",
+        "url": "",
+        "authors": [
+          "Rodion Krjutškov",
+          "Eduard Barbu",
+          "Nikos Sakkas",
+          "Sofia Yfanti"
+        ],
+        "date": "2026-09-11"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-11",
+    "paperCount": 16,
+    "markdown": "# Multimodal Research Digest — September 11, 2026\n\nToday's multimodal research landscape is marked by a turn toward robustness and grounding: papers increasingly interrogate *when* and *why* additional modalities actually help, rather than assuming fusion is universally beneficial. Alongside this critical stance, several works push multimodality into new application domains — from vessel trajectory prediction and solar forecasting to brain-state decoding and neuro-steered hearing — while benchmarks mature to stress-test long-horizon reasoning, hallucination, and evidence traceability.\n\n## Fusion Under Uncertainty and Modality Imbalance\n\nA recurring theme across today's papers is that multimodal fusion is fragile when modalities are unreliable, missing, or unevenly informative.\n\n**RiVaT-Fuse** [3] tackles image-metadata prediction where evidence reliability varies across samples and latent factors. Rather than choosing an aggregation architecture (concatenation, gating, modulation, attention) without a principled definition of what the fused representation means, the authors reframe fusion as sample-wise latent-state estimation within a reliability-calibrated variational tensor framework. This shifts the question from \"how do we combine features\" to \"what does the combined representation estimate,\" which matters for any setting where modality trustworthiness is heterogeneous.\n\nIn sentiment analysis, **Choi et al.** [4] address the degradation of text-centric fusion when modalities are partially missing or noisy at inference. Their semantic-aware completeness estimation quantifies how much sentiment-relevant information survives in incomplete data and uses this to guide reconstruction of missing semantics. This is a meaningful departure from treating missingness as a uniform corruption, instead measuring the *informational* deficit that matters downstream.\n\n**Kaffeza et al.** [8] deliver a pointed critique of optimization-based modality balancing in Multimodal Sentiment Analysis. Through a unified evaluation framework on CMU-MOSI and CMU-MOSEI, plus a theoretical diagnosis, they argue existing gradient- and loss-based balancing methods conflate fitting speed with discriminative contribution — promising more balance than they achieve. Their research agenda toward held-out discriminative modality valuation reframes the problem as one of measuring contribution, not equalizing training dynamics.\n\nFinally, **RAMamba-Net** [15] brings reliability-awareness to auditory attention decoding by fusing EEG with EOG. Combining Mamba-based temporal modeling with reliability-aware fusion, it targets the weak cross-modal interaction and sample-variation sensitivity that limit prior AAD approaches — a domain where robustness translates directly to clinical and assistive utility.\n\n## Reasoning, Grounding, and Hallucination in MLLMs\n\nThe second cluster centers on whether multimodal models' outputs are actually *supported* by evidence.\n\n**OmniHallu** [5] introduces a unified hallucination detection framework spanning comprehension and generation across image, video, and audio. Alongside it, the authors contribute OmniHallu-Bench, a 10,000-sample benchmark with claim-level human annotations covering six cross-modal categories. By moving beyond single-modality, single-task detection, this work enables cross-task diagnosis of where MLLMs misrepresent input semantics.\n\n**Sci-MMR** [6] benchmarks multi-step, evidence-grounded scientific reasoning in multimodal agents. Built on structured argument graphs, it tests whether predictions are supported by traceable evidence rather than merely whether final answers are correct — a crucial distinction for autonomous research agents expected to search literature, analyze experimental results, and generate hypotheses. The benchmark directly targets the gap left by final-answer-accuracy evaluation.\n\n**Mr.LHDR** [12] extends this concern to long-horizon deep research across eight categories. Each question is constructed from a hidden Node-Relation graph and requires an average of 12.1 interdependent evidence steps, exposing whether agents can sustain dependency-heavy research processes that medium-horizon benchmarks fail to test.\n\n**ReGround** [13] takes grounding into peer review: it links 10,267 reviewer comments to 16,274 evidence spans across 3,656 anonymized submissions. The insight — that author rebuttals often explicitly reference the submission content used to address critiques — enables a large-scale dataset for the hard problem of grounding comments in long multimodal documents.\n\n**Pengpun et al.** [2] contribute a related structural insight for multilingual entity linking: rarity should be measured not only by popularity (e.g., pageviews) but by knowledge-graph structural metrics capturing how well an entity is documented and connected. Their broader rarity definitions expose failure modes that drop state-of-the-art accuracy by 15.4–39.9%, showing that how we define \"rare\" determines which weaknesses we detect.\n\n## Multimodal Forecasting and Signal Understanding\n\nSeveral papers apply multimodal thinking to physical and temporal signals where complementary evidence carries genuine predictive value.\n\n**M3-Former** [1] enhances long-term vessel trajectory prediction with LLM-derived semantic priors. Static vessel attributes and navigational intent are encoded by a pre-trained LLM and aligned with dynamic trajectory features in a unified multimodal representation space, addressing behavioral multimodality, limited semantic utilization, and long-term error accumulation — three persistent challenges in maritime prediction.\n\n**Chen et al.** [11] fuse ground-based sky images with time-series data for solar forecasting, recognizing that cloud-induced ramps dominate errors at short horizons and that historical numerical data alone cannot anticipate incoming clouds. Their bidirectional multimodal fusion leverages LLMs, with attention to the site-specific data scarcity that plagues photovoltaic and GHI forecasting.\n\n**Andrews and Mengaldo** [10] ask a deceptively fundamental question: when does a text annotation actually inform a forecast? They construct a synthetic benchmark with semantically correct, incorrect, and irrelevant annotations to test whether information-theoretic metrics can reliably measure an annotation's predictive value — providing ground truth where none previously existed.\n\n**CoMA-DiT** [14] takes a different angle on multimodal brain-state decoding: instead of merely fusing paired modalities, it uses them as mutual generative supervision. The bidirectional cross-modal Diffusion Transformer performs latent augmentation, enriching training data by exploiting modality correspondence — a novel use of diffusion transformers beyond generation.\n\n## Multimodal Agents and Communication-Efficient Deployment\n\nEfficiency and embodied deployment round out the landscape.\n\n**EMMI** [7] targets MLLM inference on resource-constrained edge platforms. Rather than transmitting raw sensor observations or partitioning networks at intermediate layers, EMMI communicates compact fused representations between edge devices — a communication-first framing of the edge intelligence problem that could reshape how heterogeneous sensor deployments are architected.\n\n**Luque et al.** [16] report the Eloquence team's Interspeech 2026 MLC-SLM Task 2 submission on multilingual MCQA across 21 languages. Their progression is instructive: LoRA fine-tuning of Voxtral-Mini-3B with cross-lingual and ASR-transcript augmentation reached 0.72 macro-accuracy, while multimodal in-context learning on frozen Voxtral-24B corrected a strong label bias to reach 0.81 — suggesting that inference-time multimodal ICL can outperform substantial fine-tuning for multilingual audio understanding.\n\n## Datasets for Human-Centric Multimodal Understanding\n\nTwo contributions enrich the data resources available for affect, humor, and multimodal fusion research.\n\n**MultiHuSE** [9] introduces 2,407 high-definition videos of 50 demographically diverse actors performing 1,463 text samples across four psychological humor styles (affiliative, aggressive, self-enhancing, self-deprecating) plus neutral content. By pairing psychological dimensions of humor with multimodal expression, it moves beyond binary classification toward richer computational models of verbal humor.\n\n**ReGround** [13] (discussed above) similarly represents a dataset contribution aimed at a previously unbenchmarked task, while **OmniHallu-Bench** [5] and **Mr.LHDR** [12] provide the evaluation infrastructure that hallucination and long-horizon research have lacked.\n\n## Key Takeaways\n\n- **Reliability, not just fusion, is the frontier.** RiVaT-Fuse [3], RAMamba-Net [15], and Choi et al. [4] all show that modeling *when* a modality can be trusted — via variational latent-state estimation, reliability-aware gating, or completeness estimation — outperforms architecture-level fusion choices alone.\n- **Optimization-based balancing in MSA is theoretically flawed.** Kaffeza et al. [8] provide both empirical and theoretical evidence that gradient/loss balancing conflates fitting speed with discriminative contribution, urging a shift toward held-out modality valuation.\n- **Grounding and traceability are becoming first-class evaluation criteria.** Sci-MMR [6], Mr.LHDR [12], ReGround [13], and OmniHallu [5] all evaluate whether outputs are *supported by evidence*, not merely correct — a decisive shift for agents and MLLMs.\n- **How you define rarity determines what failures you find.** Structural knowledge-graph metrics [2] expose rare-entity failure modes invisible to popularity-based metrics, with accuracy drops of 15.4–39.9%.\n- **Complementary physical signals carry irreplaceable information.** Sky images for solar ramps [11] and EOG alongside EEG for auditory attention [15] demonstrate that some modalities contribute information no amount of historical numerical data can substitute.\n- **Multimodality can supervise, not just fuse.** CoMA-DiT [14] reframes paired modalities as mutual generative supervision for latent augmentation, opening a diffusion-transformer route to data enrichment in brain decoding.\n- **Inference-time multimodal ICL can rival fine-tuning.** The Eloquence submission [16] shows frozen-model multimodal ICL (0.81) beating LoRA fine-tuning (0.72) on multilingual MCQA, with label-bias correction as the key lever.\n- **Benchmarks are maturing toward long-horizon, dependency-heavy, cross-modal evaluation** spanning image, video, and audio [5, 6, 12], with human-centric affect and humor resources like MultiHuSE [9] filling longstanding data gaps.",
+    "papers": [
+      {
+        "title": "M3-Former: Multimodal Transformer with Mixture-of-Experts for Long-Term Vessel Trajectory Prediction",
+        "url": "",
+        "authors": [
+          "Wenzhe Jin",
+          "Haina Tang"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Think Before You Link: Rarity, Reasoning, and Retrieval in Multilingual Entity Linking",
+        "url": "",
+        "authors": [
+          "Parinthapat Pengpun",
+          "Simran Khanuja",
+          "Graham Neubig"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "RiVaT-Fuse: Reliability-Calibrated Variational Tensor Fusion for Multimodal Prediction under Modality Uncertainty",
+        "url": "",
+        "authors": [
+          "Yingfan Xu",
+          "Tieming Liu",
+          "Ye Liang",
+          "Taiping Liu"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Robust Multimodal Sentiment Analysis with Incomplete Modalities via Semantic-aware Completeness based Reconstruction",
+        "url": "",
+        "authors": [
+          "Han-Jun Choi",
+          "Byunggill Joe",
+          "Saim Shin",
+          "Jin Yea Jang"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "OmniHallu: Unified Hallucination Detection for Cross-Modal Comprehension and Generation in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Jianjiang Yang",
+          "Peihang Li",
+          "Shanqing Xu",
+          "Mengchen Qian",
+          "Lu Zhang",
+          "Meng Luo"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Sci-MMR: Benchmarking Multi-Step Evidence-Grounded Scientific Reasoning in Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Jiaqiang Li",
+          "Yajie Yang",
+          "Zhiheng Xi",
+          "Jiadong Chen",
+          "Enyu Zhou",
+          "Senjie Jin",
+          "Yang Nan",
+          "Jiazheng Zhang",
+          "Han Wang",
+          "Yanxin Li",
+          "Dingwei Zhu",
+          "Bicheng Deng",
+          "Yuhui Wang",
+          "Xiang Zheng",
+          "Qi Zhang",
+          "Lei Bai",
+          "Xingjun Ma",
+          "Tao Gui"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "EMMI: Edge Multi-Modal Intelligence for Communication-Efficient MLLM Inference via Fused Representation Compression",
+        "url": "",
+        "authors": [
+          "Motahare Mounesan",
+          "Irfan Khan"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "The Illusion of Balanced Multimodal Sentiment Analysis: Beyond the Limits of Optimization-Based Methods",
+        "url": "",
+        "authors": [
+          "Ioanna Kaffeza",
+          "Efthymios Georgiou",
+          "Alexandros Potamianos"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "MultiHuSE: A Multimodal Dataset for Humour Styles and Emotions",
+        "url": "",
+        "authors": [
+          "Mary Ogbuka Kenneth",
+          "Foaad Khosmood",
+          "Abbas Edalat"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "When Does Text Inform? Benchmarking Information-Theoretic Metrics for Multimodal Time-Series Forecasting",
+        "url": "",
+        "authors": [
+          "Emma Andrews",
+          "Gianmarco Mengaldo"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Bidirectional Multimodal Fusion of Sky Images and Time-Series for Solar Forecasting with Large Language Models",
+        "url": "",
+        "authors": [
+          "Ken Chen",
+          "Maneesha Perera",
+          "Wei Wang",
+          "Sachith Seneviratne",
+          "Hansani Weeratunge",
+          "Saman Halgamuge"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Mr.LHDR: A Benchmark for Multimodal Real-World Long-Horizon Deep Research Agents",
+        "url": "",
+        "authors": [
+          "Minghao Guo",
+          "Meng Cao",
+          "Sui Zhao",
+          "Siyu Ning",
+          "Xin Wang",
+          "Haoze Zhao",
+          "Jiaxuan Yang",
+          "Haihong Hao",
+          "Mingfei Han",
+          "Shunlin Rong",
+          "Haijun Wu",
+          "Xiaodan Liang",
+          "Xiaojun Chang"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "ReGround: Grounding Reviewer Comments in Multimodal Evidence",
+        "url": "",
+        "authors": [
+          "Serwar Basch",
+          "Lizhen Qu",
+          "Iryna Gurevych"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "Exploring Diffusion Transformers for Cross-Modal Augmentation in Multimodal Brain State Decoding",
+        "url": "",
+        "authors": [
+          "Ziwei Wang",
+          "Xingyi He",
+          "Hongbin Wang",
+          "Tianwang Jia",
+          "Bohan Fang",
+          "Dongrui Wu"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "RAMamba-Net: A Reliability-Aware and Mamba-Based Multimodal Fusion Network for Auditory Attention Detection",
+        "url": "",
+        "authors": [
+          "Xingyi He",
+          "Ziwei Wang",
+          "Dongrui Wu"
+        ],
+        "date": "2026-09-11"
+      },
+      {
+        "title": "The Eloquence submission for Task 2 of the Interspeech 2026 MLC-SLM challenge",
+        "url": "",
+        "authors": [
+          "Jordi Luque",
+          "Lorenzo Concina",
+          "Marco Matassoni",
+          "Alessio Brutti",
+          "Filippo Vella"
+        ],
+        "date": "2026-09-11"
+      }
+    ]
+  }
+]
