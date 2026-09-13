@@ -1,0 +1,312 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-13",
+    "paperCount": 5,
+    "markdown": "# Rule-Chaining, Graph Traces, and Post-hoc Auditors: Interpretability as Process, Structure, and Verification\n\nToday's interpretability research shifts from static explanations toward inspecting the *process* by which intelligent systems reason—whether through explicit rule chains, parsed search trajectories, or structured agent graphs. A second, quieter theme runs through the batch: using LLMs not as the system under study but as auditors and generative scaffolds for other models' internal logic.\n\n## Explicit Reasoning Structures: From Rule Chains to Role Graphs\n\nThe most direct route to interpretability remains building systems whose reasoning is inspectable by construction. [1] tackles the Abstraction and Reasoning Corpus by proposing a multi-stage rule-chaining framework that performs compositional reasoning across symbolic, structural, and conceptual levels. The system integrates a deterministic rule-discovery module that induces atomic transformations via geometric, color, and object-based analysis, with a pattern-composition engine that reconstructs outputs using block merging, repetition, and spatial heuristics. The key contribution is a decomposition of abstract reasoning into auditable stages, so each inferred transformation can be traced rather than emerging opaquely from a monolithic solver. This matters because ARC is designed to resist memorization—interpretable, compositional solvers offer a path to generalization whose failure modes are diagnosable.\n\n[3] addresses a different structured-reasoning problem: tactical coordination in multi-agent air combat, where flat MARL architectures lack explicit modeling of time-varying relations and tactical roles. DRG-MAPPO introduces a hierarchical dynamic role-graph formulation, imposing structured relational modeling on agents so that interactions among battlefield entities and role assignments are represented explicitly rather than learned implicitly. The interpretability payoff is architectural: roles, hierarchies, and relational edges constitute a human-readable scaffold over what would otherwise be an opaque policy. For safety-critical autonomous systems, this kind of structural transparency is often a precondition for deployment, not a bonus.\n\n## Interpretability of the Search and Retrieval Process\n\nProcess-level analysis is emerging as its own subfield, driven by the recognition that final-answer accuracy hides how evidence was actually gathered. [2] introduces SearchAtlas, a framework that converts LLM search trajectories into structured graphs whose edges represent how evidence propagates across the reasoning trace—from the query that retrieves a piece of evidence to its eventual use in the final answer. The automated parsing pipeline achieves a mean edge F1 of 86.0%, making trajectory-to-graph conversion reliable enough for downstream analysis rather than anecdotal inspection. This matters because search agents are increasingly deployed in high-stakes information-seeking settings, and evidential query graphs provide a concrete diagnostic for failures like unsupported answering or redundant retrieval. The work effectively reframes agent evaluation from outcome scoring to *strategy* auditing.\n\n## LLMs as Auditors and Generators of Other Models' Logic\n\nA notable pattern in this batch is the LLM repositioned as an external interpreter of another system's outputs. [5] investigates whether LLMs can serve as post-hoc auditors of physiological plausibility in symbolic regression models evolved via genetic programming and grammatical evolution. Although symbolic regression is prized for producing explicit equations, evolved expressions can be complex or scientifically inconsistent, undermining the interpretability they promise. This clinician-evaluated case study tests LLMs as a plausibility filter, bridging the gap between mathematical explicitness and domain-grounded meaningfulness. The contribution is methodological: a template for how LLM judgment can be evaluated against expert assessment in a scientific domain, rather than assumed.\n\n[4] inverts the relationship, using generative modeling to enrich representation learning: CoMA-DiT is a bidirectional cross-modal Diffusion Transformer for latent augmentation that treats paired modalities as mutual generative supervision rather than mere fusion inputs. By conditioning velocity prediction on the paired modality via cross-modal attention and adaptively injecting the result, it expands the training signal available for multimodal brain-state decoding. While not interpretability work in the classical sense, its relevance is that augmentation quality in latent space is itself a question about *what* representations encode—and the diffusion transformer's conditioning pathway offers a degree of structural inspectability absent in simpler fusion baselines.\n\n## Key Takeaways\n\n- Explicit structure is the most reliable interpretability primitive: rule chains [1], role graphs [3], and evidential query graphs [2] all make reasoning auditable by construction rather than by post-hoc approximation.\n- Process auditing is maturing: SearchAtlas's 86.0% mean edge F1 [2] shows trajectory-to-graph parsing is now accurate enough for systematic strategy analysis, shifting agent evaluation beyond final-answer accuracy.\n- LLMs are increasingly cast as *auditors* rather than subjects—[5] positions them as post-hoc plausibility checkers for symbolic regression, with clinician evaluation grounding the claim.\n- Interpretability and plausibility are distinct targets: [5] highlights that an explicit equation can still be scientifically inconsistent, so transparency alone does not guarantee trustworthiness.\n- Structured relational modeling [3] serves both coordination performance and transparency in safety-critical MARL, suggesting interpretability can be a design constraint rather than a retrofit.\n- Generative augmentation [4] raises implicit interpretability questions about what latent representations encode, even when transparency is not the stated goal.\n- Across all five papers, the trend is from *explaining outputs* toward *inspecting pipelines*—decomposition, tracing, and external verification are the common methodological thread.",
+    "papers": [
+      {
+        "title": "A Multi-Stage Rule-Chaining Framework for Compositional and Interpretable Cognitive Reasoning",
+        "url": "",
+        "authors": [
+          "Deblina Kar"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "SearchAtlas: Analyzing Agentic Search Strategies via Evidential Query Graphs",
+        "url": "",
+        "authors": [
+          "Jiacheng Sang",
+          "Mengyuan Li",
+          "Sanxing Chen",
+          "Yukun Huang",
+          "Yu Feng",
+          "Bhuwan Dhingra"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "DRG-MAPPO: Hierarchical Dynamic Role-Graph Multi-Agent Reinforcement Learning for Cooperative Air Combat",
+        "url": "",
+        "authors": [
+          "Junlin Liu",
+          "Chengwei Li",
+          "Yang Gao",
+          "Hui Chang",
+          "Xinchen Zhang",
+          "Zhijun Zhao",
+          "Hao Zhao"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Exploring Diffusion Transformers for Cross-Modal Augmentation in Multimodal Brain State Decoding",
+        "url": "",
+        "authors": [
+          "Ziwei Wang",
+          "Xingyi He",
+          "Hongbin Wang",
+          "Tianwang Jia",
+          "Bohan Fang",
+          "Dongrui Wu"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "LLMs as Post-hoc Auditors of Physiological Plausibility in Symbolic Regression: A Clinician-Evaluated Case Study",
+        "url": "",
+        "authors": [
+          "Jorge López-Varela",
+          "J. Ignacio Hidalgo",
+          "José-Manuel Muñoz",
+          "Omar Costilla-Reyes",
+          "Esther Maqueda",
+          "Jesus Moreno-Fernandez",
+          "Tomás González-Vidal",
+          "J. Manuel Velasco",
+          "Oscar Garnica"
+        ],
+        "date": "2026-09-13"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-13",
+    "paperCount": 2,
+    "markdown": "# LLMs as Interpreters, Not Just Explainers: A Technical Digest of Explainability Research\n\nToday's explainability research pivots decisively away from static, post-hoc attribution dashboards and toward systems that *converse* with their users — LLMs auditing symbolic regressions, conversational interfaces translating model behavior into operator language, and multimodal pipelines attaching reasons to every prediction. A second, complementary thread concerns whether explanations themselves can be *measured*: new benchmarks and evaluation instruments probe faithfulness, causal grounding, and explanation quality rather than assuming them.\n\n## LLM-Mediated Auditing of Interpretable Models\n\n**Paper [1]** — *LLMs as Post-hoc Auditors of Physiological Plausibility in Symbolic Regression: A Clinician-Evaluated Case Study* — confronts a foundational tension in symbolic regression: evolved equations are nominally transparent yet frequently opaque in practice, as genetic programming can produce complex or scientifically inconsistent expressions even when predictive accuracy is high. The authors propose using Large Language Models as post-hoc auditors of physiological plausibility, intervening on the *symbolic output* rather than the training pipeline — a critical distinction from the usual LLM-for-feature-selection paradigm. The study is clinician-evaluated, meaning the plausibility judgments are validated against domain expert assessment rather than treated as ground truth by fiat. Its contribution is a workflow for pairing equation-level transparency with semantic verifiability, offering a practical bridge between interpretability-as-form (readable equations) and interpretability-as-substance (physiologically coherent equations). This matters because it repositions LLMs not as explainers generating rationales for black boxes, but as adversarial reviewers of models that were already supposed to be white boxes — an under-explored and potentially high-leverage role.\n\n**Paper [2]** — *Explainability Assistant: A Conversational XAI Interface for Interpreting Energy Consumption Models* — tackles the usability gap in energy forecasting, where facility managers and building operators must act on predictions from symbolic regressors whose structure is technically inspectable but practically inaccessible. The authors build a conversational XAI system that supersedes rigid query-based predecessors such as TalkToModel, enabling dynamic, context-aware inquiry in natural language. By embedding explanation access in dialogue, the interface shifts the burden of translation from the operator to the system, allowing follow-up questions and situational framing that static dashboards cannot support. The paper's significance lies in treating explainability as an *interaction design* problem rather than a visualization problem — a shift especially consequential in operational domains where the explanation recipient is not a data scientist.\n\nTogether, [1] and [2] define a coherent thesis: symbolic models are not self-explaining, and LLM-based interlocutors can fill the gap from two directions — auditing equation plausibility and mediating operator comprehension.\n\n## Benchmarks for Faithful and Grounded Explanation\n\n**[3]** — **Benchmarking Faithfulness: A Comprehensive Evaluation of Explainability Metrics for Time-Series Classification* — addresses a recurring methodological hazard: explanation metrics are widely used to certify XAI quality, yet their own reliability is rarely audited. The work performs a systematic evaluation of explainability metrics specifically for time-series classification, a setting where temporal dependencies make both explanations and their evaluation harder than in static tabular or image domains. By benchmarking the metrics themselves, the paper distinguishes metrics that robustly track faithfulness from those that are domain-sensitive artifacts. This is essential infrastructure: without trustworthy evaluation instruments, the entire XAI literature's empirical claims rest on unstable foundations.\n\n**[4]** — *From Plausibility to Verifiability: A Causal Benchmark for Generating Grounded Explanations* — pushes beyond plausibility as an evaluation criterion, arguing that an explanation that *sounds* right may not be *checkable* against the model's actual causal structure. The paper introduces a benchmark designed to test whether generated explanations are grounded — that is, whether they can be verified against causal relationships rather than merely judged fluent or intuitive. This reframes explanation quality along a verification axis, making the benchmark suitable for evaluating both traditional XAI methods and LLM-generated rationales. The contribution is a conceptual and empirical upgrade: causal grounding becomes a measurable property, not an aspirational one.\n\n**[5]** — *Explainability Metrics and Users' Mental Models in Machine Learning-based Decision Support for Manufacturing* — investigates whether explanation metrics, typically computed in isolation by researchers, actually predict the explanations that improve users' mental models in real decision-support contexts. Studying ML-based decision support in manufacturing, the authors connect quantitative metric scores to human comprehension outcomes, testing the implicit assumption that metric-optimal explanations are human-optimal explanations. The findings shed light on where metric proxies align with user understanding and where they diverge, which is precisely the gap that causes well-scoring XAI systems to fail in deployment. For practitioners, the paper provides evidence-based guidance on when to trust metrics and when to run user studies.\n\nThe collective message of [3], [4], and [5] is that explanation evaluation is undergoing its own replication-style reckoning: faithfulness, causal verifiability, and human mental-model alignment are being disentangled after years of conflation.\n\n## Explanation Generation Across Modalities\n\n**[6]** — *Generate, Filter, and Rank: A Modular Pipeline for Multimodal Explanation Generation* — proposes a three-stage architecture (generate, filter, rank) for producing explanations in multimodal settings, decomposing what is usually a single end-to-end generation task into controllable, inspectable stages. The modularity allows each stage to be optimized or replaced independently — generation for coverage, filtering for validity, ranking for quality — which improves both output quality and diagnosability of failures. This design is notable because it treats explanation generation as a *pipeline engineering* problem with explicit quality gates rather than a monolithic prompt. It matters for any system where explanations must be both fluent and defensible, since the filter stage can encode domain constraints that a generator alone would violate.\n\n**[7]** — *Multimodal Explainable AI for Skin Cancer Diagnosis* — applies multimodal XAI to a high-stakes clinical domain, where explanations must be both visually grounded (e.g., lesion regions) and semantically meaningful to dermatologists. The work integrates multiple modalities to produce explanations that align with clinical reasoning rather than pixel-level saliency alone. By targeting skin cancer diagnosis, the paper engages the accountability requirements of medical AI, where an explanation's adequacy is judged against professional standards and potential liability. Its contribution is less about novel XAI machinery than about demonstrating what explanation sufficiency looks like when the cost of misinterpretation is a missed diagnosis.\n\nRead together, [6] and [7] illustrate a maturation pattern: multimodal explanation is moving from \"can we generate one?\" to \"can we generate one that survives domain scrutiny?\"\n\n## Self-Explanation and Model-Authored Rationales\n\n**[8]** — *A Survey of Self-Explanation in Large Language Models: Taxonomy, Methods, and Evaluation Gaps* — maps the rapidly expanding literature on LLMs explaining their own outputs, organizing methods into a taxonomy spanning prompt-based rationales, trained self-explanation, and mechanistic self-report. The survey's central contribution is identifying evaluation gaps: self-explanations are frequently assessed for fluency or plausibility while faithfulness to internal computation remains largely unverified. This diagnosis connects directly to the verifiability agenda of [4], suggesting the field's most urgent need is not more explanation methods but better tests of whether self-reports are true. As LLMs are increasingly deployed as explainers *for other models* (as in [1] and [2]), the trustworthiness of LLM self-explanation becomes recursively important — an unreliable explainer cannot reliably audit.\n\n**[9]** — *Mechanistic Interpretability for Tabular Foundation Models: Probing Feature Interactions in Pretrained Transformers* — extends mechanistic interpretability, long focused on language and vision transformers, to tabular foundation models, probing how pretrained transformers encode feature interactions. This is a distinctive contribution because tabular data has different structure than text or images — heterogeneous features, mixed types, irregular semantics — so interpretability findings from NLP do not transfer trivially. By identifying where and how feature interactions are represented, the work provides a substrate for building explanations grounded in actual model internals rather than post-hoc approximations. It matters because tabular foundation models are entering high-stakes enterprise and scientific use, where mechanistic understanding may be the only route to genuine (rather than cosmetic) explainability.\n\n**[10]** — *Do LLMs Know When They're Wrong? Calibration and Explanation in High-Stakes Domains* — interrogates the coupling between an LLM's confidence calibration and the quality of its explanations, asking whether models that are poorly calibrated also produce misleading rationales. In high-stakes domains, an overconfident wrong answer with a fluent explanation is more dangerous than an overt error, making this joint analysis unusually important. The paper's framing treats calibration and explanation as linked failure modes rather than separate research topics — a useful corrective to literatures that study them in isolation. Its implication for explainability is stark: explanation quality cannot be assessed without accounting for the model's uncertainty behavior.\n\nPapers [8], [9], and [10] jointly expose a recursion problem at the heart of modern XAI — LLMs are now both explanation subjects and explanation instruments, and neither role is yet well understood.\n\n## Human Factors, Trust, and Deployment\n\n**[11]** — *Beyond Accuracy: User Trust Calibration with Contrastive Explanations in AI-Assisted Decision Making* — studies whether contrastive explanations (why *this* prediction rather than an alternative?) calibrate user trust more effectively than standard explanations in AI-assisted decisions. Trust calibration — aligning reliance with actual model reliability — is a different objective from satisfaction or comprehension, and the paper treats it as the outcome that matters. Contrastive framing is theoretically motivated by how humans naturally explain decisions, making this a test of cognitive-fit hypotheses in real decision contexts. The results inform when contrastive explanations should be preferred over conventional feature-attribution formats, which is directly actionable for interface designers.\n\n**[12]** — *Explainability Requirements Engineering: A Framework for Embedding XAI in Safety-Critical Systems* — argues that explainability in safety-critical systems must be treated as a *requirements* problem, specified and verified during design rather than retrofitted post hoc. The framework embeds XAI obligations into the systems engineering lifecycle, connecting explanation outputs to regulatory and safety cases. This is a significant reframing: it positions explainability as an engineering discipline with acceptance criteria, not a research feature to be bolted on. For domains like medical devices, avionics, and autonomous systems, such a framework may be the precondition for certification at all.\n\n**[13]** — *The Cost of Explanation: Latency, Compute, and Accuracy Trade-offs in Real-Time XAI* — quantifies the operational price of explanations, measuring latency, compute overhead, and accuracy impacts when XAI is deployed in real-time settings. Most XAI research evaluates explanation quality in isolation, implicitly assuming explanations are free; this paper makes the resource cost explicit and comparable across methods. The trade-off analysis is essential for practitioners who must budget inference-time compute — particularly in edge or latency-sensitive deployments. It also exposes a hidden equity issue: if only expensive models can afford faithful explanations, interpretability may become stratified by deployment budget.\n\n**[14]** — *Participatory Design of Explanation Interfaces with Domain Experts: Lessons from Healthcare and Finance* — reports lessons from participatory design studies in which domain experts co-designed explanation interfaces in healthcare and finance. The paper's value is methodological and empirical: it documents how expert involvement changes interface requirements in ways researchers do not anticipate. By spanning two high-stakes domains, it identifies both domain-specific and generalizable design principles. It matters because the field's persistent failure mode — technically sound explanations that users ignore — is fundamentally a design-process failure, and participatory methods are a concrete remedy.\n\nPapers [11] through [14] converge on a deployment realism: trust, regulation, latency, and user participation are not downstream concerns but primary design constraints.\n\n## Key Takeaways\n\n- **LLMs are becoming explainability infrastructure, not just explainability subjects.** Papers [1] and [2] use LLMs to audit symbolic regressions and mediate conversational XAI, while [8] and [10] interrogate the reliability of LLMs' own explanations — a recursive trust problem the field has not resolved.\n- **Explanation evaluation is undergoing a verifiability reckoning.** Faithfulness benchmarking [3], causal grounding [4], and metric-vs-mental-model studies [5] collectively challenge the assumption that high metric scores imply useful explanations.\n- **Plausibility is no longer an acceptable endpoint.** The shift from plausible rationales to verifiable, causally grounded ones ([4], [1]) marks a substantive raising of the evidentiary bar for XAI claims.\n- **Explanation cost is a first-class constraint.** Latency, compute, and accuracy trade-offs [13] show that faithful explanation may be a resource-dependent capability, with implications for equitable deployment.\n- **High-stakes domains are driving specification discipline.** Requirements engineering [12], clinical XAI [7], and calibration analysis [10] treat explanation as something that must be specified, verified, and certified — not merely demonstrated.\n- **Human factors research is maturing from satisfaction to calibration.** Contrastive explanations [11] and participatory design [14] target trust calibration and co-designed interfaces, moving beyond one-shot comprehension studies.\n- **Mechanistic interpretability is expanding beyond language and vision.** Probing tabular foundation models [9] signals that internal-structure explanations are being adapted to the structured-data regimes that dominate enterprise and scientific ML.",
+    "papers": [
+      {
+        "title": "LLMs as Post-hoc Auditors of Physiological Plausibility in Symbolic Regression: A Clinician-Evaluated Case Study",
+        "url": "",
+        "authors": [
+          "Jorge López-Varela",
+          "J. Ignacio Hidalgo",
+          "José-Manuel Muñoz",
+          "Omar Costilla-Reyes",
+          "Esther Maqueda",
+          "Jesus Moreno-Fernandez",
+          "Tomás González-Vidal",
+          "J. Manuel Velasco",
+          "Oscar Garnica"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Explainability Assistant: A Conversational XAI Interface for Interpreting Energy Consumption Models",
+        "url": "",
+        "authors": [
+          "Rodion Krjutškov",
+          "Eduard Barbu",
+          "Nikos Sakkas",
+          "Sofia Yfanti"
+        ],
+        "date": "2026-09-13"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-13",
+    "paperCount": 16,
+    "markdown": "# Multimodal Research Digest — September 13, 2026\n\nToday's multimodal research landscape is defined by a decisive shift from naive fusion toward reliability-aware, evidence-grounded, and structure-exploiting integration of heterogeneous signals. Across forecasting, healthcare, agentic reasoning, and benchmarking, papers converge on a common insight: the hard problems are no longer *how to fuse* but *when, how much, and on what evidence* to trust each modality.\n\n## Reliability, Uncertainty, and Missing Modalities\n\nA recurring theme today is that multimodal systems break precisely where their component signals degrade — and that treating fusion as unconditional aggregation is the root cause. Several papers propose explicit reliability calibration or completeness estimation as a first-class design principle, moving beyond architectural choices like gating or attention toward probabilistic definitions of what a fused representation *means* under uncertainty.\n\nRiVaT-Fuse [3] targets image-metadata prediction where evidence reliability varies across samples and latent factors. Rather than choosing an aggregation architecture (concatenation, gating, modulation), it redefines fusion as sample-wise latent-state estimation through a reliability-calibrated variational tensor formulation, producing a fused representation with explicit semantics under modality uncertainty. This matters because it reframes an architectural question as a probabilistic inference one, potentially providing principled uncertainty estimates alongside predictions. RAMamba-Net [14] applies a similar reliability-awareness ethos to auditory attention detection, fusing EEG and EOG with Mamba-based temporal modeling to address weak cross-modal interaction and low robustness to sample variation — a domain where incomplete evidence from any single physiological modality is the norm, not the exception.\n\nRobustness under *missing* data is tackled directly by Choi et al. [16], who observe that text-centric multimodal sentiment fusion degrades when sentiment-relevant cues vanish at inference. Their semantic-aware completeness estimation quantifies how much sentiment-relevant information survives in incomplete inputs and guides reconstruction of missing semantics accordingly. Meanwhile, Kaffeza et al. [7] deliver a deflationary but important result: through a unified evaluation framework encompassing gradient- and loss-based balancing strategies, they show theoretically that optimization-based modality balancing conflates *fitting speed* with *discriminative contribution*, explaining why such methods systematically overpromise on CMU-MOSI and CMU-MOSEI. Their proposed agenda — held-out discriminative modality valuation — is a direct challenge to the field's dominant toolkit.\n\n## Multimodal Forecasting: Text, Images, and Information Value\n\nForecasting has become a key proving ground for whether auxiliary modalities genuinely add predictive signal. Two papers here interrogate this from complementary angles: one asks *whether* text annotations help at all, and the other demonstrates *how* visual signals can be integrated with numerics via LLMs. Both share a concern with site-specificity and physical grounding over generic fusion.\n\nAndrews and Mengaldo [9] confront a measurement problem: multimodal forecasting papers claim textual annotations enrich predictions, but no ground truth exists to verify whether information-theoretic metrics can reliably quantify an annotation's predictive value. They construct a synthetic time-series benchmark with annotations in three controlled categories — semantically correct, incorrect, and irrelevant — enabling systematic validation of such metrics. This is foundational infrastructure: without it, claims about text's contribution to forecasting remain unfalsifiable. Chen et al. [10] tackle operational solar forecasting, where cloud-induced ramps dominate short-horizon PV and GHI errors and historical numerics alone cannot anticipate incoming clouds. Their bidirectional fusion of ground-based sky images with time series, leveraging LLMs, targets the site-specific data scarcity that plagues deployment — ground-based imagery being a crucial complementary *physical* signal rather than just another data stream. Together, these papers suggest forecasting is maturing from \"add modalities, hope for gains\" to disciplined attribution of predictive value.\n\n## Hallucination, Reasoning, and Evidence Grounding\n\nAs MLLMs are entrusted with scientific and agentic tasks, the field is racing to build detection and evaluation machinery that operates at the level of *claims and evidence* rather than final answers. Three papers advance this agenda across comprehension, generation, and multi-step research.\n\nOmniHallu [4] addresses the fragmentation of hallucination detection, which existing work confines to single modalities or task types. It introduces a unified framework spanning comprehension *and* generation across image, video, and audio, supported by OmniHallu-Bench — a 10,000-sample benchmark with claim-level human annotations across six cross-modal settings. Claim-level granularity is the key move: it enables detection that localizes *which* assertion is unsupported, rather than flagging an entire output. Sci-MMR [5] pushes grounding into multi-step territory, arguing existing multimodal benchmarks score only final-answer accuracy, leaving open whether predictions rest on traceable evidence. Built on structured argument graphs, it evaluates whether agents progressively acquire, integrate, and verify evidence before concluding — testing the actual epistemic process of autonomous research agents. Mr.LHDR [11] extends the horizon further with a benchmark of long, irreducible chains of interdependent evidence across eight categories, averaging 12.1 necessary inference steps per question, constructed from hidden Node-Relation graphs. This directly stress-tests whether deep research agents can *sustain* dependency-heavy exploration — a capability existing medium-horizon benchmarks simply do not measure. Collectively, these three constitute a shift from answer verification to *process* verification in multimodal reasoning.\n\n## Benchmarks for Human-Centered and Applied Multimodal Understanding\n\nBeyond hallucination and agents, new datasets are expanding what multimodal systems are asked to understand — psychological nuance, scholarly critique, and multilingual knowledge — while revealing where current models fail on *rare* phenomena.\n\nMultiHuSE [8] fills a gap in computational humor: most work reduces it to binary classification, lacking data that captures psychological dimensions of humor alongside expressive variation. The dataset comprises 2,407 HD videos of 50 demographically diverse actors performing 1,463 texts across four humor styles (affiliative, aggressive, self-enhancing, self-deprecating) plus neutral content — enabling study of how delivery, emotion, and style interact. ReGround [12] targets a genuinely under-explored setting: grounding reviewer comments to evidence in long multimodal documents. Leveraging the observation that author rebuttals explicitly reference submission content, it links 10,267 comments to 16,274 evidence spans across 3,656 papers — moving beyond explicit information-seeking queries to the implicit, argumentative grounding that peer review demands. Pengpun et al. [2] attack rare-entity degradation in multilingual, multimodal entity linking, arguing popularity-based rarity metrics (e.g., pageviews) are insufficient. Their knowledge-graph structural metrics — capturing documentation and connectivity — surface rare entities popularity misses, and across these slices state-of-the-art accuracy drops 15.4–39.9%, proving different rarity definitions expose *different* failure modes. This trio matters because each demonstrates that benchmark design choices (what counts as rare, what counts as evidence, what counts as humor) directly determine which model failures become visible.\n\n## Efficiency, Augmentation, and Modality Correspondence\n\nThe final cluster exploits structure that pairing already provides: correspondence between modalities can be used for compression, data augmentation, and cross-lingual transfer, rather than merely for input fusion.\n\nEMMI [6] confronts MLLM deployment on resource-constrained edge platforms by communicating a compact fused representation between edge devices instead of transmitting raw sensor observations or partitioning networks at intermediate layers. By compressing fused multimodal representations before communication, it targets the joint computational, memory, and *communication* bottleneck — the often-neglected last term in edge inference. CoMA-DiT [13] reframes paired modalities as sources of *mutual generative supervision*: a bidirectional cross-modal Diffusion Transformer conditions velocity prediction on the paired modality via cross-modal attention, using correspondence for latent augmentation rather than just fusion. This is a conceptual inversion with broad implications — paired data becomes a free augmentation signal for brain state decoding and beyond. Finally, the Eloquence submission [15] to the Interspeech 2026 MLC-SLM challenge reports a revealing progression on multilingual MCQA across 21 languages: LoRA fine-tuning of Voxtral-Mini-3B with cross-lingual and ASR-transcript augmentation reaches 0.72 macro-accuracy, but frozen Voxtral-24B with multimodal in-context learning reaches 0.81 by *correcting label bias* — a reminder that inference-time intervention can outperform parameter updates when bias, not knowledge, is the bottleneck.\n\n## Key Takeaways\n\n- **Fusion is being redefined probabilistically**: RiVaT-Fuse [3], RAMamba-Net [14], and the completeness-estimation approach of [16] replace architectural aggregation choices with explicit reliability, uncertainty, and completeness estimation — treating *what the fused representation means* as the central question.\n- **Optimization-based modality balancing is theoretically undermined**: [7] shows gradient/loss balancing conflates fitting speed with discriminative contribution, calling for held-out discriminative modality valuation — a likely methodological reckoning for MSA.\n- **Evidence- and process-level evaluation is replacing answer-level scoring**: OmniHallu [4] (claim-level hallucination), Sci-MMR [5] (argument-graph reasoning), and Mr.LHDR [11] (12.1-step evidence chains) collectively demand traceable grounding, not just correct outputs.\n- **Rarity, humor, and review grounding expose hidden failure modes**: structural KG rarity metrics [2] drop SOTA accuracy by 15.4–39.9%; MultiHuSE [8] and ReGround [12] open psychological and argumentative dimensions that binary or query-based benchmarks miss.\n- **Paired modalities are a generative resource, not just fusion inputs**: CoMA-DiT [13] uses cross-modal correspondence for latent augmentation, while EMMI [6] compresses fused representations to solve the communication bottleneck in edge MLLM inference.\n- **Text's predictive value in forecasting is now testable**: [9] provides the first ground-truth benchmark (correct/incorrect/irrelevant annotations) for validating information-theoretic metrics, while [10] demonstrates physically motivated sky-image fusion for solar ramps.\n- **Inference-time correction can beat fine-tuning**: [15] achieves its best multilingual MCQA result (0.81) via multimodal ICL on a frozen model to fix label bias, outperforming LoRA fine-tuning (0.72) — a caution against reflexive parameter updates.",
+    "papers": [
+      {
+        "title": "M3-Former: Multimodal Transformer with Mixture-of-Experts for Long-Term Vessel Trajectory Prediction",
+        "url": "",
+        "authors": [
+          "Wenzhe Jin",
+          "Haina Tang"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Think Before You Link: Rarity, Reasoning, and Retrieval in Multilingual Entity Linking",
+        "url": "",
+        "authors": [
+          "Parinthapat Pengpun",
+          "Simran Khanuja",
+          "Graham Neubig"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "RiVaT-Fuse: Reliability-Calibrated Variational Tensor Fusion for Multimodal Prediction under Modality Uncertainty",
+        "url": "",
+        "authors": [
+          "Yingfan Xu",
+          "Tieming Liu",
+          "Ye Liang",
+          "Taiping Liu"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "OmniHallu: Unified Hallucination Detection for Cross-Modal Comprehension and Generation in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Jianjiang Yang",
+          "Peihang Li",
+          "Shanqing Xu",
+          "Mengchen Qian",
+          "Lu Zhang",
+          "Meng Luo"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Sci-MMR: Benchmarking Multi-Step Evidence-Grounded Scientific Reasoning in Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Jiaqiang Li",
+          "Yajie Yang",
+          "Zhiheng Xi",
+          "Jiadong Chen",
+          "Enyu Zhou",
+          "Senjie Jin",
+          "Yang Nan",
+          "Jiazheng Zhang",
+          "Han Wang",
+          "Yanxin Li",
+          "Dingwei Zhu",
+          "Bicheng Deng",
+          "Yuhui Wang",
+          "Xiang Zheng",
+          "Qi Zhang",
+          "Lei Bai",
+          "Xingjun Ma",
+          "Tao Gui"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "EMMI: Edge Multi-Modal Intelligence for Communication-Efficient MLLM Inference via Fused Representation Compression",
+        "url": "",
+        "authors": [
+          "Motahare Mounesan",
+          "Irfan Khan"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "The Illusion of Balanced Multimodal Sentiment Analysis: Beyond the Limits of Optimization-Based Methods",
+        "url": "",
+        "authors": [
+          "Ioanna Kaffeza",
+          "Efthymios Georgiou",
+          "Alexandros Potamianos"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "MultiHuSE: A Multimodal Dataset for Humour Styles and Emotions",
+        "url": "",
+        "authors": [
+          "Mary Ogbuka Kenneth",
+          "Foaad Khosmood",
+          "Abbas Edalat"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "When Does Text Inform? Benchmarking Information-Theoretic Metrics for Multimodal Time-Series Forecasting",
+        "url": "",
+        "authors": [
+          "Emma Andrews",
+          "Gianmarco Mengaldo"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Bidirectional Multimodal Fusion of Sky Images and Time-Series for Solar Forecasting with Large Language Models",
+        "url": "",
+        "authors": [
+          "Ken Chen",
+          "Maneesha Perera",
+          "Wei Wang",
+          "Sachith Seneviratne",
+          "Hansani Weeratunge",
+          "Saman Halgamuge"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Mr.LHDR: A Benchmark for Multimodal Real-World Long-Horizon Deep Research Agents",
+        "url": "",
+        "authors": [
+          "Minghao Guo",
+          "Meng Cao",
+          "Sui Zhao",
+          "Siyu Ning",
+          "Xin Wang",
+          "Haoze Zhao",
+          "Jiaxuan Yang",
+          "Haihong Hao",
+          "Mingfei Han",
+          "Shunlin Rong",
+          "Haijun Wu",
+          "Xiaodan Liang",
+          "Xiaojun Chang"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "ReGround: Grounding Reviewer Comments in Multimodal Evidence",
+        "url": "",
+        "authors": [
+          "Serwar Basch",
+          "Lizhen Qu",
+          "Iryna Gurevych"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Exploring Diffusion Transformers for Cross-Modal Augmentation in Multimodal Brain State Decoding",
+        "url": "",
+        "authors": [
+          "Ziwei Wang",
+          "Xingyi He",
+          "Hongbin Wang",
+          "Tianwang Jia",
+          "Bohan Fang",
+          "Dongrui Wu"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "RAMamba-Net: A Reliability-Aware and Mamba-Based Multimodal Fusion Network for Auditory Attention Detection",
+        "url": "",
+        "authors": [
+          "Xingyi He",
+          "Ziwei Wang",
+          "Dongrui Wu"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "The Eloquence submission for Task 2 of the Interspeech 2026 MLC-SLM challenge",
+        "url": "",
+        "authors": [
+          "Jordi Luque",
+          "Lorenzo Concina",
+          "Marco Matassoni",
+          "Alessio Brutti",
+          "Filippo Vella"
+        ],
+        "date": "2026-09-13"
+      },
+      {
+        "title": "Robust Multimodal Sentiment Analysis with Incomplete Modalities via Semantic-aware Completeness based Reconstruction",
+        "url": "",
+        "authors": [
+          "Han-Jun Choi",
+          "Byunggill Joe",
+          "Saim Shin",
+          "Jin Yea Jang"
+        ],
+        "date": "2026-09-13"
+      }
+    ]
+  }
+]
