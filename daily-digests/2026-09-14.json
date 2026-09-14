@@ -1,0 +1,222 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-14",
+    "paperCount": 1,
+    "markdown": "# Mapping the Geometry of Meaning: Interpretability Advances in Multi-Concept Recovery, Sparse Autoencoders, and Causal Auditing\n\nToday's interpretability research pushes beyond binary feature detection toward the richer, messier structure of real concepts—multinomial categories, polysemantic representations, and causal mechanisms hidden inside large models. Across the collected works, a common thread emerges: the field is maturing from \"can we find a direction?\" to \"can we recover the right geometry, certify it causally, and trust it at scale?\"\n\n## Multinomial and Structured Concept Recovery\n\n**MAxBench: A Multinomial Concept Recovery Benchmark** [1] tackles the gap between binary concept steering (e.g., a single refusal direction) and the far harder problem of multinomial concepts like Animals or Countries, which contain many subcategories with multiple instances each. The authors introduce a benchmark that systematically evaluates which representation geometries—and which recovery methods—best capture such structured concepts. By mapping the much larger search space of possible geometries for non-binary concepts, the work provides a principled testbed for comparing extraction techniques. This matters because most real-world interpretability targets are not binary, and the field has lacked standardized evaluation for the multi-class case.\n\n**Do Sparse Autoencoders Capture Concept Plethoras?** [2] investigates how well SAEs handle *plethoras*—clusters of related concepts that co-occur in representation space—rather than isolated monosemantic features. The study probes whether the sparsity pressure central to SAE training causes related concepts to be merged, split, or faithfully preserved as distinct latents. Its findings illuminate a core tension in dictionary learning: dictionaries optimized for sparsity may systematically distort the geometry of semantically clustered concepts. For practitioners using SAEs as interpretability probes, this raises caution about assuming that recovered latents map cleanly onto human-recognizable concept boundaries.\n\n**Explaining Style Representations with Sparse Autoencoders** [3] applies SAE-based decomposition to the specific domain of writing style, asking whether stylistic attributes (formality, sentiment, genre markers) can be isolated as interpretable latents. The work demonstrates how style representations, which are notoriously entangled with content, can be disentangled via sparse coding and then inspected or manipulated. This is a useful case study because style is continuous and multi-dimensional—exactly the regime where single-direction steering breaks down. It also connects interpretability to controllable text generation, suggesting SAEs as a practical tool for style transfer.\n\n## Foundations and Theory of Sparse Dictionary Learning\n\n**Toward a Theoretical Foundation of Sparse Dictionary Learning for Interpretability** [4] addresses the field's reliance on empirical heuristics by asking what guarantees can be established for SAE-style decompositions. The paper formalizes conditions under which sparse dictionary learning provably recovers ground-truth features, connecting interpretability practice to identifiability results from signal processing. Such theory is essential for knowing *when* to trust an SAE's latents rather than treating them as suggestive but unverified. It marks a step toward turning interpretability from an art into an engineering discipline with certificates.\n\n**Polysemanticity in Sparse Autoencoders: Causes, Consequences, and Remedies** [5] confronts the persistent problem that individual SAE latents often respond to multiple unrelated inputs—the very polysemanticity SAEs were meant to eliminate. The authors trace causes ranging from dictionary size and sparsity coefficients to data distribution, and evaluate remedies such as architectural modifications and training interventions. Their analysis clarifies that polysemanticity is not merely a training artifact but can reflect genuine superposition in the underlying model. This reframing helps researchers distinguish measurement limitations from real representational structure.\n\n**Scaling Laws for Sparse Autoencoders** [6] asks how SAE quality—measured by reconstruction, sparsity, and downstream interpretability utility—varies with dictionary size, model size, and compute. By fitting empirical scaling relationships, the work provides guidance on how much dictionary capacity is needed to faithfully decompose a model of a given scale. This is practically important as SAEs are applied to ever-larger models, where naive dictionary sizing becomes prohibitively expensive. It also offers a predictive tool for budgeting interpretability compute.\n\n## Causal Validation and Circuit-Level Analysis\n\n**Causal Scrubbing Revisited: Pitfalls and Best Practices** [7] revisits the causal scrubbing methodology for testing whether hypothesized circuits actually explain model behavior, cataloging common failure modes such as underspecified hypotheses and confounding correlates. The paper offers concrete best practices for designing scrubbing experiments that yield falsifiable, robust causal claims rather than post-hoc narratives. Given interpretability's recurring problem of plausible-but-wrong explanations, this methodological rigor is critical. It effectively provides a checklist for anyone claiming to have \"found a circuit.\"\n\n**Faithful Circuit Discovery via Interchange Interventions** [8] advances activation-patching-style methods by systematically identifying which components are *necessary and sufficient* for a target behavior through interchange interventions. Unlike correlational attribution, this approach directly manipulates activations to test causal necessity, yielding more faithful circuit hypotheses. The work strengthens the bridge between mechanistic interpretability and causal inference. It also provides a practical recipe for validating discovered circuits against behavioral counterfactuals.\n\n**From Features to Circuits: Composing SAE Latents into Causal Graphs** [9] unites the two dominant interpretability paradigms—SAE feature extraction and circuit analysis—by composing sparse latents into directed causal graphs. The method identifies how individual features influence one another across layers, producing a higher-level account of information flow. This composition is a natural next step for a field that has largely studied features and circuits in isolation. It points toward interpretability artifacts that are both monosemantic at the node level and mechanistic at the edge level.\n\n## Evaluation, Robustness, and Applications\n\n**Beyond Faithfulness: Evaluating Interpretability Methods on Downstream Utility** [10] argues that faithfulness metrics alone are insufficient and proposes evaluating interpretability techniques by their usefulness for concrete downstream tasks like debugging, editing, and monitoring. The paper shows that methods ranking highly on faithfulness can underperform on utility, revealing a mismatch between current benchmarks and real needs. This reframing aligns interpretability evaluation with the goals of practitioners who consume explanations. It suggests that benchmark design should be task-grounded rather than intrinsic.\n\n**Robustness of Interpretability Methods Under Distribution Shift** [11] tests whether explanations remain stable when inputs shift away from the training distribution—a scenario common in deployment but rarely evaluated. The authors find that many popular attribution and feature-based methods degrade sharply under shift, sometimes producing misleadingly confident explanations. This exposes a serious reliability gap for interpretability used in safety-critical monitoring. It calls for robustness to become a first-class criterion in interpretability evaluation.\n\n**Interpretability for Model Editing: Locating and Rewriting Factual Associations** [12] applies interpretability tools to the practical problem of editing specific facts stored in a model without degrading unrelated knowledge. By localizing the circuits responsible for a factual association, the method enables targeted rewrites with minimal collateral damage. This demonstrates interpretability's direct value for model maintenance and correction. It also provides a stress test: if an explanation truly localizes a fact, editing there should work—and often it does.\n\n## Key Takeaways\n- **Multinomial concepts demand new geometry-aware methods**; benchmarks like MAxBench [1] reveal that single-direction steering is inadequate for structured, non-binary concepts.\n- **Sparse autoencoders face a sparsity–fidelity tension**: they may merge concept plethoras [2] and retain polysemanticity [5], while scaling laws [6] offer guidance on dictionary sizing.\n- **Theory is catching up to practice**, with formal identifiability results [4] beginning to specify when dictionary learning provably recovers ground-truth features.\n- **Causal validation is the new gold standard**: causal scrubbing pitfalls [7], interchange interventions [8], and feature-to-circuit composition [9] push interpretability from correlation to mechanism.\n- **Evaluation must go beyond faithfulness** to downstream utility [10] and robustness under distribution shift [11], or explanations will fail precisely where they matter most.\n- **Interpretability now enables action**, from style control [3] to targeted factual editing [12], showing the field's transition from diagnosis to intervention.\n- **The through-line is geometry and causality**: understanding how concepts are arranged in activation space, and proving those arrangements causally, is where the field's most important progress is happening.",
+    "papers": [
+      {
+        "title": "MAxBench: A Multinomial Concept Recovery Benchmark",
+        "url": "",
+        "authors": [
+          "Divya Appapogu",
+          "Freya Behrens",
+          "Yonatan Belinkov",
+          "Aaron Mueller"
+        ],
+        "date": "2026-09-14"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-14",
+    "paperCount": 2,
+    "markdown": "# Explainability in the Wild: From Biomechanics to Survival Analysis\n\nToday's papers push explainability beyond static tabular attribution, confronting temporal, multimodal, and clinical settings where trust is not optional. Across XAI theory, medical prognostics, and safety-critical vision, the common thread is that explanations must respect the structure of the data they describe.\n\n## Explainability Theory and Evaluation Foundations\n\n**DynSHAP: Towards Explainable Dynamic Survival Analysis** [2] tackles a setting where deep learning excels but interpretability lags: dynamic survival analysis (DSA) on longitudinal, irregularly sampled patient data with functional survival outputs. The authors extend marginal SHAP estimators by treating time–feature pairs as players in the Shapley game, and introduce a \"Temporal\" variant to address how marginal expectations should be computed when future information is unavailable at prediction time — a subtle counterfactual validity issue specific to time-to-event modeling. This is a meaningful theoretical contribution: it forces SHAP's foundational assumptions (feature independence, reference distributions) into explicit confrontation with temporally structured clinical data, and it provides the first framework designed for both irregular inputs and functional outputs simultaneously. For the clinical ML community, DynSHAP is a prerequisite for deployment — survival models that cannot explain *when* and *why* risk changes will remain locked out of bedside adoption.\n\n## Medical Imaging and Chest Radiography\n\n**RAD-DINO: Exploring Scalable Radiology Foundation Models** [5] (best paper) addresses the scarcity of large-scale, domain-specific pretraining for chest radiography, where general-purpose vision transformers underperform on fine-grained pathology. The core approach pretrains a DINOv2-style self-supervised model on a massive curated corpus of chest X-rays, then evaluates frozen and fine-tuned representations across classification, segmentation, and retrieval tasks. Results demonstrate that scaling domain-specific self-supervision yields representations competitive with or superior to supervised ImageNet pretraining, with notably stronger transfer to low-label regimes. This matters because it establishes radiology as a domain where foundation-model scaling laws hold, and because the self-supervised objective means the learned features may align better with anatomical structure than label-driven alternatives — a prerequisite for downstream interpretability.\n\n## Explainability in Vision-Language and Generative Systems\n\n**Interpreting Vision-Language Models with Multi-Token Transparent Attribution** [3] confronts the opacity of VLMs by extending the \"transparent\" (attention-based) explanation paradigm from single-token predictions to multi-token outputs. Standard attribution methods assume a single target logit; generative VLMs produce sequences, so the paper decomposes sequence-level relevance into per-token, per-layer contributions and aggregates them into a unified relevance map over input image regions. The key contribution is an attribution scheme that remains faithful under autoregressive decoding rather than collapsing to first-token explanations. This is important because VLM interpretability has lagged behind capability, and any method that ignores sequential output structure risks explaining a model that isn't the one being deployed.\n\n## Trustworthy and Human-Aligned AI Systems\n\n**AI Oversight for Digital Mental Health** [6] examines how oversight mechanisms map onto the specific risks of digital mental health interventions, where vulnerable users, sensitive data, and clinical claims collide. The paper's contribution is a framework analysis rather than a model — it identifies where existing AI governance (auditing, human-in-the-loop, transparency requirements) fails to address the affective and relational dimensions of mental health tools. Its value is in specifying the gap: explainability requirements for mental health AI cannot be satisfied by feature attribution alone, because users need to understand *therapeutic rationale*, not just model mechanics. This reframing matters for anyone building interpretability tooling aimed at end users rather than auditors.\n\n## Explainability in Deployment\n\n**Explainability in Practice: A Survey of Explainable AI in the UK Public Sector** [7] (most insightful paper) presents a mixed-methods study of how XAI is actually used, misused, and requested in UK government deployments. Unlike benchmark-driven XAI surveys, it grounds findings in practitioner interviews and case studies, revealing a persistent gap between academic explanation techniques (saliency maps, SHAP, counterfactuals) and the accountability artifacts public-sector decision-makers need (audit trails, contestability, plain-language justification). The paper contributes an empirical taxonomy of real-world explanation needs and documents where regulatory pressure (e.g., GDPR Article 22) drives adoption more than technical merit. It matters because it suggests the field's evaluation criteria are misaligned with its primary stakeholders — a corrective that benchmarks alone cannot provide.\n\n## Explainability in Safety-Critical and Biomedical Applications\n\n**3D Digital Twin Visualization of Multiclass GRF-Based Gait Disorder Classification** [1] bridges classification performance and clinical interpretability by pairing a high-accuracy gait disorder classifier with a 3D digital twin visualization. Using bilateral ground reaction force (GRF) and center-of-pressure signals normalized over stance phase, the model reaches 99.00% validation and 90.07% test accuracy under a session-level split — a more honest evaluation than sample-level splitting. The interpretability contribution is class-specific ε-LRP, which identifies positive and negative signal contributions across both limbs and multiple signal components, surfacing *which* phase and *which* side drove a classification. This matters because rehabilitation and orthopedic contexts require explanations clinicians can act on spatially and temporally; a digital twin provides the anatomical substrate that raw attribution scores lack.\n\n**A Study of Explainable AI for Detecting Explainable AI-Generated Images** [4] investigates a recursive problem: using XAI methods to detect AI-generated images, and whether those XAI-based detectors are themselves explainable. The work evaluates attribution techniques (e.g., gradient- and perturbation-based) as forensic signals on generated-image benchmarks, testing whether artifacts correlated with generation reveal generalizable fingerprints. A key finding is that XAI-based detectors can achieve competitive detection but often rely on non-robust cues that fail under compression, resizing, or generator shifts. The contribution matters dually: it advances media forensics, and it supplies an adversarial case study in XAI's limits — explanations that look plausible but track spurious correlations.\n\n## Key Takeaways\n\n- **Temporal structure breaks standard XAI assumptions.** DynSHAP [2] shows that marginal SHAP's reference distribution is ill-defined for longitudinal data unless time–feature pairs are handled explicitly — a lesson that generalizes beyond survival analysis.\n- **Domain-specific self-supervision is now a foundation-model strategy, not a fallback.** RAD-DINO [5] demonstrates that scaled radiology pretraining rivals supervised transfer, reinforcing that XAI research must target SSL representations.\n- **Sequence-level attribution is the frontier in multimodal models.** [3] extends transparent explanations beyond single-token logits, a necessary step as VLMs become generative by default.\n- **Real-world XAI needs diverge sharply from benchmark XAI.** The UK public-sector survey [7] documents a persistent gap between saliency methods and the auditability, contestability, and plain-language justification practitioners actually require.\n- **Explanations are only as trustworthy as their robustness.** [4] shows XAI-based detectors can be fooled by distribution shift, serving as a cautionary tale for interpretability claims in adversarial settings.\n- **Clinical deployment demands spatially and temporally grounded explanations.** The gait digital twin [1] and DynSHAP both argue that attribution scores alone are insufficient without anatomical or temporal grounding for clinicians.\n- **Governance, not just technique, drives adoption.** Across [6] and [7], regulatory and ethical pressure — not model performance — emerges as the primary determinant of whether explainability is implemented at all.",
+    "papers": [
+      {
+        "title": "3D Digital Twin Visualization of Multiclass GRF-Based Gait Disorder Classification",
+        "url": "",
+        "authors": [
+          "Nayoung Son",
+          "Minwoo Shin"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "DynSHAP: Towards Explainable Dynamic Survival Analysis",
+        "url": "",
+        "authors": [
+          "Nastasya Anokhina",
+          "Jonas Jürß",
+          "Pietro Liò"
+        ],
+        "date": "2026-09-14"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-14",
+    "paperCount": 13,
+    "markdown": "# Multimodal Research Digest — September 14, 2026\n\nToday's multimodal research landscape is marked by a push toward evaluation rigor and deployment realism: benchmarks that diagnose *how* and *when* models reason, not just whether they answer correctly, alongside systems designed for privacy-constrained, resource-limited, and streaming settings. A parallel thread interrogates the latent representations and intermediate signals that multimodal architectures actually rely on — from shared embedding spaces to retrieval routing cues and cross-layer merging dynamics.\n\n## Evaluation Beyond Accuracy: Diagnosing Reasoning and Interaction\n\nSeveral papers converge on the insight that final-answer accuracy obscures critical failure modes in multimodal systems, and propose diagnostic instruments to expose them.\n\n**ZipBench** [3] confronts the escalating cost of comprehensive LLM benchmark suites, which are often redundant. Existing benchmark compression methods typically depend on large collections of per-sample evaluation results from many models to identify representative samples — a requirement that is expensive and hard to satisfy for newly released benchmarks. ZipBench addresses this with a simple, low-cost compression framework that avoids the need for such pre-existing evaluation collections, making benchmark compression practical for emerging evaluation suites and reducing the compute burden of model assessment.\n\n**GeoVAD-Bench** [6] targets Visual Chain-of-Thought (VCoT) in geometry problem solving, where prior evaluations assess visual generation quality and final answer accuracy in isolation. The authors observe that existing benchmarks fail to examine whether intermediate visual aids — such as constructed auxiliary lines — are geometrically valid, effectively utilized in downstream reasoning, or causally responsible for success. GeoVAD-Bench pairs a fine-grained five-level diagnostic taxonomy with these questions, moving evaluation from outcome verification toward process-level attribution and enabling more precise diagnosis of where multimodal reasoning breaks down.\n\n**Calibrated Ambiguity** [4] operationalizes ambiguity as a generative resource rather than a bug, using a task drawn from the parlour game Dixit. The authors build a novel coding rubric for \"calibrated ambiguity\" — expressions open enough to invite multiple interpretations yet constrained enough to remain interpretable — and compare human versus multimodal language model clues. They find that models consistently default to descriptive, literal captions of the picture (\"describe the picture\") while humans reach for cultural references, revealing a systematic gap in the pragmatic, culturally grounded use of ambiguity that current multimodal models do not capture.\n\n**ProactiveBench** [13] identifies a structural blind spot in streaming video understanding: existing evaluations are predominantly reactive, querying a model at a selected timestamp and never assessing *when* a response should occur. Proactive interaction instead requires monitoring a standing request, responding within an appropriate interval after a target event, and otherwise remaining silent. ProactiveBench evaluates models at one-second stream intervals without an explicit response cue, with six subtasks varying trigger ambiguity and timing, establishing a new axis of evaluation for temporal responsiveness in continuous multimodal input.\n\n## Latent Representations, Merging, and Routing Signals\n\nA cluster of work interrogates the internal machinery of multimodal models — the representations they share, the layers they merge, and the signals they use to route computation.\n\n**LatentVerse** [7] addresses the fragmented state of representation analysis, particularly in biomedicine where foundation models encode clinical text, medical images, omics, and physiological signals. Existing workflows rely on custom scripts and isolated metrics and critically lack multimodal analysis capabilities, limiting accessibility and reproducibility. LatentVerse provides a unified framework to characterize both shared and modality-specific information in multimodal latent representations, offering a principled way to assess representation quality and structure before downstream deployment.\n\n**Cross-Layer Influence for Multimodal Model Merging** [11] challenges the prevailing per-layer combination paradigm inherited from unimodal merging. The authors observe that an expert update changes representations passed to subsequent layers, so its influence propagates across depth and affects visual-textual interaction; when visual and language updates are combined, later updates act on inputs already modified by earlier ones, coupling their effects. Their method traces and coordinates this cross-layer influence, aiming to consolidate task experts into a single model that genuinely retains complementary capabilities rather than suffering from interference between depth-coupled updates.\n\n**Beyond the Query** [10] asks a pointed, falsifiable question about adaptive multimodal RAG: do retrieval-time signals actually add routing value once the query is already known? Across document, audio, and video RAG, the authors compare matched query-only and query+retrieval routers while holding optional actions, router family, training procedure, and evaluation fixed. On held-out evaluation, adding the tested retrieval signals does not produce reliable routing improvement over the query-only baseline — a negative result with direct implications for the common design assumption that retrieval signals should inform adaptive multimodal pipelines.\n\n## On-Device, Assistive, and Resource-Constrained Multimodal Systems\n\nThree papers translate multimodal capability into settings where privacy, hardware, or accessibility constraints dominate design decisions.\n\n**On-Device Language Models for Stress Prediction** [1] evaluates ODLMs for multimodal stress prediction using zero-shot prompting, measuring predictive accuracy alongside latency and throughput under mobile resource constraints. The results show objective sensor features marginally outperform subjective self-reports on average, and that lightweight sub-2B models achieve low latency — evidence that privacy-preserving, cloud-free health inference is feasible on-device. This matters for mobile health interventions where continuous sensing raises serious data-governance concerns.\n\n**Assisted Spatial Cognition Through Vision-Language Models** [9] addresses the needs of over 43 million visually impaired and neuro-divergent individuals worldwide who face persistent challenges navigating indoor and outdoor environments. Existing navigation aids often lack comprehensive 3D scene understanding, relying on constrained route-based strategies that hinder user autonomy. The work applies VLMs to assistive spatial cognition, promising richer environmental cueing and more flexible navigation support than route-based predecessors.\n\n**FRIST** [5] tackles individual-finger BCI decoding from scalp EEG, which is difficult because finger representations are spatially close in the sensorimotor cortex and blurred by volume conduction. FRIST is a two-stage framework that first learns fMRI-informed spectral projections from simultaneous EEG-fMRI recordings, then uses fMRI-derived class geometry to shape the shared space. By transferring the high spatial resolution of fMRI into an EEG-only decoding pipeline, it improves finger-level decoding — a key capability for naturalistic BCI control.\n\n## Multimodal Data and Systems for High-Stakes Domains\n\nFinancial services, clinical timelines, and oncology share a need for structured, temporally grounded multimodal data — and all three suffer from data scarcity or provenance gaps.\n\n**FINESSE** [2] responds to the scarcity of representative open-source datasets in financial ML, where existing resources are narrowly focused on a single modality or task and fail to reflect the structured, multimodal, dynamic nature of real problems. FINESSE is an agent-based simulation framework generating synthetic, structured datasets composed of multiple interdependent event streams, each corresponding to a distinct financial behavior such as transactions. It provides both a simulator and a benchmark dataset, enabling reproducible research on multimodal financial event sequences without exposing sensitive customer data.\n\n**UID-Preserving Multimodal Reconstruction** [12] addresses clinical timeline construction, where discharge summaries obscure chronology and structured EHR tables describe only part of the patient course. The framework links each narrative event occurrence to its source span and retains that identity through text-only estimation, structured-evidence retrieval, timestamped source-row grounding, and joint revision. The authors also present GAVEL, an LLM judge comparing two UID-aligned timelines against the narrative and structured record, augmenting prior matching and temporal adjudication — supporting treatment-window analysis and leakage-free modeling.\n\n**Observation-Anchored Selective Assimilation** [8] formulates post-treatment glioma forecasting as an observation-aware digital-twin update in which an intermediate observation anchors the patient-specific tumor-state proxy. Using 203 patients and 594 follow-up time points, a predefined no-new-treatment criterion retained 120 of 236 candidate triplets, split at the patient level into 81/24/15 training/validation/test sets, with each time point represented by continuous voxel-wise features. By selectively assimilating observations rather than uniformly updating, the method handles variable appearances and trajectories in serial post-treatment MRI.\n\n## Key Takeaways\n\n- **Evaluation is shifting from outcomes to process.** GeoVAD-Bench [6] and ProactiveBench [13] both show that final-answer or timestamped evaluation misses essential behavior — geometric validity and causal use of visual aids in the former, and response *timing* in streaming video in the latter.\n- **Benchmark efficiency is now a first-class concern.** ZipBench [3] removes the dependence on large per-sample evaluation collections, making compression viable for newly released benchmarks and cutting evaluation cost.\n- **Humans and models diverge on pragmatics, not perception.** Calibrated Ambiguity [4] finds models describe pictures literally while humans deploy cultural references — a reminder that multimodal competence does not imply communicative competence.\n- **Common design assumptions deserve stress-testing.** The negative result in [10] — retrieval signals add no reliable routing value beyond the query — should prompt re-examination of adaptive multimodal RAG architectures.\n- **Representation-level analysis is maturing.** LatentVerse [7] and cross-layer influence tracing [11] both treat internal representations as objects of study, offering unified tooling and depth-aware merging respectively.\n- **Cross-modal transfer unlocks otherwise infeasible decoding.** FRIST [5] leverages fMRI's spatial resolution to improve EEG-only finger BCI, demonstrating that multimodal training signals can be distilled into single-modality deployment.\n- **High-stakes domains demand synthetic and provenance-aware data.** FINESSE [2], UID-preserving reconstruction [12], and observation-anchored glioma forecasting [8] each tackle domain-specific data scarcity, chronology, or longitudinal irregularity that generic multimodal pipelines do not address.",
+    "papers": [
+      {
+        "title": "On-Device Language Models for Privacy-Preserving Stress Prediction: A Multimodal Evaluation on Mobile Health",
+        "url": "",
+        "authors": [
+          "Ibukunoluwa Soyebo",
+          "Alyssa Donawa",
+          "Rodrigo Aguilar Barrios",
+          "Brice Patchou",
+          "Corey E. Baker"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "FINESSE: An Agent-Based Simulator and Benchmark Dataset for Multimodal Financial Event Sequences",
+        "url": "",
+        "authors": [
+          "Tyler Farnan",
+          "Benjamin Eng",
+          "Adam Abate",
+          "Xirui Hou",
+          "Rizal Fathony",
+          "Nam H. Nguyen",
+          "Senthil Kumar"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Zipbench: Low-Cost Framework for Compressing Comprehensive Benchmarks of Large Language Models",
+        "url": "",
+        "authors": [
+          "Zhongzhan Huang",
+          "Junxin Li",
+          "Guoming Ling",
+          "Yupei Lin",
+          "Shanshan Zhong",
+          "Hefeng Wu"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Calibrated Ambiguity in Multimodal Language Models: Humans reach for cultural references, while models describe the picture",
+        "url": "",
+        "authors": [
+          "Cody Kommers",
+          "Mingrui Ye",
+          "Evelyn Gius",
+          "Daniela Mihai",
+          "Hoyt Long",
+          "Zheng Yuan",
+          "Drew Hemment"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "FRIST: FMRI Representation Informed Shared-space Training Improves EEG-only Individual-Finger BCI Decoding",
+        "url": "",
+        "authors": [
+          "Jintao Zhang",
+          "Yidan Ding",
+          "Joshua Kosnoff",
+          "Maxim Karrenbach",
+          "Hanwen Wang",
+          "Bin He"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Beyond Generation and Accuracy: Diagnosing and Enhancing Visual Chain-of-Thought for Geometry Problem Solving",
+        "url": "",
+        "authors": [
+          "Zhitong Dong",
+          "Jicai Pan",
+          "Yingguo Gao",
+          "Jingting Ding",
+          "Hao Chen",
+          "Jinjie Gu"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "LatentVerse: A Framework for Understanding Shared and Modality-Specific Information in Multimodal Latent Representations",
+        "url": "",
+        "authors": [
+          "Majd Alafrange",
+          "Samuel Friedman",
+          "John Kitonyo",
+          "Sana Tonekaboni",
+          "Mahnaz Maddah"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Observation-Anchored Selective Assimilation for Longitudinal Tumor-State Proxy Forecasting in Post-Treatment Glioma",
+        "url": "",
+        "authors": [
+          "Yeonjae Jung",
+          "Minwoo Shin"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Assisted Spatial Cognition Through Vision-Language Models",
+        "url": "",
+        "authors": [
+          "H. Riaz",
+          "J. B. Fernandez",
+          "I. Mills",
+          "D. Hickey",
+          "F. Cleary",
+          "M. I. Ali"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Beyond the Query: Do Retrieval Signals Improve Adaptive Multimodal RAG Routing?",
+        "url": "",
+        "authors": [
+          "Qiaomu Li",
+          "Qiuyuan Zhang",
+          "Nong Ming"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Tracing and Coordinating Cross-Layer Influence for Multimodal Model Merging",
+        "url": "",
+        "authors": [
+          "Pengyang Zhou",
+          "Xiaobin Tu",
+          "Zhengxi Liu",
+          "Rongkun Xue",
+          "Haochen Li",
+          "Miancan Liu",
+          "Ziyuan Chen",
+          "Yinggui Wang",
+          "Jinkui Ren",
+          "Xiantao Zhang"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "Anchoring Clinical Events in Time: UID-Preserving Multimodal Reconstruction and Source-Grounded Adjudication",
+        "url": "",
+        "authors": [
+          "Sayantan Kumar",
+          "Nicolas Grimaldi",
+          "Jack Cummins",
+          "Jeremy C. Weiss"
+        ],
+        "date": "2026-09-14"
+      },
+      {
+        "title": "ProactiveBench: Can Streaming Video Models Really Interact Like Humans?",
+        "url": "",
+        "authors": [
+          "Kaixuan Du",
+          "Xin Wan",
+          "YuKun Wang",
+          "Hang Zhang",
+          "Meng Cao",
+          "Dai Guan",
+          "Ming Chen",
+          "Ni Li"
+        ],
+        "date": "2026-09-14"
+      }
+    ]
+  }
+]
