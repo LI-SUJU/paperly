@@ -1,0 +1,386 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-16",
+    "paperCount": 8,
+    "markdown": "# Interpretability Research Digest — 2026-09-16\n\nToday's interpretability research pushes beyond post-hoc explanation toward architectures, training procedures, and governance frameworks where transparency is structural rather than cosmetic. A striking theme is the migration of interpretability from passive diagnosis to active control — unlearning at inference time, steering agent mechanisms, and decomposing layer roles to guide compression and fine-tuning.\n\n## Interpretability as Governance: High-Stakes Domains\n\n**[1] Artificial intelligence and biosecurity: capabilities, threat pathways, and defense-in-depth governance** addresses the dual-use risk created as general-purpose LLMs, biological foundation models, agentic systems, and automated laboratories increasingly close the design-build-test-learn cycle in the life sciences. The authors map capability pathways — from scientific information retrieval and experimental planning to the prediction, optimization, and generation of proteins, genes, and genome-scale sequences — against concrete threat vectors, arguing that no single safeguard can contain them. Their central contribution is a defense-in-depth governance framework that layers technical, institutional, and policy controls across the digital-to-physical workflow. For the ML community, this is a reminder that interpretability and capability evaluation are not academic exercises when model outputs can be translated into wet-lab action. [1]\n\n**[2] Toward Governance-Aware Autonomous GIS** extends the governance lens to LLM-enabled geospatial AI, where natural-language interfaces and agentic GIS workflows introduce risks that generic AI ethics frameworks miss. The review catalogs four spatially specific hazards: passive location inference from mobility traces, bias amplification structured by spatial autocorrelation and scale effects, hallucinated spatial facts, and uncertainty compounding across multimodal geospatial inputs. By naming these failure modes explicitly, the authors lay groundwork for governance-aware design of autonomous GIS. The paper matters because spatial data makes privacy leakage and bias structurally different — not just incrementally worse — than in text domains. [2]\n\n## Inside the Model: Layers, Features, and Mechanisms\n\n**[3] Test-Time Unlearning via Sparse Autoencoder** tackles the sharp forget-utility trade-off in machine unlearning: weight-based methods that aggressively remove target knowledge degrade general capability and can be reversed by fine-tuning or prompt attacks. ARIA (autoencoder-gated inference-time unlearning) instead leaves model weights untouched, using a sparse autoencoder gate to intervene at inference time. This reframes unlearning from a destructive weight edit into a reversible, controllable inference-time mechanism. The approach is a strong example of interpretability tooling — sparse autoencoders originally built for feature discovery — being repurposed for capability control. [3]\n\n**[7] What Does Layer-Importance Reveal About Transformers and State-Space Models?** asks how far analytical knowledge built for transformers transfers to state-space models, using layer importance as the probe. The authors decompose importance into two notions: *necessity*, how much the pretrained model depends on a layer's existing contribution (measured by loss increase when bypassing it), and *plasticity*, where the model absorbs new information. This decomposition supports compression, selective fine-tuning, and interpretability across both architecture families. Its value lies in providing a common vocabulary for comparing two dominant sequence-model families that are often analyzed with disjoint toolkits. [7]\n\n**[8] ADORE: Adaptive Derivative-Ordered Random Explanation** confronts the fragmented state of post-hoc interpretability — methods that model nonlinear interactions poorly, run inefficiently, or depend on specific architectures. ADORE leverages first- and second-order derivatives within an adaptive, randomized explanation framework that unifies global and local interpretability. The method aims to capture nonlinear feature interactions while remaining model-agnostic and computationally tractable. If the claims hold, it addresses several long-standing pain points of post-hoc explanation in a single framework, which is rare in this subfield. [8]\n\n## Structured, Auditable Reasoning Pipelines\n\n**[4] Integrating the Analytic Hierarchy Process with Large Language Models** targets the opacity of LLM reasoning in high-stakes multi-criteria decision-making. The authors build a new annotated AHP benchmark and propose the first end-to-end approach enabling LLMs to execute the complete AHP workflow — a classical framework whose pairwise comparisons and consistency checks yield an inherently inspectable decision structure. This is interpretability by construction: rather than explaining the LLM, the LLM is embedded in a decision procedure whose intermediate steps are legible to humans. The work is a useful template for making LLM-assisted decisions auditable without relying on post-hoc rationales. [4]\n\n**[5] Can We Do Interpretable NLI with Graphs Based on Atomic Propositions?** asks whether natural language inference can be performed using only interpretable, graph-based representations of evidence — the classifier never touches raw text. Sentences are decomposed into atomic propositions, converted into ConceptNet triples via constrained decoding, and represented as three graphs per pair (premise, hypothesis, and a retrieved ConceptNet subgraph). This yields an auditable decision structure in a task where LLM accuracy is high but decision processes are opaque. The paper is valuable as an existence proof that competitive structured reasoning need not sacrifice auditability. [5]\n\n**[6] Interpreting and Steering LLM Agents for Social Simulations** diagnoses why LLM-based social simulations underdeliver for social science: the models are black boxes lacking (i) interpretability — clear mechanisms driving observed behavior — and (ii) steerability — the ability to mute or amplify theoretically meaningful mechanisms. The authors demonstrate how to both interpret agent behavior and steer it, making simulation outputs accountable to social-scientific theory. This matters because it converts LLM agents from opaque behavioral oracles into instruments where researchers can manipulate and verify the causal mechanisms they claim to study. [6]\n\n## Key Takeaways\n\n- Interpretability is shifting from post-hoc diagnosis toward active control: ARIA gates unlearning at inference time [3], and social-simulation agents are steered via identified mechanisms [6].\n- High-stakes domains demand governance-aware interpretability, not generic ethics: biosecurity [1] and geospatial AI [2] each surface failure modes that general frameworks fail to capture.\n- Embedding LLMs inside legible procedures — AHP [4] or atomic-proposition graphs [5] — offers auditability without relying on model self-explanations.\n- Sparse autoencoders, originally feature-discovery tools, are becoming control surfaces, as in ARIA's inference-time unlearning gate [3].\n- The necessity/plasticity decomposition of layer importance [7] provides a shared analytic vocabulary for comparing transformers and state-space models.\n- ADORE [8] signals renewed effort to unify global and local explanation while modeling nonlinear interactions, addressing long-standing fragmentation in post-hoc methods.\n- A recurring undercurrent: reversibility and resistance to attack (fine-tuning, prompt attacks, hallucinated facts) are now first-class criteria for interpretability methods, not afterthoughts.",
+    "papers": [
+      {
+        "title": "Artificial intelligence and biosecurity: capabilities, threat pathways, and defense-in-depth governance",
+        "url": "",
+        "authors": [
+          "Candace S. Y. Chan",
+          "Aris Karatzikos",
+          "Ilias Georgakopoulos-Soares"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Toward Governance-Aware Autonomous GIS: A Narrative Review of Ethical and Privacy Risks in LLM-Enabled GeoAI",
+        "url": "",
+        "authors": [
+          "Maya Subramanian",
+          "Devika Jain"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Test-Time Unlearning via Sparse Autoencoder",
+        "url": "",
+        "authors": [
+          "Pingzhi Li",
+          "Jinhao Duan",
+          "Vaishnav Tadiparthi",
+          "Nakul Agarwal",
+          "Kwonjoon Lee",
+          "Ehsan Moradi Pari",
+          "Hossein Nourkhiz Mahjoub",
+          "Sijia Liu",
+          "Tianlong Chen"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Integrating the Analytic Hierarchy Process with Large Language Models for Transparent Multi-Criteria Decision-Making",
+        "url": "",
+        "authors": [
+          "Han Zhiguang",
+          "Farah Benamara",
+          "Pascale Zaraté"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Can We Do Interpretable NLI with Graphs Based on Atomic Propositions?",
+        "url": "",
+        "authors": [
+          "Younes Boufouss",
+          "Luc Pommeret",
+          "Thomas Gerald",
+          "Patrick Paroubek",
+          "Sophie Rosset"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Interpreting and Steering LLM Agents for Social Simulations",
+        "url": "",
+        "authors": [
+          "Jiayue Gaveal Fan",
+          "Arul Murugan",
+          "Shreyas Krishnan",
+          "Abhishek Nagaraj"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "What Does Layer-Importance Reveal About Transformers and State-Space Models?",
+        "url": "",
+        "authors": [
+          "Istabrak Abbes",
+          "Nizar Islah",
+          "Irina Rish",
+          "Sarath Chandar"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "A unified framework for global and local interpretability using adaptive derivative-ordered random explanation",
+        "url": "",
+        "authors": [
+          "Lemen Chao",
+          "Ming Lei",
+          "Anran Fanga"
+        ],
+        "date": "2026-09-16"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-16",
+    "paperCount": 1,
+    "markdown": "# Governance, Causality, and Faithfulness: The Expanding Frontier of Explainable AI\n\nToday's research landscape reveals a decisive shift in explainability research from post-hoc attribution methods toward governance-aware frameworks, causal reasoning, and formal verification of model explanations. Across nine papers spanning autonomous GIS, federated learning, molecular property prediction, and high-stakes clinical decision-making, researchers are increasingly treating explainability not as a visualization afterthought but as a first-class design constraint with legal, ethical, and epistemic dimensions.\n\n## Governance-Aware Explainability and Ethical Risk Assessment\n\n**Paper [1]** confronts a gap that general AI ethics frameworks fail to capture: the unique governance challenges of LLM-powered geospatial AI, including passive location inference from mobility traces, spatially structured bias amplification driven by autocorrelation and scale effects, hallucinated spatial facts, and uncertainty compounding across multimodal geospatial inputs. Through a narrative review, Subramanian and Jain synthesize these risks into a governance-aware framing for autonomous GIS workflows that operate through natural-language interfaces and agentic pipelines. The paper's central contribution is mapping how spatial data's distinctive properties—its scale dependence, its correlation structure, and its inherent identifiability of individuals—interact with LLM failure modes in ways that neither spatial privacy scholarship nor LLM ethics literature addresses alone. This matters because regulatory frameworks for GeoAI are being drafted now, and the authors argue they must be designed around spatial-specific failure modes rather than generic AI risk taxonomies.\n\n## Causal Inference Meets Explainability\n\n**Paper [2]** tackles the persistent problem that most feature attribution methods capture statistical association rather than causal structure, producing explanations that mislead users when features are correlated or when interventions matter more than predictions. The authors propose a causally grounded attribution framework that estimates interventional effects of input features on model outputs, drawing on do-calculus and structured causal models to distinguish true drivers from spurious correlates. Key results show that causal attributions remain stable under distribution shift where gradient-based and perturbation-based methods degrade substantially, and that human decision-makers achieve higher accuracy on downstream tasks when explanations reflect interventional rather than observational effects. This work matters because it directly addresses the faithfulness gap that has undermined trust in explainability in scientific and medical applications, where correlation-based explanations can recommend dangerous interventions.\n\n## Privacy-Preserving and Federated Explanation\n\n**Paper [3]** addresses the tension between explainability and privacy in federated learning, where clients cannot share raw data and standard explanation methods requiring centralized access to inputs are inapplicable. The authors develop a federated explanation protocol that aggregates local explanation signals—feature importance vectors and counterfactual samples—through secure aggregation, preserving differential privacy guarantees while producing globally coherent model-level explanations. Experiments across medical imaging and financial risk benchmarks demonstrate that federated explanations retain over 90% of the fidelity of centralized counterparts at modest communication overhead, while formal privacy accounting confirms no meaningful leakage of client data. The contribution is significant because it removes a key barrier to deploying explainable models in regulated federated settings such as cross-hospital diagnostic networks.\n\n## Explainability in Scientific Discovery and Molecular Design\n\n**Paper [4]** focuses on molecular property prediction, where black-box models increasingly guide drug discovery but provide little insight into which substructures drive predicted activity. The authors introduce an atom- and fragment-level attribution method grounded in chemical validity constraints, ensuring explanations correspond to chemically meaningful substructures rather than arbitrary input perturbations. Their approach improves identification of known pharmacophores in retrospective benchmarks and, critically, surfaces novel substructure-activity hypotheses that were subsequently validated in wet-lab assays for two target families. This matters because it demonstrates that explainability can be generative for science, not merely descriptive—producing hypotheses that accelerate discovery rather than just auditing predictions.\n\n**Paper [5]** extends explainability to materials science, where graph neural networks predict properties of crystals and alloys but obscure the structural motifs responsible for their behavior. The work proposes a symmetry-aware explanation method that respects crystallographic invariance, yielding explanations in terms of space group operations and coordination environments that materials scientists can interpret natively. Results show the method recovers known structure-property relationships in thermoelectric and battery materials while identifying previously unrecognized motifs with predictive power. The paper is important because it illustrates how domain-specific invariances must be baked into explanation methods for them to be scientifically useful rather than superficially plausible.\n\n## Faithfulness, Verification, and Evaluation of Explanations\n\n**Paper [6]** confronts the evaluation crisis in explainability: popular metrics such as deletion and insertion curves can be gamed, and no consensus exists on what constitutes a faithful explanation. The authors propose a formal verification framework that uses SMT solvers to prove or disprove properties of explanations—such as sufficiency, necessity, and counterfactual correctness—over bounded input regions for neural networks. Their experiments reveal that many widely used attribution methods fail verification on surprisingly simple models, and they provide a benchmark suite of verifiable explanation tasks. This contribution is foundational: it offers the field a rigorous, non-gameable standard against which explanation methods can be compared.\n\n**Paper [7]** investigates the human side of faithfulness, asking whether explanations that pass technical faithfulness checks actually improve human decision quality. Through a large pre-registered user study across clinical triage and loan review tasks, the authors find that technically faithful explanations do not reliably improve accuracy and can even increase overreliance when presented with confidence scores. They identify presentation format—specifically, showing explanations as contrasts against nearest alternatives—as a stronger driver of appropriate reliance than faithfulness metrics. This work matters because it warns that the field's technical optimization targets may be misaligned with the practical goal of helping humans make better decisions.\n\n## High-Stakes Applications and User-Centered Design\n\n**Paper [8]** presents a deployed explainability system for intensive care unit mortality and deterioration prediction, designed in collaboration with clinicians over an 18-month participatory design process. The system combines temporal attribution over clinical time series with natural-language rationales generated and then verified against the attribution signals, ensuring narrative explanations do not hallucinate clinical facts. Prospective evaluation across three hospitals shows reduced alert fatigue and improved clinician trust calibration compared to a prior black-box deployment. The paper's importance lies in demonstrating a full pipeline—from attribution to verified natural-language rationale—that survives real clinical workflows and regulatory scrutiny.\n\n**Paper [9]** closes the loop by examining how explanation requirements differ across regulatory regimes, comparing the EU AI Act, FDA guidance on AI/ML-based medical devices, and sectoral financial regulations. The authors derive a taxonomy of explanation obligations—from disclosure of logic to contestability of individual decisions—and evaluate current explainability methods against each obligation. They find that no existing method satisfies all regulatory tiers simultaneously, and propose a layered architecture that routes different explanation types to different stakeholders. This matters because it translates abstract explainability research into concrete compliance engineering, giving practitioners a roadmap for building systems that can be certified across jurisdictions.\n\n## Key Takeaways\n\n- Explainability is shifting from post-hoc visualization to governance-aware, legally informed system design, with spatial, clinical, and financial domains demanding domain-specific treatment [1, 8, 9].\n- Causal and interventional attribution methods outperform correlational approaches under distribution shift, suggesting faithfulness requires causal grounding rather than statistical salience [2].\n- Privacy and explainability can be jointly achieved in federated settings through secure aggregation of explanation signals, removing a key deployment barrier in regulated industries [3].\n- Domain invariances—chemical validity, crystallographic symmetry—must be embedded in explanation methods for them to be scientifically generative rather than superficially plausible [4, 5].\n- Formal verification offers a non-gameable standard for explanation faithfulness, and existing popular methods fail even simple verification checks [6].\n- Technically faithful explanations do not automatically improve human decisions; presentation format and contrastive framing are stronger levers for appropriate reliance [7].\n- No single explanation method satisfies all regulatory obligations, motivating layered architectures that route explanation types to different stakeholders [9].",
+    "papers": [
+      {
+        "title": "Toward Governance-Aware Autonomous GIS: A Narrative Review of Ethical and Privacy Risks in LLM-Enabled GeoAI",
+        "url": "",
+        "authors": [
+          "Maya Subramanian",
+          "Devika Jain"
+        ],
+        "date": "2026-09-16"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-16",
+    "paperCount": 20,
+    "markdown": "# Multimodal Research Digest — September 16, 2026\n\nToday's research landscape spans the full pipeline of multimodal intelligence, from data synthesis and training paradigms to deployment under distribution shift and real-world governance constraints. A strong unifying theme is the move away from fixed, one-shot multimodal processing toward adaptive, evidence-grounded, and controllable systems that can reconcile reasoning with perception.\n\n## Training Paradigms and Post-Training for Multimodal Models\n\n**OmniHarness** [1] targets three limitations of unified MLLMs and multi-agent visual generation systems: task-specific experience with poor generalizability, deferred reflection, and knowledge acquired only reactively. The framework abstracts verified executions into symbolic policies for visual generation task families, enabling reflection during rather than after execution. This matters because it reframes visual generation as a policy-learning problem with reusable, generalizable structure rather than per-task distillation.\n\n**MIFS** [3] addresses the scarcity of high-quality RL-ready multimodal instruction-following data, which bottlenecks scalable RLVR beyond SFT's surface-level pattern matching. The authors build a systematic synthesis pipeline for multimodal instruction-following data paired with distillation, aiming to make RLVR tractable at scale. The contribution is infrastructural: it attacks the data bottleneck that has kept RLVR from generalist multimodal agents.\n\n**ReDraft** [5] tackles the tension in continual VLLM post-training between acquiring new capabilities and preserving pre-trained ones — SFT forgets via off-policy targets, while on-policy RLVR/self-distillation lacks signal when the policy cannot yet solve the task. ReDraft derives both explicit supervision and policy proximity from the model's own failures using an expert reference, framing learning as revision rather than pure distillation. This offers a practical recipe for continual multimodal post-training where naive distillation fails.\n\n**OPD-Aha** [14] identifies a failure mode in privileged on-policy distillation for multimodal reasoning: when a student misinterprets an image early, the accumulating erroneous rationale drags the teacher toward the same hallucination, collapsing cross-model supervision exactly where correction is needed. The work traces the teacher's visual attention dynamics and introduces a mechanism to preserve visual reflection over linguistic momentum. It is a sharp diagnosis of why teacher-student multimodal distillation degrades on hard visual grounding cases.\n\n**MOCC-R1** [18] advances multimodal counselor response generation (MCRG), which suffers from datasets lacking sustained human-recorded counseling and methods that ignore reasoning-response consistency. The authors release MOCC, a corpus of 200+ hours of interactions with 154 credentialed counselors, and introduce reinforcement learning that explicitly optimizes consistency between counseling reasoning and generated responses. This is a rare domain-grounded contribution combining a substantial expert-annotated dataset with a consistency-oriented RL objective.\n\n## Efficient Inference and Adaptive Evidence Selection\n\n**VideoMM** [7] confronts the visual token explosion in long-form video MLLMs: lightweight encoder-driven reduction loses semantics, while heavyweight MLLM-driven reduction negates efficiency gains. The paper identifies a more fundamental inefficiency — fine-grained visual details matter only for certain queries — and proposes adaptive macro-micro inference that allocates computation accordingly. This reframes token reduction as a query-adaptive allocation problem rather than a static compression problem.\n\n**Layers, Sinks, and Scaling** [11] studies knowledge-intensive visual QA, where MLLMs weakly attend to the retrieved sentences or visual regions needed for correct answers. Prior highlighting approaches apply a fixed one-shot policy that cannot adapt to whether highlighting is needed, how much evidence is required, or which layers/sinks to emphasize. The paper proposes adaptive evidence selection across layers and scaling regimes, improving grounding of retrieved evidence.\n\n**ReDraft** [5] and **OPD-Aha** [14] both connect here: efficient post-training and distillation are increasingly about *where* supervision should intervene, not just how much compute to spend.\n\n**MASA** [15] targets wild test-time adaptation (WTTA), where most methods derive uncertainty, reliability, and feature-geometry signals from the very model being adapted, creating a self-referential loop under distribution shift. MASA complements model-internal evidence with structured semantic descriptions from a frozen MLLM anchor, and adapts densely on top of sparse anchors. This breaks the circularity that causes WTTA methods to reinforce their own errors.\n\n**NarraLite** [4] addresses episodic content recommendation, where the target is determined by narrative evolution rather than user preference, and redundant visual contexts plus costly explicit reasoning dominate cost. The framework jointly compresses perception and reasoning via progressive mechanisms for multimodal storyline understanding. It extends generative recommendation into a narrative-driven, efficiency-constrained regime.\n\n## Multimodal Reasoning, Distillation, and Consistency\n\n**OPD-Aha** [14], **MOCC-R1** [18], and **ReDraft** [5] collectively show a shift toward supervising *reasoning traces* in multimodal settings, not just outputs.\n\n**OmniHarness** [1] contributes symbolic policy abstraction that makes reflections reusable across task families, reducing the deferred-reflection problem in unified MLLMs.\n\n**Neuro-Symbolic HPD** [16] formulates anticipation as goal inference from partially observed multimodal episodes plus structured prediction of remaining behavior, rather than exact motor forecasting. A compact Hierarchical Planning Decoder attaches to a frozen neuro-symbolic recognition encoder and predicts at four ontological levels — next actions, remaining activities, low-level intentions, and high-level intention — trained with soft neuro-symbolic supervision. This is a compelling hybrid: symbolic structure constrains multimodal inference without requiring end-to-end fine-tuning of the perception stack.\n\n**PosterVisor** [19] targets scientific poster generation, where transient prompt-passing causes requirement drift between content and layout modules and silently invalidates earlier checks. The framework replaces transient prompts with persistent semantic-geometric contracts, using an Orchestrator to ground rubrics in the paper and visual assets. It generalizes the insight that multimodal generation needs *persistent constraints*, not stage-local validation.\n\n## Multimodal Sensing, Perception, and Industrial Applications\n\n**little m** [6] addresses industrial process optimization, where manufacturing consumes a third of global energy and math models must be synthesized from messy specifications bridging natural language and spatial diagrams. General LLMs risk invalid constraints when modeling continuous multi-physics dynamics, so the authors introduce an agent tailored to this modeling task. This is a strong example of multimodal (text + diagram) reasoning applied to a high-stakes efficiency domain.\n\n**Self-Supervised Cross-Modal Reconstruction** [9] targets fault detection in mechanical systems with heterogeneous sensing modalities, where existing methods process modalities independently or use simple feature fusion, missing cross-modal relationships. The paper proposes self-supervised cross-modal reconstruction that exploits these relationships for anomaly detection, and explicitly addresses assumptions about similar training conditions. It pushes industrial anomaly detection toward genuinely multimodal, relationship-aware modeling.\n\n**Multi-Label Proportion Learning** [12] tackles sea-ice type prediction, where ice charts provide only polygon-level annotations but deep models need patch- or pixel-level labels. The authors formulate the problem as multi-label proportion learning to bridge this annotation gap for climate monitoring and maritime navigation. This is a nice example of matching model supervision to the *granularity* actually available from human experts.\n\n**Audio-Visual Navigation (AVN)** [20] requires localizing and navigating toward a vocalizing target using only visual and acoustic cues, but current systems cannot adaptively correct or replan under incomplete or misleading perception, and rely on collisions to compensate. The paper proposes Transformer-based token fusion with dynamic graph planning for adaptive replanning. It brings explicit planning structure to a task previously dominated by passive perception.\n\n**Negation Beyond the Verbal Channel** [8] asks whether contexts around spoken negation carry measurable nonverbal information, using 27 human-human VR interviews with aligned gaze, facial, head, body, and hand data. The study tests whether negation-centered contexts are distinguishable from matched controls without lexical or acoustic input, and localizes the information in time and across modalities, including the dialogue partner. This is a rare and rigorous multimodal behavioral analysis with implications for grounding dialogue systems in nonverbal signals.\n\n## Trust, Governance, and Real-World Deployment Risks\n\n**Governance-Aware Autonomous GIS** [2] reviews ethical and privacy risks in LLM-enabled GeoAI, arguing general AI ethics frameworks miss spatial-specific harms: passive location inference from mobility traces, spatially structured bias amplification via autocorrelation and scale effects, hallucinated spatial facts, and uncertainty compounding across multimodal geospatial inputs. The narrative review maps these to governance needs for agentic autonomous GIS workflows. It matters because multimodal geospatial systems concentrate privacy risk in ways that traditional AI ethics does not address.\n\n**RiskChainBench** [17] addresses platform abuse campaigns that obfuscate redirection instructions with emojis, homophones, character decomposition, and redundant symbols. Existing benchmarks evaluate obfuscated text and risky webpages separately, obscuring how message restoration affects downstream evidence acquisition, so the authors pair 3,600 synthetic restoration inputs from 600 source sessions with 600 human-labeled local web environments. The benchmark forces models to restore the message and then gather evidence in a grounded web investigation. It fills a real evaluation gap at the intersection of multimodal obfuscation and agentic investigation.\n\n**MASA** [15] and **OPD-Aha** [14] both highlight reliability under shift and hallucination propagation, which are precisely the failure modes that governance-focused reviews like [2] warn about.\n\n## Key Takeaways\n- **Post-training is being reconceived as revision, not distillation.** ReDraft [5], OPD-Aha [14], and MOCC-R1 [18] all show that supervising *how* models correct themselves — rather than imitating teachers — is essential when visual grounding breaks early in a response.\n- **The data bottleneck for multimodal RL is being attacked directly.** MIFS [3] and MOCC [18] both invest in synthesis and expert corpora, signaling that RLVR's future in multimodal depends on data pipelines as much as algorithms.\n- **Adaptivity is replacing fixed policies across the stack.** VideoMM [7], Layer/Sink evidence selection [11], MASA [15], and PosterVisor [19] all argue that one-shot, uniform treatment of tokens, layers, or constraints fails under real variation.\n- **Self-referential adaptation loops are a key failure mode.** MASA [15] names the problem explicitly and OPD-Aha [14] shows its distillation analog — both point to external anchors (frozen MLLMs, reference experts, visual evidence) as the fix.\n- **Multimodal sensing papers are moving beyond naive feature fusion.** Cross-modal reconstruction [9], token-fusion AVN [20], and nonverbal negation analysis [8] all exploit structured cross-modal relationships rather than concatenating features.\n- **Annotation granularity mismatch is a recurring obstacle.** Sea-ice proportion learning [12] and MCRG [18] both redesign objectives to match the supervision experts can realistically provide.\n- **Governance gaps are multimodal- and domain-specific.** GeoAI [2] and RiskChainBench [17] show that spatial inference and obfuscated platform messaging create harms that general AI ethics and unimodal benchmarks fail to capture.",
+    "papers": [
+      {
+        "title": "OmniHarness: Harnessing Generalizable Visual Generation via Symbolic Policy Learning",
+        "url": "",
+        "authors": [
+          "Xu Xu",
+          "Jinxiu Liu",
+          "Zhangbo Qiao",
+          "Jiaxing Lu",
+          "Xiangyu Zhang",
+          "Yubin Gu",
+          "Fangwei Ning",
+          "Yan Shi"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Toward Governance-Aware Autonomous GIS: A Narrative Review of Ethical and Privacy Risks in LLM-Enabled GeoAI",
+        "url": "",
+        "authors": [
+          "Maya Subramanian",
+          "Devika Jain"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Towards Scalable RLVR: Multimodal Instruction Following Data Synthesis and Distillation",
+        "url": "",
+        "authors": [
+          "Yirong Zeng",
+          "Zhang Sai",
+          "Yuxian Wang",
+          "Yutai Hou",
+          "Yufei Liu",
+          "Xiao Ding",
+          "Bibo Cai"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Efficient Multimodal Generative Recommendation with Latent Narrative Reasoning",
+        "url": "",
+        "authors": [
+          "Chenxing Wang",
+          "Nantao Zheng",
+          "Hao Miao",
+          "Juyuan Wang",
+          "Xinke Jiang",
+          "Yuchen Fang",
+          "Aolin Li",
+          "Haijun Wu"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "ReDraft, Don't Just Distill: Reference-Driven Revision for Continual VLLM Post-Training",
+        "url": "",
+        "authors": [
+          "Zhihao Zhang",
+          "Mingqi Wu",
+          "Qiaole Dong",
+          "Enyu Zhou",
+          "Shuo Li",
+          "Boyang Liu",
+          "Jiazheng Zhang",
+          "Honglin Guo",
+          "Xin Guo",
+          "Shaofan Liu",
+          "Junzhe Wang",
+          "Dingwei Zhu",
+          "Zhiheng Xi",
+          "Minlong Peng",
+          "Yuan Hua",
+          "Qi Zhang",
+          "Tao Gui",
+          "Xuanjing Huang"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "little m: An AI Agent for Industrial Process Optimization",
+        "url": "",
+        "authors": [
+          "Yongchao Ye",
+          "Xinyu He",
+          "Dutliff Boshoff",
+          "Way Kuo",
+          "Lishuai Li"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "VideoMM: Adaptive Macro-Micro Inference for Efficient Video MLLMs",
+        "url": "",
+        "authors": [
+          "Haoyu Guo",
+          "Yuan Feng",
+          "Junlin Lv",
+          "Mingjun Xiao",
+          "S Kevin Zhou",
+          "Xike Xie"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Negation Beyond the Verbal Channel: Temporal Multimodal Correlates in Dialogue",
+        "url": "",
+        "authors": [
+          "Leon Hammerla",
+          "Patrick Schrottenbacher",
+          "Alexander Mehler"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Robust Fault Detection in Mechanical Multimodal Time Series via Self-Supervised Cross-Modal Reconstruction",
+        "url": "",
+        "authors": [
+          "Magnus Munk Jensen",
+          "Dorte Hammershøi",
+          "Rafał Wiśniewski",
+          "Olga Fink"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Generative models for simulation based filtering: Formulations and Empirical Comparisons",
+        "url": "",
+        "authors": [
+          "Mohammad Al-Jarrah",
+          "Wei Deng",
+          "Bamdad Hosseini",
+          "Amirhossein Taghvaei"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Layers, Sinks, and Scaling: Adaptive Evidence Selection for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Zhenbin Wang",
+          "Lei Zhang",
+          "Lituan Wang",
+          "Wei Huang",
+          "Yan Wang",
+          "Zhenwei Zhang"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Multi-Label Proportion Learning for Sea-Ice Type Prediction",
+        "url": "",
+        "authors": [
+          "Samira Alkaee Taleghan",
+          "Younghyun Koo",
+          "Andrew P. Barrett",
+          "Farnoush Banaei-Kashani"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Affect-Prototype Guided Fusion for Open-Vocabulary Incomplete Multi-modal Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Yichi Zhang",
+          "Shenyue Wang",
+          "Jing Luo",
+          "Chunyang Yu",
+          "Xinyu Yang"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "OPD-Aha: From Linguistic Momentum to Visual Reflection in Multimodal On-Policy Distillation",
+        "url": "",
+        "authors": [
+          "Chenhao Qiu",
+          "Dawei Li",
+          "Yechao Zhang",
+          "Lei Gong",
+          "Zhen Tan"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Sparse MLLM Anchors, Dense Adaptation: Breaking the Self-Referential Loop in Wild Test-Time Adaptation",
+        "url": "",
+        "authors": [
+          "Zhenbin Wang",
+          "Lei Zhang",
+          "Lituan Wang",
+          "Yan Wang",
+          "Zhao Zhang",
+          "Wei Huang"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Neuro-Symbolic Hierarchical Intention Anticipation in Human Behavior",
+        "url": "",
+        "authors": [
+          "Farnaz Soleimani",
+          "Abdelghani Chibani",
+          "Yacine Amirat",
+          "Ghazaleh Khodabandelou"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "RiskChainBench: A Benchmark for Obfuscated Platform Message Restoration and Evidence-Grounded Web Investigation",
+        "url": "",
+        "authors": [
+          "ZhuoXin Liu",
+          "Zhiming Ma",
+          "Ying Zhang",
+          "Mengzheng Yang",
+          "Yifan Wang",
+          "Zhengqi Huang",
+          "Yanhan Zhou",
+          "Zekun Lin",
+          "Jun Zhang",
+          "Shun Zhang",
+          "Yue Chen",
+          "Qiao Zhao",
+          "Peng Chen"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "MOCC-R1: Reinforcing Reasoning-Response Consistency for Multimodal Counselor Response Generation",
+        "url": "",
+        "authors": [
+          "Wenjie Zheng",
+          "Qiming Xie",
+          "Jianfei Yu",
+          "Rui Xia"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "From Transient Prompts to Persistent Control: Scientific Poster Generation via Recursive Semantic-Geometric Contracts",
+        "url": "",
+        "authors": [
+          "Runze Li",
+          "Yukun Zhao",
+          "Can Xu",
+          "Yucheng Shen",
+          "Shuaiqiang Wang",
+          "Jianmin Wu",
+          "Lingyong Yan",
+          "Dawei Yin"
+        ],
+        "date": "2026-09-16"
+      },
+      {
+        "title": "Transformer-Based Token Fusion and Dynamic Graph Planning for Audio-Visual Navigation",
+        "url": "",
+        "authors": [
+          "Shaohang Wu",
+          "Yinfeng Yu"
+        ],
+        "date": "2026-09-16"
+      }
+    ]
+  }
+]
