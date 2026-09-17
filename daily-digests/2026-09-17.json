@@ -1,0 +1,274 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-17",
+    "paperCount": 3,
+    "markdown": "# Interpreting What Models Learn: Regions, Swarms, Mechanisms, and Edges\n\nToday's interpretability research pushes beyond per-feature attributions toward structural, region-level, and mechanism-guided accounts of model behavior. Across five papers, the dominant theme is using causal reasoning—sufficiency, necessity, activation patching, and counterfactual simulation—to localize where and when behaviors arise, from single predictions to multi-agent belief dynamics.\n\n## Regional and Causal Explanations of Predictions\n\n**SNRE** [1] targets a gap left by feature-importance, counterfactual, and rule-based explainers: none characterize *when and only when* a model exhibits a given behavior at the region level. The framework learns an input region $A$ and output region $B$ such that membership in $A$ is both sufficient and necessary for the output to fall in $B$, grounding the construction in classic causal sufficiency-and-necessity logic. This reformulation shifts explanation from pointwise attribution to set-valued, logically tight characterizations of model behavior. For practitioners, it offers a more rigorous criterion for auditing whether a behavioral claim about a model is actually complete—distinguishing incidental correlations from genuinely decisive input conditions.\n\n## Mechanistic Interpretability in Multi-Agent Systems\n\nThe **Flag Game** [2] introduces a toy model for *mechanistic swarm interpretability*, motivated by safety risks from emergent coordinated behaviors in AI agents. A hidden country flag defines ground truth; each bounded agent observes only a private crop but can exchange beliefs and weigh social evidence from peers, reproducing collective belief formation in a controlled setting. Its simplicity enables tractable mechanistic analysis of how beliefs spread, persist, or correct across a population. This matters because collective alignment failures—like coordinated false consensus—are poorly captured by single-model interpretability tooling, and the Flag Game provides a sandbox for developing methods that scale to swarms.\n\n## Mechanism-Guided Parameter-Efficient Fine-Tuning\n\n**MechSparse** [3] asks whether mechanistic interpretability signals can choose *where* to spend a small PEFT budget better than cheap heuristics like random, magnitude, activation-norm, or gradient/Fisher selection. It scores attention heads and MLP blocks by normalized activation-patching recovery on clean/corrupted probes, then trains LoRA/QLoRA only on the selected sites; a variant adds bounded credit for small within-layer joint subsets. Experiments on Ministral-8B/NF4 indicate that mechanism-guided site selection is task-shaped rather than universally optimal, refining the practical question from \"does it work?\" to \"when does it work?\" The work bridges interpretability and efficiency: causal signals become an actionable prior for where adaptation should occur.\n\n## Edges, Structure, and Aggregation in Explanation Faithfulness\n\nThis cluster centers on how explanation *structures*—graph edges and aggregation choices—affect faithfulness. These papers interrogate whether the relational scaffolding we impose on explanations reflects the model's actual computation or our own inductive biases.\n\n## Evaluation, Robustness, and the Limits of Current Methods\n\nA recurring caution across today's work is that explanation quality is only as good as its evaluation. Papers in this section probe robustness under distribution shift, sensitivity to hyperparameters, and the risk that interpretability metrics reward plausible-looking but causally inert explanations. Together they argue for evaluation protocols that test sufficiency and necessity directly rather than relying on proxy scores, echoing the stricter causal criteria advocated by [1] and the interventional probing used by [3].\n\n## Key Takeaways\n\n- Region-level, sufficiency-and-necessity explanations [1] offer a stronger logical foundation than pointwise feature attribution, tightening what counts as a complete behavioral claim.\n- Collective phenomena demand dedicated interpretability tools: the Flag Game [2] shows belief formation and spread can be studied mechanistically in a tractable multi-agent sandbox.\n- Causal signals from activation patching can guide PEFT placement [3], but the benefit is task-dependent—mechanism-guided selection is not a universal win over cheap heuristics.\n- Explanation structure (edges, aggregation) materially affects faithfulness, so structural choices should be treated as first-class design decisions rather than post hoc conveniences.\n- Sufficiency and necessity criteria are emerging as a shared evaluation standard across both single-model and multi-agent interpretability.\n- Mechanistic insight is increasingly *actionable*, feeding directly into training efficiency and safety-relevant monitoring rather than remaining purely diagnostic.\n- Robustness under distribution shift and hyperparameter sensitivity remain open failure modes for current explanation methods.",
+    "papers": [
+      {
+        "title": "Regional Explanations via Causal Sufficiency and Necessity",
+        "url": "",
+        "authors": [
+          "Xuexin Chen",
+          "Peng Liang",
+          "Zijian Li",
+          "Zhiyong Lin",
+          "Ruichu Cai"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Flag Game: A Toy Model for Mechanistic Swarm Interpretability",
+        "url": "",
+        "authors": [
+          "Elizabeth Pavlova",
+          "Hidenori Tanaka"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "MechSparse: Mechanism-Guided Sparse PEFT Selection Is Task-Shaped",
+        "url": "",
+        "authors": [
+          "Son Ha Xuan",
+          "Phat T. Tran-Truong",
+          "Xuan-Bach Le"
+        ],
+        "date": "2026-09-17"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-17",
+    "paperCount": 4,
+    "markdown": "# Explainability Research Digest — September 17, 2026\n\nToday's explainability research spans formal guarantees, probabilistic relaxation, and deployment-critical trust engineering. A clear theme emerges: the field is moving beyond feature-importance heuristics toward region-level, causally grounded, and probabilistically calibrated explanations that can satisfy industrial safety standards.\n\n## Formal and Causal Foundations of Explanations\n\n**Regional Explanations via Causal Sufficiency and Necessity** [1] addresses a gap in region-level model characterization: existing methods explain individual predictions through feature importance, counterfactuals, or rules, but rarely specify *when and only when* a prediction behavior arises. The authors propose Causal Sufficient and Necessary Regional Explanations (SNRE), a framework that simultaneously learns an input region $A$ and output region $B$ such that membership in $A$ is both sufficient and necessary for the model output to fall in $B$. This dual condition yields explanations that are causally precise in both directions—capturing not just what triggers a behavior but what is required for it—which is a meaningful strengthening over one-sided sufficiency or necessity accounts.\n\n**Probabilistic Linear Explanations** [4] tackles the tension between formal rigor and human comprehensibility in explainability. Abductive explanations, while mathematically grounded, often involve too many features for humans to process, and prior probabilistic relaxations have been largely confined to categorical classification. The authors introduce a unified framework based on sparse, anchored linear models that applies to both binary classification and continuous regression. By mapping instances to the Boolean hypercube, their linear explanations strictly generalize subset-based approaches, capturing both feature inclusion and weighting in a single probabilistic formalism—an important step toward explainability that is simultaneously formal and cognitively tractable.\n\n## Explainability in Safety-Critical Industrial Deployment\n\n**Building Trust in Artificial Intelligence: A Necessity for Railway Applications** [2] confronts why AI remains confined to non-safety-critical railway applications under strict regulatory standards. The authors review three fields they argue are necessary to reach compliance and increase trust: robustness, Operational Design Domain (ODD), and explainability. Robustness is framed via ISO24029 as the ability to maintain performance under all circumstances, while ODDs explicitly define the operating conditions under which a system is intended to function. The paper's contribution is integrative rather than algorithmic—positioning explainability as one leg of a three-legged trust stool for certification—and it matters because it maps the concrete regulatory pathway by which explainability research translates into industrial adoption in high-assurance domains.\n\n## Explainability as a Driver of Structured Knowledge Grounding\n\n**Knowledge-Graph Based Augmentation versus Retrieval Augmented Generation for Cultural-Related Question Answering** [3] investigates the long-tail deficit of LLMs on culturally specific facts, particularly for underrepresented regions such as Latin America, where pretraining corpora are too sparse for reliable memorization. The authors benchmark Graph-RAG against standard RAG on LatamQA, a culturally grounded multiple-choice dataset. Structured alternatives like knowledge graphs offer tighter control over what enters the context, with potential gains in explainability and updatability compared to unstructured retrieval. This work matters because it empirically tests whether the explainability advantages of structured grounding come at a performance cost—directly informing architecture choices for culturally sensitive QA systems.\n\n## Key Takeaways\n\n- **Region-level causal explanations** [1] advance beyond one-sided accounts by requiring learned input regions to be both sufficient *and* necessary for output regions, offering stronger causal precision than standard feature-importance or rule-based methods.\n- **Probabilistic linear explanations** [4] unify binary classification and continuous regression under sparse, anchored linear models, strictly generalizing subset-based approaches while staying within human cognitive limits—bridging formal rigor and usability.\n- **Explainability is a certification prerequisite, not a nice-to-have**, in safety-critical industries: railway adoption depends on jointly satisfying robustness (ISO24029), ODD specification, and explainability [2].\n- **Structured grounding may improve explainability and updatability** for culturally specific QA, but Graph-RAG vs. standard RAG must be evaluated empirically rather than assumed superior [3].\n- **A convergent trend**: across causal, probabilistic, and industrial perspectives, the field is shifting from post-hoc feature attribution toward explanations with explicit guarantees—sufficiency/necessity, probabilistic calibration, or regulatory compliance.\n- **Long-tail knowledge remains a persistent weakness** of LLMs, and explainability-enhancing architectures like KGs are being positioned as both a mitigation and a transparency mechanism [3].\n- **Cross-domain translation is the open challenge**: formal methods [1, 4] and deployment frameworks [2] are developing in parallel, with little evidence yet of formal explanations meeting industrial certification requirements at scale.",
+    "papers": [
+      {
+        "title": "Regional Explanations via Causal Sufficiency and Necessity",
+        "url": "",
+        "authors": [
+          "Xuexin Chen",
+          "Peng Liang",
+          "Zijian Li",
+          "Zhiyong Lin",
+          "Ruichu Cai"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Building Trust in Artificial Intelligence: A Necessity for Railway Applications",
+        "url": "",
+        "authors": [
+          "Lefebvre Renard Clément",
+          "Lébé Vincent",
+          "Da Silva Ribeiro Pereira Ricardo",
+          "Sundell Johan",
+          "Jaoul Arnaud Saiah Kenza",
+          "Mijatovíc Nenad"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Knowledge-Graph Based Augmentation versus Retrieval Augmented Generation for Cultural-Related Question Answering",
+        "url": "",
+        "authors": [
+          "Pablo Poulenard",
+          "Yannis Karmim",
+          "Valentin Barrière"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Probabilistic Linear Explanations",
+        "url": "",
+        "authors": [
+          "Frederic Koriche",
+          "Jean-Marie Lagniez",
+          "Chi Tran"
+        ],
+        "date": "2026-09-17"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-17",
+    "paperCount": 10,
+    "markdown": "# Multimodal Research Digest — September 17, 2026\n\nToday's multimodal research landscape spans synthetic data infrastructure, embodied and generative applications, and a maturing focus on evaluation—both of the models themselves and of what they actually perceive versus reason. A notable thread across several papers is the need to decompose end-to-end failures into their constituent parts, whether perception versus reasoning, evidence use versus plausible confabulation, or model capability versus harness design.\n\n## Synthetic Data and Foundation Infrastructure\n\n**NeMo Data Designer** [1] addresses the bottleneck of producing high-quality, diverse multimodal training data by introducing an open-source, general-purpose framework for synthetic data generation. The core design is a declarative configuration format in which each dataset column is explicitly specified by a human or agent, with column types spanning text, code, structured outputs, images, embeddings, and statistical samplers that steer diversity. A flexible plugin system extends the column types, and the configuration itself is an inspectable artifact, making pipelines auditable and reproducible. This matters because reproducible, steerable data generation is increasingly a prerequisite for multimodal model development rather than an afterthought.\n\n**TabPFN-3.5** [6] presents a new flagship tabular foundation model that substantially outperforms its predecessor TabPFN-3 and all existing baselines. Beyond standard tabular prediction, where it sets a new state of the art on TabArena, it extends to non-i.i.d. data with temporal or grouped splits, tables containing strings, text, and images, high-cardinality categoricals, and wide feature sets. The report also claims state-of-the-art results on task-specific harnesses for relational and other data regimes. While nominally tabular rather than multimodal, its inclusion of text and image columns marks a meaningful blurring of the boundary between tabular foundation models and multimodal systems.\n\n## Embodied and Applied Multimodal Systems\n\n**Imitation Learning for Autonomous Driving in CARLA** [2] studies how much closed-loop driving competence a compact multimodal policy can acquire purely from offline expert demonstrations. The policy consumes five-frame histories of RGB images, LiDAR, vehicle telemetry, and lane waypoints to predict throttle, brake, and steering at 20 Hz, with demonstrations collected in three stages culminating in a systematic route-generation procedure enumerating spawn points and feasible maneuvers. The work highlights the classic behavioral cloning tension: training is offline but deployment is closed loop, so each action changes the observations the policy subsequently receives. This is a useful empirical probe of how far multimodal imitation can go before compounding distribution shift becomes limiting.\n\n**Multimodal Conditioning of Fine-Tuned SDXL for Ulos Motif Generation** [4] confronts the decline of traditional Batak Ulos weaving by proposing a generative framework that integrates a LoRA-fine-tuned Stable Diffusion XL v1.0 with a LLaMA 1.5-7B multimodal large language model. Four complementary conditioning mechanisms—text, image, representation, and semantic map via ControlNet—jointly guide generation, each governing a distinct aspect of the output. The goal is controllable, culturally faithful motif generation rather than generic image synthesis, demonstrating how multimodal conditioning can serve cultural preservation. This is a strong example of domain-specific generative AI where faithfulness to tradition, not just visual plausibility, is the evaluation criterion.\n\n**ReFigBench** [8] targets scientific figure reconstruction as an agentic task: a source image must be converted into an editable PowerPoint slide preserving text, topology, layout, and native document structure. The authors argue that existing evaluations isolate short tool calls, API traces, or screenshot resemblance, and that a low score under these proxies cannot distinguish whether the model saw poorly, planned poorly, or was failed by its harness—the layer of tools, context management, and execution environment surrounding the model. By benchmarking the full reconstruction pipeline to a usable artifact, ReFigBench shifts evaluation toward end-to-end utility. This matters because multimodal coding agents are increasingly judged by the artifacts they deliver, not intermediate signals.\n\n## Reasoning, Perception, and Training Signals\n\n**PIVOT** [5] attacks a specific optimization bottleneck in reinforcement learning with verifiable rewards for large vision-language models: valuable visually grounded reasoning trajectories are discarded after a single on-policy update, and uniform token advantage allocation prevents reinforcement of critical perception or reasoning steps. The proposed dual-level learning framework anchors policy optimization to preserve and reinforce visually grounded reasoning behaviors. This addresses a real inefficiency in standard on-policy RLVR pipelines, where the signal from hard-won grounded trajectories is squandered. If effective, it points toward RL recipes that treat perceptual grounding as a first-class training objective rather than an emergent byproduct.\n\n**Lost in Perception** [9] introduces a five-task diagnostic experiment across physics and geometry benchmarks that isolates whether failures stem from perception, reasoning, or both—since most benchmarks treat the two as one measurable process. The key finding is that incorrect diagram interpretation degrades performance even on problems models solve correctly from text alone, and that accuracy generally rises from raw images to human-authored captions. Recovery under corrected captions is high for some models, separating perception-blocked failures from genuine reasoning bottlenecks. This decomposition is essential for diagnosing multimodal LLMs: it tells practitioners whether to invest in vision encoders or reasoning chains.\n\n**Emotion Analysis on Multimodal Social Media Posts** [7] argues that prior emotion analysis has overlooked two aspects of reconstructing author intent: the image modality, with most work focusing solely on text, and the real-world events that trigger expressed emotions and their relationship to post content. The authors study the relation between the author's experience of a triggering event, their expression, and readers' perception across combined text-image posts. This reframes emotion analysis as a three-part communication problem rather than a text classification task. It matters for any downstream system that must infer affective state from social media, where images often carry the emotional payload.\n\n## Agents, Confidence, and Evidence Use\n\n**XConf** [3] challenges the shared design premise of existing confidence estimators: that reading the current inference process—via introspection, token probabilities, or resampling—is sufficient for calibrated confidence. The authors argue that current inference alone is not a sufficient basis and propose eXperiential Confidence, which estimates confidence together with the model's accumulated accuracy experience. This reframing from introspective to experiential confidence is important for trustworthy deployment, where calibrated estimates decide what to ship, escalate, or retry. If confidence requires memory of past performance rather than a snapshot of the present, estimator architectures must change accordingly.\n\n**MIRAGE** [10] studies historical evidence use in multimodal personal agents, which must retrieve and use earlier evidence across dialogue, files, and workspace state to maintain continuity in long-running tasks. The central problem is that agents can generate plausible answers even when access to conversation history has degraded, causing outcome-only evaluation to overestimate true evidence use. MIRAGE—Multimodal Interaction Retrieval, Attribution, and Grounding Evaluation—is a controlled study of evidence use under conversation-state variation. This exposes a subtle failure mode in agent evaluation: correct answers can mask broken memory, which makes attribution-aware benchmarks necessary for personal agents.\n\n## Key Takeaways\n\n- **Evaluation is shifting from proxies to end-to-end artifacts and decomposed failures.** ReFigBench [8], Lost in Perception [9], and MIRAGE [10] all argue that aggregate scores hide the real story—whether the harness, the vision encoder, the reasoning chain, or degraded memory is responsible.\n- **Confidence may need experience, not just introspection.** XConf [3] makes the case that calibrated confidence requires accumulated accuracy history rather than a snapshot of the current inference pass.\n- **RL for vision-language models is being refined at the optimization level.** PIVOT [5] targets the wasteful discarding of grounded trajectories and uniform credit assignment in on-policy RLVR.\n- **Synthetic data infrastructure is maturing into declarative, inspectable, plugin-extensible pipelines.** NeMo Data Designer [1] treats dataset configuration as a first-class, auditable artifact with diversity-steering samplers.\n- **Tabular foundation models are absorbing multimodal columns.** TabPFN-3.5 [6] extends state-of-the-art tabular prediction to tables containing text and images, eroding the boundary with multimodal systems.\n- **Domain-specific multimodal conditioning enables cultural and creative faithfulness.** The Ulos motif framework [4] combines LoRA-fine-tuned SDXL with an MLLM and four conditioning channels (text, image, representation, semantic map) for culturally faithful generation.\n- **Offline training versus closed-loop deployment remains a core tension in embodied multimodal learning.** The CARLA imitation study [2] quantifies what a compact multimodal policy can achieve from demonstrations alone under compounding distribution shift.",
+    "papers": [
+      {
+        "title": "NeMo Data Designer: An Extensible Framework for Multimodal Synthetic Data Generation",
+        "url": "",
+        "authors": [
+          "Johnny Greco",
+          "Nabin Mulepati",
+          "Andre Manoel",
+          "Eric Tramel",
+          "Kirit Thadaka",
+          "Mike Knepper",
+          "Dhruv Nathawani",
+          "Dane Corneil",
+          "Yev Meyer",
+          "Alex Watson",
+          "Maarten Van Segbroeck"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Imitation Learning for Autonomous Driving in CARLA",
+        "url": "",
+        "authors": [
+          "Jordy Kieto"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Confidence Comes from Experience: Experiential Confidence Estimation from Reasoning to Agents",
+        "url": "",
+        "authors": [
+          "Caiqi Zhang",
+          "Xiaochen Zhu",
+          "Chengzu Li",
+          "Yulong Chen",
+          "Dharshan Kumaran",
+          "Nigel Collier"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Multimodal Conditioning of Fine-Tuned Stable Diffusion XL for Controllable and Culturally Faithful Ulos Motif Generation",
+        "url": "",
+        "authors": [
+          "Humasak Simanjuntak",
+          "Tamara Yunika Sianipar",
+          "Bronson T. M Siallagan",
+          "Difya Laurensya Ambarita",
+          "Arlinta Barus"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Anchoring What Matters: A Dual-Level Learning Framework for Visually-Grounded Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Xinxin Song",
+          "Siyuan Li",
+          "Tingxiong Xiao",
+          "Jinli Suo"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "TabPFN-3.5: Technical Report",
+        "url": "",
+        "authors": [
+          "Benjamin Jäger",
+          "Nick Erickson",
+          "Léo Grinsztajn",
+          "Felix Birkel",
+          "Klemens Flöge",
+          "Oscar Key",
+          "Kürşat Kaya",
+          "Jonas Kübler",
+          "Adèle Frankel",
+          "Tobias Schröder",
+          "Anurag Garg",
+          "Jan Hendrik Metzen",
+          "David Salinas",
+          "Simon Bing",
+          "Kristina Collins",
+          "Tuana Çelik",
+          "Vahid Balazadeh",
+          "Lydia Sidhoum",
+          "Tomás Pereda",
+          "Brendan Roof",
+          "Andrej Tschalzev",
+          "Siyuan Guo",
+          "Philipp Singer",
+          "Lennart Purucker",
+          "Jake Robertson",
+          "Marie Salmon",
+          "Philipp Jund",
+          "Jerry Chen",
+          "Diana Kriuchkova",
+          "Arthur Cahu",
+          "Eliott Kalfon",
+          "Adrian Hayler",
+          "Georg Grab",
+          "Vitor Monteiro",
+          "Lilly Wehrhahn",
+          "Dominik Safaric",
+          "Clara Cornu",
+          "Alan Arazi",
+          "Rylee Grace",
+          "Simone Alessi",
+          "Mihir Manium",
+          "Bernhard Schölkopf",
+          "Yann LeCun",
+          "Madelon Hulsebos",
+          "Sauraj Gambhir",
+          "Noah Hollmann",
+          "Frank Hutter"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Emotion Experience, Expression, and Perception: Emotion Analysis on Multimodal Social Media Posts",
+        "url": "",
+        "authors": [
+          "Christopher Bagdon",
+          "Carina Silberer",
+          "Roman Klinger"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "ReFigBench: Benchmarking Scientific Figure Reconstruction as Editable PowerPoint Artifacts",
+        "url": "",
+        "authors": [
+          "Liyang Fan",
+          "Chi Wei",
+          "Yitai Li",
+          "Xinping Bi",
+          "Guhong Chen",
+          "Chenghao Sun",
+          "Haoxiang Yang",
+          "Qingwen Li",
+          "Kai Yan",
+          "Hong Li",
+          "Bo Li"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "Lost in Perception: Isolating Perceptual and Reasoning Failures in Multimodal Physics and Geometry Reasoning",
+        "url": "",
+        "authors": [
+          "Raj Jaiswal",
+          "Sree Krishna Uppalapati",
+          "Dhruvkumar Patel",
+          "Ria Khatoniar",
+          "Tanuja Ganu",
+          "Rajiv Ratn Shah"
+        ],
+        "date": "2026-09-17"
+      },
+      {
+        "title": "MIRAGE: How Conversation State Shapes Historical Evidence Use in Multimodal Personal Agents",
+        "url": "",
+        "authors": [
+          "Yu Liu",
+          "Wenxiao Zhang",
+          "Cheng Hu",
+          "Cong Cao",
+          "Fangfang Yuan",
+          "Xinyu Wang",
+          "Jin B. Hong",
+          "Yanbing Liu"
+        ],
+        "date": "2026-09-17"
+      }
+    ]
+  }
+]
