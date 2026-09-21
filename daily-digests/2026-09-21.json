@@ -1,0 +1,216 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-21",
+    "paperCount": 4,
+    "markdown": "# Interpretability in the Wild: Geometry, Education, Tabular Features, and Signals\n\nToday's interpretability research spans an unusually wide methodological range—from Riemannian geometry and symplectic integrators to regularization inspired by psychometrics, LLM-driven feature engineering, and spectral alignment in latent generative models. What unites them is a shared insistence that interpretability is not a post-hoc luxury but a structural property that can be built into a model's design, training objective, or latent geometry.\n\n## Interpretability Through Geometric and Physical Structure\n\n[1] Riemannian Neural Hamiltonian Flows addresses a core limitation of Hamiltonian normalizing flows: while their phase-space maps are invertible and volume-preserving, nearly all neural constructions are formulated in flat Euclidean space, which ignores the geometry of the data manifold. The authors introduce Riemannian Neural Hamiltonian Flows, combining a fixed kinetic energy term defined by a Riemannian metric, a learned scalar potential, and an explicit geodesic leapfrog integrator that respects the manifold's geometry during sampling. A central theoretical contribution is an interpretability analysis: every normalizable potential defines an implicit profile, and the position marginal accelerates along the relative score between the potential-induced density and the base distribution, giving the learned Hamiltonian a readable dynamical meaning. This matters because it reframes interpretability in generative modeling as a consequence of physical structure—if the flow follows interpretable Hamiltonian dynamics on a meaningful manifold, the model's behavior becomes analyzable rather than opaque. [1]\n\n## Interpretability and Robustness in Educational Modeling\n\n[2] RegKT tackles the interpretability–accuracy trade-off in deep knowledge tracing (KT): as neural KT models grow more accurate, they become harder for educators to trust, and they overfit readily on the small datasets typical of educational settings. The paper proposes a novel regularization technique that incorporates an Item Response Theory (IRT)-style regularizer into deep KT training, simultaneously improving robustness against overfitting and yielding interpretable latent representations of students and items. By anchoring learned parameters to psychometric structure, the method bridges the gap between predictive deep models and the diagnostic, theory-grounded outputs that practitioners need. This matters because adoption of KT systems in real classrooms depends on teachers and administrators being able to audit *why* a model predicts a student will struggle, not just *that* it does. [2]\n\n## LLMs as Interpretable Feature Engineers\n\n[3] LLMs as Feature Engineers for Text-and-Tabular Prediction introduces an iterative framework that automates extraction of interpretable, schema-bound categorical features from unstructured text for downstream tabular prediction models. The pipeline uses a generator LLM to propose semantic feature definitions, a separate extractor LLM to materialize those features on the raw text, and a downstream tabular model to evaluate their predictive value; the search loop converts explicit model errors—such as AUC ranking inversions—into natural-language feedback that steers the generator toward fixing specific failures. Evaluated on three public datasets, the approach shows that LLM-proposed features can be simultaneously human-readable and predictive, effectively turning the LLM into an interpretable bridge between text and structured data. Its significance lies in showing that interpretability can be an explicit optimization target within an LLM-driven feature search, rather than a property sacrificed for performance. [3]\n\n## Spectral Fidelity as a Form of Generative Faithfulness\n\n[4] Time series generation with spectrally aligned latent flow matching confronts a subtle failure mode in latent flow models for time series: latent compression introduces artefacts, including spectral mismatches with the true data distribution, which undermines the use of synthetic samples as training surrogates. The authors propose a spectrally-aligned latent-flow generator in which the latent space used for flow matching is trained to preserve dynamical properties relevant to downstream suitability, incorporating fine-tuning losses based on canonical signal representations. The key result is that aligning the latent space with the spectral content of the data yields synthetic time series whose dynamical characteristics match the underlying dataset, making them more trustworthy as surrogates. This matters for interpretability because a mismatch in spectral content is exactly the kind of silent distributional distortion that makes generative models misleading—diagnosing and correcting it renders the generator's behavior legible in the frequency domain. [4]\n\n## Key Takeaways\n\n- Interpretability is increasingly being designed into model architecture rather than bolted on post hoc, whether through symplectic geometry [1], psychometric regularization [2], explicit feature schemas [3], or spectral alignment [4].\n- Hamiltonian flows gain interpretability from physics: the learned potential defines an implicit density profile and the marginal dynamics follow a readable relative-score acceleration [1].\n- In education, importing IRT structure as a regularizer shows that domain theory can double as both an overfitting remedy and an interpretability mechanism on small datasets [2].\n- LLMs can serve as interpretable intermediaries: generator–extractor pipelines with error-driven natural-language feedback produce schema-bound features that are both readable and predictive [3].\n- Spectral mismatch is an underappreciated failure mode in latent generative models; aligning latent flow matching with canonical signal representations restores dynamical fidelity and trustworthiness of synthetic data [4].\n- Across all four papers, the common thread is *legibility of internal structure*—manifolds, parameters, features, and spectra—as the operative definition of interpretability.\n- These works suggest a maturing field: interpretability claims are increasingly backed by formal properties (volume preservation, regularization theory, error feedback loops, spectral losses) rather than anecdotal visualization.",
+    "papers": [
+      {
+        "title": "Riemannian Neural Hamiltonian Flows: Geodesic Symplectic Transport and Interpretability",
+        "url": "",
+        "authors": [
+          "Vincent Souveton"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "RegKT: Interpretable and Robust Deep Knowledge Tracing With IRT-Regularizer",
+        "url": "",
+        "authors": [
+          "Samuel Girard",
+          "Juan D. Pinto",
+          "Jill-Jênn Vie",
+          "Amel Bouzeghoub"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "LLMs as Feature Engineers for Text-and-Tabular Prediction",
+        "url": "",
+        "authors": [
+          "Merwan Barlier",
+          "Blaz Skrlj"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "Time series generation with spectrally aligned latent flow matching",
+        "url": "",
+        "authors": [
+          "Camilo Carvajal Reyes",
+          "Felipe Tobar"
+        ],
+        "date": "2026-09-21"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-21",
+    "paperCount": 13,
+    "markdown": "# Multimodal Research Digest — 2026-09-21\n\nToday's multimodal landscape spans an unusually wide arc: from deciphering a fifteenth-century manuscript with probabilistic grammars and image analysis, through streaming decoders, wearable affect recognition, and knowledge-graph reasoning, to safety benchmarks and high-stakes clinical and engineering deployment. A unifying thread is skepticism of superficial multimodality — several papers show that models which *appear* to use multiple modalities often ignore the decisive one, and they respond with dense, queryable representations, intent-level annotations, or executable verification.\n\n## Interpretability, Decipherment, and Evaluation of Multimodal Signals\n\n**Deciphering the Voynich Manuscript with Multimodal Methods [1].** This work attacks the centuries-old problem of whether the Voynich Manuscript encodes a natural language or is a constructed pastiche, using a newly transliterated corpus. The author combines position-dependent probabilistic grammars at word and letter level, phonetic decomposition, rare-event detection, and multimodal image analysis of the manuscript's botanical illustrations. The results support the \"pastiche hypothesis\" — that the text's language-like statistical properties arise from generative rules rather than a genuine linguistic system. Framed as a test case for LLM-era statistical methodology, the paper demonstrates how multimodal evidence can adjudicate debates that text-only statistics leave underdetermined.\n\n**MME-Safety: A Fine-grained Benchmark for MLLM Safety [7].** Multimodal LLMs introduce cross-modal vulnerabilities that bypass unimodal filters, yet existing safety benchmarks lack fine-grained intent annotation and rely on one-dimensional metrics. MME-Safety provides a rigorously verified benchmark with a four-dimensional annotation schema covering risk scenario, harm severity, and modality-specific stealth levels, paired with a hierarchical evaluation framework. This matters because safety evaluation must now match the compositional, stealthy nature of multimodal attacks rather than treating harm as a single scalar.\n\n**Omni Demand Understanding: Benchmarking User-Intent Inference [13].** As audio-visual interaction becomes a primary AI assistant interface, existing benchmarks still measure response quality rather than whether a model can infer the user's actual underlying demand from underspecified speech, visual cues, and dialogue history. The authors introduce a benchmark specifically for contextual user-intent inference in multimodal interaction, drawing on a broad set of audio, speech, and language researchers. The contribution reframes the evaluation target: before judging answer quality, the community must measure whether models correctly reconstruct what the user wanted.\n\n**PolyBridgeBench: Physics-Grounded Bridge Design [8].** MLLMs perform well on visual understanding and structured generation, but this does not establish whether a generated engineering design survives execution. PolyBridgeBench is an executable benchmark in which a model receives a visual scene plus structured engineering constraints, must synthesize a complete load-bearing bridge structure, and must repair it after simulator execution exposes a failure. This shifts multimodal evaluation from perceptual plausibility to closed-loop physical validity — a meaningful step for engineering-grade MLLM assessment.\n\n## Streaming, Real-Time, and Resource-Constrained Multimodal Systems\n\n**ZENDAYA: A Closed-Form Bandwidth Dial for Streaming Decoders [5].** Conventional decoders consume the full input before emitting a word — acceptable offline but impossible for live captioning, where systems bolt on fixed rules like wait-k that ignore input length and pace. ZENDAYA replaces this fixed offset with a schedule governed by a single continuous parameter γ, making the visible source prefix a closed-form function of generation progress scaled by the input. The design gives practitioners a tunable latency–quality dial for streaming video or audio captioning, a rare instance of an interpretable, one-knob control over an otherwise brittle streaming trade-off.\n\n**Offline Multimodal LLMs for Air Operations Decision Support [4].** Air operations analysts must combine written doctrine with imagery under limited connectivity and strict security, often without external compute. This paper studies offline LLMs as decision-support tools in isolated environments, using a modular retrieval-augmented architecture that keeps every answer traceable to its source doctrine through natural-language interaction. The work is a useful blueprint for deploying multimodal assistance where cloud dependency is not an option and auditability is non-negotiable.\n\n**LLM-Generated Feature Pools for Time Series Anomaly Detection [11].** This paper asks how far a deliberately simple statistical pipeline can go on univariate time-series anomaly detection under a strict selection protocol, extracting a small pool of sliding-window statistics, scoring windows with a transductive robust MAD model, and selecting features per domain on held-out tuning data. On TSB-AD-U it reaches 0.529 per-series VUS-PR, above the best neural (0.45) and statistical (0.44) public leaderboard entries and within 0.06 of the strongest pretrained foundation model — several of which use more supervision. The result is a pointed reminder that careful feature engineering and selection discipline can still beat large pretrained models on structured signals.\n\n**Physiological Emotion Recognition Across Wearable Modalities [2].** Physiological emotion recognition using wearables matters for mental-health monitoring and affective computing, but prior studies typically evaluate a single model, sensing configuration, or dataset, leaving the influence of these factors unclear. The authors present a comparative study of temporal deep-learning architectures — bidirectional LSTM, TCN, and related models — across two multimodal wearable datasets, WESAD and EmoWear. By systematically varying architecture and sensing configuration, the work provides much-needed guidance on which design choices actually drive recognition performance in wearable affect sensing.\n\n## Dense and Structured Representations for Multimodal Reasoning\n\n**VISPATH: Visual-Intent-Guided Path Reasoning for MM-KGQA [3].** Multimodal knowledge-graph question answering requires jointly exploiting multimodal inputs and graph evidence, but existing methods use multimodal information only for starting-entity grounding or evidence retrieval, after which multi-hop reasoning degenerates into text-only graph search. VISPATH introduces visual-intent-guided path reasoning that keeps visual intent active throughout the reasoning trajectory rather than discarding it after grounding. This preserves the multimodal signal where it matters most — during multi-hop traversal — and should improve questions whose answers depend on visual attributes encountered mid-path.\n\n**RRDrive: Risk-Aware Occupancy for End-to-End Autonomous Driving [6].** Multimodal trajectory prediction improves behavioral coverage in end-to-end driving, but sparse scene representations yield low-quality candidate generation and unreliable ranking among geometrically similar trajectories; on a register-based baseline, bad and poor candidates constitute 19.74% of the candidate set and the oracle-best candidate ranks only 33.9th on average. RRDrive introduces risk-aware occupancy as a dense, temporally aligned, trajectory-queryable representation with global structure, enabling risk to be queried directly per candidate trajectory. This directly targets the ranking bottleneck: dense, risk-aware evidence lets the planner discriminate among trajectories that look nearly identical geometrically but differ sharply in safety.\n\n**M2G-LLM: Multimodal Graph Reasoning and LLM Context Injection for Clinical Prediction [9].** Clinical decision-making demands integrating notes, laboratory results, and imaging, but LLMs handle unstructured text well while struggling to incorporate non-text modalities. M2G-LLM (Multimodal MedGraph-LLM) enhances LLMs with multimodal integration and alignment via graph neural networks, modeling temporal relationships across modalities and injecting graph-derived context into the LLM. The framework points toward a general recipe — GNNs for structured cross-modal alignment, LLMs for language-side reasoning — that could transfer beyond healthcare.\n\n**MIST: Genomic-Guided Histology Attention for Survival Prediction [12].** Multimodal survival models can combine complementary prognostic information from whole-slide images and genomic profiles, but effective fusion remains hard amid external cohort shift and computational cost. MIST represents genomic features as tokens and lets them query compact foundation-model-derived histology context tokens before survival prediction, enriching molecular information with histological context rather than merging separately encoded modalities. The token-query design is both computationally lighter and more robust to cohort shift, addressing the two failure modes the authors identify.\n\n## Trustworthy Multimodal Fusion in High-Stakes Domains\n\n**ECG Mirage: Underutilisation of ECGs in Vision-Language Models [10].** Emergency-department decision-making relies on heterogeneous information including history, vitals, labs, and ECGs, and VLMs can process these jointly — but strong predictive performance does not imply meaningful use of the correct patient's ECG. The authors name this failure mode \"ECG Mirage\": apparent multimodal capability without useful dependence on patient-specific ECG information, distinguishing *ECG neglect* (ECGs add little predictive benefit) from *ECG confusion* (matching the wrong patient's ECG). They then propose mitigation, and the diagnostic framing is itself a contribution: it supplies a template for auditing whether any clinical multimodal model actually uses the modality it claims to.\n\n**VISPATH and the Knowledge-Graph Thread (cross-reference) [3].** Read alongside M2G-LLM [9], VISPATH illustrates a converging lesson: structured representations (graph paths, temporal graphs) are how multimodal systems maintain fidelity across long reasoning chains instead of collapsing to a single dominant modality.\n\n**RRDrive and ECG Mirage as a Shared Warning (cross-reference) [6, 10].** Both papers show that aggregate performance metrics mask whether the decisive modality is being used — occupancy sparsity hides ranking failure, and accuracy hides ECG neglect. Together they argue for evaluation that interrogates *which* evidence drove a prediction.\n\n## Key Takeaways\n\n- **Superficial multimodality is the field's central failure mode.** ECG Mirage [10] and RRDrive [6] independently show that models can score well while ignoring or underusing the modality that matters, demanding audits of evidence usage rather than accuracy alone.\n- **Dense, queryable representations beat sparse fusion.** Risk-aware occupancy [6], genomic-guided histology tokens [12], and visual-intent path reasoning [3] all keep multimodal signal alive deep into the reasoning process instead of collapsing to text or a single grounding step.\n- **Evaluation is shifting from perception to execution and intent.** PolyBridgeBench [8] requires simulator-verified load-bearing structures, while Omni Demand Understanding [13] measures whether models infer underspecified user demand — both raise the bar beyond response plausibility.\n- **Safety benchmarking is maturing toward fine-grained, multidimensional annotation.** MME-Safety's [7] four-dimensional schema (risk, severity, stealth) reflects the compositional, cross-modal nature of real attacks that bypass unimodal filters.\n- **Streaming and offline deployment constraints drive architectural innovation.** ZENDAYA [5] offers a one-parameter latency dial for live captioning, while offline multimodal RAG for air operations [4] shows traceable decision support without cloud access.\n- **Simple, well-selected statistical pipelines remain competitive.** LLM-generated feature pools with MAD scoring [11] outperform neural and statistical leaderboard entries on TSB-AD-U and approach pretrained foundation models — a caution against assuming scale always wins on structured signals.\n- **Skepticism extends even to historical decipherment.** The Voynich pastiche analysis [1] exemplifies the digest's broader theme: language-like statistics and multimodal resemblance can be generated by rules, so claims of genuine signal require adversarial, multi-source verification.",
+    "papers": [
+      {
+        "title": "A Generative Grammar Underlying the Voynich Manuscript, the Pastiche Hypothesis: Evidence from Large Language Models",
+        "url": "",
+        "authors": [
+          "Nicolas Turenne"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "From Stress to Affect: Multimodal Deep Learning for Physiological Emotion Recognition Across Wearable Sensor Modalities",
+        "url": "",
+        "authors": [
+          "Desta Haileselassie Hagos",
+          "Saurav Keshari Aryal",
+          "Legand L. Burge"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "VISPATH: Visual-Intent-Guided Path Reasoning for Multimodal Knowledge Graph Question Answering",
+        "url": "",
+        "authors": [
+          "Jinke Wu",
+          "Zhengpin Li",
+          "Mengzhe Jia",
+          "Yang Li",
+          "Wentao Zhang"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "Offline Multimodal Large Language Models for Decision Support in Air Operations",
+        "url": "",
+        "authors": [
+          "Joao P. A. Dantas",
+          "Jelton A. Cunha",
+          "Gabriel Dietzsch"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "Reading Less While Writing: A Closed-Form Bandwidth Dial for Streaming Multimodal Decoders",
+        "url": "",
+        "authors": [
+          "Yasir Mehmood",
+          "Kashif Javed"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "Driving on Registers, Reasoning on Risk: Risk-Aware Occupancy for Register-Based End-to-End Autonomous Driving",
+        "url": "",
+        "authors": [
+          "Jiaxing Chen",
+          "Hengduo Zou",
+          "YuKai Qin",
+          "Yiren Zhao",
+          "Lidong Yu",
+          "Bolin Gao"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "MME-Safety: A Fine-grained Benchmark for Safety Evaluation of MLLMs",
+        "url": "",
+        "authors": [
+          "Yueming Lyu",
+          "Yilian Shi",
+          "Haoxiang Tan",
+          "Linzhuang Zou",
+          "Qihao Wang",
+          "Guihua Yu",
+          "Jie Qin",
+          "Xin Gao",
+          "Chenyang Si",
+          "Jing Dong",
+          "Caifeng Shan"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "PolyBridgeBench: Benchmarking Multimodal LLMs for Physics-Grounded Bridge Design",
+        "url": "",
+        "authors": [
+          "Zicheng Zhao",
+          "Dongyin Chen",
+          "Rui Xu",
+          "Yinghui Xu"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "M2G-LLM: Enhancing Clinical Prediction via Multimodal Graph Reasoning and LLM Context Injection",
+        "url": "",
+        "authors": [
+          "Inyoung Choi",
+          "Sukwon Yun",
+          "Jiayi Xin",
+          "Jie Peng",
+          "Tianlong Chen",
+          "Qi Long"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "ECG Mirage: Revealing and Mitigating the Underutilisation of ECGs in Vision-Language Models for Clinical Prediction",
+        "url": "",
+        "authors": [
+          "Jinning Liang",
+          "Mingcheng Zhu",
+          "Tingting Zhu"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "LLM-Generated Feature Pools for Time Series Anomaly Detection",
+        "url": "",
+        "authors": [
+          "Youssef Attia El Hili",
+          "Malik Tiomoko",
+          "Corinne Ancourt"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "MIST: Multimodal Survival Prediction with Genomic-Guided Histology Attention",
+        "url": "",
+        "authors": [
+          "Muhammet Sami Yavuz",
+          "Sabri Mustafa Kahya",
+          "Richard R. Chen",
+          "Jana Lipkova",
+          "Benedikt Wiestler"
+        ],
+        "date": "2026-09-21"
+      },
+      {
+        "title": "Omni Demand Understanding: A Benchmark for Contextual User-Intent Inference in Multimodal Interaction",
+        "url": "",
+        "authors": [
+          "Qi Chen",
+          "Yunfei Chu",
+          "Haolin He",
+          "Yifan Yang",
+          "Zihan Liu",
+          "Yuxuan Wang",
+          "Ziyang Ma",
+          "Ruiyang Xu",
+          "Meng Gao",
+          "Yinsong Yan",
+          "Ling Wang",
+          "Hui Wang",
+          "Wen Huang",
+          "Yiheng Chen",
+          "Guanrou Yang",
+          "Qiuqiang Kong",
+          "Jin Xu",
+          "Xie Chen"
+        ],
+        "date": "2026-09-21"
+      }
+    ]
+  }
+]
