@@ -1,0 +1,546 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-22",
+    "paperCount": 17,
+    "markdown": "# Interpretability Research Digest — 2026-09-22\n\nToday's papers push interpretability from post-hoc storytelling toward causal, component-level accounts of model behavior, spanning mechanistic circuit analysis, safety drift auditing, and interpretable-by-design model classes. A parallel thread applies these tools to high-stakes domains—content moderation, medical prioritization, grid oversight, and low-resource NLP—where explanation quality is inseparable from accountability.\n\n## Mechanistic Circuits and Component-Level Causality\n\n**MechaTerp-TRACE** [4] targets a gap in mechanistic interpretability: while feed-forward factual recall and attention-based token relations are well documented, there is no unified way to compare the causal contribution of different architectural components to a single output. TRACE ablates one registered component at a time under teacher forcing and measures how much each supports production of a named entity, yielding a registry of component effects rather than isolated case studies. This matters because it converts scattered mechanistic findings into a comparable, architecture-wide attribution scheme.\n\n**Circuit-Diff** [13] addresses the practical friction of using Cross-Layer Transcoders (CLTs) for circuit discovery: attribution graph nodes are unlabeled features, so reading a graph requires manual pruning and hand-interpretation of each surviving node. The method intervenes on the model itself using factual edit-based interventions to localize knowledge within attribution graphs. By grounding graph nodes in observable edit effects, Circuit-Diff makes CLT-based circuit discovery more tractable and less dependent on analyst intuition.\n\n**Dissecting Hierarchical Reasoning Models** [5] mechanistically studies the Hierarchical Reasoning Model (HRM) across Sudoku, Maze, and ARC-AGI-2, comparing it against Transformer baselines with and without recurrent modules. The authors apply causal interventions on recurrent states, linear probes against random-direction ablations, and sparse autoencoders with feature ablations to characterize what HRM encodes and how it reasons. A headline finding is that recurrent models outperform one-pass baselines, offering evidence that recurrence—not just scale—shapes the latent computation these models perform.\n\n**Comparing Latent Concept Formation in SSMs and Transformers** [16] asks whether Selective State Space Models like Mamba, which compress context into a fixed-size recurrent hidden state, learn fundamentally different latent representations than Transformers. Using Sparse Autoencoders on Mamba-130m and Pythia-70m over a 10-million-token corpus, the authors conduct a large-scale feature-level correspondence analysis. Contrary to hypotheses that the SSM bottleneck would force divergent concepts, the results suggest substantial overlap in learned features—an important data point for whether interpretability tooling transfers across architectures.\n\n## Explainability Failures and Oversight of Autonomous Agents\n\n**Triggers and Diagnostics for LLM-Based Interpretability Failures** [8] audits the explanations themselves rather than the agent, pairing an Active Inference agent tracking German grid demand with LLM explainers on GPT-4o, Claude-3-Opus, and Gemini. Corrupting the observation stream by 600 MW per step shifts the agent's posterior by 490 MW—roughly 0.9% of grid capacity—yet none of the 30 generated explanations surfaced the anomaly. This is a stark demonstration that LLM explainers used as runtime oversight can be systematically insensitive to meaningful internal state changes, and it provides black-box triggers for diagnosing such failures.\n\n**Functional Emotion Without Character** [6] reframes the debate over machine emotion by modeling emotions as context-sensitive regions, trajectories, and attractor dynamics in high-dimensional representational state spaces. Drawing on mechanistic interpretability evidence for causally active emotion-concept representations in LLMs, the paper develops a structural, Aristotelian-disposition alternative to both behavioral equivalence and phenomenal-consciousness prerequisites. Its contribution is conceptual but empirically anchored: it suggests that dispositional structure, not felt experience or surface behavior, is the tractable object of study—with implications for the limits of behavioral alignment.\n\n**SafeTune** [2] responds to the fragmentation of safety-drift interventions in fine-tuned LLMs, where post-hoc weight recovery, safety-constrained fine-tuning, gradient-based unlearning, and inference-time steering live in incompatible implementations and evaluation protocols. The library unifies all four paradigms under a consistent configuration-driven workflow while preserving each method's distinct inputs and outputs, and includes shared interpretability, evaluation, and deployment utilities. Its value is infrastructural: it makes safety interventions comparable and auditable across lifecycle stages rather than siloed artifacts.\n\n## Interpretable-by-Design Models and Rule-Based Risk Prioritization\n\n**Falling Trees** [10] generalizes falling rule lists (FRLs)—ordered if–then rules with monotonically decreasing risk—by introducing tree-structured branching under the same monotonic risk constraint. Because single-path FRLs form a highly restricted model class, the authors propose GRAVITree, a dynamic-programming-with-bounds algorithm for learning the expanded family. The result is a broader interpretable model class for risk prioritization tasks like clinical triage, where monotonicity is both a statistical regularizer and a domain requirement.\n\n**DiFA** [3] tackles token-level text anomaly detection, moving beyond document-level methods that cannot locate harmful phrases or support targeted prevention. The approach combines dual evidence fusion and aggregation, departing from representative methods that rely primarily on representation-space distance measurement. By localizing anomalies at the token level, DiFA enables finer-grained intervention—critical for moderation and safety pipelines where knowing *that* a document is anomalous is insufficient.\n\n**Cross-Dialect NER for Bangla** [7] confronts the dialectal diversity of Bangla—Barishal, Chattogram, Sylhet, Noakhali, Mymensingh—which breaks NER generalization from Standard Bangla or single-dialect training. Using the ANCHOLIK-NER dataset (17,405 sentences, 101,817 tokens), the authors apply leave-one-dialect-out cross-validation coupled with explainable AI to assess cross-dialect transfer. The explainability component matters here because it reveals which linguistic cues drive or fail to drive entity recognition across dialect boundaries.\n\n## Multimodal and Retrieval-Augmented Interpretation\n\n**Summarize-Judge-Refine (SJR)** [1] decouples multimodal content understanding from policy-specific classification via a natural language interface: a multimodal Content Model emits structured text summaries, and a text-only Policy Model classifies them against policy definitions. An iterative co-training loop refines the Content Model with GRPO, and label scarcity from non-augmentable multimedia motivates the decoupling. The design makes policy changes cheap—retrain the text-side judge rather than the full multimodal pipeline—and produces human-readable intermediate summaries as a byproduct.\n\n**TAC-Time** [9] challenges multimodal time series forecasting that treats text as static features or uses LLMs as forecasting backbones, which limits temporal modeling and inflates compute. The framework transforms textual information into additional temporal channels, modeling text features jointly with numerical sequences so contextual signals evolve over time. This recasts auxiliary text as a first-class temporal signal, improving both predictive capacity and the interpretability of how textual context modulates forecasts.\n\n**Taramandal-GPT** [11] adapts Qwen3-8b to astronomy and astrodynamics with a RAG pipeline and a fallback mechanism, targeting multi-step reasoning, symbolic manipulation, and domain terminology gaps in general LLMs. Evaluated on the Astrodynamics Problems Benchmark (APBench), the system emphasizes structured thinking alongside retrieval. The interpretability angle is transparency of reasoning: retrieval grounding plus explicit structured steps makes domain answers more auditable than raw generation.\n\n## Applied Interpretability in Streaming, Change Detection, and Graphs\n\n**Collaborative Streaming Anomaly Detection** [12] builds a human-in-the-loop system for high-speed streams, combining heterogeneous detectors via normalization-based weighted consensus and artifact-aware rules to stabilize scoring in deployment. To improve interpretability, it derives surrogate models that approximate ensemble consensus and expose human-readable sensor conditions tied to anomalous behavior, letting analysts review and intervene on anomaly episodes. The system demonstrates that ensemble complexity and interpretability need not trade off when surrogates are designed as first-class components.\n\n**High-Dimensional Online Change Point Detection** [15] improves scalability and interpretability of CPD by leveraging Sliced Wasserstein (SW) distance, which avoids the computational burden of high-dimensional comparisons. The framework's four contributions center on transforming the detection problem into an SW-based formulation with adaptive thresholding, while explicitly addressing the limited explanations typical of traditional CPD. Interpretability here is operationally defined: detected change points come with attribution that practitioners in finance, cybersecurity, and autonomous systems can act on.\n\n**SLITE** [14] presents an explainable hybrid model for Recognizing Textual Entailment, integrating a structural-relational layer (semantic compatibility and incompatibility between compositional entities) with a distributional-informational layer (structured patterns of information change between embedding representations). The design counters the black-box nature of neural RTE by tying predictions to identifiable linguistic phenomena. It stands as a case study in hybrid architectures where explanation is generated by construction rather than post hoc.\n\n**GraphToolbox** [17] unifies graph construction, model selection, training, aggregation, and interpretation for GNN-based electricity forecasting, stages that otherwise live in incompatible tools. Built on PyTorch Geometric, it offers data-driven graph construction and a configuration-driven pipeline with an adapter for instantiating models. By treating interpretation as a pipeline stage rather than an afterthought, it lowers the barrier to reproducible, inspectable GNN forecasting experiments for spatially structured signals.\n\n## Key Takeaways\n\n- **Causal component attribution is maturing.** TRACE [4], Circuit-Diff [13], and the HRM study [5] move beyond localized case studies toward systematic, comparable measurement of how components and recurrent states contribute to outputs.\n- **Interpretability tooling transfers across architectures.** SAE-based analysis finds substantial feature overlap between Mamba and Pythia [16], tempering the assumption that SSM bottlenecks yield fundamentally alien representations.\n- **LLM explainers can fail silently as oversight.** The AIF audit [8] shows 30 explanations missing a 490 MW posterior shift, a direct warning against treating generated accounts as ground truth for agent internals.\n- **Interpretable-by-design classes keep expanding.** Falling trees [10], SLITE [14], and TAC-Time [9] each enforce structure—monotonic risk, linguistic layers, temporal channels—that makes explanations intrinsic rather than retrofitted.\n- **Decoupling enables policy agility.** SJR [1] shows that natural-language interfaces between understanding and judgment modules make content moderation adaptable to policy change without full multimodal retraining.\n- **Human-in-the-loop interpretability is deployment-ready.** Streaming anomaly detection [12], CPD with SW distance [15], and GraphToolbox [17] embed surrogates, attribution, and interpretation into operational pipelines rather than treating them as evaluation extras.\n- **Safety and multilingual gaps demand unified tooling.** SafeTune [2] consolidates fragmented safety-drift interventions, while cross-dialect Bangla NER [7] and domain-adapted Taramandal-GPT [11] show explainability is essential wherever transfer is brittle.",
+    "papers": [
+      {
+        "title": "Summarize, Judge, Refine: Decoupled Content Understanding and Policy Learning for Multimodal Content Moderation",
+        "url": "",
+        "authors": [
+          "Zeeshan Ahmed",
+          "Yang Qin",
+          "Hanqing Huang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "SafeTune: A Unified Faithful Library for Auditing and Repairing Safety Drift in Fine-Tuned LLMs",
+        "url": "",
+        "authors": [
+          "Pratinav Seth",
+          "Saisab Sadhu",
+          "Anshul Kaushal",
+          "Vinay Kumar Sankarapu"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "DiFA: Dual Evidence Fusion and Aggregation for Token-Level Text Anomaly Detection",
+        "url": "",
+        "authors": [
+          "Yanyu Qian",
+          "Pengcheng Weng",
+          "Yue Tan",
+          "Enguang Zuo",
+          "Yu Zheng",
+          "Yixin Liu"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "MechaTerp-TRACE: A Novel Approach for Component Ablation Analysis in Language Models",
+        "url": "",
+        "authors": [
+          "Brandon Colelough",
+          "Davis Bartels",
+          "Madeline Bittner",
+          "Dina Demner-Fushman"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Dissecting Hierarchical Reasoning Models: A Mechanistic Study",
+        "url": "",
+        "authors": [
+          "Leo Raphael Rodrigues",
+          "Jian Kang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Functional Emotion Without Character: Large Language Models, Aristotelian Disposition, and the Limits of Behavioral Alignment",
+        "url": "",
+        "authors": [
+          "Marzieh Zare"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Cross-Dialect NER for Bangla Regional Dialects Using Leave-One-Dialect-Out Cross-Validation and Explainable AI",
+        "url": "",
+        "authors": [
+          "Shamim Rahim Refat",
+          "Faika Fairuj Preotee",
+          "Shuvashis Sarker",
+          "Shifat Islam",
+          "Bidyarthi Paul",
+          "Mohammad Ashraful Hoque"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Triggers and Diagnostics for LLM-Based Interpretability Failures in Active Inference Agents",
+        "url": "",
+        "authors": [
+          "Param Raval",
+          "Rohit Shenoy",
+          "Archana Vaidheeswaran"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "TAC-Time: Texts as Channels For Multimodal Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Jiayi Liang",
+          "Xiaotian Gu",
+          "Xinyu Xie",
+          "Yuanbin Wu",
+          "Xiaoling Wang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Falling Trees: A Model Class for Interpretable Risk Prioritization",
+        "url": "",
+        "authors": [
+          "Varun Babbar",
+          "Zachery Boner",
+          "Margo Seltzer",
+          "Cynthia Rudin"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Taramandal-GPT: Enhancing Astrodynamics Problem-Solving with Knowledge Retrieval and Structured Thinking",
+        "url": "",
+        "authors": [
+          "Akhil Sharma",
+          "Jatin Gupta",
+          "Ali Imam Abidi"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Collaborative Streaming Anomaly Detection with Interactive Explanations and Ensemble Consensus",
+        "url": "",
+        "authors": [
+          "Diogo Risca",
+          "Afonso Lourenço",
+          "Ricardo Martins",
+          "Goreti Marreiros"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Circuit-Diff: Factual Edit-based Intervention Method for Localizing Knowledge in Attribution Graphs",
+        "url": "",
+        "authors": [
+          "Edward G. Friedman",
+          "Xiangchen Song"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Linguistic Features for Interpretable Textual Entailment",
+        "url": "",
+        "authors": [
+          "David Torres-Moreno",
+          "Jorge Hermosillo-Valadez",
+          "Asela Reig-Alamillo"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "High-Dimensional Online Change Point Detection with Adaptive Thresholding and Interpretability",
+        "url": "",
+        "authors": [
+          "Sven Jacob",
+          "Bardh Prenkaj",
+          "Weijia Shao",
+          "Gjergji Kasneci"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Comparing Latent Concept Formation in State Space Models and Transformers via Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Rithin Nagaraj",
+          "Rupa Laalasa Oruganti",
+          "Prerna Subhashchandra Kunder",
+          "Ashwini M Joshi"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "GraphToolbox: A Configurable Python Framework for Graph Neural Network Forecasting",
+        "url": "",
+        "authors": [
+          "Eloi Campagne",
+          "Yvenn Amara-Ouali",
+          "Yannig Goude",
+          "Argyris Kalogeratos"
+        ],
+        "date": "2026-09-22"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-22",
+    "paperCount": 3,
+    "markdown": "# Explainability at Deployment Scale: Multi-Agent Classification, LLM Rationales, and Neuro-Fuzzy Trust\n\nToday's explainability research converges on a common tension: explanations must be faithful, human-readable, and cheap enough to run in production. The three papers below span document security, music recommendation, and maritime maintenance, each attacking a different link in the explanation pipeline—from channel-level aggregation to LLM cost reduction to rule extraction—while sharing a focus on trustworthiness under real-world constraints.\n\n## Multi-Agent and Channel-Boosted Architectures for Sensitive Document Triage\n\nAleesha Zainab, Asifullah Khan, Muhammad Ahmed Khalid, and Faheem Ullah Khan tackle sensitivity classification for critical national infrastructure documents, where manual assessment is slow and inconsistent. Their starting point is a leakage-controlled benchmark in which BERT achieves the top single-encoder baseline (89.14% accuracy, 89.33% F1 under 5-fold cross-validation on the Strategic 16K corpus), but they identify a structural flaw: fixed input-length truncation discards evidence precisely in the longest sensitive cables. Their proposed channel-boosted multi-agent system with iterative consultation addresses this by partitioning and processing document content across channels rather than forcing it through one truncated window, with agents consulting iteratively to consolidate evidence [1]. This matters because it reframes a persistent transformer limitation—truncation-induced evidence loss—as an architectural problem solvable through multi-agent decomposition, and because a leakage-controlled benchmark makes reported gains directly comparable to the BERT baseline.\n\n## LLM Rationales in Industrial Recommenders: Cost, Latency, and Scale\n\nXiao Liu and colleagues at YouTube Music address the exploitation-exploration tradeoff in artist discovery: users want novelty but hesitate to click unknown artists, and natural-language rationales explaining why an unfamiliar artist is recommended can lower that barrier. The core obstacle is economic rather than algorithmic—LLM inference costs and computational overhead make real-time rationale generation prohibitive at streaming scale. Their industry case study describes a deployed system that supplies transparent, natural-language explanations for unexplored item recommendations while managing the inference bottleneck [2]. The contribution is a rare production account of explainable recommendation at scale, showing how the explainability-accuracy tradeoff is actually resolved when latency budgets and serving costs are first-class constraints rather than afterthoughts.\n\n## Neuro-Fuzzy Systems for Explainable Predictive Maintenance\n\nDionisis Kalogeropoulos, Georgia Sovatzidi, and Dimitris K. Iakovidis propose an explainable decision-making framework for maritime maintenance prediction, where missed maintenance can cause hazards and costly failures. The framework pairs a neuro-fuzzy prediction model with a two-stage explanation component: the first stage generates feature-attribution explanations via gradient-based saliency maps, and the second extracts local rules using a fuzzy decision tree. Crucially, the authors frame the approach as generic—it can wrap around any deep learning-based predictor to render it explainable [3]. This two-tier design is notable because it bridges continuous attribution (saliency) and symbolic, human-auditable rules (fuzzy trees), giving maritime operators both a \"where\" and a \"why\" for each prediction without sacrificing the underlying model's flexibility.\n\n## Cross-Cutting Themes: Faithfulness, Cost, and Domain Trust\n\nRead together, the three papers reveal a maturing explainability agenda. Paper [1] treats explanation-adjacent architecture (channel partitioning, iterative agent consultation) as the remedy for evidence loss, [2] treats explanation generation as a serving-cost problem to be engineered around, and [3] treats explanation as a post-hoc layer that must be domain-legible for operators making safety-critical decisions. All three reject the assumption that explainability is a free byproduct of model choice; each instead builds explicit machinery—agents, rationale pipelines, or fuzzy rule extractors—to produce trustworthy outputs under domain-specific constraints.\n\n## Key Takeaways\n\n- Truncation is an explainability problem, not just an accuracy problem: sensitive evidence in long documents is lost to fixed windows, motivating the channel-boosted multi-agent design in [1].\n- BERT remains a strong single-encoder baseline (89.14% accuracy / 89.33% F1) for document sensitivity, providing a leakage-controlled yardstick for multi-agent gains [1].\n- LLM-generated rationales demonstrably help discovery-heavy recommenders, but their deployment is gated by inference cost and latency—making efficiency engineering inseparable from explainability research [2].\n- Industrial case studies like the YouTube Music system [2] are essential evidence for how explainability constraints are resolved outside of benchmark settings.\n- Two-stage explanation—saliency attribution followed by fuzzy decision-tree rule extraction—offers a generic wrapper that can make any deep predictor auditable [3].\n- Safety-critical domains (maritime maintenance, national infrastructure) demand human-legible rules, not just heatmaps, pushing research toward hybrid neuro-symbolic explanation [1, 3].\n- Across all three papers, explainability is treated as an explicit engineering artifact with its own cost, architecture, and evaluation criteria—not an emergent property of scale.",
+    "papers": [
+      {
+        "title": "A Channel-Boosted Multi-Agent System with Iterative Consultation for Document Sensitivity Classification",
+        "url": "",
+        "authors": [
+          "Aleesha Zainab",
+          "Asifullah Khan",
+          "Muhammad Ahmed Khalid",
+          "Faheem Ullah Khan"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Explainable Recommendations at Scale: LLM Rationales for YouTube Music Artist Discovery",
+        "url": "",
+        "authors": [
+          "Xiao Liu",
+          "Yanwei Song",
+          "Srivaths Ranganathan",
+          "Yuan Chen",
+          "Zheyun Feng",
+          "Parker Steenburgh",
+          "Jochen Klingenhoefer",
+          "Nathan Lasche",
+          "Gergo Varady",
+          "Tim Steele"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Explainable Neuro-Fuzzy Prediction for Trustworthy Decision-Making in Maritime",
+        "url": "",
+        "authors": [
+          "Dionisis Kalogeropoulos",
+          "Georgia Sovatzidi",
+          "Dimitris K. Iakovidis"
+        ],
+        "date": "2026-09-22"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-22",
+    "paperCount": 26,
+    "markdown": "# Multimodal Research Digest: From Foundation Models to Safety-Critical Deployment\n\nToday's research landscape reveals a field maturing rapidly beyond simple vision-language fusion, with significant attention to robustness, uncertainty quantification, and domain-specific applications in medicine and accessibility. A notable thread across papers is the tension between capability and trustworthiness—as multimodal systems grow more powerful, researchers are increasingly focused on making them reliable in high-stakes settings.\n\n## Foundation Models and Representation Learning\n\n**Generalized Multimodal Foundation Model** [1] tackles the challenge of creating a unified fusion architecture that handles arbitrary modality combinations and prediction tasks without predefined constraints. The authors argue that existing multimodal fusion models are limited to specific modalities once deployed, making adaptation to new downstream applications difficult. Their approach encodes transferable representations independent of specific modalities, enabling flexible deployment across diverse scenarios. This work represents a step toward truly general-purpose multimodal systems that can handle novel modality combinations at inference time.\n\n**MedMLIP** [12] addresses a fundamental mismatch in medical multimodal large language models: visual encoders pretrained with CLIP produce features ultimately consumed by autoregressive LLMs, creating what the authors call a \"semantic-interface gap.\" The framework pretrains visual encoders through report generation with a frozen LLM, employing Local Relational Distillation to preserve relationships among visual patches and avoid visual collapse. Pretrained on IU-Xray and Open-PMC-300K, the resulting encoders are evaluated on VQA-RAD and SLAKE with only the ViT fine-tuned. This work highlights how domain-specific pretraining objectives can better align visual representations with downstream language model consumers.\n\n**Low resource cross-modal alignment using HGNN** [21] confronts the computational burden of speech-text alignment architectures like SAMU-XLSR, which typically require substantial training data and resources through their student/teacher framework. The authors propose using Heterogeneous Graph Neural Networks to achieve cross-modal alignment with reduced resource requirements, mapping speech and text into a shared representation space to enrich both modalities. This contribution is particularly relevant for low-resource languages and settings where large-scale pretraining infrastructure is unavailable.\n\n**TAC-Time** [24] reframes how textual information integrates with time series forecasting by transforming text features into additional temporal channels rather than treating them as static features or using LLMs as forecasting backbones. This unified framework models text features jointly with numerical sequences, capturing temporal dynamics that prior multimodal approaches miss while avoiding the computational overhead of LLM-based forecasting. The approach offers a practical path for incorporating rich contextual signals into predictive systems without architectural bloat.\n\n## Safety, Robustness, and Uncertainty\n\n**Dissecting Training-Free Uncertainty Estimation in MLLMs** [8] provides a systematic study of uncertainty quantification strategies, categorizing approaches into token-level methods operating in text output space, verbalized methods eliciting uncertainty via natural language, and a third family. Despite remarkable performance of MLLMs across tasks, understanding predictive uncertainty remains underexplored despite its centrality for safety-critical applications. This categorization and analysis offers practitioners a structured framework for selecting uncertainty estimation approaches based on deployment requirements.\n\n**Assessing Adversarial Robustness of Latent Reasoning Models** [11] evaluates an underexplored vulnerability in latent reasoning models, which compress chain-of-thought into continuous latent vectors for efficiency. The systematic evaluation covers eight models and six benchmarks across textual and multimodal settings, revealing robustness characteristics that differ from standard autoregressive reasoning. As latent reasoning gains traction for its efficiency advantages, understanding its adversarial vulnerabilities becomes critical for deployment in security-sensitive contexts.\n\n**Taming CoT Obfuscation in VLMs** [15] identifies a phenomenon where reinforcement learning improves task accuracy while making chain-of-thought traces less grounded and monitorable—an operational outcome the authors term \"CoT obfuscation.\" Through mechanistic analysis, they find that template- and ground-associated activations become less separable during RL, and matched interventions confirm selected features contribute to monitorability degradation. The work then proposes activation enforcement as an actionable control, moving from diagnosis to mitigation for this critical safety concern in reasoning systems.\n\n**Seeing Through Conflicts** [13] extends instruction hierarchy alignment from text-only models to vision-language models, where instructions may be embedded in images, split across modalities, or encountered during agentic tasks. Training VLMs with reinforcement learning and rule-based rewards, the authors compare text-only, image-only, and mixed-modality supervision, finding that text-only IH training partially transfers to multimodal settings. This work establishes multimodal instruction hierarchy as a reasoning problem and provides empirical guidance on supervision strategies for alignment.\n\n## Medical and Clinical Applications\n\n**RG-ICL** [14] introduces representation-guided in-context learning as a training-free framework for medical image interpretation, retrieving query-aligned demonstrations using frozen encoders without task-specific parameter updates. Across eight datasets spanning histopathology, radiology, and retinal fundoscopy, the method achieves mean gains of 20 percentage points for classification and substantial improvements in VQA. This approach addresses the resource-intensive nature of domain-specific fine-tuning, making advanced medical AI more accessible to institutions without large computational budgets.\n\n**MedRSI** [20] presents the first recursive self-improvement framework for medicine, transforming diagnostic failures into new clinical capabilities while addressing fundamental safety challenges of autonomous capability expansion. Medical agents typically have fixed capabilities determined by clinicians and engineers before deployment; MedRSI enables continuous learning from failures through clinically aligned self-evolution. This work navigates the tension between the promise of self-improving systems and the safety requirements of clinical deployment.\n\n**GLR-MM** [25] tackles the reality that clinical multimodal models must often predict before all chest X-ray and EHR inputs are available. The Graph-Based Global-Local Reconstruction framework maps five CXR-EHR modalities to a shared space and reconstructs missing embeddings through complementary local cross-modal and global graph-attention branches. By jointly exploiting within-patient and clinically similar inter-patient evidence, this approach improves early ICU mortality prediction under missing modalities—a common scenario in real clinical workflows.\n\n**Predicting Postprandial Glycemic Response** [18] replaces manual dietary logging with image-derived macronutrient estimates integrated with clinical variables and gut microbiome information for personalized PPGR prediction. The multimodal framework jointly performs image-based macronutrient estimation and glucose prediction with an attention-based prediction module. This work advances personalized nutrition for type 2 diabetes management by removing the scalability bottleneck of manual dietary reporting in free-living settings.\n\n## Benchmarking and Evaluation\n\n**FireWorldBench** [7] introduces a benchmark for evaluating complex physical world intelligence through coupled-field fire dynamics, arguing that understanding the physical world requires more than object recognition and short-term visual prediction. Fire serves as a canonical stress-test environment where multiple interacting physical fields jointly shape observable states and temporal dynamics, involving latent causal mechanisms and intervention-sensitive dynamics. This benchmark pushes multimodal LLMs and agents toward genuine physical reasoning rather than surface-level pattern matching.\n\n**MIS-Bench** [17] evaluates MLLMs as assessors of psychotherapeutic interpersonal skills using 996 annotated psychotherapy response videos across 8 dimensions of Facilitative Interpersonal Skills. Across 9 MLLMs with multiple modality and prompting settings, current models show only modest agreement with human experts. This benchmark reveals significant gaps in MLLM reliability for professional assessment tasks requiring expert judgment, with implications for deploying AI as evaluators in high-stakes domains.\n\n**Text, Pixels, or Both?** [4] isolates a foundational but rarely studied choice in document QA: whether to feed models page images, extracted text, or both. Holding prompt, judge, and scoring pipeline fixed across four commercial model endpoints, two corpora, and two context regimes, the study finds page images lead on accuracy but with growing latency and cost premiums as documents lengthen. This systematic comparison provides actionable guidance for practitioners balancing accuracy against operational constraints.\n\n**Beyond the Stitching Assumption** [5] addresses the problem that multimodal synthetic dataset metrics can remain high even after tabular-text pairings are disrupted. The projection-based evaluator maps text to embeddings via sentence encoder, converts them to cluster states via k-means, represents tabular variables as categorical or quantile-binned states, and compares real and synthetic contingency tables using JSD, NMI, cJSD, and joint statistics. This work exposes a critical validity gap in how synthetic multimodal data quality is assessed.\n\n## Applied Multimodal Systems\n\n**An Affordable AI-Integrated Smart Cane** [2] presents an $88 USD fully offline system for visually impaired users on Raspberry Pi Zero 2W, fusing RGB vision with Time-of-Flight distance estimation using INT8-quantized models. Addressing the 2.2 billion people affected by visual impairment globally, the system detects elevated hazards and provides semantic environmental context that conventional white canes cannot. This work demonstrates that effective multimodal assistive technology is achievable without expensive hardware or cloud connectivity.\n\n**SALSA** [10] offers an open-source human-in-the-loop platform for extracting structured scientific datasets from multimodal literature sources, combining document parsing, LLMs, OCR, computer vision, figure digitization, and user-guided correction tools. Users can configure extraction stages, define dataset schemas, perform interventions on digitized figures, and export verified data. This tool addresses the practical bottleneck of converting the scientific literature's multimodal content into machine-learning-ready structured data.\n\n**NAVIR** [26] develops an end-to-end audio-visual speech recognition system targeting the BrainChip Akida neuromorphic processor, which natively supports only sequential 2D convolutional inference. By factorizing the pipeline to avoid 3D convolutions, recurrent units, and attention modules that exceed edge device budgets, NAVIR enables robust voice-controlled interaction in noisy industrial settings. This work demonstrates how architectural constraints of neuromorphic hardware can be addressed through careful pipeline design.\n\n**VLM-in-Sandbox** [16] introduces a training-free framework for agentic multimodal reasoning where intermediate image-valued evidence (crops, masks, overlays, zoomed regions) remains addressable without accumulating unboundedly in multimodal context. The Visual Workspace addresses the distinct state-management problem that arises when extending sandboxed computer environments from language models to VLMs. This approach enables multi-step visual reasoning with tools and persistent files while managing the unique memory challenges of image-valued intermediate states.\n\n**AMUSER** [19] formalizes UX improvement recommendation from LLM agent simulation data as structured natural language generation and ranking, establishing an evaluation protocol using expert annotation and LLM-as-a-Judge. The multimodal system automates UX testing by simulating realistic user behavior on live websites, addressing the expense and scalability limitations of traditional user testing. This work represents a practical application of multimodal agents to product development workflows.\n\n**From Content Generation to Learning Support** [23] introduces PIVOT, a pedagogy-guided instructional video tutoring framework for STEM learning that integrates pedagogical structure and quality control mechanisms. Current generative video systems focus on visual coherence rather than learning support; PIVOT addresses this gap by incorporating mechanisms for assessing learner understanding and addressing misconceptions. This work shifts the paradigm from content generation to genuine learning support in educational AI.\n\n**Summarize-Judge-Refine** [3] proposes a two-model architecture that decouples multimodal understanding from policy-specific classification via a natural language interface, where a Content Model produces structured text summaries and a text-only Policy Model classifies them against policy definitions. An iterative co-training loop refines the Content Model via GRPO to produce policy-aligned summaries. This architecture enables policy changes without full pipeline retraining and addresses label scarcity in content moderation.\n\n**From Research Frontier to Laboratory Bench** [6] presents a four-tier experimental teaching system translating multimodal deep learning research on endometrial carcinoma into structured undergraduate labs. The design identifies three educational gaps (modality, authenticity, deployment) and derives four pedagogical principles from constructive alignment and experiential learning. This work addresses the lag between expanding intelligent medical engineering programs and laboratory curricula that prepare students for clinical AI realities.\n\n## Infrastructure and Deployment\n\n**From Inference Engine to Inference Control Plane** [9] connects the evolution of LLM inference from engine-local optimization to distributed control problems involving reusable state, phase placement, heterogeneous accelerators, networking, autoscaling, reliability, and SLOs. Treating vLLM and llm-d as complementary layers, the paper synthesizes peer-reviewed systems research, open-source implementations, and production studies. This systems-level perspective is essential as multimodal LLM deployments scale beyond single-node inference.\n\n**Financial Language Models** [22] addresses the lack of an integrated deployment framework for evaluating whether financial language model signals remain useful under market frictions. The work argues that computer science research on time-series forecasting, text classification, multimodal stock prediction, and graph-based market modeling lacks a domain-specific protocol testing financial language-model outputs under event-time observability and probabilistic constraints. This paper highlights the gap between model capability and deployable financial decision systems.\n\n## Key Takeaways\n\n- **Foundation models are moving toward modality-agnostic architectures** that handle arbitrary combinations without predefined constraints, with domain-specific pretraining objectives (like MedMLIP) addressing the semantic gap between visual encoders and language model consumers [1, 12].\n\n- **Safety and robustness research is maturing from diagnosis to mitigation**, with mechanistic understanding of failure modes like CoT obfuscation enabling targeted interventions such as activation enforcement [15], while instruction hierarchy alignment extends to multimodal settings [13].\n\n- **Training-free and resource-efficient methods** are gaining traction for domain adaptation, with representation-guided in-context learning achieving substantial gains without parameter updates [14] and graph-based approaches enabling cross-modal alignment in low-resource settings [21].\n\n- **Medical multimodal AI is addressing real-world deployment challenges**: missing modalities at inference time [25], scalable dietary assessment [18], autonomous capability expansion with safety constraints [20], and training-free adaptation to clinical tasks [14].\n\n- **Benchmarking efforts are pushing toward genuine reasoning assessment**, with FireWorldBench testing physical world understanding through coupled-field dynamics [7] and MIS-Bench revealing significant gaps in MLLM reliability for expert-level professional assessment [17].\n\n- **Practical multimodal systems are demonstrating impact at the edge**, with an $88 smart cane achieving offline multimodal assistance [2] and NAVIR adapting AVSR to neuromorphic hardware constraints [26], showing that effective solutions need not require massive computational resources.\n\n- **Evaluation methodology itself is under scrutiny**, from isolating input representation choices in document QA [4] to exposing validity gaps in synthetic multimodal data metrics [5], reflecting growing awareness that benchmark design choices profoundly shape conclusions about model capabilities.",
+    "papers": [
+      {
+        "title": "Generalized Multimodal Foundation Model",
+        "url": "",
+        "authors": [
+          "Huizi Cui",
+          "Zongbo Han",
+          "Chenggong Ding",
+          "Naichuan Xiao",
+          "Jialong Yang",
+          "Jingdong Chen",
+          "Guangyu Wang",
+          "Qinghua Hu",
+          "Changqing Zhang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "An Affordable AI-Integrated Smart Cane for Multimodal Mobility Assistance of Visually Impaired Users",
+        "url": "",
+        "authors": [
+          "Ali Akarma",
+          "Adeel Ahmad",
+          "Toqeer Ali Syed"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Summarize, Judge, Refine: Decoupled Content Understanding and Policy Learning for Multimodal Content Moderation",
+        "url": "",
+        "authors": [
+          "Zeeshan Ahmed",
+          "Yang Qin",
+          "Hanqing Huang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Text, Pixels, or Both? Evaluating Input Representations for Multimodal Document QA",
+        "url": "",
+        "authors": [
+          "Nikhil Reddy Pottanigari",
+          "Sepideh Kharaghani",
+          "Saverio Vadacchino",
+          "Alejandro Posada",
+          "Ying Zhang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Beyond the Stitching Assumption: A Unified Framework for Multimodal Synthetic Data Evaluation via Semantic Quantization",
+        "url": "",
+        "authors": [
+          "Yefeng Yuan",
+          "Zhan Shi",
+          "Liang Cheng",
+          "Yuhong Liu"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "From Research Frontier to Laboratory Bench: Design of a Four-Tier Experimental Teaching System for Multimodal Medical Image Intelligent Diagnosis",
+        "url": "",
+        "authors": [
+          "Dongjing Shan",
+          "Yamei Luo",
+          "Jin Li",
+          "Yong Luo"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "FireWorldBench: Benchmarking Complex Physical World Intelligence through Coupled-Field Fire Dynamics",
+        "url": "",
+        "authors": [
+          "Qiang Chen",
+          "Hao Guo",
+          "Huatai Zhu",
+          "Tairan Huang",
+          "Yichao Cao",
+          "Hongyan Xu",
+          "Keke Huang",
+          "Haifeng Li",
+          "Yi Chen",
+          "Xiu Su"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Dissecting Training-Free Uncertainty Estimation in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Soroush Seifi",
+          "Vaggelis Dorovatas",
+          "Lin Li",
+          "Yarin Gal",
+          "Rahaf Aljundi"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "From Inference Engine to Inference Control Plane: Connecting vLLM, llm-d, and the Evolution of Efficient Distributed LLM Serving",
+        "url": "",
+        "authors": [
+          "Twinkll Sisodia"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "SALSA: Semi-Autonomous Literature Summarization Assistant",
+        "url": "",
+        "authors": [
+          "William Schertzer",
+          "Sonakshi Gupta",
+          "Rampi Ramprasad"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Assessing Adversarial Robustness of Latent Reasoning Models",
+        "url": "",
+        "authors": [
+          "Shaolong Chen",
+          "Ang Li",
+          "Mingjie Li",
+          "Yisen Wang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Pretraining of Medical Visual Encoders Toward Multi-modal Large Language Models",
+        "url": "",
+        "authors": [
+          "Tianyou Jiang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Seeing Through Conflicts: Improving Instruction Hierarchy Alignment in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Nicholas Sansoterra",
+          "Zishuo Zheng",
+          "Sachin Kumar"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Representation-guided in-context learning for medical image interpretation with multimodal large language models",
+        "url": "",
+        "authors": [
+          "Minda Zhao",
+          "Fangyu Hu",
+          "Yan Luo",
+          "Yutong Yang",
+          "Jiahui Cai",
+          "Kaichen Zhou",
+          "Manling Li",
+          "Paul Liang",
+          "Yilun Du",
+          "Lucy Q. Shen",
+          "Mengyu Wang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Taming CoT Obfuscation in VLMs: From Mechanistic Evidence to Activation Enforcement",
+        "url": "",
+        "authors": [
+          "Xutao Mao",
+          "Jianing Zhu",
+          "Jinman Zhao",
+          "Tongliang Liu",
+          "Xiaowen Chu",
+          "Cong Wang",
+          "Bo Han"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "VLM-in-Sandbox: Visual Workspaces for Agentic Visual Reasoning",
+        "url": "",
+        "authors": [
+          "Hexiong Yang",
+          "Mingrui Chen",
+          "Jie Cao",
+          "Ran He"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "MIS-Bench: Benchmarking Multimodal LLMs for Psychotherapeutic Interpersonal Skills Assessment",
+        "url": "",
+        "authors": [
+          "Yuhan Lu",
+          "Yi Yao",
+          "Hua Shen",
+          "Katie Aafjes-van Doorn",
+          "Zhaonan Wang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Predicting Postprandial Glycemic Response from Meal Images, Clinical Variables, and Gut Microbiome Information",
+        "url": "",
+        "authors": [
+          "Varvara Kondratyeva",
+          "Kamilia Zaripova",
+          "Nassir Navab",
+          "Azade Farshad"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Automatic multimodal UX improvement recommendations from LLM agent user simulations",
+        "url": "",
+        "authors": [
+          "Anu Chowdhury",
+          "Bin Wu",
+          "Hossein A. Rahmani",
+          "Emine Yilmaz"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "MedRSI: Recursive Self-Improvement for Medical Agents via Clinically Aligned Self-Evolution",
+        "url": "",
+        "authors": [
+          "Junde Wu",
+          "Jiayuan Zhu",
+          "Minghao Hu",
+          "Fenglin Liu",
+          "Jiazhen Pan"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Low resource cross-modal alignment using HGNN to enhance speech representation",
+        "url": "",
+        "authors": [
+          "Yannick Yomie Nzeuhang",
+          "Marie Tahon",
+          "Paulin Melatagia Yonta"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "Financial Language Models as Applied Artificial Intelligence Systems for News-Based Trading under Market Frictions",
+        "url": "",
+        "authors": [
+          "Kemal Kirtac"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "From Content Generation to Learning Support: Pedagogy-Guided Generative Video Tutors for STEM Learning",
+        "url": "",
+        "authors": [
+          "Xinchen Ma",
+          "Shuimu Wang",
+          "Gaole He",
+          "Yanbin Zhang",
+          "Chunyang Wang",
+          "Yunshi Lan",
+          "Weining Qian"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "TAC-Time: Texts as Channels For Multimodal Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Jiayi Liang",
+          "Xiaotian Gu",
+          "Xinyu Xie",
+          "Yuanbin Wu",
+          "Xiaoling Wang"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "GLR-MM: Graph-Based Global-Local Reconstruction for Robust Multimodal Chest X-ray and EHR Representation Learning under Missing Modalities",
+        "url": "",
+        "authors": [
+          "Surbhi Sharma",
+          "Nikhil Manali",
+          "Devesh Maheshwari"
+        ],
+        "date": "2026-09-22"
+      },
+      {
+        "title": "NAVIR: Neuromorphic Audio-Visual Speech Recognition for Robust Human-Robot Interaction on Edge Hardware",
+        "url": "",
+        "authors": [
+          "Leonidas Delimpasis",
+          "Panagiota Moraiti",
+          "Antonis Porichis",
+          "Panos Chatzakos",
+          "Michail Karamousadakis"
+        ],
+        "date": "2026-09-22"
+      }
+    ]
+  }
+]
