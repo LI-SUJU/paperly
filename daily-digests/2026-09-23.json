@@ -1,0 +1,328 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-23",
+    "paperCount": 8,
+    "markdown": "# Interpretability Research Digest — September 23, 2026\n\nToday's interpretability research spans from certified mechanistic guarantees and attribution methods for LLMs to interpretable-by-design applications in medicine, circuit design, and safety-critical perception. A common thread is the push beyond post-hoc explanation toward structurally interpretable architectures, causal circuit analysis, and formal guarantees over model behavior.\n\n## Mechanistic Interpretability and Certified Explanations\n\n**Matryoshka attribution** [3] tackles the problem of attributing language model outputs to specific internal computations, arguing that existing causal intervention, gradient, and mask-learning approaches are either computationally infeasible or fail to isolate genuinely causally-important components. The authors reframe attribution as identifying nested subsets of internal components that minimize a downstream loss, and introduce MAttr, a mask-learning method parametrized with a differentiable sigmoid top-$k$ operator. This nesting structure allows attribution at multiple granularities simultaneously, from coarse layers down to fine-grained weights, offering a more scalable path to faithful output attribution.\n\n**Certified mechanistic interpretability** [8] addresses a fundamental limitation of circuit-level analysis: findings are typically established on a single input and carry no guarantees across neighboring inputs. The proposed framework uses constrained polynomial-zonotope (CPZ) propagation to lift single-input mechanistic observations into certified statements over bounded perturbation sets. Three internal-attention queries — top-$k$ stability, evidence mass, and attention entropy — are formulated as tractable programs over the attention-weight simplex and propagated through transformer layers. This represents an important step toward interpretability claims that are robust rather than anecdotal.\n\n**Rewired or gated?** [4] provides the first mechanistic base-vs-instruct comparison of knowledge-conflict circuits across three model families (Llama-3.2-3B, Qwen-2.5-3B, Gemma-3-4B). Using five independent methods — node and edge attribution, superposition role analysis, causal ablation, and path patching — the authors investigate whether instruction tuning rewires conflict-resolution circuits or merely gates and reweights pre-existing components. Since a handful of identifiable attention heads mediate whether a model believes the prompt or its weights, clarifying this mechanism has direct implications for steering, editing, and trusting instruction-tuned models.\n\n## Attribution and Application-Specific Interpretability\n\n**An accurate and interpretable hypergraph neural network for GBM survival prediction** [1] challenges the assumption that accuracy and interpretability must trade off in glioblastoma survival modeling. The work leverages graph neural networks as a structural foundation for extracting interpretable representations without sacrificing discriminative performance, and critiques current methods for relying on a single imaging modality that underuses complementary information. By adopting a hypergraph formulation, the model can capture higher-order relationships among patients and features while remaining explainable — a meaningful contribution in clinical settings where transparency affects adoption.\n\n**Combining hierarchical cognitive process with process supervision** [6] targets scene safety understanding, where direct scene-to-safety-level mappings lack the interpretability required for life-critical situational awareness. The authors construct a hierarchical model of the human safety-cognition process and integrate it with process supervision, teaching models to reason through intermediate cognitive stages rather than emitting opaque judgments. This alignment of machine reasoning with human cognitive structure offers a template for interpretability in safety-critical perception domains.\n\n**MAC-RRG** [7] proposes an iterative multi-agent collaboration framework for X-ray radiology report generation. The authors identify two defects in prior work: LLM-only models hallucinate due to missing structured medical priors, while knowledge-graph-enhanced methods use static, single-source, one-round fusion that cannot update knowledge based on generation feedback. The multi-agent design enables dynamic knowledge updating during report generation, improving diagnostic interpretability and reducing hallucination in a domain where both properties are essential.\n\n## Interpretable Frameworks in Structured Domains\n\n**AgenticSizing** [5] presents a multi-agent LLM framework for analog circuit sizing, a task complicated by large design spaces, strong performance trade-offs, and growing circuit complexity. Unlike prior LLM-based methods that lack explicit circuit-topology understanding and are evaluated only on simple building blocks, this framework first analyzes circuit topology before driving sizing decisions through coordinated agents. The approach targets both sample efficiency and interpretability in a domain where designers must understand *why* a configuration was chosen.\n\n**Graph-based inference for the Jotto problem** [2] formulates feedback-driven word deduction as a weighted graph where words are nodes and edge weights count shared letters, with gameplay modeled as iterative constraint propagation that narrows the incompatible hypothesis space. This contrasts with existing approaches that typically treat the problem space less structurally, and demonstrates how graph representations can deliver structured, interpretable reasoning even in a puzzle-setting domain. While narrower in scope than the LLM-focused work, it exemplifies interpretability through explicit problem structure.\n\n## Key Takeaways\n- Interpretability research is shifting from post-hoc explanation toward methods with **formal guarantees**: certified mechanistic interpretability [8] lifts single-input circuit findings to bounded neighborhoods, a first step toward robust circuit claims.\n- **Attribution is being reframed as optimization**: MAttr [3] learns nested component subsets minimizing downstream loss, making multi-granularity attribution scalable where causal and gradient methods falter.\n- **Instruction tuning's effect on circuits is now empirically dissectable**: five independent methods converge to show whether conflict-resolution circuitry is rewired or merely gated [4], informing how we steer and trust aligned models.\n- The **accuracy-interpretability trade-off is being actively falsified** in high-stakes domains: hypergraph GNNs for GBM survival [1] and cognitive-process-supervised safety understanding [6] both argue transparency need not cost performance.\n- **Multi-agent and feedback-driven designs** are emerging as interpretability vehicles: MAC-RRG [7] uses iterative knowledge updating to cut hallucination, and AgenticSizing [5] grounds LLM circuit sizing in explicit topology analysis.\n- **Structured representations recur as an interpretability substrate** — hypergraphs [1], weighted word graphs [2], knowledge graphs [7], and attention-weight simplexes [8] all make reasoning inspectable by construction.\n- A gap persists between **mechanistic depth and domain deployment**: circuit-level findings [3, 4, 8] rarely reach clinical or engineering pipelines, while applied systems [1, 5, 6, 7] seldom leverage mechanistic insight — bridging this is the field's next frontier.",
+    "papers": [
+      {
+        "title": "An Accurate and Interpretable Hyper Graph Neural Network for GBM Survival Prediction",
+        "url": "",
+        "authors": [
+          "Mushahid Intesum"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Graph-Based Inference for Feedback-Driven Word Deduction: A Scalable Framework for the Jotto Problem",
+        "url": "",
+        "authors": [
+          "Dakshi Arora",
+          "Prakhar Kumar Srivastava",
+          "Ranjib Banerjee"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Matryoshka attribution: Learning to attribute language model outputs to representations and weights",
+        "url": "",
+        "authors": [
+          "Aryaman Arora",
+          "Kirill Acharya",
+          "Nathan Hu",
+          "Yanzhe Zhang",
+          "Noah Goodman",
+          "Dan Jurafsky",
+          "Christopher Potts"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Rewired or Gated? How Instruction Tuning Shapes Knowledge-Conflict Circuits in LLMs",
+        "url": "",
+        "authors": [
+          "Shubham Santosh Pandere",
+          "Gautam Ranka",
+          "Ritika Varshney",
+          "Navya Deshmukh",
+          "Roushni Sareen",
+          "Roshan Kumar Singh"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "AgenticSizing: A Large Language Model-based Multi-Agent Framework for Analog Circuit Sizing",
+        "url": "",
+        "authors": [
+          "Yijia Hao",
+          "Pratibha Verma",
+          "Dongxu Guo",
+          "Cristian Sestito",
+          "Michael O'Boyle",
+          "Christos-Savvas Bouganis",
+          "Themis Prodromakis"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Combining Hierarchical Cognitive Process with Process Supervision for Interpretable Scene Safety Understanding",
+        "url": "",
+        "authors": [
+          "Zhiyun Jiang",
+          "Hanyong Wang",
+          "Binbin Liang",
+          "Yu Xie",
+          "Zhengjie Wang",
+          "Menglong Yang",
+          "Wei Li"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "MAC-RRG: Iterative Multi-Agent Collaboration for X-ray Radiology Report Generation",
+        "url": "",
+        "authors": [
+          "Futian Wang",
+          "Yuhan Qiao",
+          "Xiao Wang",
+          "Dan Xu",
+          "Yuehang Li",
+          "Zhixiang Guo",
+          "Yaowei Wang",
+          "Jin Tang"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Certified Mechanistic Interpretability: Lifting Single-Input Findings to Bounded Neighbourhoods",
+        "url": "",
+        "authors": [
+          "Zhen Zhang",
+          "Yanliang Huang",
+          "Peng Xie",
+          "Wenyuan Wu",
+          "Amr Alanwar"
+        ],
+        "date": "2026-09-23"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-23",
+    "paperCount": 16,
+    "markdown": "# Multimodal Research Digest — September 23, 2026\n\nToday's multimodal research landscape is marked by a decisive shift from simply adding modalities toward making cross-modal integration *native*, *efficient*, and *physically grounded*. Papers span omni-modal embedding and agentic models, data-centric video editing and document reasoning, cross-lingual and modality-preserving adaptation of frozen backbones, and domain-specific multimodal systems in medicine and fusion energy — alongside a sobering methodological audit of how we evaluate such models.\n\n## Omni-Modal Embeddings and Native Multimodal Agents\n\nThe push toward unified omni-modal representations is accelerating, with new work explicitly rejecting the \"assembly of separate modality towers\" paradigm in favor of shared backbones. [3] introduces **Ovis-Embedding**, an omni-modal embedding family built on a shared multimodal backbone that encodes text, image, video, and audio into a common representation space. Its three key advances are native omni-modal initialization (adapting a pretrained Qwen-omni backbone via contrastive training with low-rank initialization), data-centric omni-modal training, and — as the abstract suggests — further architectural or training refinements for cross-modal alignment. This matters because a single embedding space across four modalities directly benefits retrieval, clustering, and cross-modal search systems that previously required brittle per-modality encoders and ad hoc alignment.\n\nOn the generative-agent side, [6] presents **Qwen3.8-Omni-Flash**, a natively multimodal agentic model aimed at real-world multimodal productivity, substantially improving multimodal understanding, reasoning, and long-horizon agentic task performance over prior omni models that emphasized perception and interaction. The core technical enabler is a native multimodal co-training strategy that preserves strong text-domain capabilities while transferring agentic skills from text to audio and video tasks, building on a sparse mixture-of-experts backbone. This is significant because it demonstrates that agentic competence — planning, tool use, multi-step execution — can be *transferred* across modalities rather than learned per modality, a key step toward general-purpose omni agents.\n\n## Physical-World and Domain-Specific Multimodal Understanding\n\nA cluster of papers targets the gap between semantic description and genuine physical or domain-grounded understanding. [10] argues that omni-modal training organized around semantic descriptions leaves physical attributes, interaction states, and causal mechanisms underspecified, and that adding modalities alone does not supply the supervision needed to connect observations to the physical structure of the world. To address this, **OmniFysics-Nano-V2** is a compact omni-modal model for physical-world perception and understanding, presumably trained with supervision targeting physical properties and causal relations across vision, audio, speech, and language. Its contribution matters because it reframes the omni-modal problem from coverage to *grounding* — a necessary correction if models are to reason about dynamics rather than merely caption them.\n\nIn the scientific domain, [7] introduces **ChatT2**, an LLM-based multi-agent system tailored to bacterial type II polyketides, a structurally distinct and therapeutically important natural product family. The system was developed within an autonomous multi-agent framework to lower the barrier for novices facing complex microbial systems, biochemical diversity, and demanding bioinformatics workflows. This illustrates how domain-specific multimodal and multi-agent architectures can encode expert tacit knowledge, making specialized scientific investigation tractable for non-experts.\n\n[14] tackles a starkly different domain: **FusionMMT** is a unified multimodal multitask learning framework for nuclear fusion, addressing the fact that existing intelligent plasma diagnostics are limited to either multimodal single-task or unimodal multitask learning. The authors construct EAST-VTD640, a multimodal multitask dataset for tokamak plasma state diagnosis, required for high-performance, long-pulse, steady-state operation. By unifying multimodal and multitask learning in one framework, this work targets the data-scarce, safety-critical setting of fusion diagnostics where holistic plasma-state estimation is essential.\n\nIn clinical multimodal prediction, [15] proposes a deep-learning model using *pretreatment* data only — apparent diffusion coefficient maps, dynamic contrast-enhanced MRI, and clinical variables — to predict pathological complete response before neoadjuvant chemotherapy in breast cancer, using the public ACRIN 6698/I-SPY2 multicenter dataset. The architecture combines EfficientNet-B0 pretrained encoders for image feature extraction with late fusion of clinical information, evaluating multiple clinical variables. This matters because reliable pre-treatment response prediction could enable tailored therapeutic planning and spare non-responders from ineffective chemotherapy.\n\n## Cross-Lingual, Preservation-Aware, and Efficient Adaptation\n\nSeveral papers confront the practical realities of extending deployed multimodal models. [9] observes that remote-sensing MLLMs are trained and evaluated only in English even though text-only instruction data covers 100+ languages. The proposed **MODL** recipe adds new languages to an English RS MLLM without a single multilingual RS example: a domain LoRA trained on English RS imagery and a language LoRA trained on text alone are learned jointly under a loss term enforcing mutual orthogonality at every layer throughout training. The orthogonality constraint is the active ingredient — without it, composition fails — and this matters because it enables cross-lingual capability composition without expensive paired multilingual domain data.\n\n[11] addresses a subtle but critical deployment problem: extending a frozen multimodal embedding model to a new modality with LoRA-style methods silently rewrites the text path, invalidating every stored embedding in large-scale retrieval indices and behavioral audits. The authors propose **modality-gated deep adapters**: bottleneck adapters attached to every decoder layer of a frozen embedding LLM, grouped into per-modality packs that execute only when their own modality is active. This achieves exact preservation of the base model's outputs while adding a modality — an important property for production systems where embedding stability is a hard constraint.\n\n[12] empirically interrogates fine-grained MoE LLMs with hundreds of experts, asking how redundant per-token expert selection is, how well existing dynamic pruning methods exploit that redundancy, and what governs sensitivity to pruning. The title's claim — \"You Only Need 2/3 of the Chosen Experts\" — suggests substantial redundancy in the fine-grained regime, where prior evidence came mostly from coarser architectures and likelihood-scored multiple-choice benchmarks. This is practically important for reducing inference cost in the dominant open-weight MoE design pattern.\n\n[13] presents **VideoX-Qwen**, an integrated data-construction and model-training framework for general instruction-based video editing, where the task requires executing a requested transformation while preserving unrelated subjects, scene structure, motion, and temporal continuity. The scalable production pipeline organizes specialized generation and understanding models into complementary routes for data creation, paired with adaptation of video-generation backbones to instruction-driven editing. This matters because video editing, unlike generation, is fundamentally a *preservation-plus-transformation* problem, and progress depends on large-scale paired supervision that this pipeline provides.\n\n## Document, Competition, and Multimodal Reasoning Benchmarks\n\n[5] reports results of the **ICDAR2026 Competition on Multimodal Reasoning over Documents in Multiple Domains**, advancing document understanding via Visual Question Answering over a diverse collection spanning eight domains: business reports, scientific papers, slides, posters, maps, comics, infographics, and engineering drawings. The competition concluded with 20 valid submissions from 8 teams, building on prior DocVQA benchmarks but introducing challenging *reasoning* questions rather than extraction-style queries. Its value lies in stress-testing multimodal document reasoning across genuinely heterogeneous layouts, exposing where current models generalize and where they fail.\n\n[4] shifts focus from retrieval strategy to corpus structure, asking whether how a corpus is structured at ingest time matters more than how much is retrieved at query time. Building on prior work with a multimodal RAG system over an authentic machine learning course corpus (Foundations of Machine Learning), the paper explores Wiki LLM indexing as a structuring mechanism for vetted instructional materials that are often revised mid-semester. This is a useful reframing: for course-specific tutors, ingestion-time organization may dominate query-time retrieval tuning, with direct implications for educational RAG deployment.\n\n[16] proposes **MAC-RRG**, an iterative multi-agent collaboration framework for X-ray radiology report generation that targets two defects of prior work: LLM-only models lack structured medical priors and hallucinate, while knowledge-graph-enhanced schemes use static one-round fusion with single-source knowledge. MAC-RRG performs dynamic knowledge updating driven by generation feedback within a multi-agent loop, aiming to improve diagnostic interpretability and reduce hallucination. This matters because clinical deployment demands both factual grounding and iteratively correctable reasoning, not one-shot knowledge injection.\n\n## Evaluation, Imbalance, and Generation-Order Methodology\n\n[2] delivers a methodological audit of Deep Imbalanced Regression (DIR) evaluation, identifying three blind spots: domination by image-based benchmarks, a many-/medium-/few-shot protocol that is diagnostic but not decision-complete, and unexamined tail-region stability across random seeds. By revisiting DIR evaluation, the authors expose that reported progress may not reflect reliable performance across the full target range — the very property DIR methods claim to deliver. This is essential reading for anyone benchmarking imbalanced regression, since seed-level tail instability can silently undermine claimed gains.\n\n[1] studies uniform discrete flow, which permits repeated updates at every generation position, supporting correction of wrong tokens but also exposing correct intermediate predictions to later errors — an experiment on Sudoku shows 9.4% of generated cells are correct at an intermediate step but incorrect in the final output. The authors introduce generation order via *selective absorption*, fixing chosen predictions while preserving uniform-flow velocity at active positions, and propose Low-Entropy Discrete flow guidance to avoid absorbing incorrect predictions. This matters because it identifies and mitigates a concrete failure mode of iterative refinement: revision can destroy correct answers, and entropy-guided ordering is a principled fix.\n\n[8] introduces **LingLan**, a Traditional Chinese Medicine diagnosis LLM built on a Unification Framework for Multimodal Data (UFMD) that automatically processes tongue and pulse images into structured, clinically standard descriptions integrated with multi-source data. The work confronts TCM's reliance on holistic, subjective diagnostic methods — Inspection, Auscultation and Olfaction, Inquiry, and Palpation (I-AOI-P) — which resist alignment with quantitative, standardized medical systems. By converting subjective multimodal signals into structured representations, LingLan offers a pathway for AI integration into a domain that has lagged behind modern medicine in standardization.\n\n## Key Takeaways\n- **Native omni-modality is replacing tower assembly**: Ovis-Embedding [3] and Qwen3.8-Omni-Flash [6] both use shared backbones and co-training, with the latter showing agentic capabilities transfer from text to audio and video — a template for general-purpose omni agents.\n- **Adding modalities is not the same as grounding them**: OmniFysics-Nano-V2 [10] argues that semantic supervision leaves physical attributes and causal mechanisms underspecified, reframing omni-modal progress as a grounding problem rather than a coverage problem.\n- **Preservation and composition are becoming first-class constraints**: modality-gated deep adapters [11] achieve exact output preservation for frozen embedding models, while MODL's orthogonal LoRA composition [9] adds languages without paired multilingual data — both enabling safe extension of deployed systems.\n- **Efficiency via redundancy exploitation**: fine-grained MoE LLMs appear to need only ~2/3 of their chosen experts [12], offering a concrete path to cheaper inference in the dominant open-weight architecture.\n- **Evaluation blind spots can invalidate claimed progress**: DIR evaluation suffers from image-benchmark dominance, non-decision-complete protocols, and unexamined tail-seed instability [2]; similarly, iterative generation can destroy correct intermediate answers (9.4% of Sudoku cells) [1], motivating entropy-guided generation order.\n- **Domain-specific multimodal systems are maturing rapidly**: fusion plasma diagnostics [14], TCM diagnosis [8], chemotherapy response prediction [15], radiology report generation [16], natural product research [7], and course tutoring [4] all show multimodal architectures tailored to professional workflows.\n- **Benchmarks are shifting from extraction to reasoning across heterogeneity**: the ICDAR2026 competition [5] stresses reasoning VQA over eight document domains, while video editing [13] formalizes the preservation-plus-transformation challenge that generation-only benchmarks miss.",
+    "papers": [
+      {
+        "title": "Entropy Can Flow, or It Can Guide. Be Entropy. LEDFlow: Introducing Entropy-guided Generation Order into Uniform Discrete Flow",
+        "url": "",
+        "authors": [
+          "Tung Sum Thomas Kwok",
+          "Yidong Ouyang",
+          "Yingjia Wan",
+          "Ying Nian Wu",
+          "Zhijiang Guo",
+          "Oscar Leong"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Exposing Blind Spots in Deep Imbalanced Regression Evaluation",
+        "url": "",
+        "authors": [
+          "Noah C. Puetz",
+          "Jens U. Brandt",
+          "Marc Hilbert",
+          "Elena Raponi",
+          "Thomas Bäck",
+          "Thomas Bartz-Beielstein"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Ovis-Embedding: Pushing the Frontiers of Universal Omni-Modal Embeddings",
+        "url": "",
+        "authors": [
+          "Ovis-Embedding Team"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Potential for Enhanced Learning in Machine Learning Classes by Using Wiki LLM Indexing",
+        "url": "",
+        "authors": [
+          "Brian Wright"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "ICDAR2026 Competition on Multimodal Reasoning over Documents in Multiple Domains",
+        "url": "",
+        "authors": [
+          "Artemis Llabrés",
+          "Marc Serra Ortega",
+          "Tomàs Ockier",
+          "Samuel Ortega Cuadra",
+          "Amritpal Singh",
+          "Christos Georgakilas",
+          "Andrey Barsky",
+          "Ernest Valveny",
+          "Dimosthenis Karatzas"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Qwen3.8-Omni: Towards Native Omni-Modal Agents",
+        "url": "",
+        "authors": [
+          "Qwen Team"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "ChatT2: An Adaptive Framework for Developing a Large Language Model-Based Agent for Natural Product Domain Research",
+        "url": "",
+        "authors": [
+          "Yihan Wang",
+          "Qiandi Gao",
+          "Yihui Zhuang",
+          "Liangjun Ge",
+          "Heqian Zhang",
+          "Jiaquan Huang",
+          "Zhiwei Qin"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "LingLan: An Advancing Traditional Chinese Medicine Diagnosis LLM with Multimodal Data",
+        "url": "",
+        "authors": [
+          "Zheng Chen",
+          "Zhicheng Du",
+          "Haoxuan Li",
+          "Yingshan Liang",
+          "Peiwu Qin"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "One Domain, Many Tongues: Composing Domain and Language LoRAs for Cross-Lingual Remote-Sensing MLLMs without Paired Data",
+        "url": "",
+        "authors": [
+          "Xuechen Li"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "OmniFysics-Nano-V2 Technical Report: Understanding the Physical World Across Modalities",
+        "url": "",
+        "authors": [
+          "Yizhou Liu",
+          "Jinghang Han",
+          "Kaixiang Qiu",
+          "Qi He",
+          "Minghao Han",
+          "Yue Jiang",
+          "Xujia Chen",
+          "Wei Zou",
+          "Shunli Wang",
+          "Lihua Zhang",
+          "Dingkang Yang"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Modality-Gated Deep Adapters: Adding a Modality to a Frozen Embedding Model with Exact Preservation",
+        "url": "",
+        "authors": [
+          "Abdul Basit Tonmoy",
+          "Kazi Fardinul Hoque",
+          "Md. Shahrier Islam Arham",
+          "Arman Luthra"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "You Only Need 2/3 of the Chosen Experts: An Empirical Study of Dynamic Expert Pruning in Fine-Grained MoE LLMs",
+        "url": "",
+        "authors": [
+          "Yuanteng Chen",
+          "Qiwei Lai",
+          "Chen Tianqi",
+          "Peisong Wang",
+          "Yuantian Shao",
+          "Nanxin Zeng",
+          "Zhilei Liu",
+          "Chuangyi Li",
+          "Jing Liu",
+          "Jian Cheng"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "VideoX-Qwen: Data-Centric Instruction-Based Video Editing",
+        "url": "",
+        "authors": [
+          "JJiahang Li",
+          "Dingbao Shao",
+          "Xinyu Chen",
+          "Song Wu",
+          "Jiang Lin",
+          "Duo Li",
+          "Yuhang Liu",
+          "Jiaxin Hu",
+          "Shengrong Gu",
+          "Ying Tai",
+          "Zili Yi"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "FusionMMT: A Unified Multimodal and Multitask Learning Framework for Nuclear Fusion",
+        "url": "",
+        "authors": [
+          "Qiang Chen",
+          "Xiao Wang",
+          "Qingquan Yang",
+          "Hao Si",
+          "Zikang Yan",
+          "Meiwen Chen",
+          "Guosheng Xu",
+          "Jin Tang"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "Neoadjuvant chemotherapy response prediction using pretreatment diffusion and contrast-enhanced magnetic resonance imaging with clinical variables",
+        "url": "",
+        "authors": [
+          "Pablo García Marcos",
+          "Paula Puerta González",
+          "Guillermo Lorenzo",
+          "Héctor Gómez",
+          "Covadonga del Camino",
+          "Adán Rodríguez",
+          "Ignacio Peláez",
+          "Angel Rio-Alvarez",
+          "Víctor M. González"
+        ],
+        "date": "2026-09-23"
+      },
+      {
+        "title": "MAC-RRG: Iterative Multi-Agent Collaboration for X-ray Radiology Report Generation",
+        "url": "",
+        "authors": [
+          "Futian Wang",
+          "Yuhan Qiao",
+          "Xiao Wang",
+          "Dan Xu",
+          "Yuehang Li",
+          "Zhixiang Guo",
+          "Yaowei Wang",
+          "Jin Tang"
+        ],
+        "date": "2026-09-23"
+      }
+    ]
+  }
+]
