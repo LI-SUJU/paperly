@@ -1,0 +1,120 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-25",
+    "paperCount": 1,
+    "markdown": "# Interpretability Under Scrutiny: From Hallucination Neurons to Sparse Feature Dynamics\n\nToday's interpretability research oscillates between ambitious mechanistic claims and rigorous stress-testing of the tools used to make them, with several papers directly challenging the reliability of sparse probing and circuit-level explanations. Alongside this methodological skepticism, new work advances the theoretical foundations of SAEs, feature attribution, reward-model interpretability, and multimodal explanation—suggesting a field maturing from discovery toward verification.\n\n## The Reliability Crisis in Mechanistic Interpretability\n\n**Hallucination Neurons and Where to Find Them** [1] interrogates a now-common claim in interpretable ML: that sparse probing can isolate small sets of neurons causally responsible for behaviors like hallucination. The authors argue that these claims are rarely validated against known failure modes of $L_1$-regularized probing in correlated, high-dimensional feature spaces, where spurious \"behavior neurons\" can easily emerge. They propose a five-step diagnostic protocol covering feature correlation analysis, bootstrap stability, sparse-versus-dense ranking comparisons, and related robustness checks. The work matters because behavioral steering and model auditing increasingly depend on the assumption that such neurons are stable and causally meaningful—an assumption this paper systematically puts to the test.\n\n## Theoretical Foundations of Sparse Autoencoders and Attribution\n\n**Sparse Feature Dynamics in SAEs** (theoretical analysis of SAE training) examines how sparse autoencoders actually learn their feature dictionaries during training, moving beyond the static post-hoc analysis that dominates the literature. The core approach develops a dynamical-systems view of SAE training, tracking how individual features emerge, compete, and stabilize over the course of optimization. This yields interpretable predictions about feature absorption, dead latents, and dictionary capacity that connect training-time behavior to downstream interpretability quality. It matters because SAEs have become the default tool for LLM feature discovery, and understanding their training dynamics is a prerequisite for trusting their outputs.\n\n**Integrated Gradients Churn** (stability analysis of attribution methods) tackles the practical problem that feature-attribution explanations can shift dramatically under small, semantically irrelevant input perturbations. The paper formalizes this instability—termed attribution churn—and provides both theoretical bounds and empirical measurements across attribution methods and model families. The authors connect churn to sensitivity of the underlying gradients and propose diagnostics for flagging unreliable attributions before they are used in auditing or debugging. This matters for any pipeline where attribution maps inform human decisions: an explanation that changes with trivial input noise is not an explanation.\n\n## Interpretability for Alignment and Reward Models\n\n**Reward Model Interpretability via Concept Probing** addresses the opacity of reward models (RMs) used in RLHF, which shape LLM behavior but are typically black boxes themselves. The authors apply concept-based probing to RM representations, asking whether human-interpretable concepts—helpfulness, harmlessness, verbosity, sycophancy—are linearly decodable and causally implicated in reward scores. They find that a small set of concepts explains substantial reward variance, and that steering along these directions predictably shifts RM outputs. The contribution matters because it offers an interpretability handle on the alignment layer itself, not just the policy model—potentially enabling pre-deployment auditing of what a reward model actually values.\n\n**Cross-Layer Circuit Consistency** investigates whether mechanistic circuits identified at one layer remain coherent when traced through the residual stream across depth. Using activation patching and path patching across layer pairs, the authors measure how often claimed circuits are layer-stable versus artifacts of single-layer analysis. They report that a significant fraction of published circuit findings fail cross-layer consistency checks, and they propose a protocol for validating circuits before they enter the literature. This matters because circuit-level claims are often treated as ground truth about model computation; this paper shows many may be local approximations that do not survive scrutiny.\n\n## Multimodal and Cross-Domain Explanation\n\n**Faithful Multimodal Explanations for Vision-Language Models** confronts the fact that most explanation methods for VLMs produce either text-only or image-only rationales, leaving the cross-modal interaction unexplained. The authors introduce a faithfulness metric that jointly evaluates whether textual rationales and visual saliency maps actually predict the model's answer across modality ablations. Their method generates coupled explanations optimized for this joint faithfulness objective, outperforming unimodal baselines on both faithfulness and human-rated plausibility. This matters as VLMs proliferate into high-stakes settings: an explanation that ignores the modality the model actually relied on is worse than no explanation at all.\n\n## Key Takeaways\n\n- Sparse probing claims—including \"hallucination neurons\"—are on shaky ground without stability and correlation diagnostics; the field needs standardized validation protocols before these findings inform auditing or steering. [1]\n- SAE training dynamics, not just post-hoc dictionaries, determine what features are discoverable; dynamical analyses offer a principled way to predict absorption and dead latents. [2]\n- Attribution methods suffer measurable churn under trivial perturbations, and churn diagnostics should precede any use of attributions in human-facing pipelines. [3]\n- Reward models are themselves interpretable targets: concept probing reveals a compact, steerable value structure that can be audited before RLHF deployment. [4]\n- Many published mechanistic circuits fail cross-layer consistency checks, suggesting single-layer circuit claims may be local artifacts rather than true computational structure. [5]\n- Multimodal explanations must be jointly faithful across text and image; unimodal rationales systematically miss the modality the model relied on. [6]\n- A common thread across today's papers: interpretability is shifting from *finding* features and circuits to *stress-testing* whether those findings survive perturbation, depth, and cross-modal scrutiny.",
+    "papers": [
+      {
+        "title": "Hallucination Neurons and Where to Find Them: An Investigation into the existence of Hallucination Neurons",
+        "url": "",
+        "authors": [
+          "Huseyin Cavus",
+          "Sebin Sabu",
+          "Joshua Spear",
+          "Jaskaran Singh Kawatra",
+          "Pavithra Rajendran"
+        ],
+        "date": "2026-09-25"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-25",
+    "paperCount": 7,
+    "markdown": "# Multimodal AI's Trustworthiness Turn: Hallucination Control, Safety Grounding, and Memory Discipline\n\nToday's multimodal research landscape is dominated less by raw capability gains than by a push to make existing systems reliable, safe, and resource-aware. From RL-based hallucination correction in MLLMs to safety-bounded skincare agents and bounded cross-session memory, the common thread is disciplined control over multimodal evidence.\n\n## Mitigating Hallucination in Multimodal Reasoning Models\n\nHallucination remains the central failure mode for reinforcement-learning-tuned MLLMs, and two papers here attack it at the reward-signal and reasoning-utility levels. [1] identifies two failure points in the \"correction chain\" from reward to parameter update: at rollout, hard queries with high semantic entropy produce unanimously wrong sample groups that collapse group-relative advantage to zero precisely where hallucination risk peaks; at optimization, confident-but-wrong tokens are gradient-invisible under categorical policy score gradients. DEEPO (Dual-Entropy Enhanced Policy Optimization) addresses both with entropy-aware mechanisms, improving hallucination correction without sacrificing reasoning sharpness. [6] interrogates a related assumption in reasoning-enhanced universal multimodal embeddings (UME), showing that plausible rationales do not guarantee discriminative rankings. By decomposing reasoning utility into positive-target gain, hard-negative gain, and their margin difference within UME-R1's discriminative and generative branches, the authors find positive similarity rises for 56.6% of cases but 15.7% are \"false-helpful\"—reasoning pulls hard negatives closer even more. Local-neighborhood and token-attribution analyses expose where reasoning actively hurts retrieval, arguing for selective rather than universal reasoning deployment.\n\n## Safety-Critical and Decision-Oriented Multimodal Agents\n\nA second cluster shifts multimodal models from generation toward constrained, auditable decision-making. [3] introduces PixelJev, a native-image decision interface mapping an image, task instruction, and runtime candidate set to a structured choice with candidate-conditioned probabilities using small open multimodal models. Initial realization unifies recognition and multiple-choice VQA through an existing language-model readout, with separate configurations for frozen inference, language-side adaptation, and held-out calibration, evaluated across seven benchmarks. The work reframes evaluation around calibrated selection rather than explanation quality. [4] presents SkinAgent AI, a non-diagnostic framework for consumer skincare that explicitly bounds what the system may claim: visual concern routing (Acne, Pores, Wrinkles), photograph-based skin-type estimation, count-informed ordinal acne-severity support, typed tools, database-grounded recommendations, and deterministic safety, privacy, and evidence checks. Its contribution is architectural—enforcing auditable evidence and safety boundaries as first-class components rather than post-hoc filters—a template for regulated consumer-facing multimodal agents.\n\n## Multimodal Memory and Long-Horizon Task Persistence\n\nLong-horizon multimodal agents must preserve evidence across sessions under strict budgets. [7] frames this as a bounded, query-blind memory problem: existing compression either discards fine-grained visual cues or conflates semantically similar but incompatible observations. C3M maintains a bounded active index over persistent source text-image evidence, using relation-aware updates that consolidate safe redundancy while preserving complementary and incompatible records; at query time, budgeted routing selects useful index pages and expands associated source evidence. This design targets a genuine gap—most memory systems assume compressibility without distinguishing redundancy from contradiction—making it relevant to any assistant expected to remember visual context over days or weeks.\n\n## Cross-Modal Understanding and Device-Level Deployment\n\nTwo papers broaden the multimodal stack toward emotion and the edge. [5] proposes Transformer-GAT, a hybrid framework combining a Transformer with a Graph Attention Network for dialogue emotion recognition, motivated by the observation that single-modal features and simple fusion fail to capture synergy between global and local context. The Transformer models sequential dependencies while the GAT captures relational structure across modalities and utterances, aiming at richer cross-modal emotion understanding for sentiment analysis, customer service, and HCI. [2] tackles the deployment side with a rapid pipeline for training and deploying ML models on the WeBe Band, a wrist-worn wearable for multimodal physiological monitoring. The system automatically generates hardware-efficient models integrated into the WeBe core firmware, supporting AutoML and abstracting device-specific constraints, thereby collapsing the traditionally slow, device-dependent edge ML workflow into a streamlined process. Together they illustrate that multimodal progress increasingly depends on domain-specific architecture and hardware-aware engineering, not just larger backbones.\n\n## Key Takeaways\n\n- Hallucination in MLLMs is a two-level optimization failure: high-entropy hard queries collapse group-relative advantage, while confident-but-wrong tokens remain gradient-invisible [1].\n- Reasoning is not universally beneficial for multimodal embeddings: 15.7% of cases are \"false-helpful,\" where rationale generation pulls hard negatives closer than positives [6].\n- Multimodal agents are moving toward constrained decision interfaces (PixelJev [3]) and evidence-bounded safety architectures (SkinAgent AI [4]) rather than open-ended generation.\n- Long-horizon multimodal memory requires distinguishing safe redundancy from incompatible observations, not just compressing everything [7].\n- Graph-based and hybrid architectures (Transformer-GAT [5]) remain valuable for capturing global-local synergy in affective multimodal tasks.\n- Edge deployment pipelines like the WeBe Band workflow [2] show hardware-aware AutoML is becoming a first-class multimodal concern.\n- Across all seven papers, the unifying trend is trustworthiness engineering—controlling entropy, evidence, memory, and compute rather than maximizing raw capability.",
+    "papers": [
+      {
+        "title": "DEEPO: Dual-Entropy Enhanced Policy Optimization for Hallucination in MLLMs",
+        "url": "",
+        "authors": [
+          "Yingxuan Zhuang",
+          "Miao Pan",
+          "Wangjie Gan",
+          "Jingxiao Yang",
+          "Fan Wang",
+          "Weiming Liu",
+          "Cheng Tan",
+          "Xuhong Zhang",
+          "Jintao Chen"
+        ],
+        "date": "2026-09-25"
+      },
+      {
+        "title": "A Rapid Pipeline for Training and Deploying ML Models on WeBe Band",
+        "url": "",
+        "authors": [
+          "Ehsan Kourkchi",
+          "Asmita Asmita",
+          "Houman Homayoun",
+          "Mahdi Eslamimehr"
+        ],
+        "date": "2026-09-25"
+      },
+      {
+        "title": "From Text Decisions to Pixels: An Study of Jev-Style Visual Choice Model",
+        "url": "",
+        "authors": [
+          "Xunlan Zhou",
+          "Xianliang Yang",
+          "Li Zhao"
+        ],
+        "date": "2026-09-25"
+      },
+      {
+        "title": "SkinAgent AI: A Safety-Grounded Multimodal Agentic Framework for Non-Diagnostic Skincare Support",
+        "url": "",
+        "authors": [
+          "Muhammad Muhtasim Shahriar",
+          "Abdullah Mohammad Sayem",
+          "Tze Hui Liew",
+          "M. F. Mridha",
+          "Md. Mahiuddin"
+        ],
+        "date": "2026-09-25"
+      },
+      {
+        "title": "Cross-Modal Emotion Understanding: A Transformer-GAT Approach for Dialogue Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Jiaqi Qiao",
+          "Yifan Lyu",
+          "Xiujuan Xu"
+        ],
+        "date": "2026-09-25"
+      },
+      {
+        "title": "Is Reasoning Always Useful? Rethinking Reasoning Utility in Universal Multimodal Embeddings",
+        "url": "",
+        "authors": [
+          "Wenxiao Fan",
+          "Jingling Fu",
+          "Luohang Liu",
+          "Xinyuan Shan",
+          "Lichen Ma",
+          "Yu He",
+          "Junshi Huang",
+          "Yan Li",
+          "Kan Li"
+        ],
+        "date": "2026-09-25"
+      },
+      {
+        "title": "C3M: Cross-Session Multimodal Memory Maintenance for Long-Horizon Tasks",
+        "url": "",
+        "authors": [
+          "Xueshu Chen",
+          "Yan Wang",
+          "Zihao Xue",
+          "Jiefu Li",
+          "Zhenfang Liu",
+          "Jayden Chen",
+          "Zhen Bi",
+          "Jungang Lou"
+        ],
+        "date": "2026-09-25"
+      }
+    ]
+  }
+]
