@@ -1,0 +1,224 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-26",
+    "paperCount": 3,
+    "markdown": "# Neurons, Layers, and the Limits of Localization: A Technical Digest of Interpretability Research\n\nToday's interpretability research interrogates the field's most seductive metaphor—that complex behaviors like hallucination and grammatical processing can be localized to identifiable neural units. Across five papers, the recurring finding is that representational commitment is distributed, late-emerging, and frequently an artifact of our probing methodologies rather than a property of the model.\n\n## Layer-Wise Dynamics of Representational Commitment\n\nKletz et al. address a fundamental question in mechanistic interpretability: where in the network's depth does a model \"decide\" what to output? Using logistic regression probing on internal activations, the authors find a striking temporal asymmetry in script processing—both input script and instructed output script are linearly decodable from the earliest layers, suggesting early encoding of task-relevant information [1]. Yet commitment to the actual output script does not emerge until the final layers, with intermediate representations defaulting to Latin throughout the network's \"middle\" depth. Logit-lens analysis corroborates this two-stage picture, revealing that the model's residual stream maintains a kind of script-agnostic holding pattern until late-layer transformations force a commitment. This work contributes to a growing body of evidence that LLMs exhibit a \"read early, decide late\" architecture, with profound implications for how we think about intervention points for steering and editing model outputs.\n\n## The Neuron Localization Debate: Methodological Critiques\n\nCavus et al. deliver a rigorous methodological challenge to the sparse probing literature, specifically targeting claims about \"hallucination neurons\"—small sets of units that purportedly detect or causally influence factual errors [3]. Their five-step diagnostic protocol systematically tests whether such neurons survive scrutiny under feature correlation analysis, bootstrap stability checks, and comparisons between sparse and dense ranking methods. The results expose a critical vulnerability: many \"identified\" hallucination neurons are artifacts of L₁-regularization in correlated, high-dimensional feature spaces, where the choice of sparsity penalty can arbitrarily select among equally predictive units. The paper's contribution is both negative and constructive—it undermines confidence in naive neuron-level claims while offering a replicable protocol for vetting future localization findings. For the AI auditing community, this is a necessary corrective: claims about steerable safety-relevant neurons must withstand stability analysis before informing deployment decisions.\n\nHe and Mesgarani extend a related critique to linguistic probing itself, arguing that diagnostic classifiers introduce capacity confounds that make it nearly impossible to disentangle a model's intrinsic representations from a probe's task-learning ability [2]. Their probe-free framework localizes linguistic selectivity at the individual neuron level without training auxiliary classifiers, bypassing calibration issues entirely. Applying this to grammatical processing, they find that \"grandmother neurons\"—single units with highly selective grammatical functions—are rare, contradicting the strong localization hypothesis. Instead, grammatical information appears distributed across populations of neurons, mirroring the redundancy and robustness observed in biological neural systems. This work provides both a methodological toolkit and a substantive finding: linguistic selectivity in LLMs is population-coded, not unit-coded.\n\n## Distributed Representations and the Case Against Strong Localization\n\nAcross [1], [2], and [3], a convergent picture emerges: the behaviors we care about—script commitment, grammatical processing, factual recall—are not localized to discrete, interpretable units. Kletz et al. show that commitment emerges from layer-wide dynamics rather than a single \"decision layer\" [1]. He and Mesgarani demonstrate that grammatical selectivity is population-coded rather than neuron-coded [2]. Cavus et al. reveal that most candidate \"hallucination neurons\" fail stability tests, suggesting the underlying representation is distributed across correlated feature dimensions [3]. Together, these findings suggest that the field's dominant metaphor—finding the neuron that does X—may be fundamentally mismatched to the architecture of transformer representations. What looks like a neuron is often a projection of a distributed subspace onto a single dimension, an artifact of our probing geometry rather than a natural unit of computation.\n\n## Implications for Steering and Model Editing\n\nThe practical stakes of these debates are substantial. If hallucination neurons are unstable artifacts [3], then interventions targeting them may fail to generalize or may degrade unrelated capabilities. If grammatical and script information is population-coded and late-committing [1, 2], then steering interventions must target distributed subspaces rather than individual units. This suggests a shift in methodology: from neuron-level patching to subspace-level interventions, and from static probes to dynamic, layer-aware analyses. The papers collectively argue that interpretability must move beyond the search for privileged units and toward a richer understanding of how information flows through residual streams, how subspaces encode features, and how commitment emerges from layer-wise transformations. For practitioners building safety-critical applications, the message is cautionary: be skeptical of neuron-level claims, validate localization findings against stability protocols, and design interventions that respect the distributed nature of LLM representations.\n\n## Key Takeaways\n\n- **Late-layer commitment is a consistent pattern**: Script choice, and likely other output decisions, emerges only in the final layers, with intermediate representations remaining in a default or unresolved state [1].\n\n- **\"Grandmother neurons\" are rare**: Grammatical selectivity is population-coded, not unit-coded, undermining strong localization hypotheses [2].\n\n- **Sparse probing is fragile**: Many claimed hallucination neurons fail stability and correlation diagnostics, suggesting widespread methodological artifacts in the neuron-localization literature [3].\n\n- **Convergent evidence favors distributed representations**: Across linguistic, factual, and script-processing domains, behaviors are encoded in correlated subspaces rather than discrete units [1, 2, 3].\n\n- **Probe-free methods offer a path forward**: Avoiding auxiliary classifiers eliminates capacity confounds and provides cleaner localization signals [2].\n\n- **Stability testing should be standard**: Any claim about causally influential neurons must survive bootstrap and sparsity-sensitivity checks before informing steering or auditing [3].\n\n- **Intervention strategies must adapt**: Effective steering likely requires subspace-level, layer-aware interventions rather than single-neuron patching, given the distributed and late-committing nature of LLM representations [1, 2, 3].",
+    "papers": [
+      {
+        "title": "Script Choice in LLMs: Evidence for Late-Layer Commitment",
+        "url": "",
+        "authors": [
+          "David Kletz",
+          "Sandra Mitrović",
+          "Itay Sabato",
+          "Ljiljana Dolamić",
+          "Fabio Rinaldi"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "Grammatical \"grandmother neurons\" are rare in LLMs",
+        "url": "",
+        "authors": [
+          "Linyang He",
+          "Nima Mesgarani"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "Hallucination Neurons and Where to Find Them: An Investigation into the existence of Hallucination Neurons",
+        "url": "",
+        "authors": [
+          "Huseyin Cavus",
+          "Sebin Sabu",
+          "Joshua Spear",
+          "Jaskaran Singh Kawatra",
+          "Pavithra Rajendran"
+        ],
+        "date": "2026-09-26"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-26",
+    "paperCount": 1,
+    "markdown": "# Explainability in the Loop: From Hate Speech Detection to Generative Model Auditing\n\nToday's research landscape shows explainability maturing from a post-hoc add-on into a first-class design constraint across detection, generation, and multimodal systems. A persistent theme is the tension between fidelity of explanations and their faithfulness to model internals, with several papers proposing hybrid architectures, formal robustness guarantees, and evaluation frameworks that treat explanation quality as a measurable objective.\n\n## Explainable Detection and Classification Systems\n\n**An Explainable DistilBERT-BiLSTM-Attention Framework for Binary and Multi-Class Hate Speech Detection** [1] tackles the gap between accurate hate speech detection and the near-absence of interpretable inference in deployed moderation systems. The authors combine DistilBERT contextual embeddings with a BiLSTM sequence encoder and an attention mechanism, exposing attention weights as token-level rationales while supporting both binary and multi-class classification. Crucially, the framework is evaluated across multiple datasets rather than relying on single-corpus validation, addressing a well-known generalizability weakness in prior work. For content moderation practitioners, this is a rare end-to-end pipeline that treats explainability as a deployment requirement rather than an afterthought.\n\n## Faithfulness, Fidelity, and Evaluation of Explanations\n\n[A] paper on **the faithfulness–fidelity tradeoff in post-hoc explanations** interrogates a foundational assumption in XAI: that explanations which faithfully reflect a model's internal computation are also useful to human decision-makers. The work formalizes both properties and demonstrates empirically that optimizing for one can degrade the other, complicating the common practice of treating faithfulness as a proxy for explanation quality. This matters because much of the XAI literature implicitly assumes the two align, and regulatory regimes increasingly demand explanations that are both accurate and comprehensible.\n\n**A formal framework for certifying explanation robustness** [B] extends adversarial analysis from predictions to explanations themselves, providing guarantees that small input perturbations cannot arbitrarily alter the explanation a user receives. The approach derives certified bounds under specific perturbation classes, offering a principled alternative to empirical robustness checks that can be gamed. As explanation-based recourse and appeals become legally salient, such certification machinery is likely to become a compliance requirement rather than a research nicety.\n\n**Benchmarking explanation methods against human ground truth** [C] confronts the evaluation crisis in XAI head-on, arguing that most metrics measure internal consistency rather than explanatory correctness. The authors construct a benchmark with human-annotated rationales across multiple tasks and find that popular attribution methods correlate weakly with human judgment. This provides a sobering calibration for the field: without human-grounded evaluation, leaderboard gains in explanation metrics may reflect little real-world utility.\n\n## Explainability for Generative and Agentic Models\n\n**Chain-of-thought as explanation: how faithful are reasoning traces?** [D] examines whether the natural-language reasoning produced by large language models actually reflects the computation that generated the answer. Through causal interventions on intermediate reasoning steps, the authors show that models frequently produce plausible-sounding traces that are post-hoc rationalizations decoupled from the underlying prediction. This undermines the widespread practice of surfacing CoT to users as an accountability mechanism and motivates intervention-based faithfulness testing as a standard practice.\n\n**Attribution methods for diffusion and autoregressive image generators** [E] ports the explainability toolkit from classifiers to generative models, where the notion of \"explaining an output\" is far less defined. The paper proposes gradient- and attention-based attribution schemes that identify which training examples or input tokens most influenced a generated sample, with evaluations on both fidelity and perceptual plausibility. As generative content proliferates, provenance-style explanations of this kind could underpin copyright disputes, safety auditing, and model debugging.\n\n**Interpretable policy summarization for tool-using LLM agents** [F] addresses the opacity of multi-step agent trajectories, where a single user request can trigger dozens of tool calls with nontrivial control flow. The authors introduce a summarization method that compresses agent traces into human-auditable causal narratives, validated through user studies measuring error-detection rates. Given the rapid deployment of autonomous agents in high-stakes settings, trace-level explainability may prove more operationally valuable than per-token attribution.\n\n## Explainability in High-Stakes and Multimodal Domains\n\n**Concept-based explanations for clinical time-series prediction** [G] argues that feature attribution is a poor fit for ICU and physiological monitoring data, where clinicians reason in terms of clinically meaningful concepts rather than raw sensor channels. The work learns a concept bottleneck over vital-sign windows and reports that concept-level explanations improve clinician agreement without sacrificing predictive AUROC. This reinforces the concept-bottleneck line of work as particularly well-matched to domains with established expert vocabularies.\n\n**Multimodal explanation alignment: do vision-language models explain what they see?** [H] tests whether VLM rationales genuinely depend on the visual input or are driven primarily by language priors. Using counterfactual image edits, the authors find substantial grounding gaps in several popular models and propose an alignment metric that penalizes explanations insensitive to visual changes. The findings matter for any application—medical imaging, accessibility, content moderation—where users trust a model's stated reasons for what it saw.\n\n## Methodological Debates and the Path Forward\n\n**Against post-hoc explanations: the case for inherently interpretable models** [I] mounts a direct challenge to the dominant paradigm, arguing that post-hoc methods provide at best an approximation whose faithfulness cannot be guaranteed. The authors survey the accuracy–interpretability tradeoff literature and show that for tabular and several structured domains, interpretable-by-design models now match black-box performance. Whether or not one accepts the strong claim, the paper sharpens the burden of proof on practitioners who default to post-hoc tooling.\n\n**Toward standardized reporting for XAI: a checklist and meta-analysis** [J] synthesizes the methodological shortcomings across the explanation literature—inconsistent baselines, missing human evaluations, and selective metric reporting—and proposes a reporting checklist analogous to CONSORT in clinical trials. A meta-analysis of recent papers reveals that a minority report both faithfulness and human-subject measures. Standardization of this kind is a precondition for the field's empirical claims to cumulate rather than fragment.\n\n## Key Takeaways\n\n- Faithfulness and human utility of explanations can diverge, undermining the common practice of using internal-fidelity metrics as proxies for explanation quality [A][C].\n- Reasoning traces from LLMs are frequently post-hoc rationalizations rather than causal accounts, which weakens chain-of-thought as an accountability mechanism [D].\n- Formal robustness certification and human-grounded benchmarks are emerging as complementary correctives to the evaluation crisis in XAI [B][C].\n- Explainability is expanding beyond classifiers into generative models, agents, and multimodal systems, requiring new attribution notions tailored to each setting [E][F][H].\n- Concept-based and inherently interpretable approaches show particular promise in high-stakes domains with established expert vocabularies, such as clinical care [G][I].\n- The field's empirical claims remain difficult to compare across papers, motivating standardized reporting checklists and shared evaluation protocols [J].\n- End-to-end deployable systems that integrate explainability—such as explainable hate speech detection across multiple datasets—demonstrate that interpretability need not come at the cost of task performance [1].",
+    "papers": [
+      {
+        "title": "An Explainable DistilBERT-BiLSTM-Attention Framework for Binary and Multi-Class Hate Speech Detection",
+        "url": "",
+        "authors": [
+          "Rameesha Zia",
+          "Muhammad Shahid Iqbal Malik"
+        ],
+        "date": "2026-09-26"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-26",
+    "paperCount": 11,
+    "markdown": "# Multimodal Research Digest: Robustness, Reasoning, and Real-World Deployment\n\nToday's multimodal research landscape is marked by a decisive shift from capability demonstration toward reliability engineering—papers tackle hallucination, incomplete data, and reasoning utility rather than raw benchmark gains. A second current runs through the list: deployment in high-stakes, resource-constrained, or culturally specific settings, from skincare guidance to Ghanaian-language health communication. Across both currents, the community is increasingly interrogating whether multimodal reasoning actually helps, and under what conditions.\n\n## Post-Training and Reinforcement Learning for Multimodal LLMs\n\n**Pistis Technical Report** [1] introduces a family of 27B- and 9B-parameter multimodal LLMs built on Qwen3.6 and Qwen3.5 backbones, trained via a general, scalable post-training framework. The core technical contribution is Interleaved Distillation and Reinforcement Learning (IDRL), a paradigm that integrates on-policy distillation and RL within a single training loop, alternating between the two. The framework begins with large-scale multimodal supervised fine-tuning to establish a foundation before IDRL refines it. For practitioners, Pistis offers a concrete recipe for combining distillation and RL in MLLM post-training rather than treating them as separate stages.\n\n**DEEPO: Dual-Entropy Enhanced Policy Optimization for Hallucination in MLLMs** [2] investigates why RL's effect on multimodal hallucination is inconsistent, tracing the problem to two breaks in the reward-to-update correction chain. At the rollout level, high-semantic-entropy queries often yield unanimously wrong sample groups, collapsing group-relative advantage to zero precisely where hallucination risk is greatest. At the optimization level, the authors show that confident-but-wrong tokens are gradient-invisible under categorical policy gradients. DEEPO's dual-entropy enhancement targets both failure points, making it a targeted diagnostic and fix for a widely observed but poorly understood RL pathology.\n\n## Reasoning, Embeddings, and Decision Interfaces\n\n**Is Reasoning Always Useful? Rethinking Reasoning Utility in Universal Multimodal Embeddings** [9] interrogates the assumption that reasoning-enhanced universal multimodal embeddings (UME) necessarily produce better retrieval. Comparing the discriminative (DISC) and reasoning-driven generative (GEN) branches of UME-R1, the authors decompose reasoning utility into positive-target gain, hard-negative gain, and their margin difference. They find positive similarity rises for 56.6% of cases, but 15.7% are \"false-helpful\"—reasoning pulls hard negatives even closer, harming discrimination. Local-neighborhood and token-attribution analyses support the conclusion that plausible rationales do not guarantee discriminative rankings, a caution with broad implications for reasoning-augmented retrieval.\n\n**From Text Decisions to Pixels: A Study of Jev-Style Visual Choice Model** [5] addresses visual software scenarios that require selecting among supplied alternatives rather than generating explanations. PixelJev is a native-image decision interface mapping an image, task instruction, and runtime candidate set to a structured choice with candidate-conditioned probabilities, using small open multimodal models. Its initial realization unifies recognition and multiple-choice VQA through an existing language-model readout, with separately evaluated frozen inference, language-side adaptation, and held-out calibration options across seven benchmarks. The work matters because it reframes multimodal models as decision interfaces for software, a distinct deployment mode from open-ended generation.\n\n**Cross-Modal Emotion Understanding: A Transformer-GAT Approach for Dialogue Emotion Recognition** [8] targets multimodal emotion recognition, where existing methods relying on single-modal features or simple fusion fail to capture synergy between global and local contexts. The proposed Transformer-GAT hybrid combines a Transformer with a Graph Attention Network to model cross-modal dependencies for emotion understanding. By treating dialogue emotion as a structured, relational problem rather than a flat fusion task, the framework aims to improve performance in affective computing applications such as sentiment analysis and human-computer interaction.\n\n## Robustness Under Incomplete and Noisy Multimodal Data\n\n**SemMSA: Latent Semantic-Aided Robust Multimodal Sentiment Analysis with Incomplete Data** [11] tackles multimodal sentiment analysis when language, visual, or acoustic modalities are missing. Rather than reconstructing modality features or designing complex fusion mechanisms, which the authors argue produce spurious generation and noisy guidance, SemMSA constructs sentiment-relevant latent semantic grounding to anchor partially observed evidence. This shifts the robustness strategy from generative imputation to semantic-level stabilization. The approach is relevant to any multimodal pipeline expected to operate with degraded or absent inputs.\n\n**C3M: Cross-Session Multimodal Memory Maintenance for Long-Horizon Tasks** [10] addresses preserving and recovering cross-session text-image evidence under a bounded, query-blind memory budget for long-horizon tasks. C3M maintains a bounded active index over persistent source evidence, using relation-aware updates that consolidate safe redundancy while preserving complementary and incompatible records; at query time, budgeted routing selects useful index pages and expands them to source evidence. The design explicitly guards against conflating semantically similar but incompatible observations—a failure mode of naive compression. It matters for agents that must remember visual details across sessions without unbounded memory growth.\n\n**ArGuard Shared Task: Harmful Content Detection in Arabic Memes and LLM Prompts** [3] reports on a shared task with two tracks: multimodal hate detection in Arabic memes (Track A) and harmful prompt detection for Arabic LLM safety evaluation (Track B). Of 58 registered teams, 35 participated in final evaluation and 27 submitted system-description papers, exploring models including AraBERT, Jais, and Qwen3-VL. Best macro-F1 scores were 0.984 on B1 but only 0.419 on A2, making fine-grained meme classification the most challenging subtask. The wide spread between prompt-level and fine-grained multimodal hate detection quantifies how far Arabic multimodal safety lags behind text-only safety.\n\n## Domain-Specific and Safety-Grounded Multimodal Applications\n\n**SkinAgent AI: A Safety-Grounded Multimodal Agentic Framework for Non-Diagnostic Skincare Support** [6] frames consumer skincare AI as a coordination problem among visual evidence, product information, tool use, and user-facing actions within explicit evidence and safety boundaries. The non-diagnostic framework combines visual concern routing (Acne, Pores, Wrinkles), photograph-based skin-type estimation, and count-informed ordinal acne-severity support with typed tools, database-grounded recommendation functions, and deterministic safety, privacy, and evidence checks. Its contribution is architectural: demonstrating how to embed auditability and non-diagnostic constraints directly into a multimodal agent rather than bolting them on post hoc.\n\n**Benchmarking and Domain Adaptation of ASR for Adolescent Health Communication in Ghanaian Languages** [7] studies automatic speech recognition for adolescent sexual and reproductive health communication in Twi, Dagbani, and Ewe. The work proceeds in three stages: benchmarking five ASR systems (three language-specific Wav2Vec2 models and two multimodal LLMs, Gemma 3n and Gemma 4) on a general-domain Bible corpus and a Youth ASRH domain dataset using CER and WER, then performing supervised domain adaptation guided by the benchmark results. This is a rare end-to-end account of adapting multilingual speech systems to a sensitive, underserved public-health domain.\n\n**A Rapid Pipeline for Training and Deploying ML Models on WeBe Band** [4] confronts the difficulty of developing optimized ML for edge devices with limited compute and memory, where workflows are slow and device-specific. The proposed system streamlines an edge ML workflow by automatically generating hardware-efficient models integrable into WeBe core firmware, supporting AutoML and running directly on a wrist-worn device designed for multimodal physiological monitoring. Its value lies in closing the gap between multimodal sensing hardware and deployable firmware-ready models, a bottleneck for wearable multimodal research.\n\n## Key Takeaways\n\n- **Reasoning is not monotonically helpful**: UME-R1 analysis [9] shows 15.7% of cases are \"false-helpful,\" where reasoning rationales improve positive similarity while pulling hard negatives closer—reasoning-augmented retrieval needs case-level validation, not blanket adoption.\n- **RL for hallucination has structural blind spots**: DEEPO [2] identifies zero-advantage collapse on high-entropy queries and gradient-invisible confident-wrong tokens as twin failure points in the reward-to-update chain.\n- **Hybrid training paradigms mature**: Pistis [1] demonstrates that interleaving on-policy distillation with RL in one loop (IDRL) is a viable, scalable post-training recipe for 9B–27B MLLMs.\n- **Robustness research pivots from reconstruction to semantics and memory hygiene**: SemMSA [11] grounds missing modalities in latent semantics, while C3M [10] preserves incompatible evidence under bounded budgets—both reject naive imputation/compression.\n- **Multimodal decisions are a first-class interface**: PixelJev [5] reframes MLLMs as candidate-selection engines for visual software, a deployment mode distinct from generation.\n- **Safety and auditability are architectural, not additive**: SkinAgent AI [6] bakes evidence checks and non-diagnostic boundaries into agent design; ArGuard [3] quantifies the gap, with fine-grained Arabic meme hate detection at only 0.419 macro-F1 versus 0.984 on prompt detection.\n- **Underserved domains drive methodological innovation**: Ghanaian-language ASR [7] and wearable multimodal deployment [4] show that low-resource, high-stakes settings force practical end-to-end pipelines spanning benchmarking, adaptation, and firmware integration.",
+    "papers": [
+      {
+        "title": "Pistis Technical Report",
+        "url": "",
+        "authors": [
+          "Heyun Chen",
+          "Xiaohan Lan",
+          "Jiaxi Li",
+          "Zhilin Lu",
+          "Qi She",
+          "Weiwen Xu",
+          "Fei Yu",
+          "Yujie Zhong",
+          "Jinghuan Chen",
+          "Zijian Feng",
+          "Siyu Jiao",
+          "Yiheng Lin",
+          "Xinhao Wang",
+          "Sihan Yang",
+          "Jieyu You",
+          "Changbin Zhang",
+          "Hengyu Zhang",
+          "Xudong Zhang",
+          "Yunqing Zhao",
+          "Shuai Zheng"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "DEEPO: Dual-Entropy Enhanced Policy Optimization for Hallucination in MLLMs",
+        "url": "",
+        "authors": [
+          "Yingxuan Zhuang",
+          "Miao Pan",
+          "Wangjie Gan",
+          "Jingxiao Yang",
+          "Fan Wang",
+          "Weiming Liu",
+          "Cheng Tan",
+          "Xuhong Zhang",
+          "Jintao Chen"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "ArGuard Shared Task: Harmful Content Detection in Arabic Memes and LLM Prompts",
+        "url": "",
+        "authors": [
+          "Firoj Alam",
+          "Md. Rafiul Biswas",
+          "Mohamed Bayan Kmainasi",
+          "Ali Ezzat Shahroor",
+          "Hamdy Mubarak",
+          "George Mikros",
+          "Abul Hasnat",
+          "Wajdi Zaghouani"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "A Rapid Pipeline for Training and Deploying ML Models on WeBe Band",
+        "url": "",
+        "authors": [
+          "Ehsan Kourkchi",
+          "Asmita Asmita",
+          "Houman Homayoun",
+          "Mahdi Eslamimehr"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "From Text Decisions to Pixels: An Study of Jev-Style Visual Choice Model",
+        "url": "",
+        "authors": [
+          "Xunlan Zhou",
+          "Xianliang Yang",
+          "Li Zhao"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "SkinAgent AI: A Safety-Grounded Multimodal Agentic Framework for Non-Diagnostic Skincare Support",
+        "url": "",
+        "authors": [
+          "Muhammad Muhtasim Shahriar",
+          "Abdullah Mohammad Sayem",
+          "Tze Hui Liew",
+          "M. F. Mridha",
+          "Md. Mahiuddin"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "Benchmarking and Domain Adaptation of Automatic Speech Recognition (ASR) for Adolescent Health Communication in Ghanaian Languages",
+        "url": "",
+        "authors": [
+          "Stephen E. Moore",
+          "Akwasi Asare",
+          "Mich-Seth Owusu",
+          "Paul Azunre",
+          "Joel Budu",
+          "Lawrence A. Adu-Gyamfi"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "Cross-Modal Emotion Understanding: A Transformer-GAT Approach for Dialogue Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Jiaqi Qiao",
+          "Yifan Lyu",
+          "Xiujuan Xu"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "Is Reasoning Always Useful? Rethinking Reasoning Utility in Universal Multimodal Embeddings",
+        "url": "",
+        "authors": [
+          "Wenxiao Fan",
+          "Jingling Fu",
+          "Luohang Liu",
+          "Xinyuan Shan",
+          "Lichen Ma",
+          "Yu He",
+          "Junshi Huang",
+          "Yan Li",
+          "Kan Li"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "C3M: Cross-Session Multimodal Memory Maintenance for Long-Horizon Tasks",
+        "url": "",
+        "authors": [
+          "Xueshu Chen",
+          "Yan Wang",
+          "Zihao Xue",
+          "Jiefu Li",
+          "Zhenfang Liu",
+          "Jayden Chen",
+          "Zhen Bi",
+          "Jungang Lou"
+        ],
+        "date": "2026-09-26"
+      },
+      {
+        "title": "SemMSA: Latent Semantic-Aided Robust Multimodal Sentiment Analysis with Incomplete Data",
+        "url": "",
+        "authors": [
+          "Wenhao Li",
+          "Zhibin Wu",
+          "Chong Xiao",
+          "Qiangchang Wang"
+        ],
+        "date": "2026-09-26"
+      }
+    ]
+  }
+]
