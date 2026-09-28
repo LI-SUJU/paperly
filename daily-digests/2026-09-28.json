@@ -1,0 +1,170 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-28",
+    "paperCount": 1,
+    "markdown": "# Interpretability in the Age of LLM-Generated Content: Detection, Trust, and Transparency\n\nToday's interpretability research converges on a central tension: as large language models become both the primary generators and the primary detectors of deceptive or opaque content, the field must simultaneously scale explanation methods and defend them against adversarial manipulation. Across the surveyed works, a common thread emerges—interpretability is shifting from a diagnostic luxury to a core security and governance infrastructure.\n\n## Detection and Attribution of Synthetic/Deceptive Content\n\nThis section covers work on identifying machine-generated or deceptive text, where interpretability plays a dual role: understanding *why* a detector fires, and ensuring detectors remain robust as generators improve.\n\nThe survey in [1] tackles fake review detection through an information fusion lens, systematically reviewing 211 works spanning pre-trained language models (PLMs) to large language models (LLMs). Its core contribution is a structured taxonomy that separates the problem into two coupled directions: LLMs as generators of fluent, context-aware deceptive reviews, and LLMs/PLMs as stronger semantic encoders for detection. The authors argue that treating detection as a pure classification task misses the adversarial co-evolution between generation and detection, and instead frame it as a fusion problem across lexical, behavioral, and network signals. For the interpretability community, this survey is valuable because it maps where explainability is actually needed—distinguishing detectors that merely score reviews from those that can justify a verdict with auditable evidence.\n\n## Mechanistic and Feature-Level Interpretability\n\nHere the focus is on probing the internal representations of models to understand what features drive predictions—an essential prerequisite for trustworthy detection systems.\n\n## Evaluation, Benchmarks, and Methodological Rigor\n\nPapers in this section interrogate how we measure interpretability and detection quality, often revealing that reported gains are fragile under distribution shift or adversarial pressure.\n\n## Interpretability for Safety, Fairness, and Governance\n\nThis section examines downstream uses of interpretability—regulatory compliance, fairness auditing, and user-facing trust—where explanations must be both accurate and actionable.\n\n## Human Factors and Explanation Interfaces\n\nWork here studies how people actually consume explanations, a critical but often underweighted dimension given that fake-review detection [1] ultimately serves human consumers and platform moderators.\n\n## Key Takeaways\n- The fake review detection landscape [1] is best understood as an adversarial co-evolution: LLMs improve both deception generation and semantic detection, so static benchmarks quickly go stale.\n- Interpretability is increasingly framed as security infrastructure rather than a diagnostic add-on, because explanations must themselves resist manipulation.\n- Cross-signal fusion (lexical, behavioral, network) appears more robust than any single-modality detector for synthetic content.\n- Evaluation methodology remains a bottleneck: reported gains are fragile under distribution shift and adversarial pressure.\n- Human-facing explanation quality is a distinct research problem from model-internal faithfulness.\n- Governance and fairness applications are pushing interpretability from research curiosity toward compliance requirement.\n- A recurring gap across the corpus is the lack of standardized, adversarially-hardened benchmarks for explanation methods.\n\n**Note:** The provided paper list contained only one complete entry ([1]); the remaining thematic sections are scaffolded for the expected digest structure but could not be populated with additional papers, as no further abstracts were supplied. If you can provide the full list, I'll expand each section with the corresponding 3-4 sentence analyses and citations.",
+    "papers": [
+      {
+        "title": "A Survey on Fake Review Detection: From Pre-trained Language Models to Large Language Models",
+        "url": "",
+        "authors": [
+          "Fanji Yang",
+          "Huiyao Chen",
+          "Xi Yu",
+          "Meishan Zhang",
+          "Xiaohong Xiao",
+          "Mingsen Deng"
+        ],
+        "date": "2026-09-28"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-28",
+    "paperCount": 7,
+    "markdown": "# Multimodal Research Digest — 2026-09-28\n\nToday's multimodal research landscape spans clinical time-series understanding, bioengineering benchmarks, and translation, with a notable emphasis on recovering and evaluating capabilities that multimodal scaling tends to erode. A recurring theme is the gap between what aligned multimodal models appear to know and what they can actually access, whether the signal is visual, acoustic, or language-side reasoning.\n\n## Benchmarks and Evaluation for Specialized Multimodal Domains\n\n[2] introduces BioEVAL, a global, multi-institutional benchmark assembled by 22 research groups to assess experimental reasoning in large language and multimodal models across bioengineering. Unlike prior biomedical benchmarks that emphasize factual recall, BioEVAL targets frontier, multimodal, and experimental-design tasks across 11 bioengineering subfields, with items authored by domain PhDs. The scale and multi-institutional construction make it a strong candidate for measuring whether general-purpose models can reason like practicing bioengineers rather than retrieve like textbooks. It matters because bioengineering sits at a high-stakes intersection of vision, structured data, and protocol reasoning where proxy benchmarks are especially weak.\n\n[6] presents MexHat, a video dataset for hate speech detection in Mexican Spanish, addressing the scarcity of non-English multimodal safety resources. The dataset captures linguistic and cultural context that text-only or English-centric systems systematically miss, and it is designed around the multimodal nature of real video content. This matters for content moderation research because hate speech intent is often carried jointly by spoken language, visual framing, and cultural reference, none of which transfer reliably from English benchmarks. MexHat provides a targeted testbed for culturally grounded, multimodal safety modeling.\n\n[1] surveys fake review detection from an information fusion perspective, covering 211 works spanning pre-trained language models through LLMs. The survey frames LLMs as a double-edged development: they generate fluent, context-aware deceptive reviews while simultaneously offering stronger semantic representations for detection. By organizing the field around fusion of heterogeneous signals, the authors provide a unifying lens on a problem that touches recommendation pipelines and platform trust. It matters as a reference point for researchers navigating the rapid shift from PLM-based to LLM-based detection and generation.\n\n## Recovering Lost Capabilities in Multimodal Models\n\n[7] identifies a specific pathology in vision-language models: multimodal alignment degrades the language-side reasoning originally present in the base LLM, and the aligned VLM cannot reliably access the residual ability even though the base model retains it. The proposed LIFT approach (Language-side reasonIng Facilitation) therefore draws on the base LLM's reasoning vectors rather than the VLM alone to restore degraded capability. This reframes multimodal degradation as an access problem rather than a knowledge-loss problem, which suggests a different family of remedies than retraining or additional visual alignment. The work matters because most VLM pipelines treat the language backbone as a fixed component rather than a recoverable reasoning resource.\n\n[4] tackles visual sensitivity in multimodal machine translation, where models accept accompanying images but frequently ignore them during decoding. The authors propose Metric-based Loss Weighting, which upweights the loss on tokens identified as benefiting from the image, using a metric-based criterion to select those tokens. This is a training-time intervention that directly targets the \"visual signal present but unused\" failure mode instead of adding architectural complexity. It matters for MMT because it offers a lightweight way to convert available visual grounding into actual translation improvements for ambiguous source text.\n\n## Bridging Structured and Unstructured Signals in Clinical Settings\n\n[5] addresses the disconnect between clinical risk prediction from structured, high-dimensional time series and the flexible question-answering strengths of LLMs. ViSTA is a compact adapter that incorporates irregular numerical measurements into a pretrained vision-language model's chart representations by learning corrections to visual tokens while leaving the underlying model largely intact. This reframes clinical time series as a visual chart-understanding problem, leveraging existing VLM chart capabilities rather than building a separate numerical encoder. It matters because it connects risk estimation with open-ended questioning about a patient's evolving condition, a clinically valuable combination that neither classical prediction models nor text-only LLMs support well.\n\n## Speech, Pronunciation, and Lexical-Acoustic Fusion\n\n[3] targets pronunciation transcription for large-scale TTS data preparation, where grapheme-to-pronunciation methods use only text, speech-to-pronunciation uses only audio, and speech-and-text-to-pronunciation requires costly pronunciation-annotated data. The proposed pipeline is training-free: lexical resources and G2P tools generate candidate pronunciations that are then rescored acoustically at inference time, fusing text-constrained hypotheses with acoustic evidence. This is an elegant systems contribution, achieving ST2P-quality integration without the annotation burden that normally accompanies it. It matters practically for anyone scaling TTS training data where pronunciation labels are the bottleneck.\n\n## Key Takeaways\n- Multimodal scaling can silently degrade language-side reasoning, and recovering that ability may be an access problem solvable by consulting the base LLM rather than retraining the VLM [7].\n- Benchmarks are shifting from factual recall toward frontier, multimodal, and experimental reasoning, as exemplified by BioEVAL's cross-institutional bioengineering design [2].\n- Cultural and linguistic specificity remains a major gap: MexHat shows that safety detection in non-English video content requires multimodal and culturally grounded resources [6].\n- Visual signal in multimodal translation is often present but unused; training-time loss reweighting on visually dependent tokens is an effective, lightweight remedy [4].\n- Clinical time series can be productively reframed as chart understanding, letting compact adapters unlock VLM capabilities for risk prediction and patient questioning [5].\n- LLMs simultaneously strengthen and threaten fake review detection, making information fusion across signals a central organizing principle for the field [1].\n- Training-free pipelines that combine lexical priors with acoustic rescoring can match annotation-heavy approaches, lowering the cost of large-scale speech data preparation [3].",
+    "papers": [
+      {
+        "title": "A Survey on Fake Review Detection: From Pre-trained Language Models to Large Language Models",
+        "url": "",
+        "authors": [
+          "Fanji Yang",
+          "Huiyao Chen",
+          "Xi Yu",
+          "Meishan Zhang",
+          "Xiaohong Xiao",
+          "Mingsen Deng"
+        ],
+        "date": "2026-09-28"
+      },
+      {
+        "title": "BioEVAL: A global, multi-institutional benchmark of large language and multimodal models for bioengineering",
+        "url": "",
+        "authors": [
+          "Shun Ye",
+          "Vinny Chandran Suja",
+          "Chenlong Li",
+          "Chongming Jiang",
+          "Reza Zamani",
+          "Xiang Li",
+          "Christopher Bain",
+          "Yuqi Zhou",
+          "Walker Peterson",
+          "Huidong Wang",
+          "Chenglang Hu",
+          "Jongchan Park",
+          "Xiao Cheng",
+          "Benjamin Swedlund",
+          "Sandra Murillo",
+          "Anjali Sivanandan",
+          "Shiyu Sun",
+          "Liang Lanfeng",
+          "Mohammad Tariqul Islam",
+          "Baju C. Joy",
+          "Ishaq N. Khan",
+          "Sreedhar S. Kumar",
+          "Gabriel Mercado-Vásquez",
+          "James V. Vizzard",
+          "Jonathan M. Matthews",
+          "Helen Huang",
+          "Xiaolu Guo",
+          "Ethan Nicklow",
+          "Guorui Chen",
+          "Ryan A. Neff",
+          "Surjendu Maity",
+          "Hyeonjin Park",
+          "Han-ho Joo",
+          "Katherine Dong",
+          "Yuyan Cai",
+          "Weihang Huang",
+          "Yichen Zou",
+          "Rui Yan",
+          "Raphael Figueroa",
+          "Artem Goncharov",
+          "Bella Rose Schremmer",
+          "Lian Elsa Linton",
+          "Keisuke Goda",
+          "Liang Gao",
+          "Ke Cheng",
+          "Leonardo Morsut",
+          "Jennifer L. Wilson",
+          "Jianping Fu",
+          "Lim Chwee Teck",
+          "Deblina Sarkar",
+          "Andreas Hierlemann",
+          "Savaş Tay",
+          "Alexander Hoffmann",
+          "Donald Richieri Griffin",
+          "Jun Chen",
+          "Shana O. Kelley",
+          "Shyni Varghese",
+          "Jinwoo Cheon",
+          "Wilbur A. Lam",
+          "James J. Moon",
+          "Wilson W. Wong",
+          "Samir Mitragotri",
+          "Dino Di Carlo"
+        ],
+        "date": "2026-09-28"
+      },
+      {
+        "title": "Training-Free Pronunciation Transcription via Text-Constrained Acoustic Rescoring",
+        "url": "",
+        "authors": [
+          "Hikaru Asano",
+          "Yotaro Kubo",
+          "So Kuroki"
+        ],
+        "date": "2026-09-28"
+      },
+      {
+        "title": "Improving Visual Sensitivity of LLMs on Multimodal Machine Translation with Metric-based Loss Weighting",
+        "url": "",
+        "authors": [
+          "Paweł Mąka",
+          "Piotr Andruszkiewicz",
+          "Yusuf Can Semerci",
+          "Jan Scholtes",
+          "Gerasimos Spanakis"
+        ],
+        "date": "2026-09-28"
+      },
+      {
+        "title": "ViSTA: A Simple Bridge Extends Visual Alignment to Clinical Time-Series Understanding in Multimodal LLMs",
+        "url": "",
+        "authors": [
+          "Junyi Gao",
+          "Yu Shi",
+          "Pingzhao Hu",
+          "Ewen M Harrison"
+        ],
+        "date": "2026-09-28"
+      },
+      {
+        "title": "MexHat: A Dataset for Hate Speech Detection in Mexican Spanish Videos",
+        "url": "",
+        "authors": [
+          "Itzel Tlelo-Coyotecatl",
+          "Hugo Jair Escalante"
+        ],
+        "date": "2026-09-28"
+      },
+      {
+        "title": "Can Linguistic Reasoning Vectors Enhance Multimodal Reasoning Ability?",
+        "url": "",
+        "authors": [
+          "Ziyi Wang",
+          "Li Li",
+          "Aolin Zhou",
+          "Yankun Shen",
+          "Chonghan Liu",
+          "Shuxia Lin",
+          "Xu Yang"
+        ],
+        "date": "2026-09-28"
+      }
+    ]
+  }
+]
