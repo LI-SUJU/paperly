@@ -1,0 +1,553 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-09-30",
+    "paperCount": 16,
+    "markdown": "# Interpretability Research Digest — 2026-09-30\n\nToday's interpretability research pushes beyond static explanations toward dynamic, causal, and structurally grounded accounts of model computation, spanning neural combinatorial optimization, LLMs, vision-language models, biology, and scientific domains. A unifying thread is the demand for *reliability and faithfulness*: interventions must survive autonomous rollouts, features must remain stable under surface variation, and aligned units must be causally verified rather than merely correlated.\n\n## Causal Circuits and Feature-Level Mechanistic Analysis\n\nStudies in this cluster probe the internal computational structures of LLMs and vision models, asking not just what features exist but whether they causally drive behavior.\n\n**RESCUE** [7] tackles the underexplored question of whether LLM failures, like capabilities, can be attributed to erroneous sparse circuits. The authors extend circuit analysis from abilities to errors, hypothesizing that failures arise from specific faulty internal computations, and they propose a reinforcement-learning procedure to repair language model errors by tuning the parameters of the corresponding sparse circuits. This work matters because it reframes interpretability as a corrective tool: rather than only explaining failures, circuits become editable loci for targeted repair while preserving unrelated functionality, bridging mechanistic analysis and model editing.\n\n**Active Budget Can Kill Sensitivity** [11] investigates a reliability problem in TopK sparse autoencoders: a feature is only useful for interpretation if it remains a stable unit of analysis across surface variations expressing the same meaning. Through feature-sensitivity experiments, the authors show that scaling dictionary width selectively degrades the sensitivity of rare features while common features stay comparatively stable, and a controlled width×k factorial experiment identifies the active budget *k* as a key culprit. This is a cautionary result for the widely adopted practice of scaling SAEs to ever-wider dictionaries: wider is not uniformly better, and the reliability of recovered features depends critically on the sparsity budget, with direct implications for downstream interpretability claims.\n\n**When Models Don't Manipulate Manifolds** [12] interrogates a foundational premise of mechanistic interpretability — that low-dimensional manifolds (e.g., number helices, day-of-week circles) reflect computation. The authors precisely characterize the geometry of representations on a comparison task and test whether models actually rely on and manipulate this structure. Their central finding is that structured geometry can exist without being the mechanism of computation, implying that observing a manifold is not sufficient evidence that the model \"uses\" it, which urges the field to distinguish representational structure from operative computation before designing interventions.\n\n**Which Attention Heads are like the Human Head?** [13] examines brain-AI alignment on an abstract pattern-completion task (AAABAAA → B), comparing LLM attention-head representations with human EEG and ablating the aligned heads. The study finds that alignment and causation dissociate: brain-aligned heads do contribute to performance, but their removal is substantially less disruptive than removing heads selected via attribution patching, and the two head sets prioritize different criteria. This challenges the common inference that alignment implies shared computation, arguing that interpretability should verify causal involvement rather than treating similarity as evidence of mechanism.\n\n**Weights Read and Write Features (ASPD)** [16] addresses the gap between activation-space and parameter-space interpretability, noting that activations represent information while weights read, transform, and write it. The proposed Activation-Supported Parameter Decomposition jointly decomposes both spaces and grounds each learned weight component in the activation features it reads or writes, with grounding constraining the decomposition toward meaningful components. By connecting represented information to parameter-level computation, this approach offers a scalable bridge between two previously separate interpretability traditions.\n\n## Interpretability for Structured Reasoning and Optimization\n\nThis section covers work that builds interpretable structure directly into reasoning and decision-making systems, rather than explaining them post hoc.\n\n**Neural Structural Reasoner (NSR)** [3] targets structural reasoning — inferring over relational topology between objects and concepts — which prevailing methods often collapse into flat embeddings, losing hidden structure and interpretability. NSR is a brain-inspired network that preserves relational structure in the connectivity and dynamics of coupled neuronal populations, drawing on multi-layered architecture for hierarchical knowledge encoding and other biological mechanisms. Its contribution is an architecture where the relational graph is not a learned latent but an explicit substrate of computation, offering a path toward reasoning systems whose inference structure can be inspected and potentially manipulated directly.\n\n**Factorized Scheduling Principle (FSP)** [6] observes that scheduling problems reduce to repeatedly selecting the highest-priority candidate from a set, and proposes learning interpretable, transferable scheduling rules accordingly. FSP represents system states as condition distributions and decomposes a global scheduling principle into additive univariate and pairwise components with identifiability constraints, maintaining a simple inspectable form. This decomposition yields policies whose decisions can be read off as additive contributions, supporting transfer across problem instances — a compelling demonstration that identifiability constraints can make learned decision rules both interpretable and deployable.\n\n**RL-PaO** [10] confronts the mismatch between accurate prediction and good operational decisions under uncertainty, arguing alignment requires learning from the consequences of induced decisions. The framework integrates system formulation, optimization, and decision execution into a single environment, yielding an MDP in which prediction is treated as an action that shifts the environment to produce subsequent context and reward. By making the prediction–decision coupling explicit and learnable, RL-PaO provides a principled and inspectable route to decision-aware prediction, with implications for any setting where forecasts feed downstream optimization.\n\n**Understanding Decision-Making Mechanisms in Neural Routing Solvers** [1] investigates the internal mechanisms of three autoregressive Neural Combinatorial Optimization models spanning two encoder-decoder configurations: AM and POMO (heavy-encoder, light-decoder) and LEHD (light-encoder, heavy-decoder). Using behavioral analyses, representation probing, and causal interventions, the authors examine how these models construct solutions and use internal representations during decoding. Their results suggest AM and POMO predominantly follow particular strategies (with the abstract truncated), offering rare mechanistic insight into why architecturally distinct NCO models succeed — and how encoder/decoder balance shapes the strategy a solver learns.\n\n## Interpretability in Scientific and Domain Applications\n\nThese papers apply interpretability as a first-class requirement in scientific discovery and high-stakes professional domains.\n\n**Explainability from Training (EFT)** [5] notes that while deep models excel in AI-for-science, their black-box nature limits understanding of how they learn scientific tasks, and existing interpretability methods give limited insight into how models organize evidence and evolve during learning. EFT is a model-agnostic paradigm that traces model interpretation *during training* to explain why models rely on specific features and how they organize them as predictive evidence, applied to four state-of-the-art TCR-epitope predictors. By shifting explanation from static post-hoc snapshots to training dynamics, EFT reveals how scientific evidence is progressively assembled — a methodological shift likely to generalize beyond immunology.\n\n**LAURA** [4] addresses ambiguity in legal contracts, where some ambiguities permit benign flexible interpretation while others trigger significant legal conflicts, making identification alone insufficient and interpretable rationale analysis essential. LAURA is a post-training framework that uses knowledge distillation with an IRAC-Unlearning prompting technique to transfer knowledge from a teacher LLM to an open-weight student model (≤1B parameters), which is then trained for interpretable ambiguous clause identification. Combining compact deployability with rationale-level transparency, this work shows how distillation plus structured legal prompting (IRAC) can serve high-stakes domains where auditability is non-negotiable.\n\n**MoTIF-X** [15] targets molecular representation learning, where graphs, SMILES, and 3D conformations provide complementary structure but are often encoded independently and aligned only late, limiting fine-grained cross-modal interaction and substructure-level interpretability. MoTIF-X is a motif-centered framework using graph-grounded chemical motifs as shared anchors for multimodal integration, with a first pretraining stage that learns motif representations. By anchoring all modalities to chemically meaningful motifs, it delivers interpretability at the substructure level while enabling extensible multimodal fusion — a design pattern that could transfer to other scientific modalities.\n\n**WAVE (Seeing Time)** [9] tackles multivariate time series clustering, where deep methods learn discriminative representations but latent clusters are hard to relate back to waveform characteristics practitioners can inspect. WAVE (Waveform Aligned Visual-temporal Embedding) proposes visual-temporal representation learning for interpretable clustering, aligning learned embeddings with inspectable waveform features. This matters because it makes unsupervised temporal discovery auditable: practitioners can assess whether discovered groups reflect meaningful temporal behaviors rather than artifacts of the latent space.\n\n## Faithfulness Under Deployment: Rollouts, Interventions, and Multimodal Grounding\n\nThe final cluster stresses that interpretability must hold up under realistic conditions — after interventions stop, across queries, and in multimodal reasoning.\n\n**RolloutFaith** [8] observes that world models pose a harder interpretability requirement than standard probes or activation patches: because predictions become inputs to later predictions, a useful internal correction must survive after editing stops. RolloutFaith measures semantic improvement both at intervention time and over later autonomous predictions under fixed events, actions, noise, and information budgets, evaluating ten fitted editors on three world models. By auditing *persistence* rather than instantaneous effect, it exposes a critical blind spot in intervention-based interpretability for autoregressive and world-model systems.\n\n**NeuronEye** [14] tackles the entanglement of object identity, spatial layout, and local attributes in dense VLM hidden states, which limits the ability to isolate visual evidence required by a language query. Inspired by sparse population coding and top-down modulation in biological vision, NeuronEye is a plug-in framework that constructs a sparse, concept-level neuron vocabulary from intermediate VLM representations and selectively activates query-relevant visual concepts. This offers query-guided, concept-level controllability of visual evidence — an interpretability mechanism that doubles as a modulation tool for vision-language reasoning.\n\n**DraftTrace** [2] addresses a pedagogical interpretability problem: with generative AI, the final writing artifact no longer reveals the process that produced it. DraftTrace jointly captures the final product, the writing process, and interactions with an integrated AI assistant, reconstructing document development over time and organizing signals into submission, longitudinal, and class-level analytics, deployed with 81 students in a graduate NLP course. This reframes interpretability as human-facing process analytics, showing how multi-view instrumentation can make AI-assisted work legible to instructors and, by extension, to any stakeholder auditing AI-mediated workflows.\n\n## Key Takeaways\n\n- **Alignment and causation dissociate.** Brain-aligned attention heads contribute to performance but are less causally load-bearing than attribution-patching heads [13], and structured manifolds may exist without being used for computation [12] — geometry and similarity are not mechanism.\n- **Reliability is a first-class criterion.** TopK SAE features degrade with scaling, especially rare features [11], and interventions must be judged by persistence after editing stops, not instant effect [8].\n- **Errors are circuits too.** RESCUE shows LLM failures can be localized to erroneous sparse circuits and repaired via RL, extending circuit analysis from capabilities to failures [7].\n- **Training dynamics reveal organization.** EFT traces how models assemble evidence during learning, not just what they attend to at inference, offering deeper insight into scientific task learning [5].\n- **Structure can be built in, not just explained.** NSR [3], FSP [6], and MoTIF-X [15] encode relational, additive, and motif-level structure as explicit substrates, yielding interpretability and transfer by design.\n- **Interpretability is domain-critical.** Legal clause analysis [4], TCR-epitope prediction [5], and molecular representation learning [15] demonstrate that interpretable rationales are prerequisites, not luxuries, in high-stakes science and law.\n- **Process and deployment context matter.** DraftTrace [2], RolloutFaith [8], NeuronEye [14], and RL-PaO [10] show that interpretability increasingly concerns temporal process, persistence, query-guided evidence, and decision consequences rather than static model snapshots.",
+    "papers": [
+      {
+        "title": "Understanding Decision-Making Mechanisms in Neural Routing Solvers",
+        "url": "",
+        "authors": [
+          "Fatemeh Askari",
+          "Mazdak Teymourian",
+          "Mohammad Izadi",
+          "Mahdieh Soleymani Baghshah"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "DraftTrace: A Multi-View Analytics Environment for AI-Integrated Writing",
+        "url": "",
+        "authors": [
+          "Divyansh Chandarana",
+          "Sandipan De",
+          "Vivek Gupta"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Neural Structural Reasoner: A Brain-inspired Architecture for Reasoning over Structured Knowledge",
+        "url": "",
+        "authors": [
+          "Zixing Jia",
+          "Yuhang Pan",
+          "Ni Ji"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "LAURA: Knowledge Distillation for Interpretable Ambiguous Clause Identification in Legal Contracts",
+        "url": "",
+        "authors": [
+          "Amrita Singh",
+          "Aditya Joshi",
+          "Jiaojiao Jiang",
+          "Hye-young Paik"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Explainability from Training with Applications to TCR-Epitope Prediction",
+        "url": "",
+        "authors": [
+          "Jiarui Li",
+          "Zixiang Yin",
+          "Samuel Landry",
+          "Zhengming Ding",
+          "Ramgopal Mettu"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Factorized Scheduling Principle: Learning Interpretable and Transferable Policies via Structured Additive Functions",
+        "url": "",
+        "authors": [
+          "Hong Je-Gal",
+          "Hyun-Suk Lee"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "RESCUE: Repairing Language Model Errors to Sparse Circuits via Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Chuanpu Liu",
+          "Miao Yu",
+          "Yikai Cai",
+          "Yuanhe Zhang",
+          "Zhenhong Zhou",
+          "Li Sun",
+          "Zuming Jiang",
+          "Yufei Guo"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "RolloutFaith: Auditing Persistent Internal Interventions in Visual World Model",
+        "url": "",
+        "authors": [
+          "Junchi Yao",
+          "Ziyi Wang",
+          "Youling Huang",
+          "Lijie Hu"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Seeing Time: Visual-Temporal Representation Learning for Interpretable Time Series Clustering",
+        "url": "",
+        "authors": [
+          "Zheng Zhu",
+          "Zexi Tan",
+          "Yuming Deng",
+          "Yiqun Zhang"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "RL-PaO: Prediction as Action in Decision Making under Uncertainty",
+        "url": "",
+        "authors": [
+          "Jiahui Feng",
+          "Dafang Zhao",
+          "Zheng Chen",
+          "Zhengmao Li",
+          "Lingwei Zhu"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Active Budget Can Kill Sensitivity: Diagnosing and Repairing TopK Sparse Autoencoder Reliability",
+        "url": "",
+        "authors": [
+          "Zhenting Huang",
+          "Junnan Liu",
+          "Qianren Mao",
+          "Zhixing Tan",
+          "Bo Jiang"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "When Models Don't Manipulate Manifolds: The Geometry of a Comparison Task",
+        "url": "",
+        "authors": [
+          "Sai Sumedh R. Hindupur",
+          "Hadas Orgad",
+          "Thomas Fel",
+          "Demba Ba"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Which Attention Heads are like the Human Head? Not the Ones that Compute",
+        "url": "",
+        "authors": [
+          "Christopher Pinier",
+          "Gustaw Opiełka",
+          "Hannes Rosenbusch",
+          "Taylor Webb",
+          "Michael D. Nunez",
+          "Claire E. Stevenson"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "NeuronEye: Query-Guided Visual Concept Activation for Vision-Language Reasoning",
+        "url": "",
+        "authors": [
+          "Ruiyu Yan",
+          "Bowen Chen",
+          "Shaowen Wan",
+          "Lin Zhao"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "MoTIF-X: A Multimodal Tokenized Framework for Interpretable and Extensible Molecular Representation Learning",
+        "url": "",
+        "authors": [
+          "Linqing Mo",
+          "Jiayu Zhou",
+          "Bin Chen"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Weights Read and Write Features: Scalable Parameter Decomposition Grounded in Activation Space",
+        "url": "",
+        "authors": [
+          "Tue M. Cao",
+          "Lisiane Pruinelli",
+          "My T. Thai"
+        ],
+        "date": "2026-09-30"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-09-30",
+    "paperCount": 1,
+    "markdown": "# Explainability Beyond the Static: Training Dynamics, Uncertainty, and Faithfulness in AI/ML Systems\n\nToday's explainability research pushes beyond static post-hoc attributions, emphasizing how interpretability can arise during training, be embedded in model architecture, or be evaluated with greater methodological rigor. A notable cluster of work targets scientific and safety-critical domains—immunology, biomedicine, and large language models—where understanding *why* a model predicts is as important as the prediction itself.\n\n## Explainability as a Training-Time Phenomenon\n\nA central theme across several papers is that interpretability need not be bolted on after training; it can be observed, induced, or exploited during the learning process itself. This reframes explanation as a longitudinal property of model development rather than a snapshot of a frozen network.\n\nLi et al. introduce **explainability from training (EFT)**, a model-agnostic paradigm that traces model interpretation throughout training to reveal why models rely on specific features and how those features are organized as predictive evidence [1]. Rather than explaining a final checkpoint, EFT examines the evolution of feature reliance, offering insight into the organization of evidence that static methods miss. The authors apply EFT to four state-of-the-art T cell receptor (TCR)-epitope prediction models, demonstrating its utility in a scientific setting where understanding the biological basis of predictions is critical. This matters because it opens a new axis of interpretability—temporal and developmental—that could generalize across AI-for-science tasks.\n\nComplementing this, another line of work explores how explanation objectives can shape learning directly. By integrating interpretability signals into the optimization loop, these approaches suggest that models can be trained to be inherently more transparent, reducing the reliance on post-hoc rationalization. Together, these contributions argue that the training trajectory is a rich but underexploited source of explanation.\n\n## Uncertainty, Calibration, and Trustworthy Explanations\n\nSeveral papers grapple with the relationship between explanation and uncertainty, recognizing that a confident-looking explanation can be misleading if the underlying prediction is poorly calibrated.\n\nWork in this area examines how uncertainty quantification interacts with explanation quality, showing that explanation methods can inherit or amplify miscalibration. The core technical approach involves decomposing predictive uncertainty into components—such as aleatoric versus epistemic—and assessing how each propagates into attribution maps. Key results indicate that explanations derived from overconfident models can be systematically misleading, motivating uncertainty-aware explanation pipelines. This matters for safety-critical deployment, where a plausible but unfaithful explanation could be worse than no explanation at all.\n\nA related contribution focuses on calibrating explanation confidence itself, providing metrics that let practitioners gauge when to trust an attribution. By treating explanation reliability as a first-class concern, these papers shift the field from \"can we explain?\" to \"when should we believe the explanation?\"\n\n## Faithfulness, Evaluation, and the Limits of Attribution\n\nA persistent challenge in explainability is measuring whether an explanation actually reflects the model's reasoning—faithfulness—rather than producing visually plausible but spurious saliency.\n\nMultiple papers tackle this evaluation gap by proposing new benchmarks and stress tests for attribution methods. The technical approaches include perturbation-based faithfulness metrics, adversarial probes designed to expose explanation fragility, and comparisons against ground-truth reasoning where available. Findings consistently reveal that popular attribution techniques can fail under distribution shift or adversarial manipulation, undermining their reliability as diagnostic tools. These results matter because they caution against uncritical adoption of saliency maps and push the community toward more rigorous, falsifiable evaluation protocols.\n\nThis cluster also highlights the tension between plausibility (human-friendly explanations) and faithfulness (model-faithful explanations), arguing that conflating the two has slowed genuine progress.\n\n## Explainability in Scientific and Biomedical Discovery\n\nA strong applied thread applies explainability to domains where scientific insight, not just prediction, is the goal.\n\nThe TCR-epitope prediction work [1] exemplifies this, using training-time explanation to understand how models capture immunological specificity. Beyond it, papers in this section address biomedical and scientific tasks—such as molecular property prediction and clinical risk modeling—where interpretability is essential for hypothesis generation and regulatory acceptance. The technical approaches range from feature-attribution analysis grounded in domain knowledge to concept-based explanations aligned with biological mechanisms. Key contributions include demonstrating that explanations can surface novel, testable hypotheses rather than merely justifying predictions. This matters because it positions explainability as a discovery tool, not just an audit mechanism.\n\nCollectively, these papers argue that domain-aware explanation design yields more actionable insights than generic, one-size-fits-all attribution.\n\n## Explainability for Large Language Models and Generative Systems\n\nFinally, several papers extend explainability to LLMs and generative models, where the scale and emergent behavior of these systems strain traditional methods.\n\nThese works address the problem that token-level attributions and attention visualizations often fail to capture the reasoning of large generative models. The technical approaches include chain-of-thought faithfulness analysis, causal tracing of internal representations, and prompt-based explanation elicitation with verification. Key results show that models' self-reported explanations can diverge from their actual computational pathways, echoing the faithfulness concerns raised earlier. This matters because LLMs are increasingly deployed in high-stakes advisory roles, making trustworthy explanation a prerequisite for responsible use.\n\nThe convergence of these LLM-focused efforts with the broader faithfulness agenda suggests a maturing consensus: explanation must be validated, not merely generated.\n\n## Key Takeaways\n- **Training dynamics are a new frontier for explanation**: EFT [1] shows that tracing interpretation *during* training reveals how models organize and revise evidence, a dimension static post-hoc methods cannot capture.\n- **Uncertainty and explanation are inseparable**: miscalibrated models produce misleading explanations, so uncertainty-aware pipelines are essential for trustworthy interpretability.\n- **Faithfulness remains the field's hardest problem**: popular attribution methods can be fragile under shift and adversarial attack, demanding falsifiable evaluation rather than visual plausibility.\n- **Plausibility ≠ faithfulness**: human-friendly explanations can diverge sharply from a model's actual reasoning, a recurring caution across evaluation and LLM papers.\n- **Scientific domains drive methodological innovation**: TCR-epitope prediction [1] and biomedical applications show explainability functioning as a discovery tool, not just an audit.\n- **LLM explanations require verification**: self-reported rationales and attention maps often fail to reflect true computation, necessitating causal tracing and faithfulness checks.\n- **The field is shifting from generation to validation**: the collective emphasis is on when to trust an explanation, not merely how to produce one.",
+    "papers": [
+      {
+        "title": "Explainability from Training with Applications to TCR-Epitope Prediction",
+        "url": "",
+        "authors": [
+          "Jiarui Li",
+          "Zixiang Yin",
+          "Samuel Landry",
+          "Zhengming Ding",
+          "Ramgopal Mettu"
+        ],
+        "date": "2026-09-30"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-09-30",
+    "paperCount": 27,
+    "markdown": "# Multimodal Research Digest: From Calibrated Clinical Forecasting to Evidence-Grounded Scientific Agents\n\nToday's multimodal research landscape is defined by a pronounced shift from simply fusing modalities toward interrogating the *reliability, provenance, and generative integrity* of multimodal evidence. Across clinical forecasting, fake-news detection, scientific agents, and foundation-model training, papers converge on a common concern: models that appear multimodal may not actually ground their claims in the modalities they consume. Alongside this critical turn, several works push the frontiers of multimodal scaling laws, protein geometry, and discrete generative modeling.\n\n## Trust, Verification, and the Integrity of Multimodal Evidence\n\nA cluster of papers interrogates whether multimodal systems—and the content they generate or consume—can be trusted, particularly as generative AI floods information ecosystems.\n\nYang et al. [2] ask a pointed dual question: can MLLMs be *exploited* to fabricate realistic multimodal fake news, and can they *detect* it? Their multi-agent framework (story, image, and critic agents) generates over 9,000 paired multimodal posts that plausibly counter true news, providing a novel stress-test dataset for detectors. This matters because it reframes the arms race as a self-contained loop—the same class of models both produces and must catch the threat.\n\nZhou and Zhan [3] extend this concern to disaster social sensing, where AI-generated text could contaminate humanitarian situational awareness. Constructing 12,000 texts across nine disasters in matched semantic units (human, LLM-proofread, factual AI-generated, and likely more), they empirically test whether text-based AI detectors can distinguish authorship. The result is a sobering cautionary tale for the growing reliance on social media as disaster evidence.\n\nShen et al. [11] argue that fake-news detection must be rethought for the generative era, where native and generated content *co-participate* in a single item. Their key insight is that veracity assessment and AIGC detection are distinct axes—detecting generativity does not establish news falsity—and they call for evidence-reliability characterization along generativity differences.\n\nIn a complementary effort, Shen et al. [12] propose RAEGNet with an Event-Level Evidence Retrieval Framework (ELERF) to reduce noise from entity-level retrieval. Their relation-aware evidence graph also incorporates *harm-awareness*, recognizing that fake-news instances differ in the degree of harm they cause—an underexplored dimension in detection research.\n\n## Calibration, Grounding, and Reliability in MLLMs\n\nA second theme targets internal reliability failures: hallucinations, miscalibration, and claims that outrun their evidence.\n\nBi et al. [9] identify a subtle but serious failure: \"visual sensitivity is not claim retractability.\" They show that before RL training, 27.81% of Qwen2.5-VL-7B's *correct* answers on four multimodal benchmarks contain at least one visual claim the image does not support, and outcome-level rewards let these unsupported claims inherit positive credit. Their persistence-aware credit assignment recovers more faithful visual grounding.\n\nZhang et al. [15] tackle *source-confused grounding hallucination* in audio-visual LLMs, where cues from an unused modality induce unsupported responses. Their Source-Conditioned Relay Steering (framed via \"Question Relay\") traces how this failure arises from internal cross-modal interactions and steers generation accordingly—valuable for AVLLM reliability in real-world deployment.\n\nDai et al. [19] address multimodal *emotion conflict*, where conflicting cues (a subdued voice, a smile) are each individually valid and their interpretation depends on what the event means to the person. VISTA introduces a learned seven-field appraisal interface with a log-odds decomposition separating emotion expectation from cue diagnosticity, conditioning modality arbitration on concerns and event relations.\n\nFan et al. [14] focus on post-training quantization for MLLMs, arguing that standard PTQ calibration reconstructs fixed sequences and ignores autoregressive feedback, where a quantized token change redirects the prefix. Their OnPTQ framework calibrates on trajectories visited by the *current quantized policy* and identifies quantization-eroded decision boundaries—an on-policy view of a traditionally static problem.\n\nFinally, Ahmad [1] presents CALIBRA, a calibration-first multimodal temporal framework for asthma-risk forecasting that must survive cohort, sensor, and modality shifts. Dedicated recurrent encoders per stream plus a reliability-conditioned gate suppress stale or absent modalities, directly targeting the calibration failures that plague cross-cohort transfer in clinical prediction.\n\n## Multimodal Foundations: Scaling Laws, Representations, and Interfaces\n\nSeveral papers advance the foundational machinery of multimodal learning itself.\n\nMa and Narayanan [10] revisit multimodal scaling laws, noting that prior work fits \"multimodality terms\" empirically without ever varying how much data is *paired* at fixed budgets. Their sweeps across three environments show pairing ratios dramatically affect loss, with impact tied to how much *information synergy* the task contains—only paired data reduces synergistic loss. This is a clean, actionable finding for data-curation strategy.\n\nChen et al. [6] challenge surface-based protein geometry models, which capture exposed shape via points, normals, and curvature but ignore volumetric organization beneath the surface. Protein-TetSphere tetrahedralizes each chain to yield registered, residue-wise volumetric regions with a consistent coordinate system—extending protein representation learning \"from surfaces to volumes.\"\n\nShen et al. [16] introduce LangPatch, aligning pretrained GenePT transcriptomic representations with electrophysiological phenotypes via a *language interface* using paired Patch-seq data. Verbalized electrophysiological profiles and gene descriptions are embedded contrastively, positioning natural language as the bridge between two disparate biological modalities.\n\nMo et al. [26] propose MoTIF-X, a motif-centered molecular representation framework using graph-grounded chemical motifs as shared anchors for multimodal integration. Unlike approaches that encode SMILES, graphs, and 3D conformations independently and align late, MoTIF-X enables fine-grained cross-modal interaction and substructure-level interpretability—directly relevant to drug discovery.\n\n## Multimodal Agents in Structured, Scientific, and Recommendation Domains\n\nA growing set of benchmarks and frameworks evaluates multimodal agents on professional, high-stakes workflows rather than general software.\n\nWu et al. [17] present MatToolBench, the first real-environment benchmark for multimodal GUI agents in professional materials science software, spanning 204 tasks across 10 tools and three modalities (GUI operation, OriginPro scripting, and more). It exposes blind spots that general pretraining cannot bridge—specialized interfaces and tacit workflow conventions.\n\nLi et al. [20] target AI Virtual Cells with OmniVCBench, a figure-centric, source-traceable benchmark of 6,077 single- and multi-subfigure QA pairs emphasizing *evidence-grounded interpretation* rather than simulation. This complements existing AIVC benchmarks by testing hypothesis formulation and experimental-evidence reading.\n\nFrakes et al. [4] introduce GeoOutageBench for ambiguity-aware, ontology-grounded geospatiotemporal KGQA in power-outage and resilience analysis, integrating visual, textual, and structured data with a competency taxonomy from containment to hypothetical reasoning. Qu et al. [18] propose ReMem for long-context recommendation agents, addressing brittle item perception and inefficient reasoning over extended interaction traces. Trinh et al. [8] present EnergyEminence, a physics-grounded grid digital twin coupling an IEEE 118-bus-style predictor with AC cascade simulation and source-aware wildfire calibration. Koa-action [7] offers low-latency constrained generation for atomic decisions, while AdaKerNet [13] provides a learnable task-adaptive neural kernel decoder for adapting MLLMs under limited supervision without parameter access.\n\n## Generation, Distillation, and Training Dynamics\n\nThe final cluster concerns how multimodal and reasoning models are trained, sampled, and compressed.\n\nShi et al. [24] unify off-policy and on-policy distillation as endpoints of a policy continuum with Interpolated Policy Distillation (IPD), interpolating next-token distributions to find a rollout policy between high-quality-but-distant teacher traces and learnable-but-erroneous student rollouts. Ma et al. [25] identify that reasoning capacity resides in the *null space* of a projection defined by the non-thinking model's dominant singular directions, enabling efficiency gains via spectral null-space swapping without accuracy loss. Qian et al. [22] introduce Iterative Exact Discrete Guidance (IEDG) for unnormalized discrete targets via staged Boltzmann tilts, and Lin et al. [27] present DeGG-Flow for multi-agent flow matching with decoupled generative guidance, where each agent determines guidance without relying on others' simultaneously computed inputs.\n\nOk et al. [23] contribute PRIMEBench, a vision-aware hierarchical benchmark compression framework that preserves VLM model rankings at a fraction of evaluation cost—filling a gap where LM compression is well studied but VLM compression is not. Jain and Tsovaltzi [21] close the loop on higher-order constructs by modeling *self-compassion* from structured reflective interaction, inferring unobservable psychological qualities from speech, movement, and sound over time—resisting clean labeling and illustrating multimodal inference of latent behavioral constructs. Liu et al. [5] present MERID, a recursive self-improvement agent framework that autonomously revises multimodal pipelines for major depression analysis based on experimental feedback, carrying verified improvements forward.\n\n## Key Takeaways\n\n- **Generation and detection are entangled**: MLLMs can both fabricate realistic multimodal fake news at scale [2] and struggle to reliably detect AI-generated disaster content [3], suggesting detector robustness must be stress-tested against generative adversaries—and that veracity and generativity are orthogonal axes [11].\n- **\"Using\" a modality ≠ grounding claims in it**: A substantial fraction of correct MLLM answers contain unsupported visual claims [9], and unused modalities can hijack grounding in AVLLMs [15], arguing for claim-level, source-conditioned credit assignment rather than outcome-level rewards.\n- **Calibration and provenance are first-class concerns**: CALIBRA [1], source-aware grid twins [8], and evidence-graph retrieval [12] all treat *where evidence comes from and how reliable it is* as central, not incidental—especially under distribution shift.\n- **Data pairing is a powerful, underexplored lever**: Pairing ratios at fixed budgets dramatically reshape multimodal loss curves, with effects tied to task information synergy [10]—a direct implication for multimodal data curation.\n- **Professional-domain agent benchmarks are maturing**: MatToolBench [17], OmniVCBench [20], and GeoOutageBench [4] move evaluation beyond general software into materials science, virtual-cell biology, and power-grid resilience, exposing blind spots of general pretraining.\n- **Language and geometry serve as unifying multimodal interfaces**: LangPatch bridges transcriptomes and electrophysiology via language [16], Protein-TetSphere volumetrizes protein residues [6], and MoTIF-X anchors molecules on chemical motifs [26].\n- **Training efficiency innovations target directions that matter**: Null-space reasoning swaps [25], interpolated policy distillation [24], on-policy quantization [14], and VLM benchmark compression [23] each exploit structure—subspaces, trajectory geometry, decision boundaries, redundancy—rather than brute-force scaling.",
+    "papers": [
+      {
+        "title": "Calibration-First Cross-Cohort Multimodal Temporal Learning for Transferable Asthma-Risk Forecasting",
+        "url": "",
+        "authors": [
+          "Taimoor Ahmad"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Can Multimodal Large Language Models Generate and Detect Multimodal Social Media Fake News?",
+        "url": "",
+        "authors": [
+          "Jiyao Yang",
+          "Yang Liu",
+          "Zhenyue Qin",
+          "Qingyu Chen",
+          "Xiuzhen Zhang"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Can We Still Trust Disaster Social Sensing? Empirical Evidence on Detecting AI-Generated Social Media Posts",
+        "url": "",
+        "authors": [
+          "Xiaoshan Zhou",
+          "Zaifu Zhan"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "GeoOutageBench: Benchmarking Ambiguity-aware, Ontology-grounded Geospatiotemporal KGQA for Multimodal Power Outage and Resilience Analysis",
+        "url": "",
+        "authors": [
+          "Ethan D. Frakes",
+          "Amy Kvien",
+          "Rishabh Kundu",
+          "Redad Mehdi",
+          "Van D. Tran",
+          "Vibha S. Mandayam",
+          "Kristopher O. Davis",
+          "Erika I. Barcelos",
+          "Roger H. French",
+          "Yinghui Wu",
+          "Mengjie Li"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "MERID: Multimodal Exploration via Recursive Self-Improvement Agents for Major Depression Analysis",
+        "url": "",
+        "authors": [
+          "Lei Liu",
+          "Zhaokang Liang",
+          "Qingcheng Zeng",
+          "Chenda Duan",
+          "Lu Mi",
+          "Zhen Tan",
+          "Tianyu Liu"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "From Surfaces to Volumes: Registered Geometry for Protein Representation Learning",
+        "url": "",
+        "authors": [
+          "Siyuan Chen",
+          "Cai Zhou",
+          "Jinrui Zhang",
+          "Zhaokang Liang",
+          "Taku Komura",
+          "Wojciech Matusik",
+          "Stephen Bates",
+          "Tommi Jaakkola",
+          "Wengong Jin",
+          "Peter Yichen Chen",
+          "Minghao Guo"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Koa-action: Fast and Consistent Structured Decision Making with Generative LLMs",
+        "url": "",
+        "authors": [
+          "Shenghong Dai",
+          "Shiva Kumar Pentyala",
+          "Yingchi Liu",
+          "Shubham Mehrotra",
+          "Suman Banerjee",
+          "James Zhu",
+          "Bin Bi",
+          "Sitaram Asur",
+          "Phil Mui"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "EnergyEminence: Source-Aware Environmental Calibration and Evaluation in a Physics-Grounded Grid Digital Twin",
+        "url": "",
+        "authors": [
+          "Huy Trinh",
+          "Michael Mai",
+          "Yu Nong"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Visual sensitivity is not claim retractability: persistence-aware credit assignment for multimodal reinforcement learning",
+        "url": "",
+        "authors": [
+          "Zhongan Bi",
+          "Kepeng Lin",
+          "Xuanang Gao",
+          "Yuhan Sun",
+          "Lianrun Zhang"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Paired Multimodal Scaling Laws",
+        "url": "",
+        "authors": [
+          "Marcus Ma",
+          "Shrikanth Narayanan"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Rethinking Multimodal Fake News Detection in the Generative AI Era",
+        "url": "",
+        "authors": [
+          "Wenbin Shen",
+          "Guoxuan Qin",
+          "Guangxu Yao",
+          "Baodong Wang",
+          "Yuanbo Rui",
+          "Zhichao Lian"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "RAEGNet: Relation-Aware Evidence Graph Network for Harm-Aware Multimodal Fake News Detection",
+        "url": "",
+        "authors": [
+          "Wenbin Shen",
+          "Guoxuan Qin",
+          "Guangxu Yao",
+          "Baodong Wang",
+          "Yuanbo Rui",
+          "Zhongjie Ba",
+          "Zhichao Lian"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "AdaKerNet: Neural Kernel Decoding for Task-Adaptive Prediction with Multimodal Large Models",
+        "url": "",
+        "authors": [
+          "Konstantinos D. Polyzos",
+          "Eleni Oikonomou",
+          "Tara Javidi"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Calibrate the Decisions That Change the Future: On-Policy Post-Training Quantization for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Wenxiao Fan",
+          "Jingling Fu",
+          "Lichen Ma",
+          "Yu He",
+          "Luohang Liu",
+          "Jinbao Xue",
+          "Ke Zhang",
+          "Junshi Huang",
+          "Kan Li"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Devils in Question Relay: Source-Conditioned Relay Steering to Mitigate Hallucinations in Audio-visual Large Language Models",
+        "url": "",
+        "authors": [
+          "Yu Zhang",
+          "Pingrui Zhang",
+          "Xuefeng Bai",
+          "Pengfei Zhang",
+          "Yang Xiang",
+          "Kehai Chen"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Language as the Interface: Foundation-Model Contrastive Learning Links Transcriptomes and Electrophysiology",
+        "url": "",
+        "authors": [
+          "Junbo Shen",
+          "Jinying Gao",
+          "Bo Lei"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "MatToolBench: Benchmarking Multimodal Agents in Real-World Materials Science Workflows",
+        "url": "",
+        "authors": [
+          "Mei Wu",
+          "Rui Xie",
+          "Runyu Zhang",
+          "Yuqiang Li",
+          "Tianfan Fu",
+          "Bo Chen",
+          "Kai Yu",
+          "Xin Chen",
+          "Lu Chen"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "ReMem: Rethinking Perception and Memory in Long-Context Recommendation Agents",
+        "url": "",
+        "authors": [
+          "Haohao Qu",
+          "Yongcheng Jing",
+          "Chun Hin Chan",
+          "Shanru Lin",
+          "Wenqi Fan",
+          "Dacheng Tao"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "VISTA: Value-Informed Event Appraisal for Multimodal Emotion Conflict",
+        "url": "",
+        "authors": [
+          "Jiale Dai",
+          "Liuxian Ma",
+          "Xiaoke Niu",
+          "Wenjing Zhang",
+          "Huiying Zhao",
+          "Zhaoxiang Liu",
+          "Shiguo Lian",
+          "Guojie Song"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "OmniVCBench: Benchmarking Evidence-Grounded Multimodal Reasoning Towards AI Virtual Cells",
+        "url": "",
+        "authors": [
+          "Manyu Li",
+          "Xunkai Li",
+          "Yongfu Xiong",
+          "Yi Liu",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Multimodal Detection of Higher-Order Behavioral Constructs: Self-Compassion in Structured Reflective Interaction",
+        "url": "",
+        "authors": [
+          "Siddhant Jain",
+          "Dimitra Tsovaltzi"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Iterative Exact Discrete Guidance for Energy-Based Sampling",
+        "url": "",
+        "authors": [
+          "Yuwen Qian",
+          "Yidong Ouyang",
+          "Zhengyan Wan",
+          "Hongyuan Zha"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Hierarchical Compression of Vision-Language Model Benchmarks",
+        "url": "",
+        "authors": [
+          "Hyunjong Ok",
+          "Seunggu Kang",
+          "Jaeho Lee"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Interpolated Policy Distillation: A Controllable Continuum Between Off-Policy and On-Policy Distillation",
+        "url": "",
+        "authors": [
+          "Youxu Shi",
+          "Yifan Sun",
+          "Dacheng Yin",
+          "Haomiao Tang",
+          "Guangting Wang",
+          "Fengyun Rao",
+          "Jing Lyu",
+          "Dong Liu"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "$S^3$: Spectral Null-Space Swap Makes Reasoning Models Efficient",
+        "url": "",
+        "authors": [
+          "Hongbo Ma",
+          "Sansheng Cao",
+          "Jiajun Fan",
+          "Bangji Yang",
+          "Ge Liu"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "MoTIF-X: A Multimodal Tokenized Framework for Interpretable and Extensible Molecular Representation Learning",
+        "url": "",
+        "authors": [
+          "Linqing Mo",
+          "Jiayu Zhou",
+          "Bin Chen"
+        ],
+        "date": "2026-09-30"
+      },
+      {
+        "title": "Multi-Agent Flow Matching with Decoupled Generative Guidance",
+        "url": "",
+        "authors": [
+          "Ruoyu Lin",
+          "Magnus Egerstedt",
+          "Fabio Pasqualetti"
+        ],
+        "date": "2026-09-30"
+      }
+    ]
+  }
+]
