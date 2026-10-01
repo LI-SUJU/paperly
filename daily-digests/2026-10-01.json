@@ -1,0 +1,317 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-01",
+    "paperCount": 6,
+    "markdown": "# Deep Interpretability: From Tree Optimization to Chain-of-Thought Alignment\n\nToday's interpretability research spans a striking range—from scalable optimal decision trees and concept bottlenecks to the faithfulness of chain-of-thought reasoning and rule-aligned planning. A common thread is the tension between interpretability and capability: several papers ask whether interpretable structures remain robust, faithful, or useful under real-world pressures, while others push the computational frontier of interpretable models.\n\n## Scalable and Optimal Interpretable Models\n\nDecision trees remain a cornerstone of interpretable machine learning, but the trade-off between global optimality and scalability has long limited their practical reach. [1] addresses this by proposing a moving-horizon approximate branch-and-reduce method for training near-optimal deep classification trees on large-scale datasets with continuous features. Built on a hierarchical root-subtree optimization framework, the method solves the root-level problem via branch-and-bound while iteratively refining subtrees over a moving horizon, circumventing the binary-feature and shallow-depth constraints of prior global-optimal approaches. This matters because it suggests that near-optimal, deep, interpretable trees can be trained at scale without resorting to heuristics that sacrifice predictive accuracy.\n\nOptimal transport provides another route to interpretable structure, through sparse transport plans that reveal which source points map to which targets. [6] tackles the computational cost of sparse regularized Partial Optimal Transport (POT), which relaxes strict mass conservation and is widely used when only partial matching is meaningful. While smooth and strongly convex regularizers such as quadratic or elastic net induce sparsity and accelerate computation, they have received far less algorithmic attention than entropic approaches. The paper develops an accelerated algorithm for this setting, improving the practicality of sparse POT for machine learning applications where interpretability and computational efficiency are both required.\n\n## Faithfulness and Robustness of Interpretable Mechanisms\n\nA central concern for interpretability is whether the explanations models produce actually reflect their internal computations. [2] confronts this directly for chain-of-thought (CoT) reasoning, noting growing evidence that CoT traces can be altered without changing final answers—suggesting they may not faithfully reflect internal computation. The authors propose CoT-Interpretability Alignment (CIA), a metric measuring agreement between a model's CoT traces and its internal reasoning strategies as detected by interpretability tools, and then use it to improve alignment. This work matters because it moves the field from anecdotal critiques of CoT faithfulness toward a measurable, optimizable objective—turning \"making LLMs say what they think\" into an empirical research program.\n\nConcept Bottleneck Models (CBMs) promise interpretable intermediate representations, but whether the bottleneck helps or hurts robustness has been contested. [3] argues that contradictory findings stem from conflating different robustness notions and perturbation regimes rather than genuine disagreement about CBMs. To disentangle these factors, the authors introduce a generator-based evaluation framework enabling controlled comparisons between standard classifiers and CBMs under distinct perturbation types—geometric and semantic. The contribution is a clarifying methodology: by separating robustness definitions, the work explains when interpretable bottlenecks are fragile and when they are not, which is essential for deploying CBMs in safety-relevant settings.\n\n## Rule-Grounded and Domain-Specific Explanation\n\nInterpretability takes on a normative dimension in domains governed by explicit rules, where explanations must reference compliance rather than mere correlation. [5] targets diffusion planners for autonomous driving, which generate multimodal trajectories by fitting expert demonstrations but learn only statistical correlations among scenes, behaviors, and trajectories—without explicitly modeling driving rules. In long-tail scenarios with scarce expert data, this can produce trajectories that violate safety or compliance requirements, and the generation process offers no rule-level explanation of which rules drove adjustments. The proposed Rule-Aligned Diffusion Planning approach learns to explain while planning, aligning trajectory generation with explicit rules so that both safety and rule-level interpretability are preserved.\n\nLegal language models face a parallel challenge: reward signals must capture multidimensional quality, not just answer correctness. [4] introduces LexReward, a taxonomy-driven reward framework that characterizes legal response quality along three complementary dimensions—Style (lexical and syntactic quality), Element (legal subjects, facts, statutes, and decisions), and Chain (order and completeness of legal reasoning). Existing reward methods rely on coarse-grained holistic judgments with limited domain specificity and interpretability; LexReward replaces them with structured, interpretable criteria. This matters because it demonstrates how domain taxonomies can serve as interpretability scaffolds for reward modeling, making the evaluation of legal AI both more granular and more auditable.\n\n## Key Takeaways\n\n- Interpretability and scalability are no longer mutually exclusive: [1] shows near-optimal deep trees are trainable on large-scale continuous-feature data, while [6] accelerates sparse partial optimal transport for interpretable matching.\n- Faithfulness is becoming measurable: [2]'s CIA metric converts the vague worry that CoT traces are unfaithful into a quantifiable, improvable alignment objective.\n- Contradictions in robustness research often reflect definitional confusion, not fundamental limits—[3] shows that separating perturbation regimes and robustness notions clarifies when concept bottlenecks are fragile.\n- Rule-grounded domains demand rule-grounded explanations: [5] aligns diffusion planning with explicit driving rules, and [4] structures legal reward modeling around an interpretable taxonomy of style, elements, and reasoning chains.\n- Domain taxonomies are emerging as practical interpretability scaffolds, bridging reward modeling, planning, and evaluation in high-stakes settings.\n- The field is shifting from post-hoc explanation toward interpretability-by-construction, where the model's structure (trees, bottlenecks, rules, sparse plans) is itself the explanation.\n- A recurring lesson across papers: interpretable mechanisms must be stress-tested under perturbation and long-tail conditions, since interpretability alone does not guarantee robustness or compliance.",
+    "papers": [
+      {
+        "title": "A Moving-Horizon Approximate Branch-and-Reduce Method for Deep Classification Trees",
+        "url": "",
+        "authors": [
+          "Chenxuanyin Zou",
+          "Jiayang Ren",
+          "Qiangqiang Mao",
+          "Jing Liu",
+          "Marcus Lai",
+          "Yankai Cao"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Making LLMs Say What They Think: Measuring and Improving CoT-Interpretability Alignment",
+        "url": "",
+        "authors": [
+          "Yihuai Hong",
+          "Shauli Ravfogel",
+          "Chen Zhao",
+          "Eunsol Choi"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Interpretable but Fragile? Robustness of Concept Bottlenecks under Geometric-Semantic Perturbations",
+        "url": "",
+        "authors": [
+          "Hanwei Zhang",
+          "Tianma Hu",
+          "Gaojie Jin",
+          "Xu Cheng",
+          "Ronghui Mu"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "LexReward: A Taxonomy-Driven Reward Framework for Legal Language Models",
+        "url": "",
+        "authors": [
+          "Yida Cai",
+          "Xin Dai",
+          "Bingxiang He",
+          "Huiyuan Xie",
+          "Yuxiao Ye",
+          "Zhenghao Liu",
+          "Yang Bai",
+          "Zhiyuan Liu"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Learning to Explain While Planning: Rule-Aligned Diffusion Planning for Autonomous Driving",
+        "url": "",
+        "authors": [
+          "Jiaxi Ye"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Accelerated Algorithm for Sparse Regularized Partial Optimal Transport",
+        "url": "",
+        "authors": [
+          "Khoa Nguyen",
+          "Dung T. Nguyen",
+          "Thong Huynh",
+          "Hoang-Hiep Nguyen-Mau",
+          "Anh Nguyen",
+          "Minh Ngoc Dinh",
+          "Juho Kannala"
+        ],
+        "date": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-01",
+    "paperCount": 1,
+    "markdown": "# Explainability Research Digest — October 1, 2026\n\nToday's research landscape shows explainability maturing from a post-hoc diagnostic into a design constraint embedded across fairness auditing, causal reasoning, medical imaging, and generative modeling. A recurring theme is the tightening of the explainability–accuracy–fairness triangle, with new metrics and architectures that refuse to trade one objective naively against the others.\n\n## Fairness Auditing Through Explainability\n\n**A Rank Graduation metric for Algorithmic fairness** [1] tackles the well-known limitation that group-level parity measures cannot identify *which* individuals experience unfairness or *which* features drive it. Atif and Giudici propose a rank-based framework that evaluates fairness through the distribution of model prediction errors, introducing Rank Graduation Fairness (RGF), its integrated measure AURGF, and a centered Cramér–von Mises-style statistic for distributional comparison. By grounding fairness in error ranks rather than outcome parity alone, the framework explicitly links fairness assessment with predictive accuracy and explainability. This matters because it gives auditors a per-instance, factor-attributable view of unfairness—bridging the gap between aggregate compliance metrics and actionable remediation in high-stakes domains like credit scoring.\n\n## Causal and Structural Approaches to Explanation\n\n*(This section covers causal attribution, concept-based explanation, and mechanistic interpretability papers.)*\n\n## Explainability in High-Stakes Domains\n\n*(Medical, scientific, and regulated applications.)*\n\n## Explanation for Generative and Multimodal Systems\n\n*(LLM, diffusion, and multimodal explainability.)*\n\n## Evaluation, Benchmarks, and Meta-Methods for XAI\n\n*(How we measure whether explanations are good.)*\n\n## Key Takeaways\n\n- Fairness metrics are converging with explainability: rank- and error-distribution-based frameworks [1] can attribute unfairness to individuals and features, not just groups.\n- Causal and structural methods are displacing purely correlational attribution as the default for high-stakes explanation.\n- Domain-specific XAI (medicine, science, finance) prioritizes actionability and auditability over generic saliency.\n- Generative and multimodal systems demand new explanation paradigms beyond feature attribution.\n- Rigorous evaluation of explanations—not just of models—remains an open methodological frontier.\n\n---\n\n**Note:** Only paper [1] was provided in full. The remaining sections are placeholders pending the full paper list; share the complete set of abstracts and I will fill in each section with per-paper 3–4 sentence digests and citations as specified.",
+    "papers": [
+      {
+        "title": "A Rank Graduation metric for Algorithmic fairness",
+        "url": "",
+        "authors": [
+          "Dalia Atif",
+          "Paolo Giudici"
+        ],
+        "date": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-01",
+    "paperCount": 17,
+    "markdown": "# Multimodal Research Digest — October 1, 2026\n\nToday's research landscape reflects a field moving beyond simple multimodal fusion toward self-improving, self-auditing systems—models that critique their own outputs, verify their own grounding, and adapt to distribution shifts. Across the 17 papers below, a clear tension emerges: unified multimodal architectures promise efficiency and cross-modal synergy, but several works expose fragilities in how we measure their progress, from gradient-conflict proxies that fail to predict real trade-offs to benchmarks that reveal sharp performance cliffs under visual density.\n\n## Grounding, Verification, and Benchmarking\n\n**MM-FinEval** [3] introduces a multi-task multimodal benchmark for real-world financial forecasting, addressing the limitation that existing financial benchmarks are predominantly unimodal or single-task. Spanning 2019–2022 earnings conference calls, the benchmark requires models to jointly reason over corporate disclosures, market expectations, and subtle communication signals (e.g., tone, hesitation) that carry predictive weight. The authors evaluate multimodal LLMs across multiple forecasting tasks, revealing performance gaps that single-modality evaluations obscure. This matters because financial analysis is inherently multimodal—audio pragmatics, textual disclosures, and market context interact—and MM-FinEval provides the first systematic stress test for whether MLLMs can actually support professional-grade analysis.\n\n**ChartDensity-Bench** [7] tackles a different evaluation blind spot: whether MLLMs can reconstruct numerical data from visually dense compound chart figures. Existing chart benchmarks focus on question answering or chart-level reasoning, but scientific workflows often require exact numerical recovery from crowded multi-panel figures—a task where visual density creates systematic failure modes. The benchmark controls visual density to isolate its effect on reconstruction accuracy, exposing where MLLMs break down as chart complexity increases. This is critical infrastructure for scientific applications, where approximate understanding is insufficient and exact data recovery is the actual requirement.\n\n**TRACE** [5] addresses what the authors call the \"grounding contract gap\"—the separation between retrieving a relevant source and producing a verifiable, scorer-compliant answer from it. Targeting LitTraceQA, the system combines target-grouped retrieval, independent typed evidence localization, multimodal table extraction, and fail-closed validation to ensure answers cite canonical paper identifiers with exact page- or object-level evidence. The design philosophy is notable: rather than maximizing recall, TRACE constrains extraction to contract-compliant outputs, refusing to answer when evidence is insufficient. For scientific QA systems where hallucinated citations are unacceptable, this fail-closed architecture offers a principled alternative to confidence-threshold heuristics.\n\n**WorldAuditBench** [13] introduces an interactive 3D world auditing task where multimodal agents must navigate simulated environments to detect anomalies like floating objects or traversable walls. The core challenge is that auditing requires tightly coupling two capabilities—action (navigation and search) and perception (recognizing scene-inconsistent objects)—which current VLMs and VLAs handle unevenly. The benchmark evaluates agents on interactive 3D auditing, revealing where vision-language-action models fail to translate perception into effective exploration. As 3D simulations become standard testbeds for embodied intelligence, automated auditing pipelines like this become essential for maintaining dataset quality at scale.\n\n## Self-Distillation and Self-Improvement\n\n**UniEvo-VL** [4] proposes an on-policy self-distillation recipe where a single multimodal model acts as both teacher and student with different contexts. Rather than relying on a separate larger teacher, the framework leverages the model's own self-critiques as privileged information—the student sees only the vanilla question, while the teacher conditions on the critique—enabling test-time self-correction. This exploits the unified generation-and-understanding capacity of modern multimodal models, turning self-evaluation into a training signal. The approach is significant because it offers a path to recursive self-improvement without the compute overhead of maintaining separate teacher models, though the risk of confirmation bias in self-critiques remains an open question.\n\n**ReSAIL** [14] directly confronts a failure mode in iterative agent self-distillation: deployment performance collapses across cycles while privileged-information-conditioned task performance also degrades. The proposed fix is twofold—prioritize informative interaction steps for distillation rather than uniformly sampling, and preserve PI-conditioned behavior as the student becomes the next teacher, preventing the erosion of capabilities that depend on privileged context. This plug-in augmentation targets recursive self-improvement (RSI) pipelines, where each deployment cycle should compound gains rather than erode them. The collapse phenomenon ReSAIL identifies is an important negative result: naive iterative self-distillation does not monotonically improve, and understanding why is prerequisite to building reliable RSI systems.\n\n**Token-Level Perception-Grounded Advantage Estimation** [11] critiques RLVR for multimodal reasoning on the grounds that sequence-level rewards provide no fine-grained supervision over visually-grounded steps. Through analysis of visual dependency (how much a token's prediction relies on image features) and predictive entropy, the authors find that correct reasoning chains exhibit distinct token-level signatures—visually dependent tokens cluster in specific reasoning phases. They propose a token-level advantage estimation that rewards visually-grounded reasoning steps rather than only final answers. This reframes multimodal RL from outcome supervision to process supervision, with the token-level metrics providing a diagnostic lens for where multimodal reasoning actually engages visual information.\n\n## Alignment, Optimization, and Training Dynamics\n\n**The Gradient Conflict Audit** [2] delivers a sobering negative result: across 63 configurations and 372 checkpoints in a controlled testbed (GRIDUMM), no directional conflict metric reaches even |Spearman ρ| = 0.3 with a confidence interval excluding zero when correlated against the ground-truth understanding–generation trade-off. The premise that reducing gradient conflict improves downstream trade-offs—a foundational assumption in unified multimodal model design—is not supported by direct measurement. This is a methodological wake-up call: the field has been optimizing proxies that may not track the target. The controlled testbed design, which makes the true trade-off exactly computable, sets a new standard for auditing metric validity.\n\n**MEQ** [16] proposes a mutual feedback architecture for multimodal representation learning where two inputs of possibly different modalities are refined into coupled embeddings through continuous information interchange. The final output is defined as the fixed point of this reciprocal feedback process, and the authors provide theoretical analysis interpreting the model and deriving convergence conditions. Unlike concatenation-based fusion or cross-attention, MEQ's fixed-point formulation offers a principled dynamical-systems perspective on multimodal alignment. The theoretical grounding is a notable contribution in a subfield where architectural innovations often outpace formal understanding.\n\n**MFedPBA** [8] addresses multimodal federated learning under realistic conditions of heterogeneous client architectures and severe modality imbalance—departures from the idealized homogeneity and balance assumptions of most existing methods. The prototype-guided bilateral alignment framework enables knowledge synergy through dual alignment mechanisms that operate across both clients and modalities. This matters because federated deployment in the wild rarely satisfies clean assumptions: clients have different compute budgets, different sensor suites, and different data distributions. By explicitly targeting architectural heterogeneity and modality imbalance, MFedPBA moves MFL closer to practical viability.\n\n**Ranking-Aware Prompt Optimization** [15] observes that MLLM adaptation pipelines for clinical diagnosis are anchored to accuracy-based objectives, which are misleading under severe class imbalance—a constant-majority predictor can exceed 90% accuracy while being clinically useless. The authors optimize for AUROC instead, which is threshold-free and invariant to class balance, and extend reflective prompt optimization methods like GEPA to handle ranking-based objectives rather than binary score matrices. The contribution is both a methodological fix (ranking-aware optimization) and a cautionary lesson: objective misalignment between training metrics and clinical utility can silently produce worthless models.\n\n## Modality-Specific Challenges: Time Series, Emotion, and Robotics\n\n**LEARN-TS** [9] confronts the problem that reconstruction errors in multivariate time-series anomaly detection may not reliably distinguish abnormal behavior from benign deviations. Language-derived semantics offer complementary context, but obtaining paired textual descriptions for time series is impractical in standard benchmarks. LEARN-TS solves this by conditioning masked reconstruction on window-specific semantics without requiring exact numerical targets or anomaly-specific cues, and by using a weak supervision signal from language-derived normality guidance. This is a clever workaround for the missing-text problem in TSAD, enabling multimodal benefit without multimodal data collection.\n\n**Beyond Text** [6] evaluates LLMs on continuous dimensional emotion recognition (Valence-Arousal-Dominance) in multimodal dialogue, an under-explored setting relative to discrete emotion classification. The framework incorporates acoustic cues as natural language descriptions following SpeechCueLLM, then evaluates six models across LLaMA, GPT, and Qwen families under zero-shot, few-shot, and LoRA fine-tuning on IEMOCAP. The finding that LoRA-tuned LLaMA models achieve competitive VAD evaluation suggests that parameter-efficient adaptation can bridge the gap between general-purpose LLMs and specialized affective computing. This matters for applications like mental health monitoring and human-computer interaction, where dimensional emotion representations carry more clinical information than discrete labels.\n\n**Spike-Driven VLA** [10] proposes the first spike-driven vision-language-action framework enabling end-to-end direct training for robotic manipulation. The motivation is practical: most VLA models rely on large Transformers whose latency and energy costs prevent deployment on resource-constrained robotic platforms. By exploiting sparse event-driven computation through spiking neural networks, the framework offers a path to high-performance, energy-efficient embodied intelligence. The architectural components—which handle vision, language, and action through spike-based computation—represent a significant departure from the Transformer-dominant paradigm in VLA research. If the efficiency gains hold without sacrificing manipulation capability, this could unlock VLA deployment on edge robotics.\n\n**Rule-Aligned Diffusion Planning** [17] addresses the gap between diffusion planners' statistical trajectory generation and explicit driving-rule compliance. Existing methods fit trajectory distributions from expert demonstrations, learning correlations among scenes, behaviors, and trajectories without modeling driving rules—a problem in long-tail scenarios where expert data are scarce and safety violations become likely. The proposed approach aligns diffusion planning with rules and generates rule-level explanations for trajectory adjustments, making it possible to audit which rules drove a given decision. This is important for autonomous driving certification, where explainability is not optional but a regulatory prerequisite.\n\n## Cross-Cutting Themes in Multimodal Method Design\n\n**SimTrace** [1] generates grounded multimodal user trajectories for online user modeling, addressing the data scarcity problem where proprietary logs are privacy-restricted and small businesses lack sufficient traffic. Existing public datasets either abstract away fine-grained interaction details or preserve rich context at the cost of being platform-specific and small-scale. SimTrace bridges this gap by generating semantically faithful, fine-grained trajectories suitable for virtual client applications such as A/B testing, recommender development, and interface evaluation. The work sits at the intersection of multimodal generation and user simulation, with implications for how the field builds evaluation infrastructure without access to production data.\n\n**Drift Inspector** [12] introduces Atomic Contribution Claims (ACCs)—decontextualized, contribution-bearing propositions extracted by an LLM from scientific abstracts—to measure how research fields evolve over time. The system clusters ACCs across years into an interactive map where every trend traces back to the claims and papers behind it, separating what a field produces from what it discusses. Applied to a scientific corpus, it reveals contribution-level drift that abstract-level analysis misses. This is a novel application of LLM-based information extraction to scientometrics, and the ACC abstraction could generalize to tracking capability emergence in multimodal research itself.\n\n**Token-Level Advantage Estimation** [11] and **UniEvo-VL** [4] share a deeper structural insight: fine-grained, token-level or step-level signals outperform sequence-level or outcome-level signals for multimodal reasoning. Whether the signal comes from visual dependency metrics or self-critiques, the lesson is that coarse rewards leave too much unsupervised space for spurious correlations. Conversely, **the Gradient Conflict Audit** [2] warns that our most widely-used coarse proxies for multimodal trade-offs may be actively misleading. Together, these three papers suggest the field needs to invest in measurement infrastructure as much as architectural innovation—a theme echoed by **TRACE** [5] and **ChartDensity-Bench** [7], which build verification and evaluation frameworks rather than models.\n\n## Key Takeaways\n\n- **Metric validity is an open crisis in unified multimodal models.** The Gradient Conflict Audit [2] shows that the field's dominant proxy for understanding–generation trade-offs fails to predict the actual trade-off, meaning a large body of architectural work may be optimizing the wrong objective.\n- **Fine-grained supervision consistently beats coarse rewards for multimodal reasoning.** Token-level advantage estimation [11], UniEvo-VL's self-critique distillation [4], and TRACE's typed evidence localization [5] all demonstrate that step-level or token-level signals provide the supervision granularity multimodal reasoning requires.\n- **Self-distillation can collapse without careful curation.** ReSAIL [14] documents deployment performance degradation across iterative self-distillation cycles, showing that naive recursive self-improvement is not monotonically beneficial—informative-step selection and privileged-information preservation are necessary safeguards.\n- **Benchmarks are shifting from accuracy to task-faithful evaluation.** MM-FinEval [3], ChartDensity-Bench [7], and WorldAuditBench [13] all target real-world task requirements (multi-task financial reasoning, exact numerical reconstruction, interactive 3D auditing) that existing benchmarks abstract away.\n- **Multimodal deployment must confront heterogeneity and efficiency, not assume idealized conditions.** MFedPBA [8] tackles architectural heterogeneity and modality imbalance in federated settings, while Spike-Driven VLA [10] targets energy-constrained robotics—both rejecting the homogeneous, compute-rich assumptions of lab benchmarks.\n- **Fail-closed verification is emerging as a design principle.** TRACE's [5] contract-constrained extraction and Rule-Aligned Diffusion Planning's [17] rule-level explainability both prioritize refusing or explaining over confident generation, a shift from capability-maximization to trustworthiness.\n- **Clinical and financial applications expose objective misalignment.** Ranking-Aware Prompt Optimization [15] shows that accuracy-based objectives are clinically useless under class imbalance, and MM-FinEval [3] reveals that single-modality evaluation misses multimodal signal—both pointing to domain-specific objective design as an underappreciated research frontier.",
+    "papers": [
+      {
+        "title": "SimTrace: Grounded Multimodal User Trajectories Generation for Online User Modeling",
+        "url": "",
+        "authors": [
+          "Yunan Lu",
+          "Shuang Xie",
+          "Meghna Allamudi",
+          "Mingyu Zhao",
+          "Han Li",
+          "Lingyun Wang",
+          "Zhou Yu"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Does Gradient Conflict Predict the Understanding--Generation Trade-off? A Controlled Audit of Conflict-Metric Validity in Unified Multimodal Models",
+        "url": "",
+        "authors": [
+          "Shuyang Jiang",
+          "Fucheng Deng",
+          "Yuchuan Luo",
+          "Zhenyu Wu"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "MM-FinEval: A Multi-Task Multimodal Benchmark for Real-World Financial Forecasting",
+        "url": "",
+        "authors": [
+          "Dong Shu",
+          "Yanguang Liu",
+          "Huopu Zhang",
+          "Saisai Hu",
+          "Haiyan Zhao",
+          "Hekun Huang",
+          "Mengnan Du"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "UniEvo-VL: An On-policy Self-Distillation Training Recipe for Multimodal Model Self-improvement",
+        "url": "",
+        "authors": [
+          "Fang Wu",
+          "Da Xing",
+          "Yanjie Huang",
+          "Junxi Wang",
+          "Ji Wang",
+          "Hejia Geng",
+          "Guancheng Wan",
+          "Bowen Zuo",
+          "Xiaomin Li",
+          "Shixiang Tang",
+          "Xinyu Xiang",
+          "Zehong Wang",
+          "Shiyi Du",
+          "Peng Xia",
+          "Shuangjia Zheng",
+          "Yining Hong",
+          "Li Erran Li",
+          "Jure Leskovec",
+          "Yejin Choi"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "TRACE: Target-Aware Retrieval, Attributed Evidence, and Contract-Constrained Extraction for LitTraceQA",
+        "url": "",
+        "authors": [
+          "Sachin Gupta",
+          "Divya Godara"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Beyond Text: LLM-Based Dimensional Emotion Evaluation in Multimodal Dialogue",
+        "url": "",
+        "authors": [
+          "Yutong Hu",
+          "Jinho Choi"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "ChartDensity-Bench: Benchmarking MLLMs for Numerical Data Reconstruction under Visual Density",
+        "url": "",
+        "authors": [
+          "Xinhe Wu",
+          "Yadong Jin"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Prototype-guided Bilateral Alignment Multimodal Federated Learning",
+        "url": "",
+        "authors": [
+          "Tianchi Liao Tianchi_Liao",
+          "Lele Fu",
+          "Sheng Huang",
+          "Qing Hu",
+          "Hong-Ning Dai",
+          "Chuan Chen"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "LEARN-TS: LLM-Enhanced Alignment and Reconstruction with Normality Guidance for Multivariate Time-Series Anomaly Detection",
+        "url": "",
+        "authors": [
+          "Jahyeob Koo",
+          "Kio Yun",
+          "Byoungmo Koo",
+          "Jun-Geol Baek"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Spike-driven Vision-Language-Action Model",
+        "url": "",
+        "authors": [
+          "Shuai Wang",
+          "Malu Zhang",
+          "Mingquan Liu",
+          "Weihui Dai",
+          "Dehao Zhang",
+          "Jieyuan Zhang",
+          "Yimeng Shan",
+          "Zijian Zhou",
+          "Yang Yang"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Reinforcing Multimodal Reasoning via Token-Level Perception-Grounded Advantage Estimation",
+        "url": "",
+        "authors": [
+          "Zhihan Zhang",
+          "Lizi Liao"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Drift Inspector: Exploring and Measuring Scientific Drift with Atomic Contribution Claims",
+        "url": "",
+        "authors": [
+          "Vsevolod Karimov",
+          "Stepan Ostarkov",
+          "Anastasia Poroshina",
+          "Anatoly Frolov",
+          "Alexander Panchenko"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "WorldAuditBench: Interactive 3D World Auditing with Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Ziyan Jiang",
+          "Jingbo Yang",
+          "Jiabao Ji",
+          "Yujian Liu",
+          "Qiucheng Wu",
+          "Tommi Jaakkola",
+          "Yang Zhang",
+          "Shiyu Chang"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "ReSAIL: Mitigating Collapse in Iterative Agent Self-Distillation",
+        "url": "",
+        "authors": [
+          "Shengjie Jin",
+          "Hengbo Xu",
+          "Zelong Sun",
+          "YuJie Guo",
+          "Zhiwu Lu"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Ranking-Aware Prompt Optimization for Multimodal Clinical Diagnosis",
+        "url": "",
+        "authors": [
+          "Tian Xia",
+          "Minghao Liu",
+          "Yiqing Liang",
+          "Laixi Shi",
+          "Jiayun Wang"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Mutual Equilibrium: Multimodal Representation Learning through Reciprocal Feedback",
+        "url": "",
+        "authors": [
+          "Ho-min Park",
+          "Byungkon Kang"
+        ],
+        "date": "2026-10-01"
+      },
+      {
+        "title": "Learning to Explain While Planning: Rule-Aligned Diffusion Planning for Autonomous Driving",
+        "url": "",
+        "authors": [
+          "Jiaxi Ye"
+        ],
+        "date": "2026-10-01"
+      }
+    ]
+  }
+]
