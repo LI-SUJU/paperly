@@ -1,0 +1,483 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-02",
+    "paperCount": 11,
+    "markdown": "# Interpretability Research Digest: From Legal NLP to Mechanistic Understanding\n\nThis digest surveys recent advances in interpretability across legal text classification, time series anomaly detection, chemical engineering, and mechanistic interpretability of neural networks. A notable theme is the tension between the accuracy goals of applied systems and the faithfulness requirements of mechanistic understanding, with several papers proposing concrete benchmarks and objective-level critiques to close this gap.\n\n## Interpretability in Applied Domains: Law, Medicine, and Chemistry\n\nLegal text classification presents unique challenges due to the complexity of legal language and subtle distinctions between categories. [1] evaluates models ranging from traditional machine learning to large language models on Korean sexual offense precedents across ten categories, finding that fine-tuned smaller models like KLUE-BERT outperform general-purpose LLMs such as GPT-3. The work incorporates explainable AI (XAI) insights to illuminate model decision-making in this safety-critical domain. This matters because it demonstrates that domain-specific fine-tuning with interpretability considerations can surpass larger general models in specialized legal applications.\n\nIn medical decision support, synthetic data generation has become essential when real clinical data is restricted by privacy or ethical concerns. [3] proposes using Fuzzy Cognitive Maps (FCMs) for synthetic medical tabular data generation that preserves explicit causality and clinically meaningful dependencies while maintaining privacy. Unlike probabilistic and deep generative models that often lack interpretability, FCMs provide transparent causal structure suitable for safety-critical applications. This approach addresses a critical gap where existing generative models fail to preserve the clinical dependencies that clinicians need to trust synthetic data.\n\nThe chemical engineering community has experienced a profound shift in problem formulation driven by AI/ML maturation. [6] provides a comprehensive perspective on how these methods now impact atomic-scale simulations, materials discovery, thermodynamics, separations, and process systems engineering. The authors emphasize methodological developments while connecting them to representative industrial applications. This matters because it maps the expanding frontier of AI/ML in a domain where interpretability of physical predictions is often as important as accuracy.\n\n## Kolmogorov-Arnold Networks: Architecture, Interpretability, and Scaling\n\nKolmogorov-Arnold Networks represent a paradigmatic shift by replacing fixed node activations with learnable univariate functions on edges. [2] addresses a fundamental challenge in polynomial-based KAN variants: the domain mismatch between unbounded real-valued inputs and the bounded or semi-infinite support of orthogonal polynomial bases. The proposed Stieltjes-Wigert Kolmogorov-Arnold Network (SW-KAN) introduces q-orthogonal polynomials to resolve this limitation. This contribution matters because it expands the mathematical toolkit for KAN architectures while maintaining their interpretability advantages.\n\nUnderstanding how KANs scale with data is crucial for their adoption in scientific domains. [4] investigates neural scaling laws and the structural evolution of learnable activation functions across three KAN variants (BSRBF-KAN, Gottlieb-KAN, and Faster-KAN) on image classification benchmarks including MNIST. The work examines how activation functions evolve under dataset expansion. This is significant because it provides empirical grounding for when and how KANs' interpretability advantages manifest at scale.\n\n## Time Series Anomaly Detection: Benchmarks and Autonomous Discovery\n\nTime series anomaly detection has seen proliferation of methods, but most remain agnostic to domain context and overlook explainability. [7] introduces an end-to-end benchmark that evaluates detection accuracy alongside spatial explainability and interpretability—dimensions largely neglected by existing benchmarks. This addresses a critical gap where practitioners lack standardized tools to assess whether detectors provide actionable explanations. The benchmark's comprehensive scope matters for deploying anomaly detection in safety-critical industrial and infrastructure applications.\n\nComplementing this benchmark work, [8] demonstrates autonomous discovery of compact, interpretable detectors using LLMs as authors rather than detectors. An autonomous research loop repeatedly edits short NumPy programs under a leakage-free objective, discovering detectors that describe short windows by local spectral features and compare them with training-region distributions via covariance-aware distance. This matters because it shows how LLMs can generate human-readable detection logic that trades off accuracy, efficiency, and interpretability in a principled way.\n\n## Mechanistic Interpretability: Beyond Linear Assumptions\n\nMechanistic interpretability has been constrained by a strong linearity assumption when extracting concepts from LLM representations. [5] adapts Non-Linear Multi-Dimensional Concept Discovery (NLMCD) from computer vision to token-level LLM activations, modeling concepts as low-dimensional manifolds to compare across layers and models. This moves beyond linear concept extraction to capture the geometric richness of internal representations. The work is significant because evidence of non-linear feature manifolds challenges the foundations of many existing MI methods.\n\nA more fundamental critique emerges from [11], which shows that intervention-defined faithfulness can prefer circuits that reproduce model behavior less well, creating an objective-level recovery gap. Across four human-reference tasks and InterpBench, the authors compare validation faithfulness against true mechanism recovery. This matters profoundly because it questions whether current automated circuit discovery methods—and their evaluation metrics—can actually recover mechanisms as claimed, suggesting that better attribution or optimization alone cannot solve the problem.\n\n## Structured Policies and Efficient Equivariant Computation\n\nImitation learning benefits from structured policies that introduce task-specific inductive bias for efficiency, robustness, and interpretability. [9] proposes a closed-loop framework that iteratively refines structured policies using LLM-guided analysis of policy rollouts, logging them as semantically meaningful tabular data. The method identifies suboptimal behaviors through LLM-generated diagnostic analysis code, addressing limitations of existing approaches that rely on static domain knowledge inconsistent with expert demonstrations. This matters because it provides a principled way to align structured policy generation with actual expert behavior.\n\nIn atomistic modeling, equivariant machine learning interatomic potentials have revolutionized the field but demand expensive tensor product computations. [10] presents BranchIP, a single-model framework for learned adaptive tensor product computation trained with a novel distillation loss. Tested on two systems of physical interest, the approach reduces computational bottlenecks that limit simulation timescales. This contribution matters because it enables more efficient accurate simulations while the adaptive computation itself provides a form of interpretability about where model capacity is allocated.\n\n## Key Takeaways\n\n- **Domain-specific fine-tuning outperforms general LLMs in specialized legal tasks** [1], suggesting that interpretability and accuracy can be jointly optimized through targeted model design rather than relying on scale alone.\n\n- **KAN architectures continue to evolve with mathematical sophistication** [2, 4], but their interpretability advantages require empirical validation at scale before widespread scientific adoption.\n\n- **Interpretability in safety-critical applications demands causal transparency** [3, 6], whether through fuzzy cognitive maps for medical data or physical constraints in chemical engineering.\n\n- **Benchmarks must evaluate explanation quality, not just detection accuracy** [7], as current time series anomaly detection benchmarks neglect the interpretability dimensions practitioners need.\n\n- **LLMs can autonomously author interpretable detectors** [8], opening new paradigms where the model generates human-readable logic rather than serving as an opaque detector.\n\n- **Linear concept assumptions in mechanistic interpretability are fundamentally limited** [5], and non-linear manifold approaches reveal richer geometric structure in LLM representations.\n\n- **Current circuit discovery evaluation metrics may be fundamentally flawed** [11], as intervention-defined faithfulness can prefer worse mechanistic explanations—a finding that calls for rethinking how we validate interpretability claims.\n\n- **Structured policies and adaptive computation** [9, 10] show that interpretability emerges from architectural inductive biases that align computation with task structure.",
+    "papers": [
+      {
+        "title": "Legal text classification in Korean sexual offense cases: from traditional machine learning to large language models with XAI insights",
+        "url": "",
+        "authors": [
+          "Jeongmin Lee"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "SW-KAN: Kolmogorov-Arnold Networks with Stieltjes-Wigert q-Orthogonal Polynomials",
+        "url": "",
+        "authors": [
+          "Amirhosein Azarpour",
+          "Seyyed Moein Kazemi"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Interpretable Synthetic Medical Tabular Data Generation for Clinical Decision Support Using Fuzzy Cognitive Maps",
+        "url": "",
+        "authors": [
+          "Michael Vasilakakis",
+          "Dimitris K. Iakovidis"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Neural scaling laws and evolution of learnable activation functions of Kolmogorov-Arnold networks",
+        "url": "",
+        "authors": [
+          "Tilen Cadez",
+          "Sanghoon Lee",
+          "Kyoung-Min Kim"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Beyond Linear Concepts: Discovering and Aligning Non-Linear Concept Manifolds in Large Language Models",
+        "url": "",
+        "authors": [
+          "Tido Specht",
+          "Elias Benedict Krey",
+          "Nils Neukirch",
+          "Nils Strodthoff"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Atoms to Processes: The Role of Artificial Intelligence and Machine Learning in Chemical Engineering",
+        "url": "",
+        "authors": [
+          "Michael Baldea",
+          "Linda J. Broadbelt",
+          "Marianthi G. Ierapetritou",
+          "Akhilesh Jain",
+          "Ankur Kumar",
+          "Thomas A. Kwan",
+          "Fèlix Llovell",
+          "Andrew J. Medford",
+          "Ilias Mitrai",
+          "Joel Paulson",
+          "Junyi Qiao",
+          "Matthew P. Rivera",
+          "Kirti C. Sahu",
+          "Lev Sarkisov",
+          "Zachary P. Smith",
+          "Calvin Tsay",
+          "Ching-Mei Wen",
+          "Victor M. Zavala",
+          "Huacheng Zhang",
+          "Dan Zhao"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Detect, Explain, Interpret: An End-to-End Benchmark for Time Series Anomaly Detection, Explainability and Interpretability",
+        "url": "",
+        "authors": [
+          "Roberto Stanzione",
+          "Jules Barbe",
+          "Magali Parrino",
+          "Jérémie Fourmann",
+          "Paul Boniol"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Have an LLM Write Your Anomaly Detector: Autonomous Discovery of Compact, Interpretable Detectors for Time Series",
+        "url": "",
+        "authors": [
+          "David Berghaus"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Iterative Policy Refinement through Semantic Rollout Analysis",
+        "url": "",
+        "authors": [
+          "Feiyu Gavin Zhu",
+          "Qi Xu",
+          "Zhifei Deng",
+          "Zhigang Hua",
+          "Luke Simon",
+          "Jean Oh",
+          "Reid Simmons"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "BranchIP: Learning Adaptive Equivariant Computation for Interatomic Potentials",
+        "url": "",
+        "authors": [
+          "Laura Zichi",
+          "Gil Harari",
+          "Chuin Wei Tan",
+          "Marc L. Descoteaux",
+          "Albert Zhu",
+          "Menghang Wang",
+          "Yoel Zimmermann",
+          "H. T. Kung",
+          "Boris Kozinsky"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Are We Recovering Mechanisms? Objective-Level Recovery Gaps in Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Chuqin Geng",
+          "Li Zhang",
+          "Haolin Ye",
+          "Mark Zhang",
+          "Luke Zhang",
+          "Xujie Si"
+        ],
+        "date": "2026-10-02"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-02",
+    "paperCount": 6,
+    "markdown": "# Faithfulness, Fairness, and the Widening Scope of Explainability: A Technical Digest\n\nToday's papers converge on a common theme: explanation methods are being stress-tested for *reliability* rather than mere plausibility, whether under multicollinearity, distribution shift, or zero-shot uncertainty. Simultaneously, explainability is being fused with fairness constraints in high-stakes domains (law, education, medicine) rather than treated as a separate audit. A notable secondary trend is the maturation of infrastructure—taxonomies and benchmarks—for RAG and time-series anomaly detection, signaling that the field is moving from inventing explanation methods to systematically evaluating them.\n\n## Fairness and Faithfulness as Joint Objectives\n\n**[1] SCM-based Fairness and Faithful Explainability for Legal Document Classification** addresses the underexplored interaction between debiasing interventions and explanation faithfulness in legal NLP. Using the ECtHR alleged-violations corpus from LexGLUE, the authors compare a LegalBERT baseline against a fairness-regularized variant that penalizes stereotypical *warmth* and *competence* representations during fine-tuning—a structural causal model (SCM) framing that targets latent social dimensions rather than surface-level group parity. The central question is whether improving fairness metrics degrades or preserves the faithfulness of post-hoc explanations (i.e., whether explanations still track the model's actual reasoning). This matters because legal decision support demands *both* non-discriminatory outputs and explanations that courts and litigants can trust; demonstrating that these goals are compatible—or in tension—directly informs deployment policy in regulated settings.\n\n**[2] Integrating Fairness and Explainability in a Multiple Instance Reinforcement Learning System** tackles student-at-risk prediction, where demographic features create fairness risk and weakly labeled interaction data complicates transparency. The framework combines three components: RL-based multiple instance learning (RL-MIL), which treats each student as a bag of interactions with an agent selecting informative instances; adversarial debiasing to suppress demographic leakage; and preference-conditioned hypernetworks that let stakeholders trade off accuracy, fairness, and transparency at inference time. The multi-objective design is the key contribution—rather than committing to a single fairness-accuracy operating point, the system exposes a controllable Pareto surface. For educational intervention systems, where false negatives harm students and opaque predictions undermine instructor trust, this offers a practical mechanism for aligning model behavior with institutional values.\n\n## Auditing Explanation Disagreement in High-Stakes NLP\n\n**[4] A Comparative Explainability Framework for DeBERTa-v3 in Zero-Shot Medical Abstract Classification** confronts the well-known *disagreement problem*: different attribution methods yield divergent explanations for the same prediction, leaving practitioners unsure which to trust. The authors build a natural language inference pipeline over the Medical Abstracts corpus, using five enriched hypotheses per diagnostic category and a balanced sample of 1,000 texts per class, then compare five explanation methods—SHAP and LIME (model-agnostic), occlusion, and others—under zero-shot conditions. By systematically quantifying where and why methods diverge, the framework provides an audit protocol rather than a single-method prescription. This is important for clinical NLP, where zero-shot classifiers are attractive precisely because labeled data is scarce, yet the absence of in-domain supervision makes explanation reliability *more* critical, not less.\n\n## Benchmarks for Explainability Beyond Accuracy\n\n**[5] Detect, Explain, Interpret: An End-to-End Benchmark for Time Series Anomaly Detection, Explainability and Interpretability** identifies a structural gap: existing time-series anomaly detection benchmarks evaluate detection accuracy, sometimes spatial explainability, but virtually none assess interpretability in a way that incorporates domain context. The authors propose an end-to-end benchmark spanning three stages—detection, explanation, and interpretation—designed to evaluate detectors on whether their outputs are actionable for domain experts, not just statistically correct. The contribution is infrastructural: by defining evaluation protocols that connect anomaly scores to human-interpretable causes, the benchmark enables apples-to-apples comparison of detectors that were previously incomparable on explanatory grounds. For industrial and medical monitoring, where an unexplained alert is often operationally useless, this shifts the evaluation frontier from \"did it detect?\" to \"did it explain *usefully*?\"\n\n## Dependence-Aware Attribution with Guarantees\n\n**[6] MCIR: A Feature Dependence-Aware Explainability Method with Reliability Guarantees** targets a persistent failure mode in feature attribution: under multicollinearity or near-duplicate predictors, methods like SHAP, LIME, HSIC, MI/CMI, and SAGE produce unstable rankings because shared predictive information is arbitrarily distributed across correlated features. The proposed Mutual Correlation Impact Ratio Method (MCIR-M) is a global feature-importance approach that quantifies the *unique* predictive information each feature contributes beyond a selected dependence neighborhood, rather than crediting shared signal to whichever correlated feature happens to be sampled. By explicitly modeling dependence structure, MCIR-M aims to deliver stable rankings with reliability guarantees—a meaningful advance for tabular domains (finance, healthcare, sensor systems) where correlated features are the norm and attribution instability has real consequences for debugging and regulatory review.\n\n## Systems-Level Views: RAG Taxonomy and the Explainability Stack\n\n**[3] Mapping the RAG Landscape: A Four Axis Taxonomy of Efficiency, Defense, Interactivity, and Reasoning** responds to the rapid diversification of retrieval-augmented generation beyond core pipeline designs. The survey organizes recent work along four axes—efficiency, defense (against adversarial retrieval and poisoning), interactivity, and reasoning—providing a structured map of capabilities and challenges that earlier surveys, focused on standard architectures, left scattered. Its value is partly taxonomic and partly diagnostic: by isolating defense and reasoning as first-class axes, it highlights where current RAG systems remain fragile and where explainability of retrieval decisions becomes essential. For researchers building grounded, auditable LLM systems, this taxonomy offers a vocabulary for positioning new work and identifying under-served intersections—particularly the overlap between retrieval transparency and robustness.\n\n## Key Takeaways\n- **Fairness and faithfulness are entangled, not orthogonal.** [1] and [2] show that debiasing interventions can shift explanation quality, and that multi-objective frameworks (hypernetworks, adversarial debiasing) can make the trade-off explicit and controllable rather than accidental.\n- **Explanation disagreement is now a first-class research problem.** [4] treats divergent attributions across SHAP, LIME, occlusion, and others as an object of systematic audit, especially under zero-shot conditions where supervision is absent.\n- **Multicollinearity breaks standard attribution methods.** [6] demonstrates that SHAP/LIME-style rankings are unstable under correlated features and proposes dependence-aware importance with reliability guarantees.\n- **Benchmarks are expanding from detection to interpretation.** [5] argues that evaluating anomaly detectors without domain-contextual interpretability is insufficient, and supplies an end-to-end protocol spanning detect → explain → interpret.\n- **RAG is maturing into a multi-dimensional design space.** [3] reframes RAG evaluation around efficiency, defense, interactivity, and reasoning, exposing defense and reasoning as under-addressed axes.\n- **High-stakes domains drive the agenda.** Legal, educational, and medical applications ([1], [2], [4]) are the primary forcing functions for joint fairness–explainability methods, because regulatory and ethical requirements demand both properties simultaneously.\n- **Controllability is the emerging design pattern.** Across [2], [5], and [6], the trend is toward systems that expose tunable trade-offs or reliability guarantees rather than offering single fixed explanations.",
+    "papers": [
+      {
+        "title": "SCM-based Fairness and Faithful Explainability for Legal Document Classification",
+        "url": "",
+        "authors": [
+          "Yasmina El Kacemi",
+          "Seyed Sahand Mohammadi Ziabari",
+          "Ali Mohammed Mansoor Alsahag"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Integrating Fairness and Explainability in a Multiple Instance Reinforcement Learning System",
+        "url": "",
+        "authors": [
+          "Bente Hinkenhuis",
+          "Seyed Sahand Mohammadi Ziabari",
+          "Ali Mohammed Mansoor Alsahag"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Mapping the RAG Landscape: A Four Axis Taxonomy of Efficiency, Defense, Interactivity, and Reasoning",
+        "url": "",
+        "authors": [
+          "Meghana Sunil",
+          "Shravya V",
+          "Shravan Venkatraman",
+          "Joe Dhanith PR"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "A Comparative Explainability Framework for DeBERTa-v3 in Zero-Shot Medical Abstract Classification",
+        "url": "",
+        "authors": [
+          "Javier Diaz Esteban-Herreros",
+          "David Muñoz-Valero",
+          "Raquel Martínez-España",
+          "Jose M. Juarez",
+          "Juan Moreno-Garcia"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Detect, Explain, Interpret: An End-to-End Benchmark for Time Series Anomaly Detection, Explainability and Interpretability",
+        "url": "",
+        "authors": [
+          "Roberto Stanzione",
+          "Jules Barbe",
+          "Magali Parrino",
+          "Jérémie Fourmann",
+          "Paul Boniol"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "MCIR: A Feature Dependence-Aware Explainability Method with Reliability Guarantees",
+        "url": "",
+        "authors": [
+          "Poushali Sengupta",
+          "Sabita Maharjan",
+          "Frank Eliassen",
+          "Shashi Raj Pandey",
+          "Yan Zhang"
+        ],
+        "date": "2026-10-02"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-02",
+    "paperCount": 20,
+    "markdown": "# Multimodal Research Digest — October 2, 2026\n\nToday's research landscape reveals a strong push toward making multimodal systems more reliable, efficient, and adaptive—from calibration and unlearning to geometry-aware representations and interactive agents. Across 20 papers, we see growing attention to the gap between what multimodal models perceive and what they truly learn, alongside novel frameworks for structured reasoning, federated adaptation, and brain-inspired architectures.\n\n## Trustworthy Multimodal Decision-Making and Calibration\n\nMedical and general-purpose multimodal models increasingly need to express calibrated confidence, yet their text-generation interfaces often conflate next-token probabilities with decision certainty. Several papers here tackle this misalignment directly.\n\n**OmniMed-Jev** [3] addresses the problem that medical LVLMs express bounded decisions (diagnoses, findings, cell counts) as generated text, so reported probabilities reflect next-token likelihood rather than the decision itself. The authors introduce a decision-native interface representing each medical decision as a Choice, Noul, or Score over a runtime-supplied candidate set, returning a full distribution. This matters because clinical trust depends on confidence matching actual accuracy, and decision-native outputs enable direct software integration.\n\n**LLM2Jev** [9] investigates whether general-purpose LLMs already possess Jev-style decision capabilities out of the box. The framework extracts calibrated decisions directly from next-token probabilities over bracketed numeric identifiers, providing both a training-free inference recipe and a fine-tuning objective. This clarifies when fine-tuning is actually necessary for decision-native behavior, potentially saving substantial adaptation costs.\n\n**SIEVE** [20] tackles selective unlearning of personally identifiable information in VLMs while preserving permitted knowledge about the same individual. The framework directly regularizes attention-value representations while controlling model outputs, suppressing attention to sensitive associations without destroying shared visual inputs. This is critical for privacy compliance in deployed multimodal systems where sensitive and retained information share intermediate representations.\n\n**Same Reward, Different Skills** [19] exposes that RLVR improves vision-language benchmarks even without visual information during training—blind-trained models recover roughly half the real-image gain at 3B and nearly four-fifths at 7B. The authors propose \"visual resolvability\" as a design rule requiring visual evidence to be necessary for correct answers. This finding matters because an image in the prompt is not an image in the learning signal, and prolonged real-image training can erode grounding while benchmark gains persist.\n\n## Efficient Multimodal Agents and Memory Systems\n\nAs multimodal agents tackle longer horizons and more complex tasks, efficiency of memory, reasoning, and search becomes paramount.\n\n**MemFit** [4] addresses the costly, inefficient write operations in LLM long-term memory systems that rely on expensive LLM calls for memory construction. MemFit stores each turn verbatim in an application-native format rather than compressing or discarding surface-level details, reducing cost and latency. This matters for conversational agents requiring persistent memory across sessions without prohibitive operational overhead.\n\n**DeFA** [5] tackles failure attribution in LLM agent executions, where errors and visible consequences can be separated by many steps. The framework builds an event dependency graph combining protocol relations and semantic dependencies, then constructs a failure propagation graph to trace sources and effects. This enables decisive-error localization by understanding both step content and dependencies, improving agent debugging and reliability.\n\n**SSR** [18] reformulates reasoning as selection rather than open-ended generation for multimodal search agents. By representing recurring high-level reasoning as pre-specified reusable natural-language candidates, the model selects from these candidates at each turn rather than generating lengthy free-form reasoning. This reduces inference cost for small models whose capacity-limited reasoning provides little actionable guidance.\n\n**VISTA** [16] gives general-purpose multimodal models long-horizon vision through a visual harness that maintains lossless visual memory of past observations in original form. The model actively retrieves and reorganizes visual input as it reasons, improving performance on interactive environments like ARC-AGI-3. This demonstrates that appropriate harnesses can unlock strong reasoning abilities in multimodal models across diverse interactive tasks.\n\n## Multimodal Graph Learning and Federated Adaptation\n\nGraph-structured multimodal data presents unique challenges for open-world learning and decentralized training.\n\n**MOVE** [1] addresses the fundamental challenge that new classes may emerge after deployment while models train with fixed label spaces. The framework determines whether existing classes are insufficient to cover unknown nodes and whether LLM-generated class descriptions are reliable enough to expand the class space. This matters because multimodal graph learning in open-world settings requires both detecting unknowns and validating expansions.\n\n**Coupling Perception and Reasoning in Federated Multimodal GFMs** [2] tackles the limitation that existing federated GFM adaptation methods mainly update graph-side modules while keeping multimodal encoders frozen. This restricts adaptation to how information propagates rather than what semantic evidence is extracted. By coupling perception and reasoning updates, the approach enables more complete adaptation to decentralized multimodal graph data without sharing raw information.\n\n**HADRec** [12] improves medication recommendation by fusing molecular knowledge with EHR data and leveraging the hierarchical ATC classification system. Existing methods abstract drugs as discrete tokens, ignoring molecular structures and pharmacological mechanisms, and use flat recommendation paradigms. HADRec's hierarchy-aware approach respects standardized therapeutic classification, potentially improving both efficacy and patient safety.\n\n## Geometric and Structural Approaches to Multimodal Representation\n\nSeveral papers bring rigorous mathematical frameworks to multimodal learning, addressing fundamental representational challenges.\n\n**Beyond Unimodal Bases** [6] introduces pullback geometry for multimodal data, addressing the limitation that existing scalable constructions assume data reside close to a single manifold via unimodal Gaussian latents. For multimodal data, mapping separated modes into one Gaussian region requires substantial transport deformation, compromising geometry. The new approach enables statistically meaningful interpolation paths that traverse high-likelihood regions for multimodal distributions.\n\n**PRISM** [7] provides a category-theoretic framework for measuring and refining multimodal analogies, addressing the lack of interpretable measures for whether relational structure is understood and maintained. The modality-agnostic framework represents analogies as explicit relational mappings grounded in category theory, evaluated on visual metaphor generation. This matters for interpretable AI-driven analogy generation where structural preservation is essential.\n\n**CoEvolve** [11] addresses visual grounding's compression of target identification, spatial reasoning, and boundary estimation into a single terminal prediction. The construct-to-edit framework separates grounding into explicit stages, exposing measurable, editable spatial states rather than free-form rationales. This enables diagnosis and correction of intermediate localization errors, improving both region selection and boundary precision.\n\n## Interactive Multimodal Systems and Applications\n\nApplications-oriented work demonstrates multimodal capabilities in real-world scenarios from search to VR to clinical reasoning.\n\n**AiSearch** [8] presents a flexible multimodal retrieval framework leveraging zero-shot VLM capabilities for natural language search over images and videos. It supports interactive search refinement through user feedback and visual benchmarking across multiple VLMs, enabling users to select the most suitable model. This addresses the need for both automated and interactive retrieval systems that can be tailored in real time.\n\n**GLoC-EHR** [14] introduces a multimodal language model reading structured EHRs through fixed-size global memory of the patient trajectory and local memory of selected events. The model learns to generate hospital-course summaries from global memory and descriptions of masked concepts from local memory, aligning both. This enables evidence-cited clinical reasoning requiring both whole-trajectory context and specific supporting events.\n\n**SPHERE** [15] transforms isolated 3D scene synthesis into continuous human-AI co-creation by extracting persistent spatial preferences from natural multimodal interactions (speech and controller edits). It abstracts raw edits into hierarchical constraints modeling local and global spatial relationships for geometric resilience. This addresses the repetitive, physically fatiguing nature of immersive VR authoring.\n\n**AVSD-Scenes** [13] introduces a paired audio-visual scene description dataset for urban environments containing 12,291 descriptions generated from the TAU Urban Audio-Visual Scenes dataset. Audio- and visual-based descriptions are generated using Qwen2-Audio-7B and Qwen2.5-VL-7B respectively as modality-specific foundations. This fills the gap in datasets jointly describing both auditory and visual urban information.\n\n## Novel Architectures for Multimodal Learning\n\nTwo papers introduce fundamentally new architectural approaches inspired by neuroscience and flow-based generative modeling.\n\n**SpikeMoE** [10] integrates Spiking Neural Networks' event-driven computation with Mixture-of-Experts' conditional computation. The key challenge is designing expert selection based on spiking activity, addressed via a spike-based k-WTA router inspired by competition-inhibition in the hippocampal CA1 region, incorporating lateral inhibition and refractoriness. This offers potential for flexible, brain-inspired neural architectures combining neuronal-scale dynamics with model-scale conditional computation.\n\n**OMAF** [17] addresses the challenge that diffusion-based multi-agent policies capture complex multimodal behaviors but suffer from costly iterative sampling that hinders online scalability. The framework combines expressive generative modeling with one-step flow models for efficient training and execution in online MARL settings. This matters for coordinating multi-agent behaviors where balancing expressive action distributions with computational efficiency is critical.\n\n## Key Takeaways\n\n- **Decision-native interfaces are gaining traction**: Papers [3] and [9] show that extracting calibrated decisions directly from model outputs—rather than free-form text—improves trustworthiness and enables software integration, with LLM2Jev revealing when fine-tuning is actually necessary.\n\n- **Visual grounding requires visual learning signals**: [19] demonstrates that benchmark gains can persist even when models train blind, exposing a critical gap between having images in prompts versus learning from visual evidence; design rules like \"visual resolvability\" are needed.\n\n- **Efficiency drives agent memory and reasoning redesign**: [4], [5], [18], and [16] collectively push toward cheaper, more structured approaches—verbatim memory storage, dependency-guided failure attribution, selection-based reasoning, and lossless visual memory harnesses.\n\n- **Federated and open-world graph learning matures**: [1] and [2] advance beyond frozen encoders and fixed label spaces, enabling adaptation to emerging classes and coupled perception-reasoning updates in decentralized multimodal graphs.\n\n- **Mathematical rigor returns to multimodal representation**: [6] and [7] bring pullback geometry and category theory to bear on multimodal data, addressing fundamental issues in interpolation across modes and interpretable structural analogy measurement.\n\n- **Privacy and selective unlearning become tractable**: [20] shows that attention-value regularization can selectively remove PII from VLMs while preserving shared knowledge, addressing a critical deployment concern for models associating visual identities with biographical information.\n\n- **Application domains diversify**: From medical decision-making [3, 12, 14] to urban scene description [13], VR authoring [15], and interactive search [8], multimodal methods are being adapted to domain-specific constraints and user workflows.",
+    "papers": [
+      {
+        "title": "MOVE: Multimodal Open-world Verification and Expansion for Graph Learning",
+        "url": "",
+        "authors": [
+          "Zekai Chen",
+          "Jiayang Xing",
+          "Xun Wu",
+          "Miao Zhang",
+          "Xunkai Li",
+          "Kairui Yang",
+          "Zhengyu Wu",
+          "Xu Wang",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Coupling Perception and Reasoning in Federated Multimodal Graph Foundation Models",
+        "url": "",
+        "authors": [
+          "Zekai Chen",
+          "Xun Wu",
+          "Hailin Zhang",
+          "Xunkai Li",
+          "Yu Liu",
+          "Kairui Yang",
+          "Muyan Huang",
+          "Xuaner Chen",
+          "Rong-Hua Li",
+          "Guoren Wang"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "OmniMed-Jev: Calibrating LVLM Confidence for Trustworthy Medical Multimodal Decisions via System One",
+        "url": "",
+        "authors": [
+          "Luyao Tang",
+          "Cheng Chen"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "MemFit: Efficient Long-Term Agentic Memory",
+        "url": "",
+        "authors": [
+          "Mitchell Piehl",
+          "Muchao Ye"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "DeFA: Dependency-Guided Failure Attribution for LLM Agents",
+        "url": "",
+        "authors": [
+          "Bo Deng",
+          "Xinlei Zheng",
+          "Yi Wei",
+          "Kang Zhou",
+          "Chongyang Tao",
+          "Renzhao Liang",
+          "Xuanren Chen",
+          "Lifan Guo",
+          "Chi Zhang"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Beyond Unimodal Bases: Pullback Geometry for Multimodal Data",
+        "url": "",
+        "authors": [
+          "Honglei Brinkmann",
+          "Lucas Ng",
+          "Georgios Batzolis",
+          "Mark Girolami",
+          "Carola-Bibiane Schönlieb",
+          "Willem Diepeveen"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "PRISM: A Category-Theoretic Framework for Measuring and Refining Multimodal Analogies",
+        "url": "",
+        "authors": [
+          "Mirella Zeisler",
+          "Ojas Shirekar",
+          "Mircea Licǎ",
+          "Chirag Raman"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "AiSearch: Interactive Multi-Modal Search with VLMs",
+        "url": "",
+        "authors": [
+          "Ali Koksal",
+          "Mei Chee Leong",
+          "Vicky Sintunata",
+          "Ching Ling Chin",
+          "Wee Teck Fong"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "LLM2Jev: LLMs Are Already Jev-Style Decision Models -- When and How to Fine-Tune Them",
+        "url": "",
+        "authors": [
+          "Yinheng Li",
+          "Justin Wagle"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "SpikeMoE: Brain-Inspired Competitive Routing for Flexible Spiking Mixture-of-Experts",
+        "url": "",
+        "authors": [
+          "Xiaoli Liu",
+          "Yujie Liang",
+          "Jialin Li",
+          "Malu Zhang"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "CoEvolve: Construct-to-Edit Visual Grounding with Bidirectional State Refinement",
+        "url": "",
+        "authors": [
+          "Dongwei Sun",
+          "Yujie Zhang",
+          "Bowen Yao",
+          "Pei Liu",
+          "Jing Yao",
+          "Xiangyong Cao"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "HADRec: A Hierarchy-Aware Drug Recommendation Framework by Fusing Molecular Knowledge and Electronic Health Record",
+        "url": "",
+        "authors": [
+          "Junke Wang",
+          "Hongshun Ling",
+          "Li Zhang",
+          "Jinjing Wu",
+          "Tong Shao",
+          "Fang Wang",
+          "Yuan Gao"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "AVSD-Scenes: A Dataset for Audio-Visual Description of Urban Scenes",
+        "url": "",
+        "authors": [
+          "Dhanunjaya Varma Devalraju",
+          "Arshdeep Singh",
+          "Mark D. Plumbley"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "GLoC-EHR: Evidence-Cited Clinical Reasoning over Global Context and Local EHR Events",
+        "url": "",
+        "authors": [
+          "Chaiho Shin",
+          "Kwangsoo Kim"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "SPHERE: Adaptive VR Indoor Scene Generation via LLM-Enhanced Spatial Preference Learning and Human-in-the-Loop RL",
+        "url": "",
+        "authors": [
+          "Hyeonmin Lee",
+          "Zheng Wei",
+          "Kyungmin Kwon",
+          "Jumin Seo",
+          "Jiwon Park",
+          "Hayoung Oh"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "VISTA: A Visual Harness for Reasoning in an Interactive World",
+        "url": "",
+        "authors": [
+          "Qiushi Han",
+          "Keya Hu",
+          "Linlu Qiu",
+          "Cathy Wu",
+          "Kaiming He"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Flowing Faster to Coordinate: One-Step Online Multi-Agent Flow Policies",
+        "url": "",
+        "authors": [
+          "Zhuoran Li",
+          "Yunzhan Li",
+          "Xun Wang",
+          "Yihan Du",
+          "Longbo Huang"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Selection-Based Structured Reasoning: Toward Efficient Multimodal Search Agents",
+        "url": "",
+        "authors": [
+          "Feiyu Gavin Zhu",
+          "Xiaoyu Zhu",
+          "Jiqi Yang",
+          "Rui Yang",
+          "Arnab Kumar Mondal",
+          "Yancheng Wang",
+          "Xinke Deng",
+          "Jean Oh",
+          "Reid Simmons",
+          "Joerg Liebelt",
+          "Xiang Kong",
+          "Zhongyu Jiang"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "Same Reward, Different Skills: When Multimodal RL Learns to Look",
+        "url": "",
+        "authors": [
+          "Haocun Ye",
+          "Xinlong Jiang",
+          "Qile Chen",
+          "Bingyu Wang",
+          "Teng Zhang",
+          "Shubai Chen",
+          "Tingyu Wu",
+          "Zhenkun Zheng",
+          "Yiqiang Chen"
+        ],
+        "date": "2026-10-02"
+      },
+      {
+        "title": "SIEVE: Selective attention-value Suppression for Vision-Language Models Unlearning",
+        "url": "",
+        "authors": [
+          "Si Qi Goh",
+          "Cap Dang Xuan Kiet",
+          "Tat-Jen Cham",
+          "Kwok-Yan Lam"
+        ],
+        "date": "2026-10-02"
+      }
+    ]
+  }
+]
