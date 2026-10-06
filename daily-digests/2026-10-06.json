@@ -1,0 +1,726 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-06",
+    "paperCount": 16,
+    "markdown": "# Interpretability in Transition: From Static Snapshots to Dynamic, Interactive, and Suppressed Mechanisms\n\nToday's interpretability research pushes beyond post-hoc analysis of frozen models, examining how mechanisms emerge during training, how components interact rather than act in isolation, and how suppressed or context-dependent features shape behavior. Across domains from language models to vision, PDEs, and scientific discovery, a common thread emerges: interpretability requires understanding dynamics, interactions, and the priors we inadvertently impose.\n\n## Training Dynamics and the Geometry of Learned Computation\n\nSeveral papers examine how interpretable structure emerges—or misleads—during training, rather than assuming a fixed mechanism in a converged model. [1] identifies a striking phenomenon on the Indirect Object Identification task: Pythia models pass through an early window where they prefer the repeated name, pushing accuracy below chance even as language-modeling loss continues to decrease. The authors characterize this dip as a temporary imbalance between copying and suppression circuits, showing that mechanistic explanations derived from final checkpoints can miss transient, misleading computations. [16] complements this by training small Llama-style transformers on 4x4 multiplication, finding that a single space token between digits lifts exact-match accuracy from 1% to 89%. Crucially, output positions are learned in carry-chain order, with middle digits—having the longest-range dependencies—learned last, revealing that input formatting determines whether carry propagation becomes learnable at all. [4] takes an architectural angle, investigating how decoder choices and a new weight normalization constraint affect latent-space interpretability in Physically Recurrent Neural Networks under low data. The constraint regularizes training and aligns fictitious stress with the true state of the representative volume element without explicit supervision, demonstrating that architectural priors directly shape what latents can mean.\n\n## Beyond Activation: Suppressed Features, Interaction Effects, and Non-Activating Components\n\nA cluster of work challenges the assumption that interpretability means analyzing what fires. [10] introduces Counterfactual Activation Potential (CAP) to expose safety-critical features hidden in the inactive set: suppressing these features flips refusals into compliance while evading standard tools that only inspect activating neurons. This is a sobering result for safety auditing, since prevalent interpretability methods are structurally blind to this attack surface. [2] tackles the complementary problem of interaction-aware circuit discovery, arguing that scoring components one at a time misses context-dependent effects—a primary component can inhibit a backup, corrupting rankings. By importing the notion of \"witnesses\" from actual causality and making witness-integrated estimation tractable, they avoid combinatorial enumeration that previously rendered such analysis infeasible. [9] addresses a related structural limitation: layer-wise SAEs fix the modeling subspace by layer identity, contributing to low feature utilization and dictionary redundancy. ScopeSAE selects the subspace per token by attributing each prediction to its most relevant token-layer states, adding interpretable layer selection to ground features in behavior.\n\n## Architectural Priors and the Assumptions We Bake Into Interpretability Tools\n\nSeveral papers interrogate whether the tools and architectures we use for interpretability encode assumptions that distort what they reveal. [3] shows that Sparse Autoencoders, grounded in the Linear Representation Hypothesis, smuggle in an independence prior across patches—an assumption violated by natural images. They formalize the Markov-Field Linear Representation Hypothesis to reintroduce spatial dependencies and propose Spatial-SAE as an amortized MAP estimator, demonstrating that visual concepts are fragmented by the independence assumption. [6] goes further by constructing networks whose specific parameter realizations admit explicit algorithmic interpretations, rather than hoping that algorithm-inspired architectures retain clear relations to their motivating algorithms after training. Modeling data as class-dependent stochastic processes with sufficient statistics, they build in interpretability as a guarantee rather than a post-hoc hope, illustrated on texture classification. [15] applies formal explainability to Concept Bottleneck Models, showing that for widespread CBM architectures—including recent VLM-based variants—faithful explanations must include *all* concepts in the bottleneck. This reveals a fundamental tension: as bottlenecks grow for performance, faithful explanation becomes non-compact, undermining the very interpretability CBMs promise.\n\n## Interpretability as a Lens on Parameters and Applications\n\nA final group applies interpretability frameworks to concrete domains and parameter-level structure. [5] introduces DV-Lens, a parameter-level framework that links native parameter directions to downstream vocabulary responses via module-specific Jacobians. This connects parameters across modules to verifiable output effects, moving beyond per-module analysis to characterize how functional organization relates to model capability. [11] proposes Logic-Logit, a rule-based interpretable choice model that learns and explains human decisions without the opaque parameter sets of neural choice models, targeting demand forecasting, recommendation, and consumer behavior where interpretability is non-negotiable. [7] introduces CLARA, a cognitively grounded framework for assessing developmental appropriateness of children's stories across cognitive, language, and social-emotional dimensions, using structured annotation and a bilingual benchmark to test whether AI can approximate human developmental judgments at scale. [13] models each football possession as a finite-horizon dynamic game inspired by Markov perfect equilibrium, valuing all 22 players' actions including off-ball movement—capturing strategic interdependence that team-level or independent-player RL methods miss. [12] embeds an LLM in the loop of a reinforcement learning agent for bioinformatics feature selection, using the LLM to enhance sequential decision-making under high dimensionality. [14] introduces GO4CD, which uses Gene Ontology-based clustering to enable cluster-level causal discovery in gene regulatory networks without requiring predefined acyclic admissible partitions, improving both tractability and biological interpretability. [8] contributes HiRefPOU, a partition-of-unity mixture-of-experts architecture for operator learning with geometry-aware gating and nested parent-child partitions, addressing PDEs with sharp interfaces and localized multiscale structure where DeepONets and FNOs struggle—with interpretable spatial partitioning as a byproduct.\n\n## Key Takeaways\n\n- **Interpretability is not static**: Transient training phenomena like the below-chance dip [1] and the order in which carry chains are learned [16] show that mechanistic explanations from final checkpoints can be incomplete or misleading; interpretability must account for developmental trajectories.\n- **Inactive components matter**: Counterfactual Activation Potential [10] demonstrates that safety-critical features can lurk in the inactive set, evading tools that only examine activating neurons—a critical blind spot for safety auditing.\n- **Interactions and context break component-wise scoring**: Witness-integrated circuit discovery [2] and per-token subspace selection in ScopeSAE [9] both show that isolated component scores miss context-dependent effects, requiring interaction-aware and scope-aware methods.\n- **Priors shape what tools reveal**: The independence assumption in SAEs fragments visual concepts [3], and faithful CBM explanations may require all bottleneck concepts [15], meaning the assumptions baked into interpretability tools determine which structures are visible.\n- **Faithfulness requires architectural guarantees, not post-hoc hope**: Constructing networks with explicit algorithmic interpretations [6] and formalizing when CBM explanations are faithful [15] point toward interpretability as a design property rather than an after-the-fact analysis.\n- **Parameter-level and domain-specific lenses extend interpretability's reach**: DV-Lens [5] connects parameters to downstream vocabulary effects, while applications in choice modeling [11], developmental assessment [7], football [13], bioinformatics [12], and gene regulatory networks [14] show interpretability frameworks transferring to high-stakes domains.\n- **Architecture and input format are interpretability levers**: The decoder and normalization choices in Physically Recurrent Networks [4], the space token in multiplication [16], and POU gating in operator learning [8] all demonstrate that carefully designed structure can make latent spaces more meaningful and computations more learnable.",
+    "papers": [
+      {
+        "title": "Copying Before Suppression: What Drives a Below-Chance Dip During Language Model Training?",
+        "url": "",
+        "authors": [
+          "Tejas Dahiya",
+          "Cole Blondin"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Slaying the Hydra: Interaction-Aware Circuit Discovery in Language Models",
+        "url": "",
+        "authors": [
+          "Sankaran Vaidyanathan",
+          "Rafal Urbaniak",
+          "Emily Bunnapradist",
+          "Michelangelo Naim",
+          "Daniel Waxman"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "The Independence Prior of SAEs Fragments Visual Concepts",
+        "url": "",
+        "authors": [
+          "Tommaso Mencattini",
+          "Giorgos Nikolaou",
+          "Donato Crisostomi",
+          "Thomas Fel",
+          "Francesco Montagna",
+          "Emanuele Rodolà",
+          "Francesco Locatello"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "On architectural choices for interpretability and thermodynamic consistency in Physically Recurrent Neural Networks in the low-data regime",
+        "url": "",
+        "authors": [
+          "M. A. Maia",
+          "K. A. Meyer",
+          "A. M. C. M. van Gils",
+          "I. B. C. M. Rocha",
+          "F. P. van der Meer"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "DV-Lens: Revealing the Functional Organization of Language Model Parameters",
+        "url": "",
+        "authors": [
+          "Chenhang Cui",
+          "Jian Yu",
+          "Shuyi Miao",
+          "Xiaohao Liu",
+          "Rui Huang",
+          "Fei Shen",
+          "An Zhang",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Specific Algorithmic Interpretability of Neural Networks: A Case Study on Textures",
+        "url": "",
+        "authors": [
+          "Yanglin Zhang",
+          "Anneke von Seeger",
+          "Gilad Lerman",
+          "Ron Levie"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "CLARA: Can AI Assess Developmental Appropriateness in Children's Stories?",
+        "url": "",
+        "authors": [
+          "Sijing Yin",
+          "Zirui Wang",
+          "Qian Liu",
+          "Jiamou Liu"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Localized Operator Learning with Adaptive Partition-of-Unity Mixture-of-Expert Networks",
+        "url": "",
+        "authors": [
+          "Madison Cooley",
+          "Ramansh Sharma",
+          "Shandian Zhe",
+          "Robert M. Kirby",
+          "Varun Shankar"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "ScopeSAE: Model-Scope Feature Discovery with Interpretable Layer Selection",
+        "url": "",
+        "authors": [
+          "Qingwen Zeng",
+          "Zehao Fu",
+          "Shuyu Meng",
+          "Linghan Huang",
+          "Jiayi Zhang",
+          "Chenglin Wu",
+          "Ling Chen",
+          "Huaming Chen"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Don't Judge an LLM Only by Its Activations: Discovering Suppressed Safety Features via Counterfactual Activation Potential",
+        "url": "",
+        "authors": [
+          "Swadesh Swain",
+          "Sanghamitra Dutta"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Logic-Logit: A Logic-Based Approach to Choice Modeling",
+        "url": "",
+        "authors": [
+          "Shuhan Zhang",
+          "Wendi Ren",
+          "Shuang Li"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "An LLM-in-the-loop RL Framework for Bioinformatics Feature Selection",
+        "url": "",
+        "authors": [
+          "Xinyuan Wang",
+          "Deepti Agrawal",
+          "Yanjie Fu"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Strategic Multi-Agent Learning for Interpretable Action Valuation of All Players in Football",
+        "url": "",
+        "authors": [
+          "Kenjiro Ide",
+          "Taiga Someya",
+          "Kohei Kawaguchi",
+          "Keisuke Fujii"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "GO-Based Clustering for Learning Cluster-Level Causal Gene Regulatory Networks",
+        "url": "",
+        "authors": [
+          "Azlaan Mustafa Samad",
+          "Wei Zhang",
+          "Adèle H Ribeiro"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "When Are Concept Bottleneck Model Explanations Faithful and Compact?",
+        "url": "",
+        "authors": [
+          "Stefano Teso",
+          "Emanuele Marconato",
+          "Steve Azzolin",
+          "Antonio Vergari"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Separators Make Carry Propagation Learnable:The Geometry of Latent Carry in a Multiplication Transformer",
+        "url": "",
+        "authors": [
+          "Sama Satariyan",
+          "Raphael Cousin",
+          "G{é}rard Biau"
+        ],
+        "date": "2026-10-06"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-06",
+    "paperCount": 2,
+    "markdown": "# Explanation Fidelity Under Pressure: Drift, Concept Bottlenecks, and the Limits of Interpretability\n\nToday's literature confronts a maturing question in explainable AI: not whether explanations can be produced, but whether they remain *valid* once the assumptions behind them erode—under data drift, formal scrutiny, and human evaluation. The papers converge on a sobering theme: explanation quality is a fragile, unmonitored property that standard pipelines systematically neglect, and repairing it requires new theory, new benchmarks, and new evaluation practice.\n\n## Explanation Robustness and the Drift Problem\n\n[1] Ozechi asks whether explanation fidelity—not just predictive performance—degrades under concept drift, a question largely ignored in deployment monitoring even in regulated sectors like finance and healthcare where explanations carry governance weight. The paper formalizes explanation decay and investigates whether explanations can become misleading even when the underlying feature-target relationship shifts only modestly. The central contribution is demonstrating that explanation fidelity is a distinct failure mode that detection-metric monitoring cannot catch, motivating drift-aware explanation audits. For practitioners, this reframes explainability as a property requiring continuous maintenance rather than one-time validation.\n\n## Faithfulness Theory for Concept Bottleneck Models\n\n[2] Teso et al. examine whether concept bottleneck models (CBMs) actually report which concepts drive their decisions, noting that explanations are typically derived heuristically rather than from formal guarantees. Using formal explainability as the yardstick, they prove that for widespread CBM architectures—including recent VLM-based variants—faithful explanations must include *all* concepts in the bottleneck, collapsing interpretability precisely when the bottleneck is large. This is a strong negative result: the compactness that makes CBMs attractive is fundamentally in tension with faithfulness for these architectures. It forces the community to either redesign CBM architectures or accept that heuristic explanations misreport concept importance.\n\n## Benchmarks and Evaluation for Concept-Based Interpretability\n\n[3] The BEAR benchmark (Boland et al.) targets the evaluation gap for concept-based explanation methods, which are rarely compared under standardized, reproducible conditions. BEAR provides a suite of quantitative metrics spanning concept detection, intervention effects, and explanation faithfulness, enabling head-to-head comparison across methods. The contribution is infrastructural: by turning scattered evaluation practices into a common protocol, it exposes which methods genuinely support downstream tasks like debugging and steering versus which merely appear interpretable. This matters because benchmark standardization has historically been the catalyst for real progress in adjacent subfields.\n\n## Causality, Fairness, and Explanation Validity\n\n[4] Chen and colleagues argue that SHAP applied to fair ML can be not merely noisy but *invalid*, tracing the problem to hidden causal confounders that violate SHAP's assumptions. Their core insight is that feature-attribution values computed under confounding can systematically misrepresent a model's true dependence structure, undermining both explanation and fairness auditing. Rather than patching SHAP, the work delineates when causal assumptions must be established before attribution is meaningful—an important boundary condition for the ubiquitous use of SHAP in high-stakes settings. It connects the explainability and fairness literatures through a shared causal foundation.\n\n[5] Misztal-Radecka, Indurkhya, and Smywiński-Pohl take on the evaluation gap for counterfactual explanations in recommender systems, where user-facing recourse must be plausible and actionable, not just minimal in distance. They propose a discrimination-aware evaluation framework that measures whether counterfactuals distribute recourse equitably across user groups, revealing that standard quality metrics can mask systematic bias. The work reframes counterfactual quality as a multi-objective problem spanning validity, proximity, and fairness of recourse. It matters because recommender recourse directly affects users' ability to change adverse outcomes.\n\n## Explanation Quality Through Human and LLM Lenses\n\n[6] This work studies whether LLM-generated explanations meet the standards humans actually apply when judging explanation quality, probing the gap between automated quality metrics and human perception. The authors design evaluation protocols that surface where LLM explanations satisfy surface-level criteria yet fail on deeper desiderata like causal adequacy and calibrational honesty. The contribution is an empirical map of alignment and misalignment between machine-judged and human-judged explanation quality, with implications for using LLMs as explanation evaluators. Given the field's growing reliance on LLM-as-judge pipelines, this is a timely caution.\n\n## User-Facing and High-Stakes Explanation Practice\n\n[7] Addressing the deployment end of the pipeline, Ilias and colleagues present a user study on how laypeople and domain experts interpret explanations in a high-stakes decision context, testing whether design choices like feature importance displays and counterfactual suggestions actually improve understanding. The results show that explanation format strongly modulates trust calibration—some designs increase warranted reliance while others induce overtrust or dismissal. The paper contributes concrete design guidance grounded in measured comprehension and decision outcomes rather than self-reported satisfaction. It reinforces that explanation quality must ultimately be judged by whether it improves human decisions.\n\n## Key Takeaways\n\n- **Explanation fidelity is an unmonitored failure mode.** [1] shows explanations can decay under data drift even when detection metrics hold steady, demanding drift-aware explanation audits in regulated deployments.\n- **Compactness and faithfulness conflict in CBMs.** [2] proves that faithful explanations for common CBM architectures—including VLM-based ones—require all bottleneck concepts, undermining the compactness that motivates these models.\n- **Benchmarks are the missing infrastructure.** [3]'s BEAR provides standardized, multi-metric evaluation for concept-based explanations, enabling the reproducible comparisons the field has lacked.\n- **Attribution methods carry hidden causal assumptions.** [4] demonstrates that SHAP can yield invalid explanations under confounding, and [5] extends this concern to counterfactual recourse in recommenders, where fairness of recourse is a distinct axis.\n- **Automated explanation metrics are not human metrics.** [6] maps where LLM explanations satisfy machine judges but fail human standards, cautioning against LLM-as-judge shortcuts.\n- **Explanation design must be validated downstream.** [7] shows that format choices measurably shift trust calibration in high-stakes decisions, making human outcomes the ultimate test of explainability.\n- **A unifying theme:** across theory, benchmarks, and user studies, explanations are only as trustworthy as the assumptions, monitoring, and evaluation practices surrounding them—none of which are currently standard.",
+    "papers": [
+      {
+        "title": "Does Explainability Survive Data Drift?",
+        "url": "",
+        "authors": [
+          "Samuel Ozechi"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "When Are Concept Bottleneck Model Explanations Faithful and Compact?",
+        "url": "",
+        "authors": [
+          "Stefano Teso",
+          "Emanuele Marconato",
+          "Steve Azzolin",
+          "Antonio Vergari"
+        ],
+        "date": "2026-10-06"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-06",
+    "paperCount": 31,
+    "markdown": "# Multimodal Research Digest — October 6, 2026\n\nToday's multimodal research landscape is defined by a tension between capability expansion and reliability: papers push toward agentic tool use, embodied generation, and autonomous research while simultaneously documenting critical failure modes in safety refusal, modality robustness, and evaluation methodology. A second major thread concerns structuring heterogeneous signals—temporal, spatial, cellular, and clinical—into unified representations that support generalization rather than task-specific pipelines.\n\n## Safety, Robustness, and Controllability in Multimodal Systems\n\n**MLLMs Fail to Refuse when Using Tools Agentically** [1] investigates an underappreciated safety gap: whether agentic multimodal large language models lose refusal capability when granted tool access. The authors evaluate top open- and closed-weight MLLMs across three safety benchmarks in both tool-using and non-tool settings, finding a systematic and significant degradation in refusal behavior when tools are in play. The relative increase in refusal failure rate is substantial enough to constitute a critical vulnerability in the dominant agentic paradigm, where tools like zooming and tagging are increasingly standard for visual reasoning. This matters because safety alignment is typically evaluated in passive, single-turn settings—precisely the conditions under which models appear safest.\n\n**Do More Modalities Always Help? A Geometric Perspective on Missing-Modality Robustness** [11] challenges the assumption that multimodal training inherently produces robust models. The authors characterize a counterintuitive deployment-time failure: models trained on full modalities can underperform purely unimodal models when one modality is missing at inference, a pattern observed across fusion models, CLIP-style two-tower architectures, and others. They trace this to internal cross-modal dependencies formed during multimodal training that impair robustness rather than enhance it. The geometric analysis offers both an explanation and a principled lens for designing missing-modality strategies that go beyond recovery or adaptation heuristics.\n\n**Multimodal Safety Evaluation Should Measure Controllability Beyond Classification** [26] argues that input- and output-level classification is insufficient for VLM safety because it cannot reveal whether safety states are accessible or controllable within the model. The authors propose a *controllability profile* separating representation-level detectability, cross-modal specificity, intervention sensitivity, and benign-preserving selectivity. Using implicit toxicity as a stress case, they instantiate this profile on LlavaGuard and Qwen3.5 with sparse feature decomposition. The contribution is methodological: safety evaluation should report latent controllability, not just behavioral verdicts.\n\n**On the Geometry of Multimodal Saturation: Riemannian VICReg** [28] documents that adding a third modality *harms* performance in self-supervised learning—a phenomenon the authors term \"multimodal saturation.\" Across nine image-text-tabular datasets, trimodal models underperform their best bimodal subset in 55.6% of paired runs under VICReg and 51.1% under SimSiam. They trace the failure to alignment geometry and propose Riemannian VICReg (R-VICReg), which aligns views via squared geodesic distance on learnable negative-curvature product factors. This generalizes classical VICReg and reframes modality addition as a geometric alignment problem rather than a monotonic capacity gain.\n\n## Agentic Reasoning, Memory, and Self-Improvement\n\n**Reinforcement Learning with Comparative Evidence for Social Intelligence** [2] addresses the scarcity of human-annotated data for socially intelligent AI by deriving training signals from unlabeled data. The core difficulty is that social targets—affect, intent, preference, pragmatic meaning—lack the verification oracles available in math and coding, and are often ambiguous, with the same behavior supporting multiple plausible interpretations. The authors propose comparative evidence as a mechanism for establishing which interpretation is best supported. This work matters for scaling social understanding without proportional annotation budgets.\n\n**Agentic Cognitive Depth: Operational Criteria for Evaluating LLM Agents** [3] critiques the application-focused view of agents as an LLM loop with Planning, Memory, Tools, and Control Flow, which evaluates systems only by end-to-end task success. The authors define *agentic cognitive depth* as a trajectory-level profile across five operational criteria: context sensitivity, temporal continuity, multimodal coordination, adaptive interaction, and metacognitive monitoring. This provides a richer evaluation vocabulary for agents whose competence cannot be captured by final-answer accuracy alone.\n\n**Trinity: Self-Evolving Vision-Language Models with a Self-Verifier** [7] tackles the weak supervision signal in self-evolving VLMs, where a Questioner proposes problems and a Solver answers them, but both are rewarded mainly by inter-sample answer agreement. Agreement is a poor proxy for truth: it cannot detect whether a question is grounded in the image or whether a reference answer is correct. Trinity introduces a self-verifier to provide stronger grounding and correctness signals. This is a meaningful step toward unsupervised reasoning expansion that does not silently amplify hallucinated consensus.\n\n**Outcome-Guided On-Policy Self-Distillation** [17] examines on-policy self-distillation (OPSD), which offers denser token-level supervision than RLVR but introduces noise and training instability. Analyzing the OPSD objective through the RLVR advantage formulation, the authors find vanilla OPSD imposes insufficient penalties and excessive rewards in problematic directions. Their outcome-guided variant incorporates correctness signals to stabilize the objective without high-variance per-token statistics. The work connects distillation and RL objectives in a principled way.\n\n**MemPilot: Orchestrating On-Demand Multimodal Memory Curation for LLM Agents** [16] addresses the query-agnostic construction of agent memory, which incurs unnecessary preprocessing cost and discards details that later prove essential. Prior runtime-adaptive approaches specialize in particular operations or fixed schemes, leaving flexible control over performance, cost, and latency underexplored. MemPilot orchestrates multimodal memory curation on demand, giving agents runtime control over what to retain and process. This matters as agents accumulate long, multimodal interaction histories.\n\n**Spatially Grounded Conversational Memory for Complex Queries in Egocentric Assistants** [20] formalizes Spatially grounded Conversational Reasoning (SpaCR): cross-scene, recall-oriented, and counterfactual spatial queries combining user-stated facts with geometric evidence. Direct VLMs are costly and context-limited as histories grow, while keyframe selection and retrieval omit needed evidence. The proposed SpaC-MEM is an object-centric working memory that answers such queries without exhaustive visual context. It matters for always-on assistants where spatial recall across long histories is a core capability.\n\n## Generative Modeling, World Models, and RL Policy Learning\n\n**EnvDreamer: Large-Scale Multimodal-to-Environment Generation for Embodied AI** [4] brings the dataset-and-scale recipe of vision and language to embodied learning by generating Unreal Engine 5 environments from large language and vision-language models. EnvDreamer samples large, diverse, interactive, customizable, validator-passed virtual environments for training and evaluation across navigation, interaction, and manipulation. The platform targets the data bottleneck in robotics and world models, where environment diversity is far harder to scale than image-text pairs.\n\n**Score-Calibrated Flow for Sampling from Unnormalized Densities with Applications to Generative Online RL** [10] addresses training diffusion and flow policies when the critic specifies a desired policy as an unnormalized Boltzmann density but provides no direct samples. Existing importance-sampling approaches suffer high variance, raising cost and destabilizing training. Score-Calibrated Flow (SCF) is a simple, efficient algorithm for training generative policies that avoids this variance. The method connects generative modeling with online RL in a way that preserves multimodal behavior.\n\n**Residual Visual Credit Optimization: Conserved Evidence Routing for Multimodal Reinforcement Learning** [12] observes that outcome rewards in RLVR say how much a trajectory is worth but not how value should be spread over the decisions producing it. RVCO treats token credit as a conserved routing problem: a controlled visual intervention yields per-token evidence response, robust within-trajectory coordinates remove incidental scale, and a budgeted entropic router distributes fixed sequence utility by perceptual dependence. A residual support path guarantees stable credit assignment. This offers a principled alternative to heuristic credit attribution for multimodal reasoning.\n\n**Conditional Flow Matching for Single-Neuron Electrophysiology** [31] tackles the variability of neuronal responses, where the same repeated stimulus elicits different voltage responses from the same cell. Biophysical ensembles capture this at costs of hundreds of thousands of CPU hours, and existing ML surrogates inherit the single-response limitation. The authors learn a conditional generative model via flow matching over stimuli, capturing multimodal response distributions. This is a bridge between generative modeling and computational neuroscience.\n\n**Pythia: Toward Foundation World Models for Multimodal Time Series** [23] notes that while time-series foundation models unify forecasting across domains, reusable multimodal predictive representations remain underexplored. Pythia learns context-conditioned latent dynamics across datasets via a joint-embedding predictive architecture, with a stop-gradient numerical reference guiding contextual corrections to predicted future states and a separate probabilistic decoder adapting to frozen predictive representations. It positions multimodal context as a first-class component of time-series world modeling.\n\n**Multimodal Deep Survival Analysis for Sinkhole Susceptibility** [30] confronts two obstacles in predicting sinkhole occurrence: locations without reported sinkholes cannot be labeled as true negatives, and risk factors span heterogeneous modalities. The authors integrate these modalities within a unified survival-analysis framework. The work illustrates how multimodal modeling with censored, unlabeled-negative data can serve geohazards, with implications for other rare-event spatial prediction problems.\n\n## Medical, Scientific, and Domain-Specific Multimodal Applications\n\n**Autonomous Structuring of Radiology Reports Across Modalities at Archive Scale Using an Open-Weight LLM** [9] develops and evaluates a fully automated pipeline converting an entire archive of free-text radiology reports into structured reports without human oversight. A pipeline of 150 hierarchically organized templates, developed at one center and tested at a second, uses gpt-oss-120B with constrained decoding across three steps on one local GPU; template selection was scored against expert labels. This demonstrates archive-scale, locally deployable structuring with cross-center generalization.\n\n**MedPrune: Topology-Efficient Multimodal Multi-Agent Communication Evolution for Medical VQA** [13] targets redundant communication topologies in clinical multi-agent Med-MLLM frameworks, which inflate computation and degrade efficiency. MedPrune formulates diagnosis as a heterogeneous communication process and dynamically prunes both nodes and edges. The result is improved reasoning ability with better token efficiency. It matters as multi-agent medical VQA moves from proof-of-concept to deployable workflows.\n\n**SAFE-MR: Evidence Sufficiency Learning for Selective Multimodal Rumor Detection** [14] separates claim veracity from evidence sufficiency, motivated by cases where missing provenance, duplicated reports, and unresolved contradictions produce confident predictions without adequate support. The framework decomposes image-text posts into verifiable claims, builds a relation-aware claim-evidence graph, aggregates evidence using provenance and contextual compatibility, and uses separate veracity and sufficiency heads for selective prediction. This distinction is essential for deploying rumor detectors where abstention is preferable to unsupported confidence.\n\n**Aligning Multimodal Patient Evidence with Biomedical Knowledge Graphs for Clinical LLMs** [24] notes that clinical questions depend on linking patient multimodal evidence to external biomedical knowledge, yet existing systems rarely represent these links explicitly—so they cannot be traced or ablated. MM-KG represents heterogeneous patient observations and biomedical concepts as separate layers in one typed graph joined by explicit alignment edges, with modality-specific harmonizers converting EHR text, imaging, genomic, and biospecimen data into typed objects. This supports traceable, measurable evidence contributions in clinical LLMs.\n\n**LifeLong Digital Twin: A Unified Modeling Paradigm and Agent Harness for Event-Driven Lifelong Health State Trajectories** [21] seeks to unify longitudinal records, genetic variation, molecular profiles, and environmental histories for whole-person modeling—a major open challenge. The paradigm organizes Life Events into daily Health States accumulated into Lifelong Health Context, wrapped in an agent harness. It provides a conceptual scaffold for event-driven lifelong health trajectories rather than isolated predictive tasks.\n\n**Ramp Metering Control via Hybrid State Deep Reinforcement Learning in Partially Observable Connected Vehicle Environments** [29] addresses freeway on-ramp congestion, where DRL-based ramp metering relies mainly on aggregated macroscopic data and connected vehicles provide vehicle-level observations only at limited penetration. The paper proposes a hybrid observation representation combining macroscopic traffic measurements with a two-channel grid encoding of observed CV presence. This hybrid state design is a template for multimodal RL under partial observability.\n\n**Planetary Geospatial Foundation Models: A New Paradigm for Global Public Health** [27] argues traditional disease prediction suffers from spatial gaps and temporal lags, so outbreaks escalate undetected and chronic burdens are quantified years late. Planetary geospatial foundation models encode multimodal search, mobility, and environmental signals into generalizable place representations that complement epidemiological workflows. The authors present independent global illustrations of this complementarity. It reframes public health prediction as a geospatial representation problem.\n\n## Structured Data Infrastructure, Benchmarks, and Evaluation\n\n**TimeNet: An Extensible Unified Data Infrastructure for Next-Generation Temporal Foundation Models** [5] addresses the fragmentation of task-specific data formats, annotations, and pipelines that constrains temporal foundation model development. TimeNet is an open-source data standard and scalable infrastructure decoupling temporal data from task definitions, representing signals, metadata, annotations, and supervision in a shared extensible model, and supporting multimodal signals with regular, irregular, or ordinal time axes across classification, forecasting, and other task families. It is infrastructure-layer work that could unlock cross-domain TFM generalization.\n\n**InstMoE: Adaptive Multimodal Routing with Specialized Experts** [6] observes that multimodal inputs are heterogeneous not only across modalities but in the information pathways needed for prediction. InstMoE dynamically routes each input to specialized unimodal and cross-modal experts, adapting pathways to input characteristics. The paper also addresses the failure mode where modality-specific variations obscure task-relevant semantics and distort routing. Adaptive routing is a compelling alternative to monolithic fusion.\n\n**ReDiffNet: Differential RGB-Infrared Learning for Low-Light UAV Oriented Vehicle Detection** [19] targets nighttime UAV detection, where illumination variation, headlight glare, shadows, and thermal degradation cause spatially varying modality reliability, while small vehicle extent weakens boundaries and orientation cues. ReDiffNet selects trustworthy observations based on local modality reliability and exploits complementary information where modality preference is ambiguous. This is a concrete instantiation of reliability-aware multimodal fusion for oriented detection.\n\n**MMPostTrainBench: Benchmarking Autonomous Research for Multimodal Post-Training** [18] asks whether LLM agents can sustain multimodal model improvement through iterative experimentation. The benchmark spans eight tasks in image, audio, video, and joint audio-video understanding plus image-grounded software repair, with agents operating from a common base model under fixed budgets, using development feedback before independent evaluation. Evaluation covers target and non-target behaviors. It extends autonomous-research benchmarking beyond language post-training.\n\n**PlotGround: Grounding Plot Digitization in Real Scientific Figures and Their Source Data** [15] notes that scientific figures encode quantitative results not readily machine-readable, yet it is unclear how accurately current models recover plotted values, since existing benchmarks rely on synthetic charts or limited chart types. PlotGround is an automated pipeline building digitization benchmarks from real scientific figures mapped to author-released source data. It enables realistic measurement of whether models truly read scientific plots.\n\n**CVIF: A Criticality-Driven Visual Intervention Framework for Geometric Diagram Understanding in MLLMs** [25] targets geometric diagram understanding, where sparse visual cues and ambiguous symbol-primitive associations cause MLLMs to rely on textual priors conflicting with visual evidence. CVIF is training-free: it localizes critical layers and executes visual interventions during the transition from evidence aggregation to semantic decoding. The inference-time approach avoids retraining while directly addressing visual-evidence neglect.\n\n**DREAM: Dynamic Resolution Assignment For Multimodal Multi-agent Debate** [22] notes that multimodal MAD frameworks give all agents the same fixed visual input, ignoring variation in required visual scale across samples and agents, and that groupthink causes agents to abandon correct deductions for confident but hallucinated peers. DREAM assigns resolution dynamically to address both bottlenecks. It connects visual bandwidth allocation to debate robustness.\n\n**VCLMU: Mechanism-Centric Virtual Cell World Modeling for Perturbation Response** [8] critiques models that map an unperturbed molecular profile and perturbation directly to observations without representing the latent cellular transition. The mechanism-centric world model represents cellular state as Latent Mechanism Units (LMUs) and treats genetic perturbations as actions on latent states, with each LMU combining reusable components. This explicitly models intervention mechanisms, supporting more interpretable virtual-cell prediction.\n\n## Key Takeaways\n\n- **Agentic tool use is a safety blind spot.** Tool-using MLLMs refuse harmful requests significantly less often than in non-tool settings across all tested open- and closed-weight models [1], while multimodal safety evaluation itself needs to move from classification to controllability profiles [26].\n- **More modalities is not monotonically better.** Adding a third modality degrades performance in over half of paired runs under two SSL objectives [28], and fully-trained multimodal models can underperform unimodal baselines under missing-modality inference [11].\n- **Credit assignment, not just reward, is the bottleneck in multimodal RL.** RVCO reframes token credit as conserved routing over perceptual dependence [12], while outcome-guided OPSD stabilizes dense token supervision with correctness signals [17].\n- **Self-improvement needs stronger verification than agreement.** Trinity adds a self-verifier to check image grounding and reference-answer correctness [7]; comparative evidence offers a route to social-intelligence supervision without oracles [2].\n- **Agent evaluation and memory are maturing into structured disciplines.** Agentic cognitive depth profiles trajectories across five operational criteria [3], while MemPilot [16] and SpaC-MEM [20] treat memory curation as a controllable, on-demand process for multimodal histories.\n- **Domain deployments are becoming archive-scale and traceable.** Open-weight pipelines now structure entire radiology archives with constrained decoding [9], and MM-KG makes patient-evidence-to-knowledge links explicit and ablatable [24].\n- **Infrastructure and benchmarks are catching up to multimodal ambitions.** TimeNet unifies temporal data standards [5], MMPostTrainBench tests autonomous multimodal post-training [18], and PlotGround grounds digitization in real figures and source data [15].",
+    "papers": [
+      {
+        "title": "MLLMs Fail to Refuse when Using Tools Agentically",
+        "url": "",
+        "authors": [
+          "Rikiya Takehi",
+          "Ryo Hachiuma",
+          "Shaona Ghosh",
+          "Dan Zhao",
+          "Yu-Chiang Frank Wang",
+          "Yusuke Hirota"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Reinforcement Learning with Comparative Evidence for Social Intelligence",
+        "url": "",
+        "authors": [
+          "Keane Ong",
+          "Yuriel Ryan",
+          "Sabri Boughorbel",
+          "Vladimir Necula",
+          "Jack Wei Lun Shi",
+          "Rui Mao",
+          "Roy Ka-Wei Lee",
+          "Adriel Kuek",
+          "Nancy F. Chen",
+          "Erik Cambria",
+          "Gianmarco Mengaldo",
+          "Paul Pu Liang"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Agentic Cognitive Depth: Operational Criteria for Evaluating LLM Agents",
+        "url": "",
+        "authors": [
+          "Nijesh Upreti",
+          "Chris Sypherd",
+          "Vaishak Belle"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "EnvDreamer: Large-Scale Multimodal-to-Environment Generation for Embodied AI",
+        "url": "",
+        "authors": [
+          "Kabir Swain",
+          "Sijie Han",
+          "Antonio Torralba"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "TimeNet: An Extensible Unified Data Infrastructure for Next-Generation Temporal Foundation Models",
+        "url": "",
+        "authors": [
+          "Martin Maritsch",
+          "Timo Stoffregen",
+          "Thomas Kaar",
+          "Behsad Riemer",
+          "Maxwell A. Xu",
+          "Max Rosenblattl",
+          "Juncheng Liu",
+          "Nicolas Zumarraga",
+          "Yu Yvonne Wu",
+          "Denys Herasymuk",
+          "Sparsh Rastogi",
+          "Hyungjun Yoon",
+          "Bosong Huang",
+          "Arvind Pillai",
+          "Dmytro Lopushanskyy",
+          "Tony Chen",
+          "Robin Deuber",
+          "Yichen Liu",
+          "Shvat Messica",
+          "Dan Li",
+          "Jian Lou",
+          "Yuwei Zhang",
+          "Jaeho Kim",
+          "Renée Rosillo Garcia",
+          "Fan Wu",
+          "Robert Müller",
+          "Elgar Fleisch",
+          "Flora D. Salim",
+          "Dimitris Spathis",
+          "Yuzhe Yang",
+          "Aaqib Saeed",
+          "Daniel McDuff",
+          "Ming Jin",
+          "Markus Kreft",
+          "Kevin O'Sullivan",
+          "Robert Jakob",
+          "Azul Garza",
+          "Paul Schmiedmayer",
+          "Patrick Langer"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "InstMoE: Adaptive Multimodal Routing with Specialized Experts",
+        "url": "",
+        "authors": [
+          "Guimin Hu",
+          "Xiang He",
+          "Yingjian Li",
+          "Zheng Lian",
+          "Boyan Xu",
+          "Ruichu Cai"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Trinity: Self-Evolving Vision-Language Models with a Self-Verifier",
+        "url": "",
+        "authors": [
+          "Youngwan Lee",
+          "Yong-Ju Lee",
+          "Sung Ju Hwang"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "VCLMU: Mechanism-Centric Virtual Cell World Modeling for Perturbation Response",
+        "url": "",
+        "authors": [
+          "Yuwei Miao",
+          "Azim Dehghani Amirabad",
+          "Scott Oloff",
+          "Junzhou Huang",
+          "Tianyu Cui",
+          "Rui Liao"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Autonomous Structuring of Radiology Reports Across Modalities at Archive Scale Using an Open-Weight Large Language Model",
+        "url": "",
+        "authors": [
+          "Friedrich Puttkammer",
+          "Fabian Drexel",
+          "Marlene Fritzsche",
+          "Era Stambollxhiu",
+          "Miriam Kumpf",
+          "Lena Schmitzer",
+          "Lea Schumann",
+          "Lina Xu",
+          "Johannes Moll",
+          "Jannik Lübberstedt",
+          "Zeineb Ben Chaaben",
+          "Anirudh Narayanan",
+          "Hartmut Häntze",
+          "Renato Cuocolo",
+          "Antonios Billis",
+          "Alexander Löser",
+          "Jawed Nawabi",
+          "Marcus R. Makowski",
+          "Cosmin I. Bercea",
+          "Shahrooz Faghihroohi",
+          "Lisa C. Adams",
+          "Keno K. Bressem"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Score-Calibrated Flow for Sampling from Unnormalized Densities with Applications to Generative Online Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Zeyang Li",
+          "Yunan Wang",
+          "Risheek Garrepalli",
+          "Mohammad Ghavamzadeh",
+          "Navid Azizan"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Do More Modalities Always Help? A Geometric Perspective on Missing-Modality Robustness",
+        "url": "",
+        "authors": [
+          "Songyuan Sui",
+          "Zhen Tan",
+          "Mohan Zhang",
+          "Rana Muhammad Shahroz Khan",
+          "Xia Hu",
+          "Tianlong Chen"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Residual Visual Credit Optimization: Conserved Evidence Routing for Multimodal Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Lin Qiu",
+          "Yao Liu",
+          "Diyi Hu",
+          "Hanqing Zeng",
+          "Onur Gungor",
+          "Chujie Chen",
+          "Jiayi Liu",
+          "Jianyu Wang",
+          "XueLin Zheng"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "MedPrune: Topology-Efficient Multimodal Multi-Agent Communication Evolution for Medical VQA Tasks",
+        "url": "",
+        "authors": [
+          "Jiuheng Wan",
+          "Runze Li",
+          "Chen Chen",
+          "Tingyuan Hu",
+          "Daiyang Yu",
+          "Yimin Jing",
+          "Taolin Zhang",
+          "Richang Hong"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "SAFE-MR: Evidence Sufficiency Learning for Selective Multimodal Rumor Detection",
+        "url": "",
+        "authors": [
+          "Shiwen Ni"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "PlotGround: Grounding Plot Digitization in Real Scientific Figures and Their Source Data",
+        "url": "",
+        "authors": [
+          "Yaohui Zhang",
+          "Binxu Li",
+          "Haoyi Duan",
+          "Jiacheng Miao",
+          "Yixin Wang",
+          "Xinran Du",
+          "Chenyue Li",
+          "Shilong Liu",
+          "Kevin Wu",
+          "James Zou"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "MemPilot: Orchestrating On-Demand Multimodal Memory Curation for LLM Agents",
+        "url": "",
+        "authors": [
+          "Haozhen Zhang",
+          "Haodong Yue",
+          "Quanyu Long",
+          "Jianzhu Bao",
+          "Qingyuan Liu",
+          "Tao Feng",
+          "Bohan Liu",
+          "Weida Liang",
+          "Wenya Wang"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Outcome-Guided On-Policy Self-Distillation",
+        "url": "",
+        "authors": [
+          "ZheXu Wang",
+          "Mao-Lin Luo",
+          "Yankun Hong",
+          "Zi-Hao Zhou",
+          "Bo Ye",
+          "Jian Zhao",
+          "Xialiang Tong",
+          "Min-Ling Zhang",
+          "Tong Wei"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "MMPostTrainBench: Benchmarking Autonomous Research for Multimodal Post-Training",
+        "url": "",
+        "authors": [
+          "Yuxin Liu",
+          "Yuxuan Wang",
+          "Zhenxin Lei",
+          "Lingchen Meng",
+          "Yuchong Sun",
+          "Junming Lin",
+          "Hongcheng Liu",
+          "Yunfei Chu",
+          "Qize Yang",
+          "Jin Xu",
+          "Lei Zhang",
+          "Zhendong Mao"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "ReDiffNet: Differential RGB-Infrared Learning for Low-Light UAV Oriented Vehicle Detection",
+        "url": "",
+        "authors": [
+          "Qifan Zhang",
+          "Ziran Zhou",
+          "Ruijie Li",
+          "Jincheng Tang",
+          "Hao Wang",
+          "Qihao Qiao",
+          "Chunliu Wang"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Have I Scene This Before? Spatially Grounded Conversational Memory for Complex Queries in Egocentric Assistants",
+        "url": "",
+        "authors": [
+          "Jiazhou Liang",
+          "Liam Gallagher",
+          "Kiko Chen",
+          "David Guo",
+          "Armin Toroghi",
+          "Yifan Simon Liu",
+          "Scott Sanner"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "LifeLong Digital Twin: A Unified Modeling Paradigm and Agent Harness for Event-Driven Lifelong Health State Trajectories",
+        "url": "",
+        "authors": [
+          "Jin Jiang",
+          "Sean Yates",
+          "Jasper Chong",
+          "Raymond Brooks",
+          "Alex Lawson",
+          "Yuqin Qin",
+          "Liangcai Gao"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "DREAM: Dynamic Resolution Assignment For Multimodal Multi-agent Debate",
+        "url": "",
+        "authors": [
+          "Khanh-Binh Nguyen",
+          "Van Dai Do",
+          "Tien Anh Nguyen",
+          "Svetha Venkatesh",
+          "Hung Le"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Pythia: Toward Foundation World Models for Multimodal Time Series",
+        "url": "",
+        "authors": [
+          "Xilin Dai",
+          "Hongzhou Chen",
+          "Yifan Hu",
+          "Yiding Liu",
+          "Zewei Dong",
+          "Jiang-Ming Yang"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Aligning Multimodal Patient Evidence with Biomedical Knowledge Graphs for Clinical LLMs",
+        "url": "",
+        "authors": [
+          "Jiawen Du",
+          "Arshan Ali Khan",
+          "Chenhao Zhang",
+          "Zachary Plotkin",
+          "Li Shen",
+          "Qi Long",
+          "Yun Li",
+          "Can Chen",
+          "Tianlong Chen",
+          "Nicholas Konz"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "CVIF: A Criticality-Driven Visual Intervention Framework for Geometric Diagram Understanding in MLLMs",
+        "url": "",
+        "authors": [
+          "Jiahui Kang",
+          "Bifan Wei",
+          "Lingling Zhang",
+          "Tianwen Jiang",
+          "Qiuyong Xiao",
+          "Jihong Zhang",
+          "Jun Liu"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Multimodal Safety Evaluation Should Measure Controllability Beyond Classification",
+        "url": "",
+        "authors": [
+          "Junhyeong Park",
+          "Hanwool Lee",
+          "DongGeon Lee",
+          "Dasol Choi",
+          "Yejin Son",
+          "Haon Park",
+          "Youngjae Yu"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Planetary Geospatial Foundation Models: A New Paradigm for Global Public Health",
+        "url": "",
+        "authors": [
+          "Arbaaz Muslim",
+          "Aviv Slobodkin",
+          "Katherine Wheeler-Martin",
+          "Eric Zhou",
+          "John Brittain",
+          "Martin Frasch",
+          "Hamsa Subramaniam",
+          "Jacob Bien",
+          "Hamed Sadeghi",
+          "Sarah Conderino",
+          "Stone Jiang",
+          "Ben Spoer",
+          "Daniel Neill",
+          "Mimi Sun",
+          "Joydeep Paul",
+          "Yun Liu",
+          "Tomer Shekel",
+          "Amy Chung-Yu Chou",
+          "Anna Carter",
+          "Charles Elliott",
+          "Aaron Bell",
+          "Reuven Sayag",
+          "Avinatan Hassidim",
+          "Niv Efron",
+          "Yossi Matias",
+          "Kasumi Widner",
+          "Eduardo Lopez Ortiz",
+          "José Alberto Díaz-Quiñonez",
+          "Moritz U. G. Kraemer",
+          "John Brownstein",
+          "Isaias Fernandes Co",
+          "Etien Luc Koua",
+          "Monica Bharel",
+          "Benjamin Rader",
+          "Lorna Thorpe",
+          "Marc Gourevitch",
+          "Shravya Shetty",
+          "Gautam Prasad"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "On the Geometry of Multimodal Saturation: Riemannian VICReg",
+        "url": "",
+        "authors": [
+          "Nessim Ben Abbes",
+          "Duc Han Le",
+          "Sabri Mtibaa",
+          "Van-Tam Nguyen"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Ramp Metering Control via Hybrid State Deep Reinforcement Learning in Partially Observable Connected Vehicle Environments",
+        "url": "",
+        "authors": [
+          "Youcef Mehamlia",
+          "Nadir Farhi",
+          "Meriem Bouali"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Multimodal Deep Survival Analysis for Sinkhole Susceptibility",
+        "url": "",
+        "authors": [
+          "Lucas Yuan",
+          "Minhee Kim",
+          "Zihan Li",
+          "Chunli Dai",
+          "Sanduni S. Disanayaka Mudiyanselage",
+          "Ming Ye",
+          "Kani Fu"
+        ],
+        "date": "2026-10-06"
+      },
+      {
+        "title": "Conditional Flow Matching for Single-Neuron Electrophysiology: Capturing Multimodal Responses Across Stimuli",
+        "url": "",
+        "authors": [
+          "Cameron Schofield",
+          "Luca Ghafourpour",
+          "Philip H. Wong",
+          "Costas A. Anastassiou",
+          "Richard E. Turner"
+        ],
+        "date": "2026-10-06"
+      }
+    ]
+  }
+]
