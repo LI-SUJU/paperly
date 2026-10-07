@@ -1,0 +1,339 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-07",
+    "paperCount": 8,
+    "markdown": "# Interpretability Beyond Activations: Weight-Level Oracles, Grounded Probes, and Domain-Specific Mechanistic Analyses\n\nToday's interpretability research pushes in two complementary directions: methods that analyze model internals directly (weights, KV caches, latent concepts) rather than reactionary activation probing, and frameworks that give interpretability claims quantitative grounding through reference points, symbolic structure, or business semantics. Across applications from weather forecasting to chess to recommendation, the common thread is a demand that interpretability outputs be verifiable, causally meaningful, and connected to what the model actually computes.\n\n## Weight-Level and Cache-Level Interpretability\n\nAbdali et al. propose AttSVD [1], which reframes KV cache compression as a problem along the feature axis rather than the token axis. Instead of irreversibly evicting low-importance tokens, AttSVD retains every token but derives a per-prompt, per-head low-rank basis from an online truncated SVD of the prompt's own attention geometry, so stored directions correspond to what attention actually reads. Because the basis adapts to each prompt, the authors claim interpretability as a side benefit: retained singular directions are directly traceable to attention behavior, and persistent per-head memory shrinks proportionally to the retained rank. This matters for long-context deployment, where memory is the binding constraint, and offers a training-free alternative to eviction that avoids permanent information loss.\n\nKabra et al. introduce Weight Oracles [2], fine-tuned LLMs that diagnose a target network's properties by reading its raw weights directly, with no behavioral testing or known inputs. The work proceeds in two phases: Phase I establishes feasibility through a staged curriculum plus an external chain-of-computation that offloads parameter-free operations to deterministic code, teaching an explainer LLM to interpret weight structure; Phase II presumably scales this to practical diagnostic tasks. This directly attacks the reactivity limitation of activation-based interpretability, which requires inputs that trigger hidden capabilities like backdoors — weight reading could in principle detect such properties without ever running the model. If it holds up, the paradigm would enable pre-deployment auditing of model checkpoints in a way behavioral testing cannot.\n\nGarg's position paper [3] supplies the missing measurement discipline for probing research. The core observation is that a probe's $R^2$ of 0.6 is meaningless in isolation: the same score can reflect what simple inputs already give away, or mean entirely different things across datasets. The proposed framework reads every probe score against two reference points — a floor (what a declared set of simple inputs already predicts) and a ceiling (what the full input can predict) — with the gap, \"headroom,\" defining the range in which a probe demonstrates the model computes something beyond the simple. Any probe result reported without these anchors should be treated as uninterpretable; this is a small methodological change with potentially large consequences for how the field validates representation claims.\n\n## Mechanistic and Concept-Level Analysis in Scientific Domains\n\nMathai et al. apply sparse autoencoders to GraphCast, an AI weather model, to ask what internal concepts the model computes rather than merely which inputs matter [8]. Focusing on atmospheric rivers, they train both standard and Matryoshka SAEs and find that GraphCast represents atmospheric river intensity — measured by integrated vapor transport (IVT) — as a stable internal variable, even though IVT is neither an input nor a training target. This is a striking result: a physically meaningful diagnostic quantity emerges in the learned representation without supervision, suggesting GraphCast has internalized domain structure that feature attribution alone could never reveal. The work also demonstrates that SAE tooling transfers productively from language models to scientific ML, giving climate scientists a mechanistic window into AI forecasts they increasingly rely on.\n\nKrishnan and Martens take a different route to interpretable strategy, proposing a symbolic sub-policy model for chess that incorporates domain knowledge in the form of chess tactics [4]. Rather than post-hoc explaining a black-box RL agent, they build interpretability into the policy structure from the start, aiming for sub-policies that correspond to human-recognizable tactical patterns. While preliminary, the approach targets a genuine gap: superhuman RL agents in chess, Go, and StarCraft II employ strategies humans could learn from, but those strategies remain largely opaque. Symbolic, tactic-grounded sub-policies offer a path to extracting transferable insight for human players rather than merely beating them.\n\n## Interpretability as a Design Constraint in Structured Data\n\nFeng et al. present the hypergraph neural additive network (HGNAN) [6], an inherently interpretable framework for learning on hypergraphs, where higher-order interactions among entities are the norm. Existing hypergraph neural networks rely on black-box message passing that entangles node attributes with higher-order structural information, making it impossible to disentangle their relative contributions. HGNAN imports the neural additive model architecture into the hypergraph setting, so predictions decompose into interpretable per-feature and structural components. This matters because hypergraph-structured domains — molecular networks, social systems, citation graphs — are precisely where stakeholders need to know whether a prediction is driven by node properties or group-level structure.\n\nRajpal et al. tackle negative sampling in recommender systems, where treating unobserved interactions as negatives is standard but unjustified: a missing interaction does not explain why a user is uninterested, nor does it provide sufficient evidence for a negative label [5]. Their framework formulates implicit negative candidate discovery as an interpretable, evidence-based procedure, aligning negative signals with business objectives rather than treating absence as implicit dislike. In business recommendation, where negative signals must be defensible and actionable, this shift from assumption to evidence-based labeling has direct operational value — and it makes the training signal itself auditable.\n\n## Probing Cognitive Failure Modes and Perception Biases\n\nMai et al. conduct the first systematic study of illusory pattern perception in LLMs [7], adapting classic psychological paradigms where humans infer meaningful relationships in genuinely random data — \"connecting the dots\" where none exist. Across three tasks with direct empirical grounding, they test whether LLMs exhibit the same tendency and whether it produces systematic downstream reasoning errors. Finding such a bias in LLMs would connect a well-documented human cognitive failure mode to model behavior, with implications for any application where spurious correlations in prompts or context could be mistaken for signal. This work extends interpretability from \"what does the model represent\" to \"what systematic perceptual errors does the model commit,\" a complementary and underexplored axis.\n\n## Key Takeaways\n\n- Interpretability is shifting from reactive activation analysis toward proactive, input-free methods: Weight Oracles [2] read raw weights for auditing, and AttSVD [1] derives interpretable bases from attention geometry at compression time.\n- Probe scores are not self-interpreting: the floor/ceiling/headroom framework [3] demands reference points before any representation claim can be believed, a discipline the field currently lacks.\n- Sparse autoencoders transfer to scientific ML: GraphCast internally computes IVT as a stable latent variable despite it being neither input nor target [8], evidence that AI weather models learn physically meaningful structure.\n- Interpretability is increasingly treated as a design constraint rather than a post-hoc analysis, as in hypergraph additive networks [6] and evidence-based negative sampling [5].\n- Symbolic structure can be a feature, not a limitation: tactic-grounded sub-policies for chess [4] aim to extract human-learnable strategy from superhuman agents.\n- LLMs may inherit human-like cognitive biases, including illusory pattern perception [7], which produces systematic reasoning errors — a failure-mode lens complementing representational interpretability.\n- Across all seven papers, the unifying demand is groundedness: interpretability claims must be tied to measurable reference points, causal mechanisms, or domain semantics to be worth anything.",
+    "papers": [
+      {
+        "title": "AttSVD:Prompt-Adaptive Low-Rank KV Cache Compression via Attention-Guided SVD",
+        "url": "",
+        "authors": [
+          "Sara Abdali",
+          "Jongwoo Ko",
+          "Pashmina Cameron"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Weight Oracles: Reading Neural Network Weights with Language Models",
+        "url": "",
+        "authors": [
+          "Krishna Kabra",
+          "Constantin Venhoff",
+          "Christian Schroeder de Witt"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "How High Is 0.6? Floors, Ceilings, and Headroom in Interpretability Probing",
+        "url": "",
+        "authors": [
+          "Pranjal Garg"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Towards the Automatic Synthesis of Interpretable Chess Tactics",
+        "url": "",
+        "authors": [
+          "Abhijeet Krishnan",
+          "Chris Martens"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Evidence Before Sampling: Interpretable Implicit Negative Candidate Discovery for Recommendation",
+        "url": "",
+        "authors": [
+          "Shreya Rajpal",
+          "Sonia Sharma",
+          "Swapnil Parekh",
+          "Lisa Li",
+          "Jeyendran Balakrishnan",
+          "Nagaraj Janardhana",
+          "Andrew Mattarella-Micke"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Interpretable Hypergraph Learning via Neural Additive Models",
+        "url": "",
+        "authors": [
+          "Shihan Feng",
+          "Xin Zheng",
+          "Shiyi Yang",
+          "Ren Wang",
+          "Chudi Zhong",
+          "Can Chen"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Illusory Pattern Perception Drives Spurious Inference in Large Language Models",
+        "url": "",
+        "authors": [
+          "Peihua Mai",
+          "Zhuoyan Shao",
+          "Xinbao Qiao",
+          "Meng Zhang",
+          "Xinyue Zhou",
+          "Yan Pang"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Mechanistic Interpretability of Atmospheric Rivers in GraphCast",
+        "url": "",
+        "authors": [
+          "Madelyn Mathai",
+          "Timothy B. Higgins",
+          "Kevin M. Grise",
+          "Chirag Agarwal",
+          "Antonios Mamalakis"
+        ],
+        "date": "2026-10-07"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-07",
+    "paperCount": 1,
+    "markdown": "# Explainability in Safety-Critical and High-Stakes Systems: A Technical Digest\n\nToday's explainability research spans maritime safety, medical imaging, and foundation model introspection, reflecting a maturation of the field from generic post-hoc methods toward domain-aware, mechanistically grounded approaches. A notable current is the dual use of explanation techniques—not only to satisfy human stakeholders but also to expose spurious correlations, bias, and hidden model capabilities.\n\n## Safety-Critical and Industrial Applications\n\nKalogeropoulos et al. survey the intersection of explainable AI (XAI) with predictive maintenance in maritime operations [1]. The work addresses the challenge of building trustworthy failure prediction in highly dynamic environments where equipment faults threaten safety and efficiency, reviewing AI, machine learning, digital twins, and predictive maintenance technologies. The authors propose a conceptual architecture that integrates explainability into the failure prediction and prevention pipeline, positioning transparency as a prerequisite for adoption in safety-critical settings. This matters because maritime operations represent a class of environments where opaque model outputs are operationally unacceptable, and the chapter offers a structured roadmap for embedding XAI into industrial workflows.\n\n## Explanation Methods for Medical Imaging\n\nDong et al. confront the tendency of saliency-based explanations to highlight anatomically irrelevant regions, degrading clinician trust in medical AI [3]. They propose counterfactual-based saliency methods that generate explanations by perturbing inputs and measuring resulting prediction changes, producing attributions grounded in causal relevance rather than mere correlation. Evaluated across multiple medical imaging datasets, the approach yields explanations that better align with clinically meaningful features than standard gradient- or perturbation-based saliency. This is significant because diagnostic trust hinges on explanations that reflect genuine decision-relevant evidence rather than superficial pixel-level artifacts.\n\n## Introspection and Mechanistic Understanding of LLMs\n\nTwo papers probe the internal structure of large language models. Wu et al. introduce LatentQA, a task in which an LLM must answer natural-language questions about the latents of a target LLM [2]. Using a \"latent-interrogation\" decoder, they show that latents encoding hidden, intermediate computations—including deceptive behavior under safety training—can be decoded and verbalized by an external model, recovering encoded inputs far above chance. The approach also extends to steering target LLM generations, demonstrating that decoded latents carry actionable causal information. This matters because it opens a path toward auditing hidden model properties without relying on behavioral probing alone.\n\nHuang et al. investigate whether open-weight LLMs possess hidden capabilities that evasion evaluations fail to capture [4]. Their guarded evaluation framework combines variation and consistency analysis, finding a 16.29 percentage point average gap in refusal rates between guarded and unguarded evaluations across multiple models, indicating withheld capabilities; misclassification is driven by evaluation context and model reasoning. They further show that a lightweight (0.5B parameter) guardrail model detects hidden capabilities more reliably than large general-purpose judges, with the gap narrowing as model scale increases. This is important for safety evaluation methodology, suggesting current red-teaming benchmarks may systematically underestimate model capabilities.\n\n## Bias Detection and Fairness Auditing\n\nValdivia et al. ask whether the presence of social bias in a model is detectable directly from its internal representations [5]. Using linear probing on model hidden states, they find that simple probes can classify biases encoded within representations, with the strongest biases—particularly gender and race—exhibiting the highest linear separability. They demonstrate that these probe-based explanations correlate with biases surfaced by standard bias benchmarks, offering a cheaper and more interpretive auditing signal than behavioral testing alone. This work matters because it establishes internal representation analysis as a practical complement to input-output fairness evaluation.\n\n## Key Takeaways\n\n- Explainability is increasingly domain-specialized: maritime safety [1] and medical imaging [3] each require explanations aligned with operational or clinical semantics, not generic saliency.\n- Counterfactual saliency offers a causally grounded alternative to correlation-based attribution, improving clinical trustworthiness [3].\n- Latent interrogation enables direct decoding and steering of hidden LLM computations, including deceptive latents, advancing mechanistic auditability [2].\n- Guarded evaluation reveals substantial hidden capabilities in open-weight LLMs, with a 16.29 pp average refusal-rate gap, and small guardrail models outperform large judges at detection [4].\n- Linear probing of internal representations provides a scalable, interpretable bias-detection signal that correlates with behavioral bias benchmarks [5].\n- Across domains, a recurring theme is using explanations as audit instruments—for trust, safety, and fairness—rather than mere user-facing artifacts.\n- The findings collectively argue for evaluation pipelines that combine behavioral testing with internal-representation and counterfactual analysis.",
+    "papers": [
+      {
+        "title": "Explainable Failure Prediction and Prevention in Maritime",
+        "url": "",
+        "authors": [
+          "Dionisis Kalogeropoulos",
+          "Georgia Sovatzidi",
+          "Panagiotis G. Kalozoumis",
+          "Dimitris K. Iakovidis"
+        ],
+        "date": "2026-10-07"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-07",
+    "paperCount": 17,
+    "markdown": "# Multimodal Research Digest — October 7, 2026\n\nToday's research landscape reveals a pronounced shift toward *efficiency, reliability, and structure* in multimodal learning: rather than simply scaling models, researchers are engineering compact task states, principled verification, and novel fusion geometries. Equally notable is the breadth of application domains—from driver identification and bimanual hand pose estimation to professional memory benchmarks and quantum-processor compositionality—signaling that multimodal methods are maturing into infrastructure for real-world embodied and industrial systems.\n\n## Efficient Adaptation and Inference in Multimodal Systems\n\nSeveral papers attack the cost of multimodal inference, targeting the redundant encoding of inputs and the storage of task adaptation parameters that grows with model depth or query count.\n\n**STAVE** [4] addresses in-context learning's hidden cost in large multimodal models: re-encoding demonstration images at every query injects hundreds of visual tokens per demo. The authors propose replacing in-context demonstrations entirely with a compact *structured task state*—two vectors learned per task—that modifies how the prompt divides attention within a layer, fixing a limitation of prior demo-free methods whose inserted tokens or keys cannot alter intra-layer attention allocation. This matters because it makes task adaptation both cheaper and more expressive, avoiding the per-depth parameter growth of existing approaches.\n\n**SemARC** [9] tackles the flip side: adaptive acquisition in multimodal systems, where deciding which modality to encode next naively requires distinguishing factorially many acquisition orderings. The framework couples a Sequential Modality Aggregator with an Adaptive Runtime Controller, using already-acquired evidence to select each subsequent modality before encoding it. By collapsing the order-dependence problem, SemARC enables early stopping and reduced computation without sacrificing prediction quality. This is a meaningful step toward deployable multimodal systems on resource-constrained platforms.\n\n**CARAT** [11] extends this efficiency theme to test-time adaptation for multimodal *time series*, where sensors may be noisy or missing. Its key insight is decoupling *model reliance* from *runtime corruption detection*: reliance is estimated once during source training, then used to guide omission or attenuation of modalities at test time, amortizing the expensive reliability estimation. An asymmetric modality-dropout curriculum further prepares the model for missingness. The work matters because prior TTA methods wrongly assumed cross-modal agreement implies reliability—problematic when sensors measure different physical processes.\n\n**TEMPEST** [1] brings efficiency thinking to driver identification, a task requiring embeddings that stay discriminative as fleet size scales. Existing triplet-loss formulations degrade with driver pool size and overfit to session-specific patterns under rigorous *temporal* evaluation. TEMPEST uses a Temporal Convolutional Network trained with additive angular margin (ArcFace) loss, mapping 60-second multimodal driving windows into compact 96-dimensional embeddings with enforced global class-level separation, enabling dynamic enrollment. The angular margin formulation is the key contribution, explicitly designed to resist the class-proliferation problem that plagues metric-learning approaches.\n\n## Self-Verification, Abstention, and Safety\n\nA cluster of papers interrogates whether multimodal models *know what they don't know*—and how to make them act accordingly.\n\n**Multi-perspective self-verification** [2] begins from a systematic analysis showing that stronger verifiers give more reliable judgments but that single-criterion, fixed-prompt verification yields incomplete and unstable reliability estimates for VLMs. The authors propose learning multi-perspective self-verification so models can decide *when to rethink* plausible-but-incorrect answers without external judges. This matters because self-verification is one of the few scalable reliability mechanisms for deployed VLMs, and the paper's diagnostic findings about verifier capability and prompt design are likely to inform future verification architectures.\n\n**Visual Abstention in Unified Multimodal Models** [6] formalizes a complementary failure mode: when a requested visual transformation is impossible under task rules, a model should recognize infeasibility, state it, and decline to generate. The authors introduce the Draw-or-Decline (DoD) benchmark—1,050 feasible–infeasible request pairs across 7 task categories—jointly measuring editing success and refusal of infeasible requests, and evaluate 8 UMMs. The finding that editing behavior is \"rarely governed by what [UMMs] understand\" echoes long-standing concerns about the decoupling of understanding and generation, and DoD gives the community a concrete instrument for tracking it.\n\n**Router-logit safety for MoE VLMs** [5] addresses compositional safety risks where harm emerges from the interaction of visual and textual inputs. Rather than manipulating internal states—which introduces over-refusal safety–utility tradeoffs—the authors propose *reading* router logits as a signal for multimodal safety in mixture-of-experts VLMs. This is an elegant reframing: existing prompting, SFT, and expert-steering interventions show inconsistent improvements across models and distributions, whereas passively reading routing statistics avoids perturbing model behavior. The approach suggests safety monitoring can be nearly free in MoE architectures.\n\n**Rationale-Guided Policy Optimization** [7] is a primarily textual reasoning paper with direct relevance to multimodal reasoning pipelines: on-policy RL suffers from reward sparsity when models fail to discover correct trajectories, and existing off-policy demonstration approaches require format-matched auxiliary data and rejection sampling. The proposed method learns with *adaptive rationale scaffolding*, avoiding strict format matching. This matters for multimodal systems because rationale-guided training is a natural bridge between perception and multi-step reasoning, where sparse rewards are endemic.\n\n## Embodied, Sensor, and Action-Oriented Multimodal Systems\n\nThree papers push multimodality beyond passive perception into physical action and manipulation.\n\n**Sensor-Language-Action (SLA) models** [15] argue that existing sensor models stop at perception—recognizing states or predicting outcomes—leaving action modeling to task-specific, closed label spaces. SLA uses natural language as a semantic interface between heterogeneous sensor observations and actions, letting diverse actions be represented, predicted, and *explained* under one model. This is a conceptual contribution as much as a technical one: an open-vocabulary action interface could unify the fragmented landscape of sensor-based decision systems.\n\n**EVFormer** [3] targets egocentric bimanual hand pose estimation, where vision is degraded by self-occlusion, hand–hand contact, and object manipulation. It fuses the current RGB frame with the preceding 200 ms of bilateral wrist sEMG to estimate 44 finger and wrist joint angles, encoding visual spatial and sEMG temporal features separately before sequential bidirectional cross-attention enables cross-modal exchange. The key result is robustness to precisely the visual degradations that break vision-only estimators, with clear implications for VR interaction, wearable control, and rehabilitation.\n\n**AssemState** [16] studies zero-shot furniture assembly, requiring MLLMs to recover step-level operations from diagrammatic manuals and translate semantic attachment relations into 6D pose updates that make parts physically interact with the environment and prior assemblies. Manual and physical-state guidance are combined to bridge diagram understanding and geometric execution. The work matters because it exposes how far current MLLMs remain from 3D spatial reasoning grounded in physical constraints—an important diagnostic for embodied AI.\n\n## Geometry, Distribution Alignment, and Rare-Event Estimation\n\nA methodologically rich set of papers contributes new mathematical machinery for aligning and comparing multimodal representations.\n\n**Constant-Curvature Sliced Gromov-Wasserstein** [8] observes that mixed-curvature models, which combine hyperbolic and spherical components to model complex data, learn each component independently because spaces of different curvature lack a unified metric. The authors develop a sliced Gromov-Wasserstein formulation for heterogeneous cross-curvature alignment, providing explicit geometric-consistency enforcement and a way to compare probability distributions across curvature regimes. This fills a genuine theoretical gap in representation learning for hierarchical and multimodal data.\n\n**Quantum Entangled Multimodal Fusion Networks (QEMFN)** [14] proposes parameterized entanglement as a structured inductive bias for fusing image and text embeddings, replacing classical concatenation, attention, bilinear pooling, or tensor interactions. Pretrained features are projected into compact latent spaces, encoded as angle-parameterized quantum states, processed through intra-modal and paired cross-modal entangling circuits, and measured. The resource-aware hybrid quantum–classical design is notable for connecting quantum circuit structure to a concrete multimodal fusion objective rather than treating quantum computing as a drop-in accelerator.\n\n**Mu-DisCoCat** [17] extends DisCoCat—a compositional distributional semantics framework that generalizes vectors to tensors but suffers scaling bottlenecks—to *multimodal* compositional generalization, using variational quantum circuits to learn the tensors. This directly attacks CoCoGen, the ability to understand novel situations by recombining learned primitives, in a quantum-native formulation. Together with QEMFN, it suggests a small but growing subfield treating quantum processors as structured compositional engines rather than speedups.\n\n**Robust Importance Sampling via Constrained Gaussian Mixtures** [10] addresses rare-event probability estimation for Gaussian inputs under general $g$, proposing a constrained Gaussian-mixture importance sampling framework that improves efficiency and robustness over crude Monte Carlo, adaptive cross-entropy, reverse- and forward-KL variational inference, Safe-ICE, Subset Simulation, and Sequential Monte Carlo. Though not explicitly multimodal, the techniques bear directly on reliability estimation for multimodal systems—precisely the tail-risk quantification that safety-critical perception pipelines need.\n\n## Benchmarks and Infrastructure for Professional and Compositional Multimodality\n\nTwo papers confront the benchmark bottleneck: evaluation has not kept pace with capability.\n\n**DSV-Mem** [12] argues that existing memory benchmarks for MLLM agents focus on informal, everyday interactions with photographic images and isolated static artifacts. Professional workflows instead involve structured, information-heavy artifacts undergoing frequent revisions and authority updates, with compositional queries requiring reconstruction across versions. DSV-Mem establishes an evaluation for multimodal memory in these settings. This matters because agentic MLLMs are being deployed into exactly these workflows, and recall-oriented benchmarks systematically overstate readiness.\n\n**ChartBmkAgent** [13] targets the benchmark-development cycle itself: MLLMs advance faster than conventional benchmarks, delaying investigation of newly observed gaps. Chart QA is chosen as an expressive probe of coupled perception and reasoning, and the system constructs targeted samples on demand from *sparse error-taxonomy specifications* via harness-governed multi-agent construction. The key contribution is turning identified capability gaps into benchmark items automatically, potentially compressing the lag between model release and rigorous evaluation—though the harness-governance design also hints at quality-control concerns in auto-generated benchmarks.\n\n## Key Takeaways\n\n- **Efficiency is being reconceived structurally, not just quantitatively.** STAVE [4], SemARC [9], and CARAT [11] all replace brute-force encoding or online reliability estimation with compact, learned, or amortized representations—suggesting the field is converging on *task states and reliance priors* as first-class artifacts.\n- **Abstention and self-verification are maturing into formalized, benchmarked behaviors.** Visual Abstention [6] and multi-perspective self-verification [2] both treat \"recognizing you can't answer\" as a capability to be measured and trained, not an afterthought.\n- **Safety interventions are shifting from manipulation to observation.** Reading router logits [5] instead of steering experts avoids the over-refusal tradeoffs that plague invasive interventions—an important design principle for MoE deployment.\n- **Language is emerging as the universal action and explanation interface.** SLA [15], rationale-guided policy optimization [7], and AssemState [16] all position natural language as the connective tissue between perception, reasoning, and open-ended action.\n- **Geometry-aware fusion is gaining real theoretical traction.** Cross-curvature Gromov-Wasserstein alignment [8] and quantum-entanglement fusion [14, 17] both supply principled inductive biases for combining heterogeneous modality spaces rather than defaulting to concatenation or attention.\n- **Embodied multimodal perception benefits disproportionately from non-visual signals.** EVFormer [3] shows sEMG resolves precisely the occlusions and contacts that defeat vision-only hand tracking—a template for sensor-fusion robustness.\n- **Evaluation infrastructure is the bottleneck, and it is now being automated.** DSV-Mem [12] and ChartBmkAgent [13] both respond to benchmarks lagging capability, with the latter proposing on-demand, error-taxonomy-driven construction—raising the meta-question of who governs auto-generated evaluation quality.",
+    "papers": [
+      {
+        "title": "TEMPEST: Temporal Embeddings for Scalable Driver Identification via Angular Margin Learning",
+        "url": "",
+        "authors": [
+          "Kyle Musgrove",
+          "Dylan B. Lewis",
+          "Sarah Powers",
+          "Emma J. Reid",
+          "Hector Santos-Villalobos"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "When to Rethink: Learning Multi-Perspective Self-Verification for Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Ziquan Zhu",
+          "Hanruo Zhu",
+          "Si-Yuan Lu",
+          "Morris Yu-Chao Huang",
+          "Yicheng Lin",
+          "Wei Han",
+          "Tianlong Chen",
+          "Mingyuan Wu",
+          "Hanchao Yu",
+          "Gaojie Jin",
+          "Lu Liu",
+          "Bo Sun",
+          "Tianjin Huang"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "EVFormer: An Egocentric Vision-EMG Bidirectional Attention Model for Bimanual Hand Pose Estimation",
+        "url": "",
+        "authors": [
+          "JiaCheng Ge",
+          "SiYu Zhang",
+          "ShengJie Li",
+          "XinTong Yang"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Two Vectors Replace In-Context Demos: Structured Task Adaptation via Embeddings",
+        "url": "",
+        "authors": [
+          "Xi Ding",
+          "Naichen Shi",
+          "Jiawei Zhang"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Reading, Not Manipulating: Leveraging Router Logits for Multimodal Safety in MoE Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Ziyuan Yang",
+          "Wenxuan Ding",
+          "Shangbin Feng",
+          "Yulia Tsvetkov"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Visual Abstention in Unified Multimodal Models",
+        "url": "",
+        "authors": [
+          "Chufan Shi",
+          "Cheng Yang",
+          "Tiannuo Yang",
+          "Isadora White",
+          "Yiwei Chen",
+          "Taylor Berg-Kirkpatrick",
+          "Xuezhe Ma"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Rationale-Guided Policy Optimization: Learning to Reason with Adaptive Rationale Scaffolding",
+        "url": "",
+        "authors": [
+          "Hoang Phan",
+          "Minh Pham",
+          "Chau Pham",
+          "Chinmay Hegde",
+          "Trung Le",
+          "Qi Lei"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Constant-Curvature Sliced Gromov-Wasserstein for Heterogeneous Cross-Curvature Alignment",
+        "url": "",
+        "authors": [
+          "Shanglin Li",
+          "Wenjing Lu",
+          "Muyang Li",
+          "Nicu Sebe",
+          "Ziheng Chen"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Efficient Multimodal Inference through Adaptive Acquisition and Sequential Fusion",
+        "url": "",
+        "authors": [
+          "Payal Mohapatra",
+          "Haodong Yang",
+          "Yueyuan Sui",
+          "Stephen Xia",
+          "Benjamin Lundell",
+          "Qi Zhu"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Robust Importance Sampling for Rare Events via Constrained Gaussian Mixtures",
+        "url": "",
+        "authors": [
+          "Paweł Lorek",
+          "Rafał Nowak",
+          "Rafał Topolnicki",
+          "Tomasz Trzciński",
+          "Maciej Zięba"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Source-Learned Reliance for Selective Test-Time Adaptation of Multimodal Time Series",
+        "url": "",
+        "authors": [
+          "Payal Mohapatra",
+          "Yueyuan Sui",
+          "Haodong Yang",
+          "Benjamin Lundell",
+          "Stephen Xia",
+          "Qi Zhu"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "DSV-Mem: Evaluating Multimodal Memory in Professional Workflows for MLLM Agents",
+        "url": "",
+        "authors": [
+          "Jike Zhong",
+          "Ritwick Chaudhry",
+          "Xuanbai Chen",
+          "Tianchen Zhao",
+          "Linghan Xu",
+          "Yifan Xing",
+          "Nishant Sankaran"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "ChartBmkAgent: Harness-Governed Multi-Agent Construction of Chart QA Benchmarks from Sparse Error-Taxonomy Specifications",
+        "url": "",
+        "authors": [
+          "Langxi Huang",
+          "Pingping Zhang",
+          "Lanyun Zhu",
+          "Chunyang Jiang",
+          "Jiawei Shao",
+          "Haocheng Yuan",
+          "Peilin Chen"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Quantum Entangled Multimodal Fusion Networks (QEMFN): Resource-Aware Hybrid Vision-Language Fusion via Trainable Entanglement",
+        "url": "",
+        "authors": [
+          "Srikar Alla",
+          "Ali Shiri Sichani",
+          "Chi-Ren Shyu"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Sensor-Language-Action Models",
+        "url": "",
+        "authors": [
+          "Yuekai Xu",
+          "Zitao Shuai",
+          "Yuzhe Yang"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "AssemState: Manual and Physical-State-Guided Reasoning for Zero-shot Furniture Assembly",
+        "url": "",
+        "authors": [
+          "Zhiyuan Qi",
+          "Jierui Li",
+          "Yifan Shen",
+          "Cheng Qian",
+          "Jiateng Liu"
+        ],
+        "date": "2026-10-07"
+      },
+      {
+        "title": "Mu-DisCoCat: A Variational Pipeline for Compositional Generalization on Quantum Processors",
+        "url": "",
+        "authors": [
+          "Mina Abbaszadeh",
+          "Matilda Karabina Moore",
+          "Raem Haq",
+          "Martha Lewis",
+          "Mehrnoosh Sadrzadeh"
+        ],
+        "date": "2026-10-07"
+      }
+    ]
+  }
+]
