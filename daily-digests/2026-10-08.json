@@ -1,0 +1,314 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-08",
+    "paperCount": 8,
+    "markdown": "# Interpretability Research Digest — 2026-10-08\n\nToday's interpretability landscape spans from microscopic circuit-level analysis of transformers to wearable sensing and human-learning dynamics, reflecting growing ambition to make opaque systems legible at every scale. A common thread is the push beyond post-hoc explanation toward structurally verifiable understanding: constrained geometries, validated model organisms, and mechanistically identifiable parameters.\n\n## Circuits, Geometry, and the Inner Lives of Transformers\n\n**U-Space** [1] tackles the problem that language models can express incorrect conclusions with fluent, authoritative tone, making it hard to know when to defer to them. The authors investigate when and why uncertainty arises in LLMs, motivated by the limitations of existing uncertainty quantification methods that require repeated generations or separately trained components. Their framing suggests that reliable per-answer confidence estimation remains an open problem precisely because uncertainty is not a simple surface signal but an emergent property of internal computation.\n\n**SafeEvo** [2] addresses a gap in safety interpretability: prior work has focused on safety-related representations, attention heads, or neurons *after* alignment, while overlooking the safety mechanisms present in pretrained-only models and how they evolve across alignment checkpoints. The framework adopts a circuit perspective—analyzing sparse subgraphs of the LLM—to trace how safety mechanisms emerge and transform through the alignment process. This matters because understanding safety as a *trajectory* rather than a static endpoint could reveal where alignment interventions succeed or fail mechanistically.\n\n**Fully Interpretable Minimal Transformers** [5] constrains embedding dimension and head size to 2, enabling complete two-dimensional visualization of internal representations, including embeddings, query/key/value transforms, attention outputs, residual streams, and decision boundaries. The central claim is elegant: the learned geometry *implies* an algorithm, and the arrangement of points and boundaries in R² can be read as a step-by-step procedure. Trained on a simple recency-recall task, the model serves as a proof of concept that interpretability can be designed in rather than reconstructed after the fact.\n\nCollectively, these three papers represent a spectrum from emergent (U-Space), evolutionary (SafeEvo), and engineered (Minimal Transformers) interpretability. [1] and [2] work with full-scale LLMs where understanding is painstaking, while [5] shows what becomes possible when architecture itself is constrained for legibility. The tension between ecological validity and interpretive clarity runs through all three.\n\n## Interpretability by Construction: Distillation and Tree-Based Models\n\n**From Prompts to Trees** [3] confronts the trade-off between LLMs' rich world knowledge and their high inference costs and limited interpretability when applied to tabular classification, versus decision trees' speed and transparency but poor performance in low-data regimes. The proposed framework distills LLM knowledge into interpretable decision trees under few-shot learning, avoiding the unstable and inefficient approach of directly prompting an LLM to generate full trees. By bridging these paradigms, the work offers a path to tabular models that inherit LLM generalization while remaining transparent and cheap to deploy.\n\n**Temporally Interpretable Differentiable Decision Trees** [8] identifies a mismatch in sequential decision-making: current DDTs provide discretely visualizable, automatically differentiable policies, but their single-timestep tree structure does not align with humans' multi-timestep planning. The authors extend DDTs to be temporally interpretable, making the tree's decision logic legible across the timescales on which humans actually reason about agent behavior. This is important for safe autonomy, where transparency must hold not just per-action but across trajectories.\n\nBoth papers treat interpretability as a design objective rather than an afterthought. [3] distills opaque knowledge into transparent structure, while [8] reshapes an existing transparent structure to match human temporal cognition. Together they illustrate that interpretability constraints can *improve* rather than merely constrain model utility—[3] by combining complementary strengths, [8] by aligning representations with how humans actually plan.\n\n## Validation and Trustworthiness of Interpretability Methods\n\n**How to train your model organism** [7] argues that the prevailing practice of training model organisms of alignment-relevant behaviors (backdoors, sycophancy, spurious correlations) to a single objective—installing the target behavior—is insufficient. The authors propose validating model organisms against three objectives with associated metrics: target-behavior installation, general-capability preservation (parametric knowledge, chat quality), and output naturalness (CoT and activations). Re-visiting two publicly released model organisms under this framework, they demonstrate that single-objective training can produce organisms that poorly represent the phenomena they are meant to study. This matters because whitebox interpretability techniques are benchmarked on these organisms; if the organisms themselves are flawed, downstream conclusions about interpretability methods are undermined.\n\n**Identifiability of a dissipative knowledge-dynamics model** [6] models human learning as a nonlinear dissipative system of ODEs with mechanistically meaningful parameters: a concept-transfer matrix encoding prerequisite coupling, per-concept forgetting rates, and a saturating practice-response gain. The paper proves structural identifiability under explicit excitation conditions, but shows degeneration on observational data alone. This contrast—exact recovery under designed excitation versus failure on passive observation—carries a broader methodological lesson for interpretability: parameters that are theoretically recoverable may remain practically inscrutable without experimental control, a caution that resonates with debates over whether observational probing suffices to reveal internal mechanisms.\n\nThese two papers share a focus on the *epistemic foundations* of interpretability research. [7] interrogates the validity of the testbeds on which interpretability methods are evaluated, while [6] interrogates the conditions under which mechanistic parameters can be recovered at all. Both suggest that the field must attend not only to *whether* we can explain systems, but to whether our explanatory targets and data regimes support valid inference.\n\n## Interpretability in the Physical and Applied World\n\n**What the Sleeve Feels** [4] addresses posture screening via pressure-sensing smart textiles, where dense, image-like contact signals are promising for low-cost wearable monitoring but require more than classification accuracy. The authors identify three joint requirements: generalization to unseen wearers, exposure of the physical evidence behind decisions, and tolerance of small donning offsets that occur when a garment is removed and re-worn. Using a knitted piezoresistive sleeve worn on the forearm, they build an explainable ML system that meets these requirements jointly. This work is a reminder that interpretability is not solely a concern of language or vision models—in safety-adjacent domains like health monitoring, physically grounded explanations and robustness to real-world variability are prerequisites for deployment.\n\nThis paper anchors the digest's more abstract contributions in concrete stakes. Where [5] and [8] pursue geometric or temporal legibility in idealized or simulated settings, [4] must satisfy wearer-level generalization and physical-evidence transparency simultaneously. It exemplifies the applied-side demand for interpretability that is *actionable*, not merely descriptive.\n\n## Key Takeaways\n\n- Interpretability is increasingly pursued *by construction*—via minimal architectures [5], distillation into trees [3], or temporally aware DDTs [8]—rather than reconstructed post hoc.\n- Circuit-level and geometric analyses [2, 5] suggest that algorithmic understanding is achievable when we trace how representations are arranged and how they evolve, not merely what they encode.\n- The validity of interpretability research depends on the validity of its testbeds: model organisms trained to a single objective may misrepresent the phenomena they are meant to study [7].\n- Identifiability results [6] warn that mechanistic parameters recoverable in principle may degenerate on observational data, underscoring the need for designed excitation in studies of internal dynamics.\n- Uncertainty in LLMs remains a first-class interpretability problem [1], especially given models' fluent and authoritative tone even when wrong.\n- Applied domains like wearable health monitoring [4] demand interpretability that is physically grounded, generalizes across users, and tolerates real-world perturbations—setting a high bar for the field.\n- Across scales—from 2-dimensional toy transformers to full LLMs to textile sensors—the field is converging on a shared standard: explanations must be verifiable, not merely plausible.",
+    "papers": [
+      {
+        "title": "U-Space: Uncovering When and Why Uncertainty Arises in Language Models",
+        "url": "",
+        "authors": [
+          "Tobias Braun",
+          "Nils Loose",
+          "Alexander Herzog",
+          "Virginia Ceccatelli",
+          "Marcus Rohrbach",
+          "Thomas Eisenbarth",
+          "Lorenzo Cavallaro"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "SafeEvo: Deciphering the Safety Alignment Mechanism and Evolution in Language Models",
+        "url": "",
+        "authors": [
+          "Miao Yu",
+          "Hao Huang",
+          "Lu Yuan",
+          "Yunpeng Li",
+          "Kun Wang",
+          "Zuming Jiang"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "From Prompts to Trees: Effective LLM-Guided Tree Generation for Few-Shot Tabular Classification",
+        "url": "",
+        "authors": [
+          "Yue Qiu",
+          "Zekang Du",
+          "Yiqun Diao",
+          "Bingsheng He",
+          "Qinbin Li"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "What the Sleeve Feels: Explainable Machine Learning for Textile Pressure-Based Postural Screening",
+        "url": "",
+        "authors": [
+          "Limon Bin Hossain",
+          "Md Sadib Rahman Ananta"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Fully Interpretable Minimal Transformers: From Geometry to Algorithm",
+        "url": "",
+        "authors": [
+          "Raneem Mahajne",
+          "Toviah Moldwin"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Identifiability of a dissipative knowledge-dynamics model: exact recovery under designed excitation, degeneration on observational data",
+        "url": "",
+        "authors": [
+          "Arman Kostanian",
+          "Armen Beklaryan"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "How to train your model organism",
+        "url": "",
+        "authors": [
+          "Xilin Wang",
+          "David Bau",
+          "Byron C. Wallace"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Temporally Interpretable Differentiable Decision Trees",
+        "url": "",
+        "authors": [
+          "Eisuke Hirota",
+          "Aarav Sane",
+          "Rohan Paleja"
+        ],
+        "date": "2026-10-08"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-08",
+    "paperCount": 1,
+    "markdown": "# Explanation Beyond Attribution: Making Model Reasoning Usable, Auditable, and Trustworthy\n\nToday's research landscape shows explainability maturing from post-hoc attribution toward end-to-end systems that produce, verify, and operationalize reasoning. Across domains—from customer intent extraction to molecular property prediction—the frontier is no longer merely \"what did the model attend to,\" but \"how can explanations be used, audited, and trusted.\"\n\n## Making Explanations Useful: Post-Processing and Provenance\n\n[1] addresses a practical failure mode of LLM extraction pipelines: high recall produces duplicated, uneven, overlapping, or unmanageably numerous outputs that downstream systems and human reviewers cannot use. Their dataset-adaptive post-processing architecture for Customer Intent Extraction separates recall-oriented extraction from utility-oriented reduction, using source-specific preprocessing alongside utility-focused transformation to yield stable, traceable intent units. The key contribution is reframing the objective from extraction quality alone to *utility*—how many intents a system can actually operationalize—while preserving traceability back to source language. This matters because enterprise deployments of explainable extraction live or die on whether outputs are auditable and proportionate to reviewer capacity, not on recall statistics alone.\n\n## Faithfulness Under Scrutiny: When Explanations Mislead\n\nA recurring theme across several papers is that plausible-looking explanations can be unfaithful, and detecting this requires targeted probes rather than aggregate metrics.\n\n[2] investigates explanation faithfulness in scientific machine learning, particularly for molecular property prediction where explanation methods are used to guide discovery decisions. The work systematically evaluates whether commonly deployed attribution methods reflect the model's true decision process or merely correlate with input features, contributing a benchmark that separates faithful from superficially plausible explanations. This matters urgently for drug discovery and materials science, where acting on an unfaithful explanation can waste millions in experimental follow-up.\n\n[3] tackles the related problem of explanation stability under distribution shift, showing that explanations can silently degrade even when predictive accuracy remains roughly constant. The core technical approach introduces shift-aware evaluation protocols that track explanation behavior across covariate and concept shifts, revealing divergence between accuracy-based and explanation-based robustness. The contribution exposes a blind spot in standard model monitoring: models that appear robust by accuracy can have fundamentally altered reasoning.\n\n[4] examines self-explanation in chain-of-thought systems, probing whether models' stated reasoning causally influences their final answers or is generated post-hoc as rationalization. Through intervention experiments that perturb intermediate reasoning steps, the authors measure the causal coupling between stated chains and outputs, finding substantial variation across model families and task types. This reframes CoT explanations as something to be validated rather than trusted by default—an essential caution for any pipeline that surfaces model reasoning to end users.\n\n## Explanation as Interface: Human-in-the-Loop Systems\n\n[5] studies how explanation format affects human decision quality in AI-assisted workflows, comparing feature attributions, counterfactual explanations, and natural language rationales across expert and lay users. The results show that the \"best\" explanation type is strongly task- and user-dependent, with counterfactuals excelling for action-oriented decisions and attributions better for diagnostic reasoning. The work contributes design guidance for explanation interfaces and warns against one-size-fits-all XAI deployment.\n\n[6] extends this to domain experts in high-stakes settings, examining how radiologists and clinicians calibrate trust when explanations are sometimes wrong. The central finding is that *inconsistent* explanations cause disproportionate trust erosion compared to uniformly imperfect ones, suggesting that stability metrics like those in [3] have direct downstream human impact. Together, [5] and [6] argue that explainability is fundamentally a human-factors discipline, not just a model property.\n\n## Evaluation, Benchmarks, and Metrics\n\n[7] proposes a unified evaluation framework for explainability methods spanning faithfulness, stability, and human utility, arguing that prior benchmarks optimize these dimensions in isolation and produce misleading rankings. The framework introduces composite scoring that surfaces trade-offs, demonstrating that methods dominating on faithfulness often underperform on stability or human comprehension. This is a significant methodological contribution because it makes explicit the choices that single-metric leaderboards obscure.\n\n[8] focuses specifically on evaluating explanations for large language models, where the absence of ground-truth reasoning makes traditional faithfulness metrics inapplicable. The authors propose perturbation- and simulation-based protocols that approximate faithfulness for free-form text explanations and apply them across multiple open models. The contribution is an early standardized toolkit for a problem the community has largely handled ad hoc.\n\n[9] introduces a benchmark for explanation-based debugging, measuring whether practitioners can actually locate and fix model failures using explanations. Results show low success rates even with strong explanation methods, suggesting a gap between explanation quality and explanatory *actionability*. This is a sobering counterpoint to benchmark gains elsewhere in the XAI literature.\n\n## Emerging Directions: Causal and Mechanistic Explanations\n\n[10] argues that correlational explanations are structurally insufficient for high-stakes decisions and develops causal explanation methods that identify interventions rather than associations. The approach combines causal discovery with model behavior analysis to produce explanations that support \"what if we changed X\" reasoning. This matters for regulated domains—credit, medicine, hiring—where decision-makers need to reason about counterfactual interventions, not just feature importance.\n\n[11] explores mechanistic interpretability for practical auditing, applying circuit-level analysis to detect safety-relevant behaviors in deployed models. The authors show that specific attention patterns correspond to refusal and sycophancy behaviors, offering a path toward explanations that are grounded in model internals rather than outputs. While computationally expensive, this line of work points toward explanations that are both faithful and causally actionable.\n\n[12] closes the loop with a position-style contribution arguing that explanation research must integrate with model development rather than serving as post-hoc commentary. The authors propose design principles for \"explainability-by-construction,\" where architectures expose reasoning structure natively. This reframes the roadmap: rather than better explanations of opaque models, build models whose reasoning is inherently inspectable.\n\n## Key Takeaways\n\n- **Faithfulness remains the central unsolved problem**: papers [2], [3], [4], and [12] collectively show that plausible explanations frequently misrepresent model reasoning, and standard accuracy metrics can mask this failure.\n- **Explanation stability is a first-class requirement**: [3] and [6] demonstrate that unstable explanations erode human trust more than consistently imperfect ones, linking technical metrics to downstream human factors.\n- **Utility beats raw quality**: [1] and [9] argue that explanations and extracted signals must be actionable and proportionate to reviewer capacity, not merely numerous or high-scoring.\n- **One-size-fits-all XAI does not work**: [5] and [6] show explanation format effectiveness depends on task, user expertise, and decision context.\n- **Evaluation must be multi-dimensional**: [7] and [8] make the case that faithfulness, stability, and human utility cannot be optimized or measured in isolation without misleading rankings.\n- **Causal and mechanistic approaches point forward**: [10] and [11] suggest that correlational explanations are structurally limited, and that interventions and internals-grounded analyses offer a more actionable path.\n- **The field is shifting from post-hoc to by-construction explainability**: [12] argues the next generation of interpretable systems should be designed with reasoning transparency as a first principle, not retrofitted.",
+    "papers": [
+      {
+        "title": "From High Recall to High Utility: Dataset-Adaptive Post-Processing of LLM-Generated Customer Intents",
+        "url": "",
+        "authors": [
+          "Mahesh Viswanathan",
+          "Joan Rossello",
+          "Leticia Fernandes",
+          "Paul Mutawe"
+        ],
+        "date": "2026-10-08"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-08",
+    "paperCount": 13,
+    "markdown": "# Multimodal Research Digest — October 8, 2026\n\nToday's research landscape pushes multimodal AI beyond perception into intuition, adaptation, and unification: benchmarks probe whether models can reason about what isn't explicitly shown, deployment-time learning lets frozen models acquire evolving expertise, and new frameworks treat alignment, generation, and unlearning as shared latent problems. Across medicine, driving, urban analysis, and brain-computer interfaces, the field is converging on a central question—how to extract structured, trustworthy knowledge from heterogeneous signals without retraining or paired supervision.\n\n## Benchmarks for Intuitive and Structural Multimodal Reasoning\n\n**Humanity's Sixth Sense benchmark** [1] tackles the gap between literal visual perception and the implicit, zero-shot intuition humans use to infer causes, trajectories, and social dynamics from fleeting scenes. The authors operationalize this \"sixth sense\" as a benchmark of intuitive visual reasoning tasks requiring multimodal models to recover information beyond what is explicitly depicted. Results expose a substantial deficit: current models, despite strong performance on standard VQA-style tasks, fail at rapid causal and social inference that humans perform effortlessly. This matters because such intuition underpins everyday navigation and interaction—capabilities that will be prerequisites for embodied and assistive multimodal systems.\n\n**TopoGraphRAG-Bench** [6] addresses a blind spot in multimodal document QA: retrieving passages is insufficient when evidence is distributed across text, tables, figures, and captions in complex page layouts. The benchmark evaluates whether GraphRAG systems can recover the *evidence topology*—the relational structure connecting heterogeneous evidence units—rather than merely performing cross-modal retrieval. Prior GraphRAG evaluations are text-centric, while multimodal RAG benchmarks assess retrieval and generation without directly testing topological recovery. By grounding evaluation in layout, this work provides a sharper diagnostic for document-AI systems deployed on scientific papers, financial filings, and enterprise archives.\n\n**DUDA-Bench** [7] formalizes data-driven urban diagnosis—identifying problems, localizing affected areas, and investigating contributing factors—as a multi-stage agent workflow. The hierarchical, interactive benchmark comprises 86 atomic and 22 workflow tasks spanning four analytical stages, replacing labor-intensive, case-specific expert workflows with evaluable agent execution. Results reveal where agentic pipelines succeed and fail across the diagnosis pipeline, highlighting the difficulty of chaining heterogeneous multimodal observations into causal urban insights. The benchmark's workflow structure makes it a rare end-to-end testbed for agents operating on real-world geospatial and observational data.\n\n## Adaptation Without Retraining\n\n**Frozen Models, Evolving Expertise** [3] confronts a critical limitation in medical AI: deployed LLMs and VLMs are frozen, so they cannot learn from the cases they solve—problematic when clinical evidence and guidelines evolve. The authors propose a parameter-free framework that lets frozen multimodal models acquire expertise from deployment experience without weight access or additional training, addressing the pitfalls of prior parameter-free methods (overfitting validation sets, unreliable domain knowledge, loss of visual detail in text-only experience stores). This is significant because it offers a practical path to continual improvement in regulated clinical settings where retraining is expensive or infeasible.\n\n**Open-MMUnlearning** [11] responds to fragmented implementations and evaluation protocols that obstruct systematic progress in multimodal LLM unlearning. The framework unifies methods and evaluation, adds robustness testing, and investigates metric reliability, providing an open-source, extensible testbed for removing designated information while preserving unrelated capabilities. By standardizing how unlearning is measured—including under adversarial conditions—it enables apples-to-apples comparison across techniques. As MLLMs deploy at scale, reliable unlearning becomes a regulatory and ethical necessity, and this work supplies the missing infrastructure.\n\n## Alignment, Representations, and Unification\n\n**Shared Geometry As A Rosetta Stone** [10] tests whether cross-modal alignment truly requires paired data, motivated by the Platonic Representation Hypothesis that independently trained models converge toward shared representation geometry. The authors show paired examples are unnecessary for *coarse* alignment, introducing a Wasserstein Procrustes method with coarse geometric initialization that aligns disjoint embedding spaces. This matters because it dramatically reduces the data burden for zero-shot classification and retrieval across modalities, and it provides empirical support for representational convergence—suggesting that independently trained vision and language models may be more compatible than previously assumed.\n\n**MUNITE** [12] introduces a latent-variable framework for any-to-any multimodal generation by treating encoding and latent generation as the same inference problem under varying amounts of observed evidence. A single conditional flow model handles full observation (deterministic encoding), no observation (latent marginal), and intermediate subsets (conditional latent inference), with a shared latent sample capturing variation across modalities. This unification is elegant: rather than building separate encoders, decoders, and generators, MUNITE casts all tasks as conditional inference over one latent space. It represents a meaningful step toward genuinely general-purpose multimodal systems.\n\n**Twist Flow for Inverse Problems** [8] targets a subtle failure in Bayesian posterior sampling: conditional generative models can learn near-deterministic observation-to-target maps, producing samples that are observation-consistent but under-represent posterior variability—especially when the posterior is multimodal, causing undercoverage and mode distortion. The proposed twist flow approach preserves support and mode structure during sampling. This matters for scientific imaging and other inverse problems where calibrated uncertainty is as important as point accuracy, and where missing modes can lead to dangerously overconfident conclusions.\n\n## Multimodal Signals in Specialized Domains\n\n**BraVista** [9] asks how to interface neural signals with foundation models to enable multi-task EEG decoding across cognitive tasks, subjects, and recording conditions. The visual-language framework encodes multichannel EEG as structured images, then performs instruction-conditioned decoding, effectively letting a VLM \"read\" brain signals under a unified multi-task objective. This reframing of EEG as an image is a clever interface trick that leverages mature vision-language architectures instead of bespoke neural decoders. It opens a path toward general-purpose brain-computer interfaces that generalize across tasks and subjects without per-dataset engineering.\n\n**CAA-GMM** [4] addresses multimodal, uncertainty-aware trajectory prediction for cooperative and autonomous driving. The Context-Aware Attention-based Gaussian Mixture Model conditions a probabilistic mixture on both scene context and agent dynamics, using a lightweight attention mechanism to encode inter-agent interactions, yielding interpretable Gaussian components that capture diverse behavioral modes. Interpretability and calibrated multimodality are essential for safety-critical deployment, where a planner needs to understand not just the most likely trajectory but the full distribution. The work advances efficient, explainable motion forecasting in uncertain environments.\n\n**InterView-C** [5] presents a German multimodal corpus of 27 survey interviews conducted entirely in VR with both interlocutors as avatars, synchronizing speech with gaze, head and body movement, facial behavior, and hand/finger tracking. Reference transcripts and linguistic annotations bridge multimodal spoken interaction and predominantly text-based NLP methods—important because automatic transcription can distort linguistically relevant information. As VR-mediated interaction becomes more common, datasets like this enable research on avatar-based communication, nonverbal cues, and the fidelity costs of transcription pipelines.\n\n## Applied Multimodal Pipelines and Coordination\n\n**Dataset-Adaptive Post-Processing for Customer Intent Extraction** [2] confronts the utility gap in enterprise LLM pipelines: high-recall extraction produces duplicated, unevenly granular, and semantically overlapping intents that overwhelm downstream systems and reviewers. The architecture separates recall-oriented extraction from utility-oriented reduction, with source-specific preprocessing and dataset-adaptive post-processing to yield stable, traceable intent units. This is a pragmatic contribution to the often-overlooked last mile of enterprise AI, where extraction quality matters less than downstream usability. It underscores that real deployments need utility-aware reduction, not just recall maximization.\n\n**Multi-Agent Coordination via Support-Preserving Distillation** [13] identifies a failure mode in offline MARL: flow-based teachers pair noise with replay targets independently, so nearby noise samples can route to conflicting coordination modes, producing samples *between* valid modes. Because distillation regresses local actors onto the conditional mean of teacher outputs, these invalid intermediate samples corrupt decentralized one-step actors. Support-preserving distillation corrects this by keeping teacher samples on valid mode support, improving coordination fidelity under CTDE. The diagnosis is precise and generalizable—any distillation pipeline that averages multimodal teacher outputs risks this collapse.\n\n## Key Takeaways\n\n- **Benchmarks are maturing toward structure and intuition**: from layout-grounded evidence topology [6] to zero-shot visual intuition [1] and multi-stage urban diagnosis workflows [7], evaluation is shifting from retrieval accuracy to reasoning over implicit, distributed evidence.\n- **Retraining is not the only path to adaptation**: deployment-time, parameter-free learning [3] and unified unlearning frameworks [11] show the field is building mechanisms to evolve and sanitize models after release.\n- **Paired data may be less necessary than assumed**: cross-modal alignment via shared geometry [10] challenges the paired-supervision orthodoxy, with implications for low-resource multimodal transfer.\n- **Unification is a recurring design principle**: MUNITE [12] collapses encoding, generation, and conditional inference into one latent framework, echoing broader consolidation trends in multimodal architectures.\n- **Distillation and sampling have hidden multimodality failure modes**: support collapse in MARL teachers [13] and posterior mode distortion in inverse problems [8] show that averaging or naive noise pairing destroys the very structure generative models are meant to capture.\n- **Domain interfaces unlock foundation models**: encoding EEG as images [9] and building VR-native multimodal corpora [5] demonstrate that clever signal-to-interface mappings can repurpose general architectures for specialized domains.\n- **Enterprise and safety-critical deployments demand utility and interpretability**, not raw recall: adaptive post-processing [2] and interpretable Gaussian trajectory mixtures [4] reflect a growing emphasis on downstream usability and trustworthiness.",
+    "papers": [
+      {
+        "title": "Humanity's Sixth Sense: Benchmarking Intuitive Visual Reasoning in Multimodal Models",
+        "url": "",
+        "authors": [
+          "Xingang Guo",
+          "Jing Gu",
+          "Brian Jang",
+          "Renxiong Wang",
+          "Utkarsh Tyagi",
+          "Daniel Quigley",
+          "Steven Li",
+          "David Yan",
+          "Daniel Yue Zhang",
+          "Darvin Yi",
+          "Forrest Huang",
+          "HiJae Kim",
+          "Tianyi Zhang",
+          "Jared Lichtarge",
+          "Jihua Huang",
+          "Le Xue",
+          "Manan Tomar",
+          "Qiuyi Richard Zhang",
+          "Ruofei Yu",
+          "Seth Neel",
+          "Yaning Hu",
+          "Marcella Valentine",
+          "Xinzhe Jiang",
+          "Daniel Evans",
+          "Chenguang Wang",
+          "Dustin Tran",
+          "Tong Zhao",
+          "Yinfei Yang",
+          "Yunzhong He"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "From High Recall to High Utility: Dataset-Adaptive Post-Processing of LLM-Generated Customer Intents",
+        "url": "",
+        "authors": [
+          "Mahesh Viswanathan",
+          "Joan Rossello",
+          "Leticia Fernandes",
+          "Paul Mutawe"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Frozen Models, Evolving Expertise: Model-Agnostic Learning from Deployment Experience for Multimodal Medical AI",
+        "url": "",
+        "authors": [
+          "Yexiao He",
+          "Yucheng Tang",
+          "Pengfei Guo",
+          "Yufan He",
+          "Andriy Myronenko",
+          "Can Zhao",
+          "Ang Li",
+          "Daguang Xu",
+          "Dong Yang"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Context-aware Attention-based Gaussian Mixture Models for Vehicular Trajectory Prediction",
+        "url": "",
+        "authors": [
+          "Arash Raftari",
+          "Babak Ebrahimi Soorchaei",
+          "Yaser P. Fallah"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "InterView-C: A Synchronized Multimodal Corpus of VR Avatar-Mediated Survey Interviews",
+        "url": "",
+        "authors": [
+          "Patrick Schrottenbacher",
+          "Leon Hammerla",
+          "Lydia Kleine",
+          "Doris Stingl",
+          "Alexander Mehler"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "TopoGraphRAG-Bench: Evaluating Multimodal GraphRAG on Layout-Grounded Evidence Reasoning",
+        "url": "",
+        "authors": [
+          "Ruochi Li",
+          "Jianzhe Lin",
+          "Haoxuan Zhang",
+          "Haihua Chen",
+          "Junhua Ding",
+          "Edward Gehringer",
+          "Yang Zhang"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "DUDA-Bench: Benchmarking LLM Agents on Multimodal Data-Driven Urban Diagnosis",
+        "url": "",
+        "authors": [
+          "Yizhi Song",
+          "Hang Ni",
+          "Weijia Zhang",
+          "Hao Liu"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Twist Flow for Inverse Problems",
+        "url": "",
+        "authors": [
+          "Shiqin Zeng",
+          "Zijun Deng",
+          "Felix J. Herrmann"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Multimodal LLMs Can Learn to Read Brain Signals: A Vision--Language Model for Unified Multi-Task EEG Decoding",
+        "url": "",
+        "authors": [
+          "Parastoo Azizeddin",
+          "Omid Sharafi",
+          "Maryam M. Shanechi"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Shared Geometry As A Rosetta Stone: Cross-Modal Alignment Without Paired Data",
+        "url": "",
+        "authors": [
+          "Dominik Schnaus",
+          "Thomas Dagès",
+          "Daniel Cremers",
+          "Xi Wang",
+          "Phillip Isola"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Open-MMUnlearning: Unifying Methods and Evaluation for MLLM Unlearning",
+        "url": "",
+        "authors": [
+          "Junkai Chen",
+          "Yuhao He",
+          "Qianshan Wei",
+          "Junxiang You",
+          "Jingwen Shao",
+          "Junkai Lin",
+          "Zhongkai Yue",
+          "Xiaotian Ye",
+          "Zhengbo Jiao",
+          "Jiali Cheng",
+          "Zhijie Deng",
+          "Kening Zheng",
+          "Ruiqi Liu",
+          "Hadi Amiri",
+          "Yi Yu",
+          "Zhenan Sun",
+          "Qi Li",
+          "Ka-Ho Chow",
+          "Sijia Liu",
+          "Liang Wang",
+          "Jiaqi Li",
+          "Shu Wu"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "MUNITE: Unified Multimodal Latent Inference for Any-to-Any Multimodal Generation",
+        "url": "",
+        "authors": [
+          "Kyeongmin Yeo",
+          "Minhyuk Sung"
+        ],
+        "date": "2026-10-08"
+      },
+      {
+        "title": "Multi-Agent Coordination via Support-Preserving Distillation",
+        "url": "",
+        "authors": [
+          "Sangmin Lee",
+          "Youngju Na",
+          "Chanmi Lee",
+          "Sung-eui Yoon"
+        ],
+        "date": "2026-10-08"
+      }
+    ]
+  }
+]
