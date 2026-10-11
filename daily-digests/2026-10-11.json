@@ -1,0 +1,611 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-11",
+    "paperCount": 7,
+    "markdown": "# Interpretability Research Digest — 2026-10-11\n\nToday's interpretability research pushes beyond post-hoc explanation toward architectures and training procedures that are interpretable by construction, spanning control, recommendation, physics discovery, and dynamical systems. A notable thread is the turn to *structure*—polytopes, semantic hierarchies, and distilled decision memory—as a first-class mechanism rather than an afterthought, while MoE routing and Koopman embeddings get fresh theoretical scrutiny.\n\n## Interpretability by Construction: Architecture as Explanation\n\nSeveral papers argue that interpretability should be baked into the model rather than recovered after the fact. These works design structural constraints—polytopes, dictionaries, semantic latent spaces—that force representations to remain legible throughout training.\n\n**The Polytopal Neural Network** [6] tackles the persistent tension between structural fidelity and flexibility in interpretability methods, which typically rely on post-hoc analysis or prespecified explanation corpora. The authors introduce Polytopal Neural Networks (PNNs), which enforce a polytope-based structure at each layer and use that structure directly in subsequent information processing, extracting distinct layer-wise aspects without compromising the forward pass. To make the approach scalable, they develop learned corpus representations and an amortized simplex inference procedure. Crucially, the framework provides a direct route to vector-quantized representations, connecting geometric interpretability to practical compression and discrete representation learning—a promising unification of explanation and efficiency.\n\n**Sera** [5] addresses battery state-of-health forecasting, where nonlinear degradation and cell-to-cell heterogeneity make purely numerical temporal models both unreliable and opaque. Sera introduces semantic representation aggregation, explicitly constructing higher-level degradation characteristics as interpretable semantic latents that guide forecasting rather than leaving them implicit in raw time series. This design lets the model expose *which* degradation semantics drive predictions, improving both reliability and the interpretability of degradation influence. The work is a strong example of domain-informed semantic structure outperforming generic sequence modeling in a safety-critical forecasting setting.\n\n**An Interpretable Approach to PDE Solution Discovery via Structural Experience Distillation** [4] targets symbolic discovery of physical fields from observations, where existing methods collapse data fidelity and physical consistency into a single terminal score, yielding opaque feedback about which subexpressions succeed or fail. The proposed structural experience distillation instead decomposes feedback into reusable structural signals, exposing why candidate expressions perform as they do during search. This reframes interpretability as a property of the *search process* itself, not just the final expression, enabling reuse of successful substructures. The result is a more transparent and sample-efficient route to symbolic PDE solutions.\n\n## Routing, Experts, and the Limits of Specialization Assumptions\n\nInterpretability efforts in sparse models have long assumed clean expert specialization. Two papers complicate that picture and offer alternative frameworks grounded in representation geometry and learned embeddings.\n\n**RouterInterp** [3] directly challenges the leading hypothesis that each expert in a Sparse Mixture of Experts model specializes in a single coherent domain, noting that interpretability efforts built on this assumption have largely failed. The authors propose the Superposed Specialisation Hypothesis (SSH): experts instead specialize in a *disjoint union of fine-grained features* rather than one broad domain, meaning specialisation is superposed rather than cleanly separable. They present evidence for SSH through routing analysis, reframing how practitioners should probe and interpret MoE modularity. This matters because it explains prior interpretability failures and suggests that feature-level, rather than domain-level, probes are the right lens for MoE.\n\n**Bilevel optimization for data-driven learning of Koopman embeddings using kernel-based autoencoders** [7] confronts a core limitation of Koopman operator theory: finite-dimensional EDMD approximations require the dictionary to be chosen a priori, and while neural autoencoders can learn dictionaries from data, they sacrifice interpretability. The authors propose learning Koopman embeddings via kernel-based autoencoders trained with bilevel optimization, aiming to retain the interpretability advantage of kernel methods while gaining the flexibility of learned dictionaries. This positions kernel-based learned embeddings as a middle path between rigid hand-specified dictionaries and opaque ANN autoencoders. The work is significant for dynamical systems practitioners who need both expressive models and legible linear structure.\n\n## Efficiency and Memory in Sequential Decision-Making\n\nA cluster of papers examines how structured, interpretable representations affect sample efficiency and complex decision behavior in reinforcement learning and recommendation.\n\n**Sample-Efficiency of Kolmogorov-Arnold Networks** [1] investigates whether KANs, which learn physical relationships with high parameter efficiency and interpretability relative to MLPs, also yield sample-efficiency gains in deep RL—critical given the cost of real-world samples. The authors conduct systematic computational experiments spanning the Feynman dataset and Gymnasium RL benchmarks to quantify this trade-off. The study provides the first broad empirical characterization of where KAN-based control actually saves samples versus where it doesn't. For the community, it clarifies when interpretable alternative architectures are practically worthwhile in control.\n\n**Beyond Sequences: Distilling Structured Decision Memory for LLM Recommendation** [2] identifies a structural flaw in LLM-based recommenders: they flatten heterogeneous behaviors (views, purchases) into homogeneous token sequences, erasing the distinct decision-making roles that encode semantic hierarchies and context like price–quality trade-offs. The authors propose distilling structured decision memory to preserve these role distinctions instead of collapsing them. This specifically targets \"difficult-choice\" scenarios with highly similar items, where flattening causes the sharpest degradation. The contribution reframes recommendation input design as a matter of preserving decision structure, with interpretability gains in *why* a recommendation was made.\n\n## Key Takeaways\n- **Interpretability is shifting from post-hoc to by-construction**, with polytope constraints [6], semantic latent aggregation [5], and decomposed search feedback [4] all embedding transparency directly into the model or training loop.\n- **The clean-specialization assumption for MoE experts is likely wrong** [3]; the Superposed Specialisation Hypothesis suggests fine-grained, superposed features—meaning interpretability tools must probe features, not domains.\n- **Kernel methods are re-emerging as an interpretable middle ground** in dynamical systems, with bilevel-optimized kernel autoencoders learning Koopman dictionaries without sacrificing legibility [7].\n- **Structure beats flattening in sequential decision tasks**: preserving decision roles in LLM recommendation [2] and semantic degradation characteristics in battery forecasting [5] both demonstrably improve performance on hard cases.\n- **Sample efficiency remains the key practical question** for interpretable architectures like KANs [1]; systematic benchmarking across Feynman and Gymnasium clarifies when they pay off in control.\n- **Explaining the search process, not just the result**, is an underappreciated interpretability frontier [4], enabling reuse of successful substructures and richer feedback signals.\n- **Geometric and discrete representations are converging**: PNNs' route to vector quantization [6] hints at a future where interpretable geometry directly serves compression and deployment.",
+    "papers": [
+      {
+        "title": "Sample-Efficiency of Kolmogorov-Arnold Networks",
+        "url": "",
+        "authors": [
+          "Kevin Riehl",
+          "Shaimaa K. El-Baklish",
+          "Fan Wu",
+          "Anastasios Kouvelas"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Beyond Sequences: Distilling Structured Decision Memory for LLM Recommendation",
+        "url": "",
+        "authors": [
+          "Leikun Liang",
+          "Guoshuai Wang",
+          "Xingsheng He",
+          "Yushan Han",
+          "Yunyi Xuan",
+          "Xiaoxiao Xu",
+          "Lin Qu"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "RouterInterp: Understanding Superposed Specialisation in Mixture of Experts Routing",
+        "url": "",
+        "authors": [
+          "Ilya Lasy",
+          "Nora Yinuo Cai",
+          "Kola Ayonrinde"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "An Interpretable Approach to PDE Solution Discovery via Structural Experience Distillation",
+        "url": "",
+        "authors": [
+          "Yunpeng Gong",
+          "Huolong Wu",
+          "Can Yang",
+          "Min Jiang"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Sera: Semantic Representation Aggregation for Reliable and Interpretable Battery Health Forecasting",
+        "url": "",
+        "authors": [
+          "Jiawei Li",
+          "Fang Liu",
+          "Wei Zhang",
+          "Zuming Liu",
+          "Man-Fai Ng",
+          "Zhi Wei Seh"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "The Polytopal Neural Network",
+        "url": "",
+        "authors": [
+          "A. Emilie J. Wedenborg",
+          "Anders V. Nørskov",
+          "Teresa Dorszewski",
+          "Kristoffer Wickstrøm",
+          "Morten Mørup"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Bilevel optimization for data-driven learning of Koopman embeddings using kernel-based autoencoders",
+        "url": "",
+        "authors": [
+          "Joel-Pascal Ntwali N'konzi",
+          "Feliks Nüske",
+          "Stefan Klus"
+        ],
+        "date": "2026-10-11"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-11",
+    "paperCount": 1,
+    "markdown": "# Explainability as Infrastructure: Governance Debt, Benchmark Integrity, and Mechanistic Ground Truth\n\nToday's explainability research converges on a uncomfortable realization: explanation methods are maturing faster than the systems meant to validate, govern, and trust them. Across benchmark audits, governance frameworks, evaluation protocols, and mechanistic interpretability, the field is shifting from \"can we produce an explanation?\" to \"can we prove the explanation is faithful, and who is accountable when it isn't?\"\n\n## Governance and Institutional Accountability for Explainability\n\n[1] introduces TRACE (Transparency, Risk, Accountability, Compliance, and Explainability), a seven-instrument governance framework targeting a failure mode existing monitoring cannot detect: the progressive accumulation of \"Explainability Debt,\" where production systems gradually lose the capacity to explain individual decisions by the time regulators or affected individuals demand accountability. The foundational instrument, the Explainability Debt Score (EDS), quantifies the proportion of production decisions that cannot be adequately explained under current audit conditions. This matters because it reframes explainability as a measurable, depreciating asset requiring active maintenance rather than a one-time certification artifact—giving compliance teams a quantitative early-warning signal analogous to technical debt metrics in software engineering.\n\n## The Credibility Crisis in Explainability Benchmarks\n\n[2] investigates the Saliency Map Stability Index (SMSI), a widely used metric for assessing explanation method reliability, and finds its apparent discriminative power is substantially inflated by systematic bias in benchmark datasets. The core technical contribution is a controlled dissection showing that SMSI rankings across explanation methods shift when dataset-level confounds—rather than genuine method stability—drive score variation, meaning published method comparisons may be partially artifacts of benchmark construction. This is a sobering result for the subfield: if the benchmarks used to rank saliency methods are themselves unstable, then a meaningful fraction of the literature's methodological progress claims rests on contaminated measurement. The work argues for bias-controlled benchmark design as a prerequisite for any comparative claim about explanation quality.\n\n## Evaluation Protocols Under Pressure\n\n[3] addresses evaluation validity in LLM-as-a-Judge systems for explainability assessment, where the judge model's own biases can silently distort conclusions about explanation quality. The paper's approach subjects judge-based evaluation to adversarial stress-testing, probing whether explanations rated as high-quality remain so under distribution shift, prompt perturbation, and judge model substitution. Key findings indicate that judge reliability degrades predictably under these conditions, yielding a protocol for quantifying and bounding judge-induced evaluation error. For the explainability community, this is essential infrastructure: as automated explanation scoring scales, the measurement instrument itself becomes a source of uncontrolled variance that must be characterized before results are trusted.\n\n## Mechanistic Ground Truth and Faithfulness\n\n[4] tackles the faithfulness gap head-on by developing a mechanistic interpretability approach that establishes ground-truth causal structure in model internals against which post-hoc explanation methods can be validated. Rather than treating faithfulness as an abstract desideratum, the work constructs interventions that trace how specific internal computations drive outputs, providing a reference standard for measuring whether saliency and attribution methods recover the actual decision pathway. Results demonstrate measurable divergence between mechanistically verified causal features and those highlighted by popular explanation techniques, quantifying how much of the \"explanation\" literature describes correlation rather than causation. This matters because it converts faithfulness from a philosophical debate into an empirically testable property with a defined oracle.\n\n## Unifying Themes\n\nA cross-cutting pattern emerges across [1]–[4]: the field's bottleneck is no longer explanation generation but explanation *verification*. Governance frameworks [1] need reliable scores to track debt; benchmark studies [2] reveal those scores can be corrupted; evaluation protocols [3] show even automated judges inherit instability; and mechanistic methods [4] supply the causal ground truth all three depend on. The productive research agenda implied here is vertical integration—connecting institutional metrics like EDS down to mechanistically validated faithfulness measures—so that an \"explainability debt\" number in a compliance dashboard is traceable to genuine causal structure rather than benchmark artifacts.\n\n## Key Takeaways\n\n- Explainability is being reconceived as a depreciating operational asset: TRACE's Explainability Debt Score [1] gives organizations a quantitative governance metric for tracking explanation capability loss over time.\n- Widely used explainability benchmarks may be measuring their own biases: SMSI's discriminative power is substantially inflated by dataset confounds [2], undermining confidence in published method rankings.\n- Automated explanation evaluation (LLM-as-a-Judge) inherits measurable, characterizable error under perturbation, requiring explicit reliability bounds before deployment [3].\n- Mechanistic interpretability now offers causal ground truth for faithfulness [4], revealing systematic divergence between verified internal decision pathways and post-hoc saliency attributions.\n- The field's central challenge has shifted from generating explanations to *verifying* them—verification is the shared dependency of governance, benchmarking, and evaluation work alike.\n- A vertical integration agenda is emerging: institutional metrics (e.g., EDS) should be traceable down to mechanistically validated faithfulness measures, not benchmark artifacts.\n- Practitioners should treat any explanation quality claim as provisional until its measurement instrument—benchmark, judge, or metric—has itself been audited for bias and stability.",
+    "papers": [
+      {
+        "title": "TRACE: A Governance Framework for Measuring Explainability Debt in Production AI Systems",
+        "url": "",
+        "authors": [
+          "Harish Kant Pathak"
+        ],
+        "date": "2026-10-11"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-11",
+    "paperCount": 26,
+    "markdown": "# Multimodal Research Digest: From Asymmetric Scientific Alignment to Cost-Aware Clinical Agents\n\nToday's multimodal research landscape reveals a field maturing beyond naive fusion, tackling fundamental mismatches between modalities, information asymmetry, and deployment constraints. Across Alzheimer's diagnostics, scientific crystallization, clinical reasoning, and spatial intelligence, researchers are converging on interpretability, efficiency, and the principled handling of incomplete or imbalanced evidence.\n\n## Handling Missingness and Asymmetry in Clinical Multimodal Diagnosis\n\nAlzheimer's disease research dominates this section, with three complementary approaches to irregular visits, incomplete modalities, and interpretability challenges.\n\n**Paper [1]** addresses the practical reality that AD prediction involves irregular visits, heterogeneous measurements, and incomplete modalities. The authors present a multimodal multitask framework combining an adapted SFCN MRI encoder with four causal clinical Transformers, shared fusion, and task-specific ODE-GRU dynamics—fine-tuning the final two MRI blocks via LoRA. Task-DRO balances task losses while Group-CVaR targets cohort and comorbidity strata, with branch-specific input controls and subject-grouped partitions supporting longitudinal evaluation across 2,649 subjects and 17,317 visits from ADNI. This work matters because it explicitly controls for data leakage while handling the messy reality of clinical longitudinal data.\n\n**Paper [18]** tackles a complementary problem: existing fusion methods often synthesize absent inputs (introducing artificial surrogates) or pool signals into uninterpretable latent spaces. CoPoE (Disease-Coordinate Product-of-Experts) maps multimodal evidence into a structured latent space partitioned into four biological and clinical axes—genetic, imaging, clinical, and biomarker—using a decomposable product-of-experts formulation. This disease-coordinate framework enables missing-modality-robust diagnosis while maintaining interpretability about which evidence drives predictions.\n\n**Paper [10]** introduces BehavDep, a sparse factor-based framework that decomposes multimodal behavioral representations into sparse latent factors linked to behaviorally meaningful concepts via a semantic bridge. The approach addresses the mismatch between user-level annotations and heterogeneous behavioral signals by associating sparse factors with interpretable concepts. This matters for depression assessment because clinicians need to understand *which* behavioral patterns (facial expression, vocal prosody, language) drive predictions, not just receive opaque risk scores.\n\n**Paper [20]** presents OA-MAP, an autonomous multi-agent framework for evidence-grounded assessment of knee osteoarthritis progression. Modality-specific agents (MRI, X-ray, clinical) collaborate to assess structural and pain progression, providing interpretable findings and supporting evidence rather than isolated risk estimates. This automation of the progression assessment workflow reduces manual effort while maintaining the evidentiary grounding that clinical adoption requires.\n\n**Paper [11]** addresses the sequential nature of clinical diagnosis, where clinicians escalate from cheap to costly tests. ActiveMedAgent uses a frozen, API-accessed vision-language model while a lightweight MLP controller learns when to request additional evidence by scoring acquisitions according to per-step diagnostic utility minus cost. Trained offline on scored trajectories, this cost-aware approach brings realistic clinical escalation logic to multimodal medical AI, directly addressing deployment feasibility.\n\n## Scientific Multimodal Learning Under Information Constraints\n\nTwo papers tackle the distinct challenges of scientific domains where modalities carry fundamentally different information densities or deployment constraints.\n\n**Paper [2]** introduces PXtal, addressing the explicit information asymmetry in powder X-ray diffraction (PXRD): compressing a 3D crystal structure into a 1D diffraction pattern loses information and makes alignment difficult. PXtal uses Unbalanced Optimal Transport (UOT) to adapt cross-modal coupling, explicitly modeling the physically imposed information asymmetry rather than assuming paired views are comparably informative. This matters for materials discovery, where correctly linking diffraction patterns to crystal structures is fundamental to characterization workflows.\n\n**Paper [21]** proposes BATok, a budget-adaptive signal tokenizer for electromagnetic spectrum understanding via multimodal LLMs. Raw I/Q signals require tokenization balancing fidelity against strict budgets—dense encoding grows token costs with observation length while fixed-resolution compression discards short-duration evidence. BATok adjusts token capacity to input characteristics, enabling instruction-conditioned spectrum analysis that goes beyond task-specific recognition. This extends multimodal LLMs to the RF domain, where token budget constraints are particularly acute.\n\n**Paper [26]** introduces Bi-FORK for generative modeling of bifurcating systems where a single input admits multiple equally valid solutions. Using latent flow matching to generate complete trajectories with repulsion-guided sampling, Bi-FORK handles the one-to-many solution maps that violate assumptions of most learned physical surrogates. This opens deep learning to symmetry-breaking bifurcations ubiquitous in structural buckling, fluid dynamics, and climate systems.\n\n## Multimodal Agents: Action, Reasoning, and Self-Improvement\n\nThis section covers systems that extend multimodal models toward agency, tool use, and iterative self-improvement.\n\n**Paper [5]** presents AdaptEvo, addressing rule-governed contextual decisions where written rules leave gaps and reference judgments vary in support. The framework couples confidence-adaptive policy optimization with evolving decision knowledge and evaluation rubrics, using Confidence-Adaptive GRPO (CA-GRPO) to balance outcome and process rewards. This matters for domains like clinical or legal decision support where supervision is imperfect and rules require interpretation.\n\n**Paper [6]** introduces WebLoop, an execution-grounded framework jointly learning generation, critique, and refinement for functional web generation. The key insight is that Generator and Refiner produce executable artifacts with direct environment rewards, while the intermediate Critic influences downstream behavior without directly executable outcomes—creating a supervision gap. WebLoop addresses the underexplored process of diagnosing and repairing imperfect implementations rather than just optimizing final page quality.\n\n**Paper [17]** explores whether MLLMs can internalize agentic spatial capability to operate tool-free. SpatialOPSD self-distills from verified coding agent traces, motivated by the observation that prompting with summarized execution traces unlocks internal spatial Chain-of-Thought. This addresses the prohibitive inference-time overhead and external dependencies of spatial coding agents, enabling efficient spatial reasoning without tool access.\n\n**Paper [19]** proposes FLOWMEM for vision-language-action models, turning successful latent computation into reusable reasoning experience rather than discarding it after execution. FLOWMEM dynamically retrieves and recomposes latent reasoning flows, avoiding reconstruction of similar computation from scratch for each policy query. This matters for robotics, where efficient reuse of successful reasoning trajectories directly impacts real-time control feasibility.\n\n**Paper [13]** introduces MiMo-V2.6, an omni-modal family scaling RL compute along three dimensions: larger batches with higher throughput, asynchronous training, and mid-training on broad multimodal corpora to provide exploration space. Built on a hybrid-SWA pretrained architecture, this work pushes toward self-improvement through scaled RL, representing one of the largest coordinated efforts in multimodal foundation model training.\n\n## Benchmarking, Evaluation, and Behavioral Analysis\n\nSeveral papers contribute evaluation frameworks and analysis methods that reveal model limitations under specific conditions.\n\n**Paper [3]** introduces GameCommBench, a unified benchmark spanning board games, sports, and esports with commentary annotated by type. The authors propose Type-Aware Commentary Evaluation, addressing how overlap-based or holistic evaluators fail to capture functional heterogeneity of commentary (e.g., play-by-play vs. strategic analysis). This matters because AI-generated game commentary requires multimodal perception, strategic reasoning, and contextual knowledge—dimensions previous fragmented evaluations missed.\n\n**Paper [12]** presents ReTurn, a benchmark of 7,000 base tasks spanning visual and audio evidence for evaluating selective history use in multimodal interaction. The key insight is that existing multi-turn evaluations conflate history-use demands with question difficulty; ReTurn separates these by requiring models to apply historical questions while handling outdated answers or conflicting observations. This reveals when history helps versus hurts—critical for reliable multimodal assistants.\n\n**Paper [23]** studies gendered economic memes under multimodal ambiguity, where sparse text or symbolic visual cues provide insufficient evidence for gendered attribution. The authors identify \"overcommitment\" in reasoning—models tending toward hallucinated and stereotypical economic role assignments when evidence is underspecified. This matters for content moderation and bias mitigation, demonstrating how multimodal ambiguity triggers reliance on pretraining correlations.\n\n**Paper [8]** proposes TRACE, formalizing affective episodes through Condition, Affect, and Effect stages that integrate observable cues with cognitive factors like internal stance and regulation of emotional display. This cognition-oriented framework moves beyond categorical emotion recognition toward tracing how emotions unfold from causes to consequences in real-world social scenes, connecting affective computing to appraisal theory.\n\n## Fusion Architectures, Quantization, and Efficiency\n\nThe final section covers representation learning, fusion mechanisms, and efficiency techniques for multimodal systems.\n\n**Paper [25]** addresses how self-supervised multimodal learning captures synergistic information—task-relevant signals emerging only from joint configurations of multiple modalities, unrecoverable from any modality alone. HRIL employs higher-order tensor modeling to preserve information capacity for synergistic signals, arguing that standard pairwise contrastive objectives lose synergy. This matters theoretically for understanding what multimodal representations can and cannot capture.\n\n**Paper [14]** proposes MGRASRec, a multimodal graph retrieval-augmented framework for sequential recommendation that injects collaborative filtering signals while avoiding repeated MLLM inference over long histories. The approach addresses the limitation of existing methods that rely solely on target user history or incur substantial computational overhead. This matters for production recommendation systems where both collaborative signals and efficiency are paramount.\n\n**Paper [16]** presents \"Deflating the Hessian,\" addressing W4A4 post-training quantization for multimodal diffusion transformers. Existing low-rank PTQ approaches either optimize low-rank compensation separately from residual quantization (requiring higher ranks) or rely on second-order updates without modeling activation quantization error. The unified framework addresses rank-4 W4A4 quantization specifically for diffusion transformers, improving deployment efficiency for multimodal generative models.\n\n**Paper [4]** introduces MetaEncoder, revisiting fully natural language System One interfaces where both user requests and candidate options are expressed in natural language with multimodal auxiliary inputs. The approach fine-tunes a pre-trained Muse-Glimmer 30B decoder into an instruction-following decision-making encoder, departing from structured schema objects. This matters for constrained decision tasks where natural language interfaces offer flexibility but require efficient encoding of candidate options.\n\n**Paper [9]** identifies the \"operator mismatch problem\" in deploying BEV perception: standard inference runtimes handle dense convolutions but cannot represent sparse 3D convolutions or geometric scatter operations. Every sparse convolution library today is CUDA-only and PyTorch-coupled, locking BEV deployment to single-vendor hardware. This work matters for autonomous driving deployment, where portable compute requirements conflict with vendor-specific operator implementations.\n\n**Paper [22]** introduces Evi-VN for GNN-based fraud detection, addressing how camouflage blurs graph neighborhoods and behavioral attributes. The observation that diverse GNNs exhibit overlapping errors on a shared hard region suggests latent fraud evidence that topology and standard features miss. By injecting virtual node evidence guided by hard regions, Evi-VN better utilizes heterogeneous information for detecting well-disguised fraudsters.\n\n**Paper [24]** presents GeoReform, addressing how MLLMs struggle with geometric relations in diagrams. The key insight is that structure injection can fix errors but also introduce new ones—redundant relations distract while ambiguous references cause incorrect constraint application. GeoReform introduces reflective formalization evolution, iteratively refining textual representations of geometric entities and constraints. This matters for multimodal mathematical reasoning where formalization quality determines downstream success.\n\n**Paper [7]** introduces UniData, a universal instruction generation pipeline transforming simple user requirements into multi-round, multimodal instructions. Existing generation methods face limitations in modality support and struggle with multi-round instructions, while creating high-quality datasets remains labor-intensive. UniData addresses this bottleneck for MLLM training data creation.\n\n**Paper [15]** presents EgoVoice, a framework for training and evaluating proactive egocentric spoken assistants from continuous first-person video and audio streams. The joint problem of deciding *when* to speak and *what* to say from continuous streams is unaddressed by existing proactive video assistants, spoken dialog systems, or egocentric task understanding. This matters for wearable AR assistants requiring timely, unprompted spoken guidance.\n\n## Key Takeaways\n\n- **Clinical multimodal AI is maturing toward interpretability and robustness**: Papers [1], [10], [11], [18], and [20] collectively demonstrate that handling missing modalities, irregular sampling, and the need for evidence-grounded predictions are now first-class concerns rather than afterthoughts, with techniques like disease-coordinate latent spaces, sparse behavioral factors, and cost-aware test acquisition.\n\n- **Information asymmetry is a fundamental challenge, not a bug**: PXtal [2] and BATok [21] explicitly model the reality that modalities carry fundamentally different information densities, moving beyond the assumption that paired views are comparably informative—a critical insight for scientific and RF domains.\n\n- **Evaluation benchmarks are becoming more diagnostic**: GameCommBench [3] and ReTurn [12] separate confounded factors (commentary type, history-use demands vs. question difficulty), enabling precise diagnosis of where models fail rather than aggregate scores that mask specific weaknesses.\n\n- **Multimodal agents are learning to reuse and internalize reasoning**: FLOWMEM [19], SpatialOPSD [17], and WebLoop [6] all address the inefficiency of discarding successful reasoning, whether through latent flow memory, self-distillation from agent traces, or execution-grounded critique-refinement loops.\n\n- **Ambiguity triggers overcommitment and bias**: Paper [23] demonstrates that multimodal underspecification causes models to hallucinate stereotypical attributions, a finding with broad implications for content moderation and safety in multimodal systems.\n\n- **Deployment constraints shape architecture choices**: The operator mismatch problem [9] and W4A4 quantization challenges [16] reveal that multimodal deployment on portable or heterogeneous hardware requires rethinking operator support and quantization strategies from the ground up.\n\n- **Self-improvement through scaled RL is the frontier**: MiMo-V2.6 [13] and AdaptEvo [5] represent complementary approaches—massive-scale RL compute with omni-modal exploration, and confidence-adaptive policy optimization under imperfect supervision—both pointing toward models that improve their own reasoning capabilities.",
+    "papers": [
+      {
+        "title": "Leakage-Controlled Multimodal Learning for Diagnosis and Progression Prediction in Alzheimer's Disease Research",
+        "url": "",
+        "authors": [
+          "Akeem Temitope Otapo",
+          "Ghazaleh Khodabandelou",
+          "Zuheng Ming",
+          "Alice Othmani"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "PXtal: Learning to Align Powder X-Ray Diffraction and Crystal Structures under Information Asymmetry across Modalities",
+        "url": "",
+        "authors": [
+          "Zhuoran Yang",
+          "Christopher M. Collins",
+          "Bei Peng",
+          "Luke M. Daniels",
+          "Matthew J. Rosseinsky",
+          "Vladimir V. Gusev"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "GameCommBench: A Unified Benchmark and Type-Aware Evaluation for AI-Generated Game Commentary",
+        "url": "",
+        "authors": [
+          "Qirui Zheng",
+          "Zhengteng Lin",
+          "Yunyi Xiao",
+          "Junhao Li",
+          "Keyuan Cheng",
+          "Xingbo Wang",
+          "Yongyi Wang",
+          "Lingfeng Li",
+          "Yunlong Lu",
+          "Wenxin Li"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "MetaEncoder: Exploring the Limit of Bi-Encoders for Multimodal System One Decision Making with Natural Language Interface",
+        "url": "",
+        "authors": [
+          "Jianpeng Cheng",
+          "Guangyu Sun",
+          "Aashu Singh",
+          "Benyu Zhang",
+          "Haixing Dai",
+          "Hossein Mansour",
+          "Jiangfan Zhang",
+          "Shlok Kumar Mishra",
+          "Wei Sun",
+          "Xuanming Cui",
+          "Yanli Liu",
+          "Qi Guo",
+          "Max Xiangjun Fan",
+          "Jun Xiao"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "AdaptEvo: Adaptive Agent Learning with Evolving Supervision",
+        "url": "",
+        "authors": [
+          "Shijun Wan",
+          "Jiancong Xie",
+          "Hang Xu",
+          "Jin Duan",
+          "Qixiong Wang",
+          "Xi Xiang",
+          "Maofei Que",
+          "Yahui Liu",
+          "Zhongyu Wei",
+          "Mu Chuan"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Learning the Loop, Not Just the Page: Execution-Grounded Loop Learning for Web Generation",
+        "url": "",
+        "authors": [
+          "Yuxin Meng",
+          "Ruixu Zhang",
+          "Junjie Wang",
+          "Yuhan Suo",
+          "Yuhan Sun",
+          "Ruining Hu",
+          "Yiyao Yu",
+          "Yubin Wang",
+          "Shouwei Ruan",
+          "Bin Wang",
+          "Yue Liao",
+          "Yuxiang Zhang",
+          "Yujiu Yang"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "UniData: Universal Multimodal Instruction Generation Pipeline",
+        "url": "",
+        "authors": [
+          "Jiaqi Tang",
+          "Yi-Feng Wu",
+          "Yuting Zhang",
+          "Hao Lu",
+          "Bowen Fu",
+          "Qing-Guo Chen",
+          "Xiaogang Xu",
+          "Yuwei Hu",
+          "Shiyin Lu",
+          "Wei Wei",
+          "Lei Zhang",
+          "Zhao Xu",
+          "Weihua Luo",
+          "Qifeng Chen",
+          "Ying-Cong Chen"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Cognition-Oriented Emotion Tracing from Causes to Consequences in Real-World Social Scenes",
+        "url": "",
+        "authors": [
+          "Hao Li",
+          "Jinye Zhang",
+          "Bobo Li",
+          "Mong-Li Lee",
+          "Wynne Hsu",
+          "Zheng Wang",
+          "Hao Fei",
+          "Min Zhang"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "The Operator Mismatch Problem: Deploying BEV Perception with Portable GPU Compute",
+        "url": "",
+        "authors": [
+          "Rohit Verma",
+          "Anand V Bodas"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "From Sparse Representations to Behavioral Insights for Multimodal Depression Assessment",
+        "url": "",
+        "authors": [
+          "Guimin Hu",
+          "Zihao Song",
+          "Jiachen Luo",
+          "Jiayuan Xie",
+          "Ruichu Cai"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "ActiveMedAgent: Cost-Aware Trajectory Learning for Multimodal Medical Diagnosis",
+        "url": "",
+        "authors": [
+          "Weiwei Ma",
+          "Xiaobing Yu",
+          "Peijie Qiu",
+          "Jin Yang",
+          "Zhaoqi An",
+          "Xuanzhao Dong",
+          "Xiaoqi Zhao",
+          "Xiaofeng Liu"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "When History Helps and Hurts: Selective History Use across Multimodal Turns",
+        "url": "",
+        "authors": [
+          "Shuoyang Sun",
+          "Kerui Gu",
+          "Hao Fang",
+          "Shaoli Huang",
+          "Bin Chen"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "MiMo-V2.6: Scaling Reinforcement Learning Towards Self-Improvement",
+        "url": "",
+        "authors": [
+          "Xiaomi LLM-Core Team",
+          ":",
+          "Zongming Qiao",
+          "Ziyue Hua",
+          "Zirui Ou",
+          "Zihao Yue",
+          "Zihan Jiang",
+          "Zhuo Huang",
+          "Zhiyang Chen",
+          "Zhixian Zheng",
+          "Zhipeng Xu",
+          "Zhengrui Ma",
+          "Yuyang Hu",
+          "Yuhang Dong",
+          "Yuechen Zhang",
+          "Yudong Wang",
+          "Yuanxin Liu",
+          "Yixin Yang",
+          "Yishuo Cai",
+          "Yikai Zhao",
+          "Yihan Yan",
+          "Yifan Zhang",
+          "Yifan Song",
+          "Xiyu Wei",
+          "Xing Zhang",
+          "Xin Zhang",
+          "Xiaoqian Liu",
+          "Xiaodong Ji",
+          "Xiangwei Deng",
+          "Xueyu Guo",
+          "Wenhan Ma",
+          "Weimin Xiong",
+          "Weikun Wang",
+          "Weiji Zhuang",
+          "Shuo Liu",
+          "Shuhuai Ren",
+          "Shuhao Gu",
+          "Shimao Chen",
+          "Shijie Cao",
+          "Shihua Yu",
+          "Shicheng Li",
+          "Shengjie Zhou",
+          "Shaolei Zhang",
+          "Rang Li",
+          "Qiying Wang",
+          "Qingkai Fang",
+          "Qianli Chen",
+          "Minzheng Wang",
+          "Liwen Wang",
+          "Linli Yao",
+          "Linghao Zhang",
+          "Liangyu Cheng",
+          "Liang Zhao",
+          "Lei Li",
+          "Jinhao Dong",
+          "Jinyu Xiang",
+          "Jianyu Wei",
+          "Jiangshan Duo",
+          "Huaqiu Liu",
+          "Huanjie Fan",
+          "Hongyi Guan",
+          "Hongshen Xu",
+          "Hao Tian",
+          "Hanyu Li",
+          "Hailin Zhang",
+          "Gang Wang",
+          "Fuli Luo",
+          "Feng Wei",
+          "Dong Zhang",
+          "Dawei Zhu",
+          "Chiheng Lou",
+          "Chenhong He",
+          "Chenhao He",
+          "Chenghua Liu",
+          "Bowen Ye",
+          "Bowen Shen",
+          "Boshen Xu",
+          "Bo Yang",
+          "Bingquan Xia",
+          "Bangjun Xiao",
+          "Baixuan Xu",
+          "Zhouxiang Mao",
+          "Zhiyang Zhang",
+          "Zhixiang Xu",
+          "Zhenru Lin",
+          "Zhengju Tang",
+          "Zhaojun Huang",
+          "Yuzhe Weng",
+          "Yuxing Xiang",
+          "Yuxiao Li",
+          "Yuheng Yang",
+          "Yuhang Wang",
+          "Yuchen Liu",
+          "Yuanyuan Tian",
+          "Yuanliang Dong",
+          "Yu Cheng",
+          "Yongzhe He",
+          "Yongshun Liang",
+          "Yong Wang",
+          "Yiyan Wang",
+          "Yitian Gong",
+          "Yijie Zhang",
+          "Yanshu Xin",
+          "Xun Zhang",
+          "Xingjian Zhao",
+          "Wenyu Yang",
+          "Wenshan Huang",
+          "Wenhao Li",
+          "Tingwei Huang",
+          "Tianyu Yu",
+          "Tianyang Lu",
+          "Taoyu Yang",
+          "Sinan Du",
+          "Shutong Tian",
+          "Shulin Du",
+          "Shengfan Wang",
+          "Shanchuan Fang",
+          "Qihao Zhang",
+          "Qibin Yang",
+          "Qian Yu",
+          "Qian Tu",
+          "Pengrong Xie",
+          "Peipei Wang",
+          "Peidian Li",
+          "Minkun Guo",
+          "Mingchen Shao",
+          "Luohan Gao",
+          "Lijie Wang",
+          "Liang Shi",
+          "Kaiqi Chen",
+          "Kaiming Liu",
+          "Kaifei Wang",
+          "Kai Yang",
+          "Jinlong Xue",
+          "Jiechen Zhang",
+          "Jiaxuan Liu",
+          "Hongxu An",
+          "Hao Peng",
+          "Hanglong Lü",
+          "Guonan Wang",
+          "Feiyu Yang",
+          "Fanyu Cao",
+          "Fangyue Liu",
+          "Fan Cui",
+          "Cong Wang",
+          "Chun Chen",
+          "Chenxu Bai",
+          "Chengxuan Zhu",
+          "Chenghua Wang",
+          "Boyi Zeng"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Multimodal Graph Retrieval-Augmented Sequential Recommendation via Collaborative Filtering Paths",
+        "url": "",
+        "authors": [
+          "Jason Marcell Setiadi",
+          "Xin Cao",
+          "Lina Yao"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "EgoVoice: Proactive Spoken Assistance from Egocentric Multimodal Streams",
+        "url": "",
+        "authors": [
+          "Heeseung Kim"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Deflating the Hessian: Rank-4 W4A4 Quantization for Multimodal Diffusion Transformers",
+        "url": "",
+        "authors": [
+          "Shiwen Wang",
+          "Pengxiang Zhao",
+          "Xiaoming Yuan"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "SpatialOPSD: Self-Distilling Spatial Intelligence from Verified Coding Agent Traces",
+        "url": "",
+        "authors": [
+          "Rongxue Li",
+          "Meng Yang",
+          "Yiru Mao",
+          "Yongliang Tao",
+          "Lulu Hu",
+          "Bin Yang",
+          "Zhao Xu",
+          "Weihua Luo",
+          "Bowen Xu"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "CoPoE: Multimodal Fusion via Decomposable Disease-Coordinate Product-of-Experts for Missing-Modality Alzheimer's Diagnosis",
+        "url": "",
+        "authors": [
+          "Chihun An",
+          "Ikbeom Jang"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Recompose and Refine Latent Reasoning Flows for Vision-Language-Action Models",
+        "url": "",
+        "authors": [
+          "Hongyu Shi",
+          "Sen Zhao",
+          "Zuyu Zhang",
+          "Lifeng Shen",
+          "Ding Zou",
+          "Xinyu He",
+          "Xu Zhang",
+          "Qinghua Zhang"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "OA-MAP: Evidence-Grounded Multi-Agent Multimodal Framework for Interpretable Knee Osteoarthritis Progression",
+        "url": "",
+        "authors": [
+          "Sixu Chen",
+          "Mingrui Yang",
+          "Qiang Guan",
+          "Xiaojuan Li"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Instruction-Conditioned Electromagnetic Spectrum Understanding via Budget-Adaptive Signal Tokenization",
+        "url": "",
+        "authors": [
+          "Lei Zhai",
+          "Zhihao Chang",
+          "Shuyuan Yang",
+          "Zhixi Feng"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Evi-VN: Hard Region Guided Virtual Node Evidence Injection for GNN-Based Fraud Detection",
+        "url": "",
+        "authors": [
+          "Jiran Tao",
+          "Yifan Wu",
+          "Binyan Jiang"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Addressing Overcommitment in the Reasoning of Gendered Economic Memes under Multimodal Ambiguity",
+        "url": "",
+        "authors": [
+          "Kushal Kanwar",
+          "Dushyant Singh Chauhan",
+          "Kapil Rana",
+          "Gopendra Vikram Singh",
+          "Nils Lukas"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "GeoReform: Reflective Formalization Evolution for Multimodal Geometry Problem Solving",
+        "url": "",
+        "authors": [
+          "Jialu Wang",
+          "Ruichen Zhang",
+          "Xiaoou Liu",
+          "Hua Wei",
+          "Tianlong Chen"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "HRIL: Learning Multimodal Synergy via Higher-Order Tensor Modeling",
+        "url": "",
+        "authors": [
+          "Qun Dai",
+          "Liangjian Wen",
+          "Jiang Duan",
+          "Yong Dai",
+          "Dongkai Wang",
+          "Maolin Wang",
+          "Mingjie Wang",
+          "Jianzhuang Liu",
+          "He Yan",
+          "Zhao Kang"
+        ],
+        "date": "2026-10-11"
+      },
+      {
+        "title": "Bi-FORK: Generative Modeling of High-Dimensional Bifurcating Systems",
+        "url": "",
+        "authors": [
+          "Anna Zimmel",
+          "Fleur Hendriks",
+          "Markus Holzleitner",
+          "Florian Sestak",
+          "Martin Weichselbaumer",
+          "Vlado Menkovski",
+          "Johannes Brandstetter"
+        ],
+        "date": "2026-10-11"
+      }
+    ]
+  }
+]
