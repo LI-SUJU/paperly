@@ -1,0 +1,213 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-13",
+    "paperCount": 4,
+    "markdown": "# Interpretability Beyond Single Neurons: Modularity, Amortized Attribution, Role-Aware Semantics, and Sparse Selection\n\nToday's interpretability research pushes past neuron-level intuitions toward richer structural accounts of how networks and models organize computation. Across four papers, we see formal hierarchies of modularity, kernel-derived sensitivity atlases, role-grounded attention for pragmatic meaning, and combinatorial feature selection for stable financial regression.\n\n## Rethinking Modularity in Neural Representations\n\nSaha, Bergen, and Khosla challenge the widely held view that neural networks lack modular organization because individual neurons are polysemantic [1]. They introduce a formally nested hierarchy of modularity—unit-level (disjoint neurons for distinct computations), orthogonal (functionally independent subspaces under rotation), and linear (separable via a bounded linear map)—and develop a unified framework to test each level. This reframing suggests that modularity may exist in representational geometry even when it is invisible at the single-neuron level, a distinction with direct consequences for interpretability and editing. The work matters because it reconciles conflicting findings about polysemanticity and offers a principled vocabulary for asking *where* and *how* modularity emerges.\n\n## Amortized and Conditional Attribution\n\nWiest, Ariq, and Chowdhury address a practical bottleneck in gradient-based attribution: backpropagation is expensive per sample, while static importance scores lose input dependence [2]. Their KPSA (Kernelized Parameter Sensitivity Atlas) derives from a block decomposition of the empirical neural tangent kernel, measuring normalized parameter-group sensitivity and embedding those sources in an explicit query space. A lightweight kernel then estimates sensitivities for unseen inputs, with derived bounds separating finite-source error from irreducible representation error. This enables amortized, input-conditional interpretability at scale—useful for auditing large models where per-example attribution is prohibitive.\n\n## Role-Aware Semantics for Pragmatic Meaning\n\nYoum and colleagues tackle the detection of sentiment, emotion, politeness, and formality (SEPF) in dialogue, arguing that existing contextual models leave participant-role structure implicit [3]. Their role-aware transformer maps each SEPF dimension to theory-grounded Semantic Role Labeling configurations and injects those configurations directly into self-attention. Role-aware attention models non-directional relations among participants, making the pragmatic scaffolding of utterances explicit rather than emergent. This matters for interpretability in social NLP, where *who* is speaking to *whom* often determines the meaning of a polite or emotional expression.\n\n## Sparse Selection as Interpretability in High Dimensions\n\nMouangue and Cazenave confront feature selection in high-dimensional financial regression, where correlated engineered variables undermine stability and interpretability [4]. While Lasso is standard, its shrinkage is restrictive when signal is spread across correlated predictors; exact sparse regression avoids shrinkage but is combinatorially hard and typically optimized for in-sample rather than out-of-sample error. Their approach applies Monte Carlo Tree Search to L₀ feature selection, targeting out-of-sample performance in a combinatorial search space. The contribution sits at the intersection of interpretability and generalization, offering a route to sparse, stable financial models where variable identity matters as much as predictive accuracy.\n\n## Key Takeaways\n\n- Modularity in neural networks is level-dependent: failures at the unit level do not preclude orthogonal or linear separability [1].\n- Interpretability can be amortized—KPSA predicts input-conditional parameter sensitivities without per-sample backpropagation, with theoretical error bounds [2].\n- Making semantic roles explicit in attention improves detection of pragmatic dimensions like politeness and formality [3].\n- Combinatorial L₀ selection via Monte Carlo Tree Search offers an alternative to Lasso when signals are distributed across correlated features [4].\n- Across papers, the trend is toward *structured* interpretability—subspaces, atlases, roles, and sparse supports—rather than raw neuron or weight inspection.\n- Theory-grounded inductive biases (SRL configurations) and formal hierarchies (nested modularity) are increasingly used to make interpretability claims falsifiable [1,3].\n- Out-of-sample objectives are gaining traction in interpretable model selection, especially in high-stakes domains like finance [4].",
+    "papers": [
+      {
+        "title": "Neural networks are more modular than single neurons suggest",
+        "url": "",
+        "authors": [
+          "Shreya Saha",
+          "Benjamin Bergen",
+          "Meenakshi Khosla"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Kernelized Parameter Sensitivity Atlases for Amortized Conditional Interpretability",
+        "url": "",
+        "authors": [
+          "Davide Wiest",
+          "Ahanaf Hasan Ariq",
+          "Abdul Monaf Chowdhury"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "REFLECT: Role-Aware Detection of Sentiment, Emotion, Politeness, and Formality",
+        "url": "",
+        "authors": [
+          "Sangpil Youm",
+          "Annabel Stocks Natalias",
+          "Hayden Heninger",
+          "Leah Jones",
+          "Xiaoyang Jin",
+          "Xiaoya Zhang",
+          "Bonnie Dorr"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "$L_0$ Feature Selection via Monte Carlo Tree Search in High-Dimensional Financial Regression",
+        "url": "",
+        "authors": [
+          "Cameron Mouangue",
+          "Tristan Cazenave"
+        ],
+        "date": "2026-10-13"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-13",
+    "paperCount": 13,
+    "markdown": "# Multimodal Research Digest — October 13, 2026\n\nToday's multimodal research landscape is defined by a decisive push toward systems-level integration: reward modeling without human labels, spatial reasoning benchmarks that demand action rather than description, and routing/retrieval architectures that treat model selection and evidence aggregation as first-class problems. Across the board, researchers are confronting the gap between what vision-language models can perceive and what they can reliably do — spatially, procedurally, and under uncertainty — while a parallel thread explores richer modality coverage, from byte-level unification to urban-scale mobility flows.\n\n## Foundation Models and Unified Architectures\n\nByte-level unification, structured expert routing, and adaptive model selection emerge as three distinct strategies for scaling multimodal systems without incurring proportional cost.\n\nKairos [1] asks a deceptively fundamental question: can a combination of architectural innovations — gated-DeltaNet linear attention, sliding-window attention with shared projections (LiZAttention2), block-wise Attention-Residual aggregation, sparse Mixture-of-Experts, and a multi-scale byte-level codec — optimize at all when trained on a single local machine? The model operates over a single shared byte space spanning text, image, audio, video, lidar, and control streams, trained with a uniform-noise denoising objective that treats all modalities as corrupted byte sequences to be reconstructed. Notably, the paper frames itself as a feasibility report rather than a capability claim, asking whether the composite architecture trains stably before asking whether it is useful. This matters because byte-level multimodal foundation models remain rare, and negative or partial results from such a combination would be as informative as positive ones for the community's architectural priors.\n\nMonarch-MoE [10] addresses catastrophic forgetting in multimodal continual instruction tuning, where multi-expert LoRA distributes learning across experts but dense low-rank updates can still perturb many output features simultaneously. The approach replaces dense LoRA factors with block-diagonal factors connected by a fixed permutation, yielding blockwise gradient isolation: updates to individual block-pairs affect only one output block while preserving connectivity across all input and output blocks. This structural constraint is designed to make continual updates more surgical, and the work positions itself within the growing effort to reconcile the plasticity needed for new tasks with the stability required to retain old ones in multimodal instruction-following settings.\n\nMHR-Router [12] tackles a complementary problem: given multiple VLMs with complementary strengths, how do you dispatch a query to the right expert? Existing routing approaches rely on text-based cues or static model profiles, which the authors argue miss fine-grained visual evidence and expert-specific failure patterns. MHR-Router proposes a multimodal heterogeneous retrieval-enhanced adaptive routing framework that uses retrieved evidence to inform dispatch decisions per query. The framework's emphasis on expert-specific failure patterns is a useful reframing — routing is not just about matching queries to strengths but about avoiding known weaknesses.\n\n## Reward Modeling, Evaluation, and Uncertainty\n\nThree papers interrogate the reliability of multimodal systems: how to reward them without labels, how to benchmark them on spatial tasks, and how to quantify when they are uncertain.\n\nUnsupervised Multimodal Reward Modeling [2] removes the human preference label from the reward model training loop. The recipe is elegant: place a linear head on an intermediate layer of a frozen Qwen3-VL backbone and train it to score a web caption above a perturbed version of the same caption, with labeled data used only to select which layer. The layer choice turns out to be decisive — worth 5.8 points over using the last layer — and a single recipe transferred without re-tuning beats or matches GPT-4o on three benchmarks at 32B, and reaches 6.6 points ahead on VL-RewardBench. This matters because preference annotation is expensive, noisy, and often internally inconsistent; a label-free recipe that outperforms a frontier proprietary model suggests the bottleneck was never the labels but the readout point.\n\nGeoSpatialBench [3] argues that existing spatial reasoning evaluations for MLLMs rely predominantly on static question-answering over small-scale or synthetic scenes, and rarely probe whether models can *modify* spatial configurations while satisfying explicit geometric constraints. The benchmark is designed as an escalating progression of spatial cognition, from relation understanding through constrained spatial editing. This is a meaningful shift in evaluation philosophy: instead of asking whether a model can describe where an object is, the benchmark asks whether it can act on a scene under geometric constraints — a capability far closer to what grounded world models would need.\n\nEMT-DS [8] focuses on a failure mode that softmax-based multimodal emotion recognition shares with many multimodal classifiers: high confidence under contradiction, such as when facial expression suggests positive valence while vocal prosody indicates negative arousal. The Evidential Multimodal Transformer with Dempster-Shafer Fusion models predictions as Subjective Opinions (Dirichlet distributions), separating epistemic uncertainty (lack of evidence) from aleatoric uncertainty (sensor noise), and fuses modality-specific transformers via Dempster-Shafer theory. The explicit separation of uncertainty types is the key contribution — it allows the system to distinguish \"I haven't seen enough\" from \"the sensors disagree,\" which is precisely the distinction that matters in deployment.\n\n## Spatial Reasoning and Grounded Interaction\n\nBeyond benchmarking, several papers tackle the harder problem of producing spatial and procedural competence, not just measuring it.\n\nAdaC-GRPO [7] confronts long-horizon multimodal reasoning through Visual Sudoku, which requires multi-step deductive reasoning over both local constraints and global dependency chains. The authors introduce FG-Sudoku, a fine-grained benchmark categorized by grid size and required deductive steps, and report that frontier MLLMs fail on complex long-range dependencies such as 9×9 puzzles. During post-training, this near-zero success rate causes a reward signal collapse — the core problem the paper addresses with adaptive curriculum learning built on GRPO. The curriculum is designed to keep the verifiable reward signal informative as difficulty scales, making this a contribution to RLVR methodology as much as to multimodal reasoning.\n\nWork2Skill [4] addresses the challenge of unfamiliar software and workflows that require human domain knowledge, where computer-use agents still struggle. The framework captures human GUI experience through WorkRecorder, which aligns screen recordings with mouse and keyboard events, and then induces reusable agent skills by interpreting actions in context and separating workflow rules from task-specific details. The central insight is that human demonstrations convey procedural knowledge through the same GUI interaction space agents operate in, so reuse requires a structured induction step rather than simple trajectory replay. This positions the work at the intersection of demonstration learning and skill abstraction for GUI agents.\n\nKnowForge [5] decomposes open-domain multimodal document QA into role-specialized tool agents over a knowledge-point index. The pipeline separates jobs deliberately: a hybrid-retrieval knowledge-point index, a Locator agent restricted to search, a code-scheduled bridge judge that forces a missing second hop, a typed and size-bounded evidence pool merging every search's ranking, a Deep Reader agent restricted to reading text, images, and tables, and a synthesizer with format checking. The design principle — that no single model should both find and read — is a direct critique of retrieval-augmented agents that let one model schedule all its own tools. The typed, size-bounded evidence pool is a practical mechanism for keeping heterogeneous evidence manageable and comparable.\n\n## Multimodal Document, Clinical, and Mobility Applications\n\nDomain-specific deployments reveal how multimodal architectures adapt when the evidence is heterogeneous, longitudinal, and high-stakes.\n\nPRISM [9] targets clinical prognosis, where structured measurements, physiological waveforms, longitudinal history, and population context must be integrated. The model combines per-feature numerical tokenization, recency-weighted aggregation of longitudinal ECGs, and a dual-modality population memory bank, with retrieval operating in representation space: the model receives mean-pooled embeddings of similar training-cohort encounters, and no individual retrieved record enters the prompt. That last design choice is significant for privacy and for keeping the context window focused on distributional rather than case-specific signal. Evaluation on the 1,443-task MDS benchmark positions this as a serious attempt at clinical-grade multimodal prognosis.\n\nSeoulMMOD [13] introduces a large-scale public benchmark for citywide multimodal mobility in Seoul, providing three years of hourly origin-destination flows estimating total mobility. The motivation is that most existing OD benchmarks cover only a single transport service or at most two modes, making it difficult to separate shifts across transport modes from changes in total travel. By providing citywide multimodal coverage, the benchmark enables a decomposition that partial-mode datasets cannot support. This is a dataset contribution with clear implications for urban planning and for evaluating multimodal forecasting models on genuinely heterogeneous mobility signals.\n\nUkrMeme [11] studies persuasive technique detection in Ukrainian memes using vision-language models, introducing a dataset of 200 organically produced Ukrainian wartime memes annotated for persuasion techniques, plus PTM-UA, a Ukrainian translation of a subset of the Propaganda 950 benchmark that preserves original visual content while translating meme text. VLMs are evaluated in a zero-shot prompting setup across image, text, and multimodal conditions, allowing the contribution of each modality to be isolated. The work matters because persuasion detection in conflict contexts is a genuinely multimodal problem where visual and textual cues combine, and because Ukrainian-language resources of this kind remain scarce.\n\n## Reinforcement Learning and Policy Learning for Multimodal Agents\n\nTwo papers push RL methodology specifically toward the challenges that arise when policies must generate complex, multimodal distributions.\n\nReinforcement Learning via Fixed-point Flow Matching [6] observes that in maximum entropy and behavior-constrained RL, the optimal policy is a Boltzmann distribution that is often complex and multimodal, and that flow policies trained with flow matching traditionally require access to training data unavailable in online RL. The proposed fixed-point flow matching (FFM) is a data-free procedure for training and fine-tuning flow policies in RL, leveraging a fixed-point formulation to generate samples from the target distribution without offline data. This is a methodological bridge between the expressive multimodal modeling of flow matching and the online, data-free constraints of RL — a combination that has been surprisingly underexplored.\n\nTaken together with AdaC-GRPO [7], these papers suggest that the RL-for-multimodal-agents subfield is maturing along two axes: richer policy representations (flow-based, multimodal-capable) and better curriculum/reward design for long-horizon verifiable tasks. Both address the same underlying tension — that the distributions and reward landscapes in multimodal reasoning are far less forgiving than those in text-only RL — but from opposite ends of the pipeline.\n\n## Key Takeaways\n\n- **Label-free reward modeling is competitive with frontier proprietary models.** The unsupervised recipe in [2] beats or matches GPT-4o on three benchmarks at 32B, with the choice of intermediate layer worth 5.8 points — suggesting the readout point, not the preference labels, was the historical bottleneck.\n- **Spatial evaluation is shifting from description to constrained action.** GeoSpatialBench [3] probes whether models can edit spatial configurations under explicit geometric constraints, a much closer proxy for grounded world-model competence than static QA.\n- **Role specialization beats monolithic tool use in retrieval-augmented document QA.** KnowForge [5] enforces a hard separation between locating and reading, with a code-scheduled bridge judge to force multi-hop retrieval — a direct architectural critique of single-model self-scheduling.\n- **Structured expert routing and blockwise gradient isolation are the emerging answers to continual multimodal learning.** Monarch-MoE [10] uses block-diagonal factors with fixed permutations to keep updates surgically local, while MHR-Router [12] uses retrieval to dispatch queries to the right VLM expert based on failure patterns rather than static profiles.\n- **Uncertainty quantification is being formalized in multimodal fusion.** EMT-DS [8] separates epistemic from aleatoric uncertainty via Subjective Opinions and Dempster-Shafer fusion, addressing the classic contradiction case where facial expression and vocal prosody disagree.\n- **RL for multimodal agents is advancing on two fronts simultaneously.** FFM [6] brings data-free flow matching to online RL, while AdaC-GRPO [7] uses adaptive curriculum to prevent reward collapse on long-horizon Visual Sudoku tasks where frontier MLLMs fail outright.\n- **Domain benchmarks are going city-wide, conflict-specific, and clinically longitudinal.** SeoulMMOD [13] provides three years of hourly multimodal OD flows, UkrMeme [11] offers Ukrainian wartime meme annotations with a translated Propaganda 950 subset, and PRISM [9] operates over 1,443 clinical prognosis tasks with representation-space retrieval that keeps individual records out of the prompt.",
+    "papers": [
+      {
+        "title": "Kairos: Toward a Byte-Level Foundation Model for Every Modality",
+        "url": "",
+        "authors": [
+          "Fabien Furfaro"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Unsupervised Multimodal Reward Modeling",
+        "url": "",
+        "authors": [
+          "Yueying Li",
+          "Jingxuan Fan",
+          "Kianté Brantley",
+          "Sham M. Kakade",
+          "Hanlin Zhang"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Mind the Spatial Gap: A Benchmark for Geospatial Reasoning and Constrained Spatial Editing",
+        "url": "",
+        "authors": [
+          "Zheng Ren",
+          "Yanning Wang",
+          "Ziheng Huang",
+          "Fei Huang",
+          "Shiqi Wang",
+          "Ziqian Ye",
+          "Yang Yue"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Work2Skill: Capturing Human GUI Experience for Reusable Agent Skill Induction",
+        "url": "",
+        "authors": [
+          "Yuqi Huang",
+          "Hui Li",
+          "Yifei Cao",
+          "Zikun Cai",
+          "Tianci Xie",
+          "Yangfan Gao",
+          "Pinxue Guo",
+          "Chaoyun Zhang",
+          "Bingxuan Li",
+          "Rui Zheng",
+          "Hang Yan",
+          "Ning Liao"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Locate, Judge, Read: Role-Specialized Tool Agents over a Knowledge-Point Index for Open-Domain Multimodal Document QA",
+        "url": "",
+        "authors": [
+          "Wenlin Lin",
+          "Fanzhe Wei"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Reinforcement Learning via Fixed-point Flow Matching",
+        "url": "",
+        "authors": [
+          "Denis Blessing",
+          "Onur Celik",
+          "Gerhard Neumann"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "AdaC-GRPO: Towards Mastering Long-Horizon Visual Sudoku Puzzles via Adaptive Curriculum Learning",
+        "url": "",
+        "authors": [
+          "Sida Li",
+          "Yuanxin Liu",
+          "Linli Yao",
+          "Shicheng Li",
+          "Xu Sun",
+          "Haoli Bai",
+          "Xiaohui Li"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Evidential Multimodal Transformers with Dempster-Shafer Fusion for Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Muhammad Usama",
+          "Yeoreum Jung"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Retrieval-Augmented Multimodal Language Model with Heterogeneous Evidence Integration for Clinical Prognosis",
+        "url": "",
+        "authors": [
+          "Hamza Shafiq",
+          "Jialu Tang",
+          "Ting Dang",
+          "Jun Hu",
+          "Aaqib Saeed"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "Monarch-MoE: Structured Experts for Multimodal Continual Instruction Tuning",
+        "url": "",
+        "authors": [
+          "Xi Zhang",
+          "Boyu Diao",
+          "Zesen Chen",
+          "Ruiqi Liu",
+          "Hangda Liu",
+          "Yongjun Xu"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "UkrMeme: Multimodal Explainable Persuasion Detection in Ukrainian Memes",
+        "url": "",
+        "authors": [
+          "Nazar Andrushko",
+          "Vera Schmitt",
+          "Veronika Solopova"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "MHR-Router: Multimodal Heterogeneous Retrieval-Enhanced Adaptive Routing for VLM Inference",
+        "url": "",
+        "authors": [
+          "Wenjuan Zhu",
+          "Zheming Yang",
+          "Yunqing Hu",
+          "Qi Guo"
+        ],
+        "date": "2026-10-13"
+      },
+      {
+        "title": "SeoulMMOD: A Large-Scale Multimodal Origin-Destination Flow Benchmark",
+        "url": "",
+        "authors": [
+          "Taeyoung Yu",
+          "Seonbin Jo",
+          "Jiwon Kim",
+          "Junyoung Byun"
+        ],
+        "date": "2026-10-13"
+      }
+    ]
+  }
+]
