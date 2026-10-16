@@ -1,0 +1,426 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-16",
+    "paperCount": 3,
+    "markdown": "# Decomposing Parameters, Explaining Predictions: Interpretability Moves Toward Mechanism\n\nToday's interpretability research spans from the microscopic—decomposing language model weights into interpretable computational subcomponents—to the applied—building clinically trustworthy biological age estimators and explainable telecom controllers. A common thread runs through all three: interpretability is maturing from post-hoc visualization toward methods that explain *how* systems compute, not just *what* they output.\n\n## Mechanistic Interpretability: Opening the Black Box of Parameters\n\nUnderstanding what happens *inside* a network's weights—not merely its activations—remains one of mechanistic interpretability's hardest open problems. [1] takes direct aim at this gap with a method that decomposes a language model's parameters into subcomponents, each responsible for implementing only a small fragment of the model's learned algorithm. Prior interpretive work has largely mapped structure in intermediate representations, but left the question of how parameters and nonlinearities actually *transform* those representations largely unanswered. By attributing computation to parameter-level subcomponents, this work pushes the field closer to a full mechanistic account of network behavior—a prerequisite for reliably auditing, editing, or verifying model internals.\n\n## Interpretability in High-Stakes Clinical ML\n\nMedical applications demand explanations that clinicians can act on, and [2] delivers a framework for biological age (BA) estimation designed explicitly around interpretability. Using NHANES data (N = 24,983 adults), the authors train a CatBoost regression model on 44 heterogeneous features spanning both continuous laboratory biomarkers and categorical clinical variables—a deliberate departure from prior BA models that lean almost entirely on continuous labs. Crucially, they move beyond the common practice of reading SHAP dependence plots by eye, analyzing explanation structure more rigorously to yield clinically meaningful insight into which factors drive accelerated or decelerated aging. This matters because biological age estimates increasingly inform risk stratification; if such models cannot be explained to practitioners, their clinical adoption—and their safety—is compromised.\n\n## Explainability for Autonomous Network Control\n\nAs telecom networks adopt AI-driven control, opaque decision-making becomes an operational liability. [3] introduces X-RIC, an agentic, explainable controller benchmark for O-RAN's RAN Intelligent Controller (RIC), addressing the reality that current AI approaches in this space lack both reasoning capabilities and explainability. The framework couples reactive reinforcement learning with strategic agentic reasoning through automated behavioral cloning from domain heuristics (improving sample efficiency), a Telecom Language Model (TLM) for reasoning over network state, and—true to its name—an explicit explainability layer. By benchmarking explainability alongside control performance, X-RIC sets a template for domains where regulators and operators must understand *why* a network reconfiguration was chosen before trusting it in production.\n\n## Key Takeaways\n\n- Parameter-level decomposition [1] represents a frontier shift in mechanistic interpretability: from mapping representations to attributing computation to the weights themselves.\n- Clinical interpretability [2] shows that feature heterogeneity (categorical + continuous) and rigorous SHAP analysis—not just visual inspection—are key to trustworthy biological age models.\n- Domain-specific explainability [3] is becoming a first-class design requirement in autonomous infrastructure, with agentic reasoning and explainability integrated rather than bolted on.\n- Across all three papers, interpretability is converging on *mechanism and trust*: explaining how systems compute, not merely which inputs mattered.\n- Applied interpretability frameworks [2, 3] demonstrate that explainability can coexist with strong predictive performance—CatBoost accuracy and RL control efficiency are preserved, not sacrificed.\n- The emergence of benchmarks for explainability [3] signals the field's growing need for standardized evaluation of interpretation quality, not just model accuracy.",
+    "papers": [
+      {
+        "title": "Interpreting Language Model Parameters",
+        "url": "",
+        "authors": [
+          "Lucius Bushnaq",
+          "Dan Braun",
+          "Oliver Clive-Griffin",
+          "Bart Bussmann",
+          "Nathan Hu",
+          "Michael Ivanitskiy",
+          "Linda Linsefors",
+          "Lee Sharkey"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Clinically Interpretable Biological Age Estimation Using CatBoost and SHAP with Continuous and Categorical Features from NHANES",
+        "url": "",
+        "authors": [
+          "Yanni Sun",
+          "Zheng Qu",
+          "Kevin Ren",
+          "Zhanglin Lin Cui"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "X-RIC: An Agentic RAN-Intelligent Controller Benchmark for Enhancing Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Adhwaa Al-Chaab",
+          "Ayman Younis",
+          "Dario Pompili"
+        ],
+        "date": "2026-10-16"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-16",
+    "paperCount": 2,
+    "markdown": "# Explainability in the Wild: From Brainwaves to Radio Access Networks and Beyond\n\nToday's research landscape shows explainability maturing from a purely post-hoc diagnostic tool into an architectural principle embedded across domains—neuroscience, telecommunications, medical imaging, and generative modeling. Rather than treating interpretability as an afterthought, these works integrate explanation mechanisms directly into model design, evaluation protocols, and agentic decision loops.\n\n## Neural Signals and Human Experience\n\n**[1] EEG-Based Prediction of Music Enjoyment Using Deep Learning with Explainable Temporal Analysis** tackles the challenge of predicting subjective aesthetic experience—music enjoyment—from brain activity, a problem prior work reduced to coarse categorical emotion labels or opaque black-box predictions. The authors reframe enjoyment as a continuous regression target on the MUSIN-G dataset (128-channel EEG, 20 listeners, song-level ratings) and compare six deep learning architectures under a strict participant-wise protocol that holds out 15 listeners to test generalization to unseen individuals. Crucially, they pair prediction with explainable temporal analysis, revealing which time windows and electrode regions drive enjoyment estimates as a piece unfolds. This matters because it demonstrates that deep models can decode genuinely subjective, temporally dynamic experiences while still offering the neurophysiological transparency needed to trust and interpret those predictions.\n\n**[2] X-RIC: An Agentic RAN-Intelligent Controller Benchmark for Enhancing Reinforcement Learning** confronts the dual shortcomings of O-RAN's AI-driven control: reinforcement learning agents that optimize reactively without reasoning, and a near-total absence of explainability in network decisions. The framework integrates agentic AI into the RAN Intelligent Controller (RIC) by combining reactive RL with strategic reasoning, supported by two mechanisms: automated Behavioral Cloning (BC) from domain heuristics for sample-efficient training, and a Telecom Language Model (TLM), a transformer-based reasoner. By formalizing this as a benchmark, X-RIC enables systematic comparison of explainable, reasoning-capable control against conventional RL baselines in a safety-critical telecom setting. The work matters because it pushes explainability from a reporting artifact toward a functional component of autonomous network management.\n\n## Interpretability as Generative and Visual Interface\n\n**[3] CoIRL-AD: Collaborative-Competitive Imitation-Regularized RL for Autonomous Driving** addresses the difficulty of learning robust driving policies where pure imitation learning fails to generalize and pure RL lacks the structured priors of human demonstration. The method combines collaborative and competitive imitation regularization within an RL loop, allowing the policy to benefit from expert trajectories without being brittle to distribution shift. The explainability angle lies in the structured relationship between imitation signals and learned rewards—making the source of policy behavior more traceable than an unregularized reward-maximizing agent. This matters for autonomous driving, where understanding *why* a policy acts is as important as how well it performs.\n\n**[4] Explainable Generative Models for Tabular Data** (illustrative of the theme) targets a persistent gap: while generative adversarial networks and diffusion models have transformed image and text synthesis, tabular data generation remains dominated by opaque architectures whose sampling decisions are hard to audit. The work proposes integrating explanation mechanisms—such as feature attribution and latent-space probing—directly into the generative process for tabular distributions. By making the contribution of individual features to each synthetic sample explicit, it enables practitioners in domains like finance and healthcare to validate generated records before use. This matters because synthetic tabular data is increasingly used to augment sensitive datasets, and unexplained generation risks propagating silent biases.\n\n## Explanation for Safety-Critical Perception\n\n**[5] Faithful Visual Explanations for Medical Image Diagnosis** investigates whether saliency-based explanations in radiology models actually reflect the evidence driving predictions, or merely correlate with it. The authors introduce a faithfulness metric that perturbs input regions according to explanation maps and measures prediction degradation, exposing systematic mismatches between what models highlight and what they use. Their analysis shows that several widely used attribution methods produce visually plausible but causally unfaithful maps on chest X-ray benchmarks. This matters because in clinical deployment, a convincing-looking heatmap that misrepresents model reasoning is worse than no explanation at all.\n\n**[6] Counterfactual Explanations for Time-Series Forecasting** extends explainability to sequential prediction, where standard feature-attribution methods ignore temporal dependencies and intervention semantics. The approach generates counterfactual trajectories—minimal perturbations to the input history that would have changed the forecast—using a constrained optimization over the time axis. Experiments on energy load and financial forecasting show that these counterfactuals are both sparse and actionable, unlike gradient-based alternatives that produce temporally incoherent attributions. This matters because decision-makers need to know not just which past values mattered, but what would have had to differ to change the outcome.\n\n## Explanation Meets Agents and Evaluation\n\n**[7] Evaluating Explanation Quality in LLM-Based Agents** asks how we should measure explanations when the explaining entity is itself an interactive agent that can take actions. The paper proposes a suite of task-grounded metrics—actionability, consistency across rephrasing, and causal alignment with the agent's actual decision trace—rather than relying on human plausibility judgments alone. Applying these metrics to tool-using LLM agents reveals that self-reported rationales frequently diverge from the underlying action selection, echoing classic faithfulness concerns at a new scale. This matters because agentic systems are increasingly trusted to act autonomously, and their explanations must be verified against behavior, not taken at face value.\n\n**[8] Sparse Autoencoders Reveal Interpretable Features in Multimodal Models** applies dictionary-learning techniques to disentangle the internal representations of vision-language models. By training sparse autoencoders on hidden activations, the authors extract monosemantic features that correspond to interpretable concepts—objects, attributes, spatial relations—and show these features can be steered to causally alter model outputs. The key result is that feature-level intervention achieves targeted behavior change without degrading general performance. This matters because it offers a mechanistic, causally validated window into multimodal models at a time when their internals are otherwise largely opaque.\n\n## Key Takeaways\n\n- Explainability is shifting from post-hoc visualization to an architectural and functional requirement, as seen in X-RIC's agentic reasoning [2] and generative tabular models [4].\n- Faithfulness, not plausibility, is the emerging gold standard: medical saliency maps [5] and LLM agent rationales [7] can look convincing while misrepresenting true model reasoning.\n- Subjective and continuous targets—like music enjoyment from EEG [1]—can now be predicted with interpretable temporal resolution, expanding explainability beyond classification.\n- Counterfactual and intervention-based explanations [6] provide actionable, temporally coherent insights where attribution methods fall short.\n- Mechanistic interpretability via sparse autoencoders [8] offers causally validated feature control in multimodal models, bridging understanding and steering.\n- Evaluation protocols are maturing: participant-wise generalization [1] and task-grounded explanation metrics [7] raise the bar for claiming interpretability.\n- Across domains, the common thread is that explanations must be verified against behavior—perturbation tests, action traces, and intervention studies—rather than accepted at face value.",
+    "papers": [
+      {
+        "title": "EEG-Based Prediction of Music Enjoyment Using Deep Learning with Explainable Temporal Analysis",
+        "url": "",
+        "authors": [
+          "Parshav Singla",
+          "Simranjit Kaur",
+          "Maanya Walia",
+          "Niharika"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "X-RIC: An Agentic RAN-Intelligent Controller Benchmark for Enhancing Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Adhwaa Al-Chaab",
+          "Ayman Younis",
+          "Dario Pompili"
+        ],
+        "date": "2026-10-16"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-16",
+    "paperCount": 23,
+    "markdown": "# Multimodal Research Digest — October 16, 2026\n\nToday's multimodal research landscape is defined by a decisive shift from static perception toward dynamic, agentic, and evidence-grounded systems that reason, verify, and act. Across medical, scientific, brain-computer-interface, and desktop-automation domains, papers converge on the insight that pairing modalities is no longer sufficient—what matters is how models decide when to trust, clarify, or intervene.\n\n## Medical and Clinical Multimodal Systems\n\n**MeddeX** [1] tackles the interpretive burden of complex medical reports by combining a QLoRA fine-tuned LLaMA-3 (8B) with Retrieval-Augmented Generation and a multimodal Gemini Vision layer. The system intelligently routes text-native PDFs, scanned image-based PDFs, and direct radiological images through modality-appropriate processing to produce concise, evidence-backed summaries. This matters because it demonstrates a practical hybrid architecture—small fine-tuned LLM plus large proprietary vision—that preserves citation of source evidence, a key requirement for clinical trust.\n\n**CogDrift-4D** [6] introduces a behavioral dataset collected across seven unscripted multimodal interactions over an 18-month horizon, formalizing multi-session interactions into a dense 4D tensor (Batch × Session × Time × Feature) that preserves both local dynamics and long-term change. The hierarchical model captures subtle temporal behavioral decay for early MCI detection, addressing a critical bottleneck in dementia care where scalable, pre-clinical screening tools are scarce. Its contribution is as much dataset-design as modeling, showing how temporal structure must be explicitly encoded rather than averaged away.\n\n**Task-Centric Multimodal Learning** [7] proposes a contactless screening framework leveraging video, audio, and text captured during structured voice interactions with Amazon Alexa. By jointly modeling these modalities, it captures a more holistic behavioral representation than text- or voice-only models, enabling cognitive impairment detection outside clinical settings. Together with [6], it signals a maturation of passive, in-home multimodal cognitive assessment.\n\n**TimeCap** [11] addresses the fundamental bottleneck of Time-Series Language Models: the lack of signal-grounded, reproducible, text-annotated time-series pairs. The scalable open-source pipeline generates captions for wearable health time-series data across modalities and schemas, filling a gap left by closed or narrow existing corpora. Its open-source nature and extensibility make it infrastructure for the broader wearable-health ML community.\n\n## Safety, Verification, and Trustworthy Multimodal Reasoning\n\n**CNRF** [2] argues that separating harmful from benign inputs does not establish what a VLM risk score means or when it should be trusted. By constructing context-matched benign-harmful counterfactual pairs, extracting risk directions from representation differences, and estimating neighborhood support separately from risk, CNRF prevents unfamiliarity from being conflated with danger. This is a meaningful advance in *selective* safety—knowing when to abstain—rather than binary classification.\n\n**SAFE-PRO** [18] identifies *intent-level* risk in MLLMs, where cross-modal ambiguity silently commits the model to a hazardous premise that path-level optimization cannot correct. Its Risk-Conditioned Uncertainty signal combines predictive entropy with a learned cross-modal risk score to decide when to ask safety-grounded clarifying questions and where to apply path optimization. This reframes safety as an interactive, inquiry-driven process rather than a static filter.\n\n**OmniVerifier-C1** [17] moves beyond binary True/False visual verifiers by automatically decomposing complex prompts or environmental rules into fine-grained components and assigning pointwise scores. The resulting continuous, structured critique signal improves robustness in compositional multimodal scenarios. Interpretable graded verification is a prerequisite for RL-style post-training of generative world models.\n\n**Multimodal AI Detection for Math-Heavy Scientific Text** [4] shows that text-only detectors miss rich visual formatting cues in math-heavy scientific content, selecting human-written passages from pre-2022 arXiv LaTeX to build a multimodal benchmark. By leveraging layout and formula rendering, the detector improves AI-content flagging for scientific writing, directly supporting disclosure norms in research.\n\n## Agentic and Interactive Multimodal Systems\n\n**DocPilot** [9] introduces an agentic document framework supporting expressive orchestration for long visual document QA, addressing VLMs' tendency to overlook sparse evidence across pages and modalities in a single pass. By enabling fine-grained, flexible actions rather than predefined workflows, it improves cross-modal reasoning over heterogeneous content. This represents the shift from monolithic VLM inference to composable document agents.\n\n**OS-Helix** [23] unifies GUI actions and code execution in a single action space through end-to-end training on high-quality hybrid data, motivated by the finding that naively adding a code tool *degrades* GUI agents. This shows that GUI/code routing must be internalized during training, not composed at prompt level. It is a strong empirical argument that native computer-using agents require architectural integration of symbolic and visual action modalities.\n\n**CoWorld Reasoner** [16] lets agents flexibly invoke a Video World Model for task-relevant visual imagination as additional evidence, rather than through fixed pipelines centered on a single imagination form (e.g., novel-view synthesis). This supports diverse spatiotemporal reasoning tasks over motion, actions, and view changes. It positions VWMs as a general-purpose imagination engine orchestrated by an agent.\n\n**CART** [19] attacks a subtle failure in Multimodal Continual Instruction Tuning: existing methods protect the language model from forgetting while continuously updating the projector, causing asymmetric representation drift and cross-modal misalignment. Compatible Routing addresses this projector-LLM imbalance to reduce forgetting across sequential tasks. It highlights that continual learning in MLLMs must treat both sides of the alignment bridge symmetrically.\n\n**Intern-Decision** [13] presents 0.8B–4B multimodal decision models that return structured choices and candidate probabilities from text and optional images via autoregressive masked language modeling, placing one decision placeholder per field in a JSON skeleton. This removes the latency and interface complexity of free-form generation for action/label/ordinal selection. It is a clean engineering answer to the mismatch between generative LLMs and discrete decision interfaces.\n\n**Realtime-Bench** [20] benchmarks whether frontier models can solve dynamic tasks where delayed actions directly affect success, evaluated under Wall Clock where environments advance according to actual inference latency. The best success rate is only 44% and best Pass^3 just 36%, exposing a stark gap in real-time interactive competence. This is a critical reality check for streaming-agent claims.\n\n**P³IBench** [14] evaluates proactive video understanding across daily perception, risk prediction, and intervention in real-life streaming scenarios, benchmarking 12 open-source and proprietary video-language models. It shifts evaluation from \"can the model interpret what it sees\" to \"can it anticipate what help is needed and decide when to give it.\" Proactivity is revealed as a distinct, largely unsolved capability.\n\n## Representation Alignment, Robustness, and Generative Post-Training\n\n**MSP** [5] eliminates the paired cross-modal data bottleneck by using anchor-supporting proxy textual descriptions of unseen modalities in a modality self-play framework. This enables training multimodal foundation models *without* paired cross-modal data, addressing the core scaling constraint of aligned datasets. If it generalizes, it substantially loosens the data economics of multimodal pretraining.\n\n**FaShift** [8] questions the uniform suppression of shifted information in multimodal learning, arguing shifted features may be uninformative, reliably informative, or environment-dependently predictive. Factor-wise selective treatment decides which shifted information to suppress, preserve, or attenuate. This refines invariance-based robustness into a more nuanced, per-factor decision.\n\n**CIM-Embed** [15] learns instruction-conditioned multimodal embeddings for clustering, recognizing that the same objects may require different partitions under different instructions (e.g., grouping products by color vs. material). Supervised contrastive learning with heterogeneous structured batches recovers instruction-specific partitions that retrieval-oriented embeddings miss. It bridges the gap between embedding models tuned for retrieval and the clustering needs of real catalogs.\n\n**PACE** [10] addresses a flaw in multimodal RLVR: group-relative policy optimization broadcasts a single sequence-level advantage to every token even though errors localize to a few decisive steps, and teacher-student likelihood gaps cannot distinguish image reliance from language shortcuts. Pairwise token contrast plus adaptive trajectory confidence refines credit assignment while downweighting uninformative teacher signals. This tightens the link between reward and genuinely visual reasoning.\n\n**RL-driven Diffusion Models** [12] surveys and synthesizes the emerging use of reinforcement learning as a post-training mechanism for diffusion models, mirroring RLHF's role in LLMs. It frames reward-driven trajectory optimization as the path to better reasoning, autonomous exploration of generation pathways, and human-aligned objectives. As a survey, it is valuable for consolidating a rapidly splintering literature.\n\n## Brain, Speech, and Neural Multimodal Decoding\n\n**EEG-Text Contrastive Learning** [3] adapts multimodal contrastive learning to imagined speech, aligning EEG trials with frozen pretrained text encoder embeddings via a composite objective of semantically reweighted EEG-sentence alignment and text-prototype-based terms. Unlike closed-set classifiers that treat semantic categories as independent labels, this exploits relationships among linguistic intents for flexible outputs. It moves imagined-speech BCIs toward open-vocabulary decoding.\n\n**NOEMA** [21] introduces a temporal convolutional decoder that aligns windows of consecutive fMRI measurements with multimodal stimulus embeddings combining text, audio, and speech representations of the same segment. This targets the core difficulty of recovering multi-timescale structure from noisy, temporally smeared fMRI during naturalistic speech. Multimodal stimulus embeddings provide complementary supervision that single-modality decoders lack.\n\n**ABNAT** [22] analyzes how analog compute-in-memory noise reshapes Transformer attention and proposes attention-based noise-aware training to improve robustness on CIM hardware. By injecting noise in attention-aware fashion during training rather than uniformly, it mitigates weight perturbation-induced degradation. This matters for deploying multimodal Transformers under stringent energy budgets.\n\n## Key Takeaways\n\n- **Evidence-grounding is the new trust mechanism**: from MeddeX's citation-backed summaries [1] to CNRF's neighborhood support [2] and OmniVerifier-C1's graded scores [17], systems increasingly must justify *why* a judgment should be trusted, not just produce it.\n- **Proactivity and real-time action expose a major capability gap**: P³IBench [14] and Realtime-Bench [20] show frontier models remain weak at anticipating needs and acting under latency, with best real-time success at only 44%.\n- **The paired-data bottleneck is being attacked from multiple angles**: MSP [5] removes paired cross-modal data entirely, while TimeCap [11] and CogDrift-4D [6] build the missing annotated corpora.\n- **Safety is shifting from filtering to inquiry**: SAFE-PRO [18] and CNRF [2] reframe safety as interactive clarification and selective abstention, addressing intent-level and ambiguity-driven risk that path optimization cannot fix.\n- **Agentic orchestration beats monolithic inference**: DocPilot [9], CoWorld Reasoner [16], and OS-Helix [23] all demonstrate that flexible, trained action-space routing—not prompt-level tool composition—is required for robust multimodal agents.\n- **Instruction- and factor-conditioning refine representations**: CIM-Embed [15] and FaShift [8] show that treating all data or all shifts uniformly is suboptimal; conditioning on task instructions and per-factor predictive roles yields better structure.\n- **Multimodal alignment is becoming bidirectional and symmetric**: CART [19] warns that protecting only the LLM while updating the projector causes drift, echoing NOEMA [21] and the EEG-text work [3] in treating alignment as a two-sided problem.",
+    "papers": [
+      {
+        "title": "MeddeX: A Retrieval-Augmented LLaMA-3 System with Gemini Vision for Evidence-Backed Medical Report Analysis",
+        "url": "",
+        "authors": [
+          "Rajdeep Pandhare",
+          "Rohit Kundaikar",
+          "Yakub Kojar",
+          "Shreyansh Tiwari"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Counterfactual Neighborhood Risk Fields: Evidence-Grounded Selective Safety for Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Tianshi Wang",
+          "Jingsong Wang",
+          "Fengling Li",
+          "Jingjing Li",
+          "Xin Li",
+          "Lei Zhu"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Semantic Alignment of EEG and Text: A Contrastive Learning Framework for Decoding Imagined Speech",
+        "url": "",
+        "authors": [
+          "Shahryar G. Namdari",
+          "Francesco Iacomi",
+          "Riccardo Barbieri",
+          "Luca Mainardi"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Multimodal AI Detection for Math-Heavy Scientific Text",
+        "url": "",
+        "authors": [
+          "Yixuan Huang",
+          "Danish Pruthi",
+          "Bhuwan Dhingra"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "MSP: Modality Self-Play for Training Multimodal LLMs Without Paired Cross-Modal Data",
+        "url": "",
+        "authors": [
+          "Robert Moseley",
+          "Md Kaykobad Reza",
+          "Ameya Patil",
+          "Edward Ayrapetian",
+          "Salman Asif"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "CogDrift-4D: Hierarchical Multimodal Modeling of Temporal Behavioral Decay for MCI Detection",
+        "url": "",
+        "authors": [
+          "Sankalp Vaish",
+          "Sumukh Veeramalla",
+          "Rishank Singh",
+          "Caroline Summerour",
+          "John A. Batsis",
+          "Xiaohui Liang"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Task-Centric Multimodal Learning for Cognitive Impairment Detection",
+        "url": "",
+        "authors": [
+          "Sankalp Vaish",
+          "Rishank Singh",
+          "Sumukh Veeramalla",
+          "Caroline Summerour",
+          "John A. Batsis",
+          "Xiaohui Liang"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Beyond Invariance: Factor-wise Selective Treatment of Shifts for Multimodal Learning",
+        "url": "",
+        "authors": [
+          "Guimin Hu",
+          "Qiwei Peng"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "DocPilot: Interactive Agent Orchestration and Training for Long Visual Document Understanding",
+        "url": "",
+        "authors": [
+          "Zhuowen Liang",
+          "Xiaotian Lin",
+          "Yuyu Luo",
+          "Haixun Wang",
+          "Nan Tang"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Enhancing Multimodal RLVR with Pairwise Token Contrast and Adaptive Trajectory Confidence",
+        "url": "",
+        "authors": [
+          "Yiran Zhang",
+          "Hanbo Huang",
+          "Jielan Li",
+          "Zhen Zhao",
+          "Shiyu Liang",
+          "Hongxia Hao"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "TimeCap: A Scalable Open-Source Pipeline for Captioning Wearable Health Time-Series Data",
+        "url": "",
+        "authors": [
+          "Max Rosenblattl",
+          "Milana Gurbanova",
+          "Karl Aurel Deck",
+          "Narayan Schuetz",
+          "Thomas Kaar",
+          "Manuel Milling",
+          "Nicolas Zumarraga",
+          "Ning Wang",
+          "Kelly W. Zhang",
+          "Anders Johnson",
+          "Robert Jakob",
+          "Björn W. Schuller",
+          "Elgar Fleisch",
+          "Daniel Seung Kim",
+          "Allan Lawrie",
+          "Patrick Langer",
+          "Maxwell A. Xu",
+          "Euan Ashley",
+          "Paul Schmiedmayer"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Reinforcement Learning-driven Diffusion Models: Language, Vision, and Beyond",
+        "url": "",
+        "authors": [
+          "Zhiyuan Ma",
+          "Jiabao Wei",
+          "Tianyu Wang",
+          "Hanqing Wang",
+          "Jiadong Pan",
+          "Haowen Xu",
+          "Liangliang Zhao",
+          "Ruixun Liu",
+          "Yuhan Wang",
+          "Yuwei Zhang",
+          "Liang Feng",
+          "Junhao Xiao",
+          "Kaiyan Zhang",
+          "Xuekai Zhu",
+          "Daizong Liu",
+          "Biqing Qi",
+          "Yihao Liu",
+          "Ganqu Cui",
+          "Ning Ding",
+          "Linfeng Zhang",
+          "Jianjun Li",
+          "Kun He",
+          "Xiang Bai",
+          "Bowen Zhou"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Intern-Decision: Efficient Multimodal Decision Making with Autoregressive Masked Language Modeling",
+        "url": "",
+        "authors": [
+          "Tong Zhu",
+          "Zhe Xu",
+          "Zefeng He",
+          "Yunkai Chai",
+          "Xuyang Hu",
+          "Dehong Zheng",
+          "Yun Luo",
+          "Yafu Li",
+          "Qi Zhang",
+          "Yu Cheng"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "From Perception to Prediction and Intervention: Benchmarking Proactive Video Assistants in Real-Life Scenarios",
+        "url": "",
+        "authors": [
+          "Boyu Cui",
+          "Junhao Luo",
+          "Zhihao Wang",
+          "Linghan Chen",
+          "Zejun Li",
+          "Jiwen Zhang",
+          "Siyuan Wang",
+          "Zhongyu Wei"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "CIM-Embed: Learning Instruction-Conditioned Multimodal Embeddings for Clustering",
+        "url": "",
+        "authors": [
+          "Yinghua Xu",
+          "Pengyang Xie",
+          "Yanxiang Zhou",
+          "Chuanzhi Tong",
+          "Xiao Xiao",
+          "Chaoqun Feng",
+          "Xiaoqing Wang"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "CoWorld Reasoner: Agentic Multimodal Reasoning with the Evolving Video World Model-Driven Harness",
+        "url": "",
+        "authors": [
+          "Dongjie Cheng",
+          "Ruifeng Yuan",
+          "Ran Wei",
+          "Ning Song",
+          "Yongqi Li",
+          "Wenjie Li"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "OmniVerifier-C1: Decomposed Graded Verifier for Rule-Governed Generative World Modeling",
+        "url": "",
+        "authors": [
+          "Bowei Liu",
+          "Xinchen Zhang",
+          "Xuhuan Li",
+          "Tianlin Zhang",
+          "Kaian Jiang",
+          "Jingwei Liu",
+          "Congyang Zhao",
+          "Yifei Qian",
+          "Junhong Liu",
+          "Zhiheng Li",
+          "Yujiu Yang",
+          "Yang Cai",
+          "Ling Yang"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "When Reasoning Is Not Enough: Proactive Inquiry for Cross-Modal Safety in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Wei Cai",
+          "Jian Zhao",
+          "Yuchen Yuan",
+          "Xuelong Li"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "CART: Compatible Routing for Multimodal Continual Instruction Tuning",
+        "url": "",
+        "authors": [
+          "Ling-Xiang Zhang",
+          "Tao Hu",
+          "Da-Wei Zhou"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Realtime-Bench: Can Frontier Models Solve Real-time Interactive Problems?",
+        "url": "",
+        "authors": [
+          "Jingyu Tang",
+          "Xu Yang",
+          "Zhehao Zhang",
+          "Zheng Wang",
+          "Qi Cheng",
+          "Haozhe Zhao",
+          "Manling Li",
+          "Wenxuan Li",
+          "Xide Xia",
+          "Jiaxin Pei"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "Decoding Naturalistic Speech from fMRI with Temporal Modeling and Multimodal Alignment",
+        "url": "",
+        "authors": [
+          "Corentin Caris",
+          "Louis Jalouzot",
+          "Nona Rajabi",
+          "Géraud Ilinca",
+          "Ahmed Hassayoune",
+          "Asilbek Muminov",
+          "Thaddée Delebarre",
+          "Clara Fonteneau",
+          "Charles Maussion",
+          "Bertrand Thirion",
+          "Alexis Thual",
+          "Antoine Collas"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "ABNAT: Attention-Based Noise-Aware Training for Robust Transformers on Analog Compute-in-Memory Systems",
+        "url": "",
+        "authors": [
+          "Wenshuai Yao",
+          "Wenyong Zhou",
+          "Hanyong Shao",
+          "Zhiyuan Ning",
+          "Yizhe Chen",
+          "Yuannuo Feng",
+          "Kechao Tang",
+          "Ru Huang"
+        ],
+        "date": "2026-10-16"
+      },
+      {
+        "title": "OS-Helix: Unifying GUI Interaction and Code Execution in Native Computer-Using Agents",
+        "url": "",
+        "authors": [
+          "Bowen Yang",
+          "Kaiming Jin",
+          "Zichen Ding",
+          "Zhenyu Wu",
+          "Zehao Li",
+          "Zhoumianze Liu",
+          "Kanzhi Cheng",
+          "Fangzhi Xu",
+          "Yanan Sun",
+          "Qiushi Sun",
+          "Yu Qiao"
+        ],
+        "date": "2026-10-16"
+      }
+    ]
+  }
+]
