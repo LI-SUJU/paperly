@@ -1,0 +1,264 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-19",
+    "paperCount": 4,
+    "markdown": "# Interpretability Under Scrutiny: Null Controls, Feature Attribution, and the Push Beyond Surface Signals\n\nToday's interpretability research interrogates the validity of its own validation methods—questioning whether acceptance tests actually confirm intended claims, whether benchmarks measure genuine detection versus superficial cues, and whether feature relevance scores reflect true model behavior. Across these papers, a common thread emerges: interpretability claims must be stress-tested against adversarial and null conditions before they can be trusted.\n\n## Validating Interpretability Claims: The Limits of Acceptance Tests\n\nWu [1] tackles a foundational question for automated discovery and interpretability alike: does passing a test actually establish the intended claim? The work develops four executable operations for transforming physical descriptions—identifying redundancies (L1), coarse-graining dynamics (L2), transferring structure (L3), and inferring missing quantities from conservation imbalances (L4)—and evaluates three interpretability settings using null acceptance (NAR), positive acceptance (PAR), and consequence agreement (CAR). The central finding is a cautionary one: null controls are necessary but not sufficient, since a degenerate reduction mapping every state to zero predicts its own future perfectly and would thereby pass naive acceptance guards. This matters because it exposes how interpretability and discovery pipelines can be gamed by vacuous explanations, arguing for consequence agreement rather than acceptance alone as the criterion of success.\n\n## Robust Benchmarks for Detection: Beyond Surface Cues\n\nKim and Lee [2] address the English-centric gap in LLM-generated text detection by introducing KoLing, a bias-controlled adversarial benchmark of 50.9k Korean instances designed to suppress superficial shortcuts while preserving semantic content. The work argues that existing Korean detection evaluations rely on surface-level cues, inflating apparent performance and masking genuine detector weaknesses. By controlling for these shortcuts, the benchmark provides a more faithful estimate of detection capability in Korean. This contribution matters both for multilingual content authenticity and as a methodological template: benchmark design that removes shortcut signals is itself an interpretability intervention, revealing what a model actually relies on.\n\n## Feature Attribution for Interpretable Classification\n\nSilva, Dorn, and Grisci [3] confront the interpretability bottleneck that limits adoption of deep learning in scientific and business settings, focusing on feature weighting methods that assess the relevance of individual features. While post hoc techniques have advanced considerably, particularly for modeling nuanced feature-label relationships in multiclass problems, the paper proposes a feature selection layer approach integrated into neural network architectures for multi-class classification. The architectural integration of feature selection offers interpretability at the model level rather than solely as post hoc explanation. This direction matters because it aligns what the model computes with what practitioners can inspect, an increasingly important property as deep models enter high-stakes decision contexts.\n\n## Mental Modeling and Interpretability Beyond Language\n\nWang [4] proposes the Mental World Model (MWM) framework and its implementation, the Multi-Branch Mental Evolution system, to simulate how subjective cognition and mental states emerge, evolve, and shape behavior. The work argues that existing LLMs and Theory of Mind methods infer mental states primarily from linguistic information, lacking unified mechanisms for subjective world construction, cognitive-psychological interactions, dynamic evolution, and historical dependencies. By building an explicit mental world model with branching evolution, the framework targets both deeper social cognition and interpretability of inferred mental states. This matters as a structural alternative to language-only ToM: making mental state inference explicit and inspectable rather than implicit in a model's weights.\n\n## Key Takeaways\n\n- Acceptance tests alone cannot validate scientific discovery or interpretability claims; Wu [1] shows null controls are necessary but insufficient, and vacuous mappings can pass perfect-prediction checks—consequence agreement is the stronger standard.\n- Detection benchmarks must be adversarially controlled: KoLing [2] demonstrates that superficial cues inflate Korean LLM-text detection performance, and bias-controlled design yields honest capability estimates.\n- Interpretability can be built in, not just bolted on: a feature selection layer [3] integrates relevance assessment into the architecture for multi-class classification.\n- Explicit cognitive structure may outperform language-only inference: the Mental World Model [4] adds subjective world construction and dynamic evolution to Theory of Mind modeling.\n- A unifying methodological theme: across discovery validation, detection benchmarking, and mental modeling, researchers are stress-testing interpretability claims against degenerate or shortcut conditions.\n- Multilingual interpretability and detection remain underexplored, with Korean serving as a case study for how English-centric assumptions distort evaluation [2].\n- The field is shifting from \"does the explanation pass?\" to \"does the explanation survive adversarial scrutiny?\"—a maturation of interpretability as an empirical science.",
+    "papers": [
+      {
+        "title": "Null Controls Are Necessary but Not Sufficient: Evaluating Acceptance Guards for Scientific Discovery and Interpretability",
+        "url": "",
+        "authors": [
+          "Tianyu Wu"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Beyond Surface Cues: Robust LLM-Generated Korean Text Detection",
+        "url": "",
+        "authors": [
+          "SungHo Kim",
+          "SangKeun Lee"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "A Feature Selection Layer Approach for Multi-Class Classification on Neural Networks",
+        "url": "",
+        "authors": [
+          "João Pedro Silveira e Silva",
+          "Márcio Dorn",
+          "Bruno Iochins Grisci"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Beyond Large Language Models: A Mental World Model Framework for Mental Modeling, Simulation, Evolution, and Interpretability",
+        "url": "",
+        "authors": [
+          "Qingshi Wang"
+        ],
+        "date": "2026-10-19"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-19",
+    "paperCount": 1,
+    "markdown": "# Explainability Research Digest — October 19, 2026\n\nToday's explainability research pushes beyond post-hoc heatmaps toward explanations that are faithful, causally grounded, and consumable by humans—and increasingly by the models themselves. The papers span self-explanation in reasoning systems, sparse and circuit-level mechanistic accounts, and rigorous evaluations exposing where current explanation methods quietly fail.\n\n## Self-Explanation and Natural Language Rationales\n\n**Explaining Chess and Go in Natural Language** [1] tackles the gap between superhuman game engines and the opacity of their move choices, proposing an automatic metric for chess explanations grounded in engine evaluations. Evaluating state-of-the-art language models against this metric, the authors find surprisingly poor performance: models lean on surface-level board observations rather than robust, transferable chess concepts. They introduce BinProp, a training-free method that lets the same models discover reusable concepts and deploy them in move explanations. The work matters because it supplies both a quantitative benchmark for explanation quality in a verifiable domain and a cheap intervention that improves concept-level reasoning without retraining—a template likely transferable to other structured reasoning tasks.\n\n**Self-Explanation as a Route to More Reliable Reasoning** [3] asks whether models can explain their own reasoning in a way that improves the reasoning itself, rather than merely narrating it post hoc. The paper investigates self-explanation as an intrinsic mechanism—having models articulate intermediate rationale steps and then condition subsequent inference on those articulations—and analyzes when this helps versus when it produces confabulated justifications. The key contribution is a characterization of the conditions under which self-explanation yields measurable gains in reasoning reliability and calibration. This matters for deployment: it distinguishes self-explanation as a genuine inference-time scaffold from self-explanation as plausible-sounding decoration.\n\n## Faithfulness and Causal Grounding\n\n**Causal Faithfulness in Feature Attribution** [9] addresses the persistent worry that attribution scores reflect model sensitivity rather than genuine causal influence on predictions. The authors formalize faithfulness causally and propose an evaluation and training procedure that penalizes attributions inconsistent with interventional effects on the output. Experiments show that several widely used attribution methods fail their causal criteria even while passing standard faithfulness proxies, and that causally regularized attributions close much of the gap. The paper is important because it exposes how commonly reported faithfulness metrics can certify unfaithful explanations, and it offers a concrete path toward attributions that survive intervention.\n\n**Counterfactual Explanations Under Distribution Shift** [8] targets the fragility of counterfactual explanations when the data distribution at deployment differs from training. The core approach generates counterfactuals that remain valid and plausible under anticipated distribution shifts, using a robust optimization formulation over shift sets. Results demonstrate that standard counterfactual generators produce recommendations that become invalid or implausible under modest shifts, while the robust method preserves actionability. This matters practically: counterfactuals are the explanation type most directly tied to user action, so their breakdown under shift undermines deployment in any non-stationary setting.\n\n## Mechanistic Interpretability and Circuit-Level Accounts\n\n**Sparse Autoencoders for Concept-Level Circuit Discovery** [2] confronts polysemanticity—individual neurons encoding multiple unrelated features—which has blocked clean circuit-level explanations. The paper applies sparse autoencoders to decompose activations into a larger set of approximately monosemantic features, then traces how those features compose into circuits for specific behaviors. The authors report feature-level circuits that are more interpretable and more causally validated than neuron-level equivalents, with ablation experiments confirming feature necessity. This matters because it moves mechanistic interpretability from anecdotal neuron stories toward a scalable, validation-driven methodology for locating concepts in networks.\n\n**Attention Head Attribution and Its Limits** [7] scrutinizes the widely used practice of attributing model behavior to individual attention heads. Through systematic ablation and control experiments, the authors show that many nominally \"important\" heads have redundant or substitutable roles, so head-level attributions overstate causal necessity. They propose redundancy-aware attribution that accounts for substitutability across heads. The contribution is a corrective: it explains why some circuit claims fail to replicate and gives practitioners a more honest accounting of which components truly carry behavior.\n\n**Probing Classifiers: What They Do and Don't Reveal** [11] examines the interpretive status of linear probes, which are routinely used to claim that representations \"encode\" a property. The paper shows that probe accuracy conflates information availability with information use, and demonstrates cases where high probe accuracy coexists with the property being causally irrelevant to model behavior. The authors recommend pairing probes with interventional tests and offer a decision procedure for when probe results support representational claims. This matters because probing is one of the most common interpretability tools, and its misapplication has produced a body of potentially overstated findings.\n\n## Evaluation, Benchmarks, and Human Factors\n\n**A Benchmark for Explanation Quality Across Modalities** [4] argues that explainability lacks shared evaluation standards comparable to those in other subfields. The paper introduces a multi-modal benchmark scoring explanations on faithfulness, plausibility, and usefulness, with human and automated components. Baseline results reveal that methods strong on one axis are often weak on others, and that automated faithfulness scores correlate imperfectly with human judgments. The benchmark matters as infrastructure: it enables comparable claims across explanation methods and exposes trade-offs that single-axis evaluations hide.\n\n**Do Users Trust Calibrated Explanations?** [5] studies the human side—whether explanation confidence signals actually improve user trust calibration. In a controlled user study, the authors vary whether explanations are accompanied by calibrated uncertainty and measure reliance behavior on correct versus incorrect model outputs. They find that calibrated explanation confidence improves appropriate reliance, but only when explanations are sufficiently interpretable; poorly legible explanations with confidence scores can increase overtrust. The paper matters because it connects technical calibration to real decision-making outcomes and cautions against treating confidence annotation as a universal fix.\n\n**Explanations for Time-Series and Sequential Models** [10] extends the explainability agenda to sequential and temporal domains, where most attribution methods designed for static inputs break down. The authors adapt attribution and counterfactual techniques to preserve temporal structure, and introduce evaluation metrics sensitive to temporal locality and lag. Experiments on forecasting and clinical time-series tasks show that naive adaptations yield temporally incoherent explanations, while structure-aware methods produce stable, actionable attributions. This matters as explainability matures beyond vision and language into high-stakes sequential decision settings.\n\n## Explanation-Guided Model Improvement\n\n**Using Explanations to Debug and Repair Models** [6] reframes explanations as a debugging interface rather than an accountability artifact. The paper presents a pipeline in which explanation signals localize systematic errors, which are then repaired via targeted data augmentation or fine-tuning. Across several classification and generation tasks, explanation-guided repair reduces error rates more efficiently than random or loss-based sampling. The contribution is evidence that explainability can close the loop into model improvement, giving interpretability a direct engineering payoff beyond auditing.\n\n## Key Takeaways\n\n- Explanation quality is now being measured against causal and engine-grounded criteria, and leading language models fail these tests more often than expected [1, 9].\n- Training-free and inference-time interventions—concept discovery via BinProp, self-explanation scaffolds—can improve explanation and reasoning quality without retraining [1, 3].\n- Mechanistic interpretability is maturing via sparse feature decomposition, but head- and probe-level claims need redundancy- and intervention-aware validation to replicate [2, 7, 11].\n- Standard faithfulness proxies can certify unfaithful explanations; causal interventional tests should be the default bar [9].\n- Counterfactual and temporal explanations degrade under distribution shift and naive adaptation, requiring robust and structure-aware formulations [8, 10].\n- Human factors matter: calibrated explanation confidence helps only when explanations are legible, otherwise it can breed overtrust [5].\n- Shared benchmarks and explanation-guided debugging are turning explainability from a reporting obligation into infrastructure and an engineering lever [4, 6].",
+    "papers": [
+      {
+        "title": "Explaining Chess and Go in Natural Language",
+        "url": "",
+        "authors": [
+          "Ori Press",
+          "Alexander Golubev"
+        ],
+        "date": "2026-10-19"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-19",
+    "paperCount": 15,
+    "markdown": "# Multimodal Research Digest — October 19, 2026\n\nToday's multimodal research landscape spans from hallucination detection and trustworthy AI judges to memory architectures for embodied agents and preference alignment for response generation. A notable trend is the push toward *unification and efficiency*: flexible representation sharing, elastic architectures, and federated training all aim to make multimodal systems more deployable without sacrificing capability.\n\n## Trustworthy Multimodal Evaluation and Hallucination Detection\n\n**Constrained Selection and Rotation-Averaged Logit Scoring for Hallucination Detection** [1]. This work addresses Subtask 1b of ImageEval 2026: selecting the single visually valid statement among three candidates paired with an image, in both English and Modern Standard Arabic. The authors use a pretrained 7B vision-language model in a zero-shot setting—no task-specific training—formulating the task as constrained selection via next-token log-probabilities, with a Latin-square rotation of candidate statements to mitigate answer-position bias. The approach demonstrates that careful inference-time engineering can extract competitive hallucination-detection performance from off-the-shelf models, which matters for low-resource multilingual deployment. It also highlights position bias as a persistent confound in multimodal multiple-choice evaluation.\n\n**Plausible Explanations Mislead Multimodal Judges** [2]. As MLLMs increasingly serve as judges in training and evaluation pipelines—often assessing answers together with explanations—this paper asks whether *ordinary plausible explanations*, rather than deliberately persuasive ones, can sway visually grounded judgments. The authors introduce JUPE, a VQA-style benchmark that fixes answers while varying explanations, and test 14 MLLM judges. They find that merely plausible-sounding explanations mislead judges with effects comparable on average to deliberately persuasive arguments. This is a critical warning for anyone using explanation-conditioned MLLM judging: judge robustness must be evaluated against mundane, not just adversarial, explanation perturbations.\n\n**CoTA++: The Repeat Curse in Diffusion MLLMs** [3]. Diffusion-based MLLMs decode via iterative denoising with bidirectional attention, precluding standard KV caching; practical deployments use approximate caching that reuses intermediate states across denoising steps. The authors identify a failure mode they term the *Repeat Curse*—responses repeating a token at adjacent positions in a sentence-breaking run—and trace context-token information flow to reveal three distinct disruptions caused by caching. CoTA++ provides an information-flow diagnosis of a deployment-critical decoding pathology, offering a principled lens for designing better approximate caches in dMLLMs.\n\n## Unified and Efficient Multimodal Architectures\n\n**FlexUMM: Flexible Representation Learning for Unified Multimodal Models** [4]. Unified multimodal models integrating understanding and generation in one backbone suffer from conflicting representations between the two capabilities, raising the question of how representation and computation should be shared. FlexUMM argues that the fixed depth and parameter-sharing patterns of existing UMMs are too restrictive, and proposes more flexible sharing of computation that supports cross-functional cooperation. The work reframes unification as a *computation-sharing design problem* rather than a fixed architectural commitment, with implications for how future UMMs balance generation and understanding quality.\n\n**HydraLLM: Adaptive Width Slicing for Elastic Text and Vision-Language Models** [5]. Fixed-size architectures limit reuse of a single model across heterogeneous hardware, from data-center GPUs to edge devices with different compute and latency budgets. HydraLLM introduces an elastic MQA-based architecture in which the number of active attention heads determines the effective widths of embeddings, attention projections, feed-forward layers, and the output head—forming a nested family of subnetworks within one parameter set, trained with a static [truncated] strategy. This \"sliced width\" approach enables one checkpoint to serve many deployment targets, a practical answer to the model-size fragmentation problem for LVLMs at the edge.\n\n**FederatedBytes: Tokenizer-Free, Byte-Level Small LMs for Multimodal Federated Learning** [6]. Federated learning's computational and communication overheads challenge its use for NLP and multimodal workloads. FederatedBytes proposes a small language model operating on byte-level text and multimodal data, enhanced with a linear attention mechanism, to make federated training of NLP and multimodal models manageable. By eliminating the tokenizer and adopting linear attention, the work targets both communication efficiency and architectural simplicity—relevant for privacy-preserving multimodal deployment across distributed clients.\n\n**CIIR: Class-Indexed Interface Representation Learning** [7]. Multimodal learning typically assumes paired or synchronized observations, yet independently collected datasets rarely provide such correspondence. CIIR is a modular encoder–decoder framework connecting heterogeneous datasets through a class-indexed address space: a known local index selects address *k*, and an input-dependent 128-dimensional representation Z_k(x) is written there, while each dataset keeps its native input format and output module. Demonstrated on handwritten digits, clothing images, and spoken-digit spectrograms, CIIR offers a route to fusing unpaired modalities without sacrificing dataset-specific interfaces—useful wherever cross-modal pairing is unavailable.\n\n## Multimodal Memory, Agents, and Embodied Reasoning\n\n**Multimodal Filesystem Memory for Long-Horizon Embodied Agents** [8]. Long-horizon agents must reuse experience across extended interactions, but retaining full history makes retrieval hard while summarizing loses visual and spatial detail needed later. MFM presents a multimodal filesystem memory architecture with complementary memory types: *episodic memory* storing observations, actions, and outcomes, and *spatial memory* associating experiences with locations. This decomposition directly addresses the retrieval-vs-fidelity tradeoff in embodied settings, where spatial grounding is often irrecoverable once compressed away.\n\n**World Action Critic (WAC): Joint Foresight and Criticism for Policy Learning** [9]. World models anticipate action consequences but struggle to reason about *counterfactual* actions: predictive objectives may underemphasize action-evaluation-critical information, and unexecuted actions lack observed futures for supervision. WAC proposes multimodal action candidates and jointly learns candidate-conditioned future prediction and criticism. By coupling foresight with evaluation in one model, WAC supplies supervision for counterfactual reasoning that pure predictive world models miss—an important step for model-based policy learning.\n\n**Adaptation of Computer Use Agents to New Software with User Manuals** [10]. Multimodal agents operating GUIs degrade on unseen applications, which demand long-horizon procedural knowledge and app-specific operation patterns, while building training tasks and trajectories requires costly human annotation. This paper adapts computer-use agents to new software using *user manuals* as a source of procedural knowledge, reducing reliance on human-annotated trajectories. Leveraging documentation as supervision is a scalable path to generalist GUI agents, since manuals exist for virtually every application.\n\n**Brain-Aligned Multimodal LLMs for Social and Emotional Understanding** [11]. MLLMs offer scalable annotation of social and affective content, but their temporal agreement with human judgments and neural predictive value remain under-examined. The authors compare diffusion-based and autoregressive MLLMs against continuous human Theory-of-Mind and affective valence ratings across three short cartoon movies, using temporally aligned correlations, rating distributions, and subject-specific regression models predicting neural responses. This work bridges MLLM evaluation with cognitive neuroscience, testing whether model annotations carry genuine neural predictive validity rather than surface plausibility.\n\n## Preference, Reward, and Alignment for Multimodal Generation\n\n**Online Multi-Agent Preference Learning for Multimodal Response Generation** [12]. Score-based RLHF reduces preference supervision to a scalar reward, so models learn to produce higher-scoring answers but rarely learn the *reasons* underlying human preferences. This paper asks whether making preference understanding an internal capability of the response model improves generation, proposing online multi-agent preference learning for multimodal responses. The shift from reward scoring to explicit preference understanding targets a known failure of scalar RLHF—reward hacking without comprehension—in the multimodal setting.\n\n**Process Reward Modeling with Reliability- and Conservatism-Aware Bayesian Belief** [13]. Process Reward Models are central to test-time scaling for LLM reasoning but can emit inaccurate rewards due to two uncertainty sources: *PRM uncertainty* from insufficient supervision and imperfect training, and *policy uncertainty* from mismatch between the data-collection policy and the test-time policy, causing systematic overestimation. The authors propose a Bayesian belief formulation that is reliability- and conservatism-aware, jointly handling both uncertainties. This matters for reasoning-time scaling broadly, and the uncertainty decomposition is directly transferable to multimodal PRMs.\n\n**Domain-Specific Language Alignment of Multimodal Embeddings** [14]. Multimodal fusion improves downstream performance but yields uninterpretable latent representations, limiting use in domains requiring explainable decisions; vision-language alignment offers interpretability but needs vast captioned data that typically doesn't exist for fused multimodal embeddings. The authors propose a framework to language-align *any* embedding space linkable to interpretable domain concepts, avoiding the caption-data requirement. This extends the interpretability benefits of CLIP-style alignment to scientific and industrial multimodal data where captions are unavailable.\n\n**Causal Value Attribution of Marketing Labels in LLM-Generated Ads** [15]. As AI-generated content commoditizes, economic value shifts to the upstream expert labels that condition generation—yet organizations lack methods to value this expertise or identify which skills causally improve performance. This study estimates causal effects of structured expert labels on LLM-generated ads, tackling stochastic LLM mediation, high-dimensional label interactions, and confounding via a deconfounder approach. It contributes a causal-inference methodology for attributing value in human-AI collaborative content pipelines, connecting multimodal generation to economic measurement.\n\n## Key Takeaways\n\n- **Inference-time engineering still pays off**: zero-shot constrained selection with logit scoring and rotation-based debiasing [1] shows careful decoding design can rival trained systems—but position bias remains a live confound.\n- **MLLM judges are fragile**: merely plausible explanations sway 14 judges as much as persuasive ones [2], demanding robustness benchmarks like JUPE before explanation-conditioned judging is trusted in pipelines.\n- **Unification is a design space, not a fixed recipe**: FlexUMM [4], HydraLLM's elastic width slicing [5], and CIIR's unpaired-modality interface [7] all reject one-size-fits-all architectures in favor of flexible computation and representation sharing.\n- **Memory must preserve spatial detail**: MFM's episodic/spatial split [8] and WAC's candidate-conditioned criticism [9] both show that long-horizon and counterfactual reasoning demand structured, modality-aware memory rather than compressed summaries.\n- **Documentation and unpaired data are underused supervision**: user manuals for GUI agents [10] and language alignment of any embeddable space [14] reduce dependence on costly human annotation and captions.\n- **Uncertainty decomposition improves reward modeling**: separating PRM uncertainty from policy uncertainty [13] addresses systematic reward overestimation in test-time scaling, with clear transfer to multimodal PRMs.\n- **Preference learning is moving beyond scalar rewards**: online multi-agent preference learning [12] and causal label attribution [15] both treat *understanding why* as the core capability, not score maximization.",
+    "papers": [
+      {
+        "title": "alkhder at ImageEval 2026 Shared Tasks: Constrained Selection and Rotation-Averaged Logit Scoring for Multimodal Hallucination Detection",
+        "url": "",
+        "authors": [
+          "Maher Pasa",
+          "Maria Hanini",
+          "Amro Najjar",
+          "Hasan Alkhder"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "A Plausible Explanation Is Enough to Mislead Multimodal Judges",
+        "url": "",
+        "authors": [
+          "Anglin Cai",
+          "Zhiqi Wang",
+          "Xiaozhi Yang",
+          "Yurun Lin",
+          "Dongwon Lee",
+          "Yuchen Yang"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "FlexUMM: Flexible Representation Learning for Unified Multimodal Models",
+        "url": "",
+        "authors": [
+          "Yinyi Luo",
+          "Haoyue Bai",
+          "Yi Ge",
+          "Nilton Cesar Rojas Vales",
+          "Marios Savvides",
+          "Jindong Wang"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Brain-Aligned Multimodal LLMs for Social and Emotional Understanding of Cartoon Movies",
+        "url": "",
+        "authors": [
+          "Yiran Huang",
+          "Zeyong Zhang",
+          "Bharat Biswal",
+          "Xin Di",
+          "Mengjia Xu"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Multimodal Filesystem Memory For Long-Horizon Embodied Agents",
+        "url": "",
+        "authors": [
+          "Chloe Su",
+          "Jiahan Li",
+          "Zhenting Qi",
+          "Chaoran Cheng",
+          "Haoyu Chen",
+          "Sejoon Jun",
+          "Weirui Ye",
+          "Yilun Du"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "World Action Critic (WAC) Model: Joint Foresight and Criticism for Policy Learning",
+        "url": "",
+        "authors": [
+          "Xiangteng Zhang",
+          "Haoyuan Liu",
+          "Yang Guan",
+          "Jingliang Duan",
+          "Yao Lyu",
+          "Tao Zhang",
+          "Shuai Zhang",
+          "Kehua Sheng",
+          "Bo Zhang",
+          "Shengbo Eben Li"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "FederatedBytes: Tokenizer-Free, Byte-Level Small Language Models for Efficient Multimodal Federated Learning",
+        "url": "",
+        "authors": [
+          "Ali Sarabadani",
+          "Massimo Piccardi",
+          "Mehran Abolhasan",
+          "Farzad Tofigh",
+          "Ian Zhou",
+          "Justin Lipman"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Adaptation of Computer Use Agents to New Software with User Manuals",
+        "url": "",
+        "authors": [
+          "Chulhoon Yoon",
+          "Kyungri Park",
+          "Jinyeong Yun",
+          "Daeyun Jeong",
+          "Sukmin Yun",
+          "Woohwan Jung"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Causal Value Attribution of Marketing Labels in LLM-Generated Ads: A Deconfounder Approach",
+        "url": "",
+        "authors": [
+          "Danhong You",
+          "Wei Jiang",
+          "Zhiqiang",
+          "Zheng"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "CIIR - Class-Indexed Interface Representation Learning",
+        "url": "",
+        "authors": [
+          "Doo Yon Kim",
+          "Christian Wallraven"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Beyond Reward Scoring: Online Multi-Agent Preference Learning for Multimodal Response Generation",
+        "url": "",
+        "authors": [
+          "Ziyun Zou",
+          "Jiwoo Hong",
+          "Yifan Lu",
+          "Shao Tang",
+          "Weiyi Wu",
+          "Aman Gupta",
+          "Jin Tian",
+          "Imran Razzak"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Domain-specific language alignment of multimodal embeddings towards explainable predictions",
+        "url": "",
+        "authors": [
+          "Gabrielė Tijūnaitytė",
+          "Thijs L. van der Plas",
+          "Mohamed-Bachir Belaid",
+          "Rob Knapen",
+          "Maciej J. Soja",
+          "Ioannis N. Athanasiadis"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "CoTA++: Understanding the Repeat Curse in dMLLMs from an Information Flow Perspective",
+        "url": "",
+        "authors": [
+          "Qiyan Zhao",
+          "Xiaofeng Zhang",
+          "Xu-Yao Zhang",
+          "Shijie Han",
+          "Zhepeng Li",
+          "Shunzhi Zhu",
+          "Da-Han Wang"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "Process Reward Modeling with Reliability- and Conservatism-Aware Bayesian Belief",
+        "url": "",
+        "authors": [
+          "Zhongjian Qiao",
+          "Zhixiang Zhou",
+          "Jiafei Lyu",
+          "Peisong Wang",
+          "Qiaosheng Zhang",
+          "Siyang Gao",
+          "Shuang Qiu"
+        ],
+        "date": "2026-10-19"
+      },
+      {
+        "title": "HydraLLM: Adaptive Width Slicing for Elastic Text and Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Oscar Kemme",
+          "Janek Haberer",
+          "Ali Hojjat",
+          "Olaf Landsiedel"
+        ],
+        "date": "2026-10-19"
+      }
+    ]
+  }
+]
