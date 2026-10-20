@@ -1,0 +1,456 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-20",
+    "paperCount": 6,
+    "markdown": "# Decoding the Black Box: Interpretability Moves from Features to Worlds\n\nToday's interpretability research pushes beyond static feature extraction toward causal, structural, and system-level understanding of model internals. Across domains—from rare disease diagnosis to latent world models—a common thread emerges: the field is maturing from \"what does this neuron mean?\" to \"how do these representations interact, evolve, and drive decisions?\"\n\n## Concept Vectors and Feature Discovery in Language Models\n\nScherbakov et al. tackle the challenge of extracting human-interpretable directions from language model activation spaces, arguing that unsupervised approaches like sparse autoencoders sacrifice feature quality in pursuit of full coverage [2]. Their pragmatic alternative generates synthetic concept-antagonist story pairs and computes feature vectors as the difference of mean activations, scaling the method to 1,036 alignment-relevant concepts using 2 million examples. This work matters because it prioritizes the concepts most relevant to AI safety—honesty, deception, and similar traits—rather than attempting exhaustive decomposition. By demonstrating that targeted, supervised concept extraction can scale, the authors offer a tractable path for alignment researchers who need reliable handles on model behavior.\n\nShabalin and Piotrowski interrogate a foundational assumption in mechanistic interpretability: that MLP neurons are inherently polysemantic and thus require transcoders for circuit analysis [3]. They define \"neuron features\" as transcoder features whose weights strongly align with individual MLP neurons, finding that a substantial fraction of transcoder features are essentially neurons in disguise. This finding challenges the necessity of transcoders for circuit-level analysis and suggests that recent work recovering sparse circuits directly from MLP neurons may be more viable than previously thought. The result has significant implications for the interpretability toolkit, potentially simplifying the pipeline from trained model to interpretable circuit.\n\n## Interpretability for High-Stakes Clinical Decision-Making\n\nYang et al. address the diagnostic odyssey facing rare disease patients—a population of approximately 300 million globally—by proposing a unified multiparadigm fusion approach that combines symbolic methods, neural models, and LLM-based systems [1]. The core insight is that each paradigm carries structural limitations: symbolic methods are bounded by knowledge completeness, neural models sacrifice interpretability, and LLM systems are vulnerable to evaluation biases such as data leakage. By fusing these paradigms, the authors aim to leverage complementary strengths while mitigating individual weaknesses. This work is critical because rare disease diagnosis demands both broad knowledge coverage and auditable reasoning—a combination that no single paradigm has successfully delivered.\n\n## World Models and the Next Frontier of Interpretability\n\nWang et al. argue that as Joint-Embedding Predictive Architectures (JEPAs) evolve from representation learners into latent world models supporting prediction, planning, and control, interpretability must undergo a corresponding conceptual shift [5]. Their central claim is that understanding what latents encode is no longer sufficient; researchers must instead understand how latent variables interact, evolve, and causally drive prediction. They propose a four-stage research agenda—Ground, Structure, Verify, and Act—to guide this transition from decoding representations to understanding latent worlds. This perspective is timely and important because JEPAs are increasingly deployed in embodied and control settings where interpretability failures carry physical consequences.\n\n## Causal Grounding in Sequential Decision Systems\n\nRamachandiran et al. formulate Next Best Action (NBA) systems as Constrained Markov Decision Processes (CMDPs), integrating off-policy causal correction of estimated customer dynamics directly into the linear programming formulation [6]. This approach jointly addresses three requirements that existing methods handle separately: maximizing long-term economic value, satisfying operational constraints, and maintaining causal grounding. The work matters because business action targeting systems operate in environments where spurious correlations can lead to costly interventions, and the explicit causal correction step provides a principled safeguard against such failures.\n\nFrochte and Schmidt explore a novel application of LLM coding agents as suppliers of physical system models, building Modelica models from library components for four simulated systems and a real switching magnet [4]. Their key finding is that acceptance of a model certifies membership in a set of admissible models rather than a unique solution—the description leaves structural elements open, and data narrows the set only to agreed accuracy. This work is significant because it reframes the question of what LLM-generated models can be trusted to deliver, moving from \"is this model correct?\" to \"is this model within the acceptable set?\"—a more honest framing for procurement and verification contexts.\n\n## Key Takeaways\n\n- **Targeted concept extraction outperforms exhaustive decomposition**: Scherbakov et al. demonstrate that focusing on alignment-relevant concepts with synthetic story pairs yields high-quality feature vectors at scale, offering a practical alternative to sparse autoencoders for safety-critical interpretability [2].\n- **Transcoders may be redundant for circuit analysis**: Shabalin and Piotrowski find that many transcoder features are strongly aligned with individual MLP neurons, suggesting that direct neuron-based circuit recovery may suffice and simplifying the interpretability pipeline [3].\n- **Clinical AI demands multiparadigm fusion**: Yang et al. show that rare disease diagnosis requires combining symbolic knowledge, neural flexibility, and LLM reasoning to simultaneously achieve coverage and interpretability—no single paradigm suffices [1].\n- **Interpretability must evolve with model capability**: Wang et al. argue that as JEPAs become latent world models, the field must shift from asking what latents encode to how they interact and causally drive prediction, proposing a four-stage agenda [5].\n- **Causal correction belongs inside the optimization**: Ramachandiran et al. integrate off-policy causal correction directly into the CMDP linear program for NBA systems, providing a principled framework for jointly satisfying value, constraint, and causal requirements [6].\n- **Acceptance certifies set membership, not uniqueness**: Frochte and Schmidt show that LLM-generated physical models can meet acceptance criteria while remaining non-unique, reframing verification as membership testing rather than correctness proof [4].\n- **The field is converging on structure and dynamics**: Across papers, the frontier has moved from static feature interpretation to understanding how representations interact, evolve, and causally influence downstream behavior—a shift with implications for both safety and deployment.",
+    "papers": [
+      {
+        "title": "Unified Multiparadigm Fusion Intelligence for Rare Disease Diagnosis",
+        "url": "",
+        "authors": [
+          "Jian Yang",
+          "Peiling Liu",
+          "Songda Li",
+          "Yu Cao",
+          "Yuqing Feng",
+          "Lan Yu",
+          "Jiarong Pan",
+          "Jing Ye",
+          "Xinwen Huang",
+          "Chaochun Zou",
+          "Xudong Lu",
+          "Huilong Duan",
+          "Haomin Li"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "From Stories to Features: Scaling Concept Vectors for AI Alignment & Interpretability",
+        "url": "",
+        "authors": [
+          "Dmitry Scherbakov",
+          "Oleg Chernikov",
+          "Victoria Khamash",
+          "Kirill Afendulev",
+          "Alexey Dontsov",
+          "Ivan Oseledets",
+          "Elena Tutubalina",
+          "Anton Korznikov"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Comparing Sparsified MLPs and Transcoders: Many Transcoder Features Are Neurons in Disguise",
+        "url": "",
+        "authors": [
+          "Stepan Shabalin",
+          "Mateusz Piotrowski"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "LLM Agents as Suppliers of Physical System Models: Calibration and Acceptance in Modelica",
+        "url": "",
+        "authors": [
+          "Jörg Frochte",
+          "Herbert Schmidt"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "World Model Interpretability: From Decoding Representations to Understanding Latent Worlds",
+        "url": "",
+        "authors": [
+          "Jize Wang",
+          "Yongcheng Jing",
+          "Xinyi Le",
+          "Cailian Chen",
+          "Xinping Guan",
+          "Dacheng Tao"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Next Best Action: Causal Constrained Offline RL for Business Action Targeting",
+        "url": "",
+        "authors": [
+          "Surya Ramachandiran",
+          "Yiming Li",
+          "Juan Mancilla-Caceres",
+          "Tao Ye",
+          "Jun Liu"
+        ],
+        "date": "2026-10-20"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-20",
+    "paperCount": 1,
+    "markdown": "# Explainability in Medical AI: Bias, Counterfactuals, and the Push Toward Actionable Transparency\n\nToday's research landscape reveals a field increasingly focused on the *operational* character of explainability: not merely whether AI systems can justify their outputs, but whether those justifications hold under distribution shift, respect causal structure, and remain fair across patient populations. Across medical imaging, counterfactual reasoning, and transformer-based architectures, the recurring theme is the gap between explanations that satisfy human observers and explanations that faithfully reflect underlying model computation.\n\n## Fairness and Bias in Clinical Machine Learning\n\n**[1] Fairness or Fallacy? Mapping the Landscape of AI Bias in Disease Detection** — Mudassir et al. survey the intersecting terrain of bias and explainability in AI-driven disease detection, addressing the fact that clinical AI systems trained on complex, high-volume diagnostic imaging data can encode and amplify demographic disparities. The work organizes existing methodological proposals for integrating AI into detection pipelines and examines how these approaches treat fairness-relevant clinical aspects, mapping where bias may enter across the diagnostic workflow. By consolidating the landscape of bias in disease detection specifically, the paper provides a structured reference for researchers seeking to audit medical AI systems for disparate performance. This matters because fairness auditing is a prerequisite for trustworthy explanation—an explanation of a biased model can legitimize rather than expose its failures [1].\n\n## Counterfactual and Contrastive Explanation Methods\n\n**[2]** *(placeholder — no paper number 2 content was supplied; see editorial note below)*\n\n## Explainability in Transformer and Attention-Based Architectures\n\n**[3]** *(placeholder)*\n\n## Evaluation and Faithfulness of Explanation Methods\n\n**[4]** *(placeholder)*\n\n## Human-Centered and Actionable Explainability\n\n**[5]** *(placeholder)*\n\n## Key Takeaways\n- Explainability and fairness in medical AI are increasingly treated as coupled problems rather than independent research threads; auditing for bias is a precondition for meaningful explanation [1].\n- The digest corpus provided is incomplete: only paper [1] included full metadata (title, authors, abstract). Papers [2]–[5] were listed without content.\n\n---\n\n**Editorial note (not part of the digest):** The prompt supplied five paper slots but only one paper with actual title/authors/abstract ([1]). The sections above are structured for the full set of papers, but I've marked [2]–[5] as placeholders rather than fabricate titles, authors, methods, or results — inventing details for a technical digest would be a serious accuracy failure. If you can provide the remaining four abstracts, I'll expand each section into the full 3–4 sentence per-paper format and revise the Key Takeaways accordingly. It's also worth double-checking whether the source list was truncated, since \"Fairness or Fallacy?\" appears to be a survey whose scope would ordinarily be complemented by the missing entries.",
+    "papers": [
+      {
+        "title": "Fairness or Fallacy? Mapping the Landscape of AI Bias in Disease Detection",
+        "url": "",
+        "authors": [
+          "Ghulam Mudassir",
+          "Hameed Ullah Khan",
+          "Ahmad Sami Al-Shamayleh",
+          "Muhammad Faizan Khan",
+          "Muhammad Muqtasid",
+          "Moamin Abughazala",
+          "Adnan Akhunzada"
+        ],
+        "date": "2026-10-20"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-20",
+    "paperCount": 27,
+    "markdown": "# Multimodal Research Digest: Alignment Paradigms, Clinical Reasoning, and Efficiency Frontiers\n\nToday's multimodal research landscape is defined by a decisive shift from \"can we fuse modalities?\" to \"when, where, and at what cost should fusion happen?\" Papers interrogate the fundamental design choices of multimodal systems—joint versus decoupled versus agentic alignment, encoder-free architectures, and expert routing—while a substantial cluster targets high-stakes clinical and scientific deployment where distribution shift, missing modalities, and evaluation artifacts undermine claimed gains.\n\n## Rethinking Multimodal Alignment and Architecture Paradigms\n\nSeveral papers challenge foundational assumptions about how modalities should be combined, questioning whether joint pretraining, modality-specific encoders, or even language pretraining itself are necessary.\n\nFang et al. [2] conduct a systematic comparison of three alignment paradigms—JOINT (fusion head on frozen jointly-pretrained encoders), DECOUPLED (fusion on independently pretrained encoders), and AGENT (frozen LLM with task instructions and unimodal readouts)—across 16 paired datasets in five domains and multiple label budgets. The work provides practical guidance on which paradigm wins under which conditions, moving the field beyond defaulting to joint pretraining. This matters because it reframes alignment as a design decision with measurable tradeoffs rather than a settled recipe.\n\nHarwath et al. [3] empirically analyze two encoder-free multimodal LLMs (Gemma-4 12B and Inkling-Small) that feed raw sample windows, pixels, and spectral features directly to the Transformer. They find that early layers function as \"implicit encoders,\" learning representations comparable to dedicated audio and visual encoders. This suggests modality-specific encoder modules may be dispensable, with implications for simplifying multimodal architectures and reducing pipeline complexity.\n\nChandrasegaran et al. [27] introduce Halcyon, a family of early-fusion multimodal autoregressive models pretrained from scratch on 100M image-text pairs (GPIC) without any language pretraining. Halcyon-0.52B outperforms LlamaGen-XL/8 (48.0 vs. 63.3 gFD) with 18.2× less pretraining compute, and Halcyon-1.6B beats JiT-T2I-XXL/8++ with 275× less compute. This directly challenges the assumption that internet-scale language pretraining is necessary for strong text-to-image generation, with major implications for compute-efficient multimodal training.\n\nSingh et al. [13] distinguish weak multimodality (answering questions about images) from strong multimodality (text representations themselves becoming vision-aligned), finding that VLMs fail to use visual representations for text-only tasks with latent visual structure—a \"failure of imagination.\" They show self-distillation can help close this gap, offering a diagnostic framework and remedy for a subtle but important limitation of current VLMs.\n\n## Robustness to Missing, Imbalanced, and Heterogeneous Modalities\n\nA second cluster addresses the messy reality of multimodal data: modalities go missing, one modality dominates optimization, and information arrives in irregular temporal patterns.\n\nZheng et al. [5] propose TWIN-MoE, a two-stage intra-expert imputation network for incomplete multimodal learning. They show that routing missingness patterns to dedicated experts scales poorly, and instead derive an imputation-error bound controlled by local feature dispersion within expert-conditioned neighborhoods, motivating intra-expert aggregation. This provides both theoretical grounding and a scalable alternative to per-pattern expert routing as modality counts grow.\n\nChen et al. [7] introduce MSCR, which addresses modality imbalance by jointly balancing utilization across modalities and discovering synergistic information. Unlike prior balancing methods (e.g., MCR) that only adjust modality contributions, MSCR explicitly considers how imbalance affects the formation of synergy—predictive gain unrecoverable from unimodal evidence. This connects the imbalance literature to the information-theoretic foundations of multimodal advantage.\n\nBai et al. [9] extend LeJEPA's isotropic Gaussian task prior to multimodal settings with MM-LeJEPA, modeling multimodal tasks as strength-weighted and introducing correlated Gaussian regularization. This enables self-supervised multimodal learning without reconstruction decoders, EMA teachers, or contrastive negatives, while accounting for cross-modal structure the original isotropic prior ignores.\n\nGuo and Zhao [10] propose Relational Tensor Representation (RTR), a unified framework with learnable relational bridge matrices that jointly learns dimension-specific tensor representations and cross-dimensional/cross-modality relationships for health data. Pandey and Lee [25] introduce SleepPairNet, a self-supervised framework using random modality-pair selection and cross-attention to learn inter-modal relationships across physiological signals, enabling flexibility across modality combinations at downstream time.\n\n## Clinical and Scientific Multimodal Reasoning Under Distribution Shift\n\nThe largest thematic cluster applies multimodal learning to clinical and scientific domains, with a shared emphasis on generalization failures and principled remedies.\n\nZhu et al. [4] propose DISCERN, modeling clinical multimodal data through a latent structural causal model to identify conditional disease evidence without disease-state labels or full causal recovery. In Gaussian coordinates, cross-cohort state alignment and natural-parameter changes identify a minimal selection statistic whose conditioning removes enrollment shortcuts. This offers a causally-grounded defense against the shortcut learning that plagues clinical multimodal models on new cohorts.\n\nLiu et al. [15] expose a critical evaluation artifact: label-space mismatch (METABRIC's six classes vs. PAM50's five) distorts cross-cohort breast cancer subtyping evaluation. They separate three routinely conflated operations, showing label-space restriction dominates correction (73.76%→79.74% on TCGA-BRCA). This is a methodological warning that many reported transfer gains may be evaluation-rule changes rather than model improvements.\n\nLiu et al. [18] present CODA, a cohort- and drift-aware foundation model for multimodal clinical reasoning that models population-level cohort patterns alongside patient-specific deviations, mirroring how clinicians reason through patient cohorts. Yang et al. [11] introduce DeliMF, a gated cross-attention fusion framework combining structured time-series EHR data with free-text clinical notes for early ICU delirium prediction, addressing the overlooked informational content of notes written in the same window as vitals.\n\nKim and Moon [17] propose TRACE, a daily-scale framework organizing heterogeneous clinical evidence (structured records, chest x-rays, text) into temporal trajectories over an admission for mortality, length-of-stay, and readmission prediction—shifting focus from static fusion to trajectory modeling. Gan et al. [19] introduce ViCoR, which estimates visual necessity via counterfactual residuals to select medical vision-language training data, separating visually necessary samples from shortcut-solvable ones to combat hidden stratification caused by linguistic priors suppressing visual grounding.\n\nBeyond clinical settings, Kamai et al. [8] induce Fourier geometry in multimodal stellar embeddings via a graph-Laplacian smoothness prior over physical parameter space, showing that a smoothness prior imposes approximate translation equivariance when the symmetry is only approximate—connecting representation geometry to known physical structure. Kim et al. [24] present OceanTensorCube and ST-MMT, a 9.2M-parameter spatiotemporal transformer with hub-style cross-attention forecasting Pyropia bleaching seven days ahead across 32 aligned channels on a 30m grid, detecting all reported positives at ≤3.5% false-alarm rate.\n\n## Efficient Reasoning, Routing, and Optimization for Multimodal Systems\n\nEfficiency—of reasoning, routing, and optimization—emerges as a cross-cutting concern.\n\nTekin and Liu [6] propose VL-Scout, a vision-language framework combining Bayesian priors, policy gradient optimization, and sequential decision-making with turn-based reinforcement fusion to combat premature convergence in dynamic model routing under noisy rewards. Seo et al. [14] introduce a reasoning-compression approach grounded in the information bottleneck principle for multimodal grounding, arguing that extended reasoning trajectories dilute grounded perceptual evidence and must converge on compact target-specific representations.\n\nZhang et al. [16] present TempoMoE, discovering that fast and slow thinking exhibit distinct expert-routing patterns in multimodal MoE models; suppressing slow-thinking experts shortens reasoning while preserving accuracy, turning a black-box overthinking problem into a steerable routing intervention. Ji et al. [12] propose AdamPM, pooling adjacent moment entries in Adam to reduce memory overhead for LLM training without added computation or hyperparameter tuning—relevant to the multimodal LLMs that increasingly dominate the field.\n\nYing et al. [26] show parameter-efficient fine-tuning enables adapting very large pretrained backbones for brain encoding with few trainable parameters, exploiting causal structure to predict multiple timepoints efficiently—addressing the scarcity of costly neural data.\n\n## Agentic Multimodality, Memory, and Evaluation\n\nA final cluster examines agents that must perceive, act, and remember across modalities, plus the benchmarks and compression methods used to evaluate them.\n\nZhou et al. [22] introduce OpenVLHarness, a multimodal reasoning harness organized around tool use with multimodal memory, motivated by a controlled study across 22 benchmarks showing that increasing base-model inference budget yields only modest gains. This argues that grounded perception, external knowledge, and numerical measurement via heterogeneous tools—retained across reasoning steps—are essential beyond internal reasoning.\n\nWang et al. [21] present RefCraft, a 300-task benchmark for visual-reference-conditioned agentic generation through webpage development, targeting the common real-world workflow of developing from visual examples rather than idealized text-only or reconstruction settings. Lin et al. [20] introduce HoloCosm, which addresses benchmark compression across multiple metrics, finding model rankings weakly correlated across metrics and showing single-metric selection fails to preserve scores at 80% compression—outperforming equal-budget baselines. Salavati et al. [23] present KAC, a KPI-aware multimodal anomaly detection framework for 5G/Open RAN telemetry using KPI-level residual-text alignment to turn operator summaries into learnable feedback over full-KPI temporal evidence under strict alert budgets.\n\n## Key Takeaways\n\n- **Alignment is a design decision, not a default**: Joint, decoupled, and agentic paradigms each win under different data regimes [2], and encoder-free models [3] plus from-scratch early-fusion training without language pretraining [27] challenge assumptions about necessary architectural components—with Halcyon achieving competitive gFD at up to 275× less pretraining compute.\n- **Weak multimodality masks weak grounding**: VLMs can answer image questions yet fail to leverage visual representations for text-only tasks with latent visual structure [13], echoing clinical findings that linguistic priors suppress visual grounding and create hidden stratification [19].\n- **Evaluation artifacts can rival model gains**: Label-space mismatch correction (73.76%→79.74%) dominated reported cross-cohort improvements in breast cancer subtyping [15], and single-metric benchmark compression fails to preserve multi-metric rankings [20]—a caution for how the community reports progress.\n- **Causal and statistical framing combats shortcut learning**: Identifying conditional disease evidence via latent SCMs [4] and cohort-aware foundation modeling [18] offer principled defenses against enrollment shortcuts and distribution shift in clinical multimodal learning.\n- **Missingness and imbalance need structural solutions**: Intra-expert imputation with error bounds [5], synergy-aware balancing [7], and correlated Gaussian priors for JEPA [9] move beyond ad hoc compensation toward theoretically grounded handling of incomplete and imbalanced modalities.\n- **Efficiency is being attacked at every layer**: Reasoning compression via information bottleneck [14], expert-routing steering to curb overthinking [16], pooled-moment optimization [12], and PEFT for brain encoding [26] collectively reduce the cost of multimodal systems without sacrificing capability.\n- **Agents need memory and tools, not just bigger inference budgets**: Controlled evidence shows inference scaling yields modest gains [22], motivating harnesses with multimodal memory, tool use, and visual-reference-conditioned benchmarks [21] that reflect real-world workflows.",
+    "papers": [
+      {
+        "title": "Improving Fake Profile Detection Through Multimodal Learning and Research-Guided Feature Integration",
+        "url": "",
+        "authors": [
+          "Jean Claude Hirwa",
+          "Jamiu Dahunsi",
+          "Candide Giramata",
+          "Lowami Uwimana",
+          "Thierry Henry Ishimwe"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Joint, Decoupled, or Agent: When Each Multimodal Alignment Paradigm Wins",
+        "url": "",
+        "authors": [
+          "Yi Fang",
+          "Gaurav Srivastava",
+          "Sirui Ding",
+          "Xuan Wang"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Encoder-Free Multimodal LLMs Learn Implicit Encoders",
+        "url": "",
+        "authors": [
+          "David Harwath",
+          "Desh Raj",
+          "Xavier Velez",
+          "Sandra Arcos-Holzinger",
+          "Willie Jeng",
+          "Karen Livescu",
+          "Leibny Paola Garcia-Perera",
+          "Sanjeev Khudanpur"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "DISCERN: Identifiable Disease Evidence for Generalizable Medical Multimodal Learning",
+        "url": "",
+        "authors": [
+          "Xiaoguang Zhu",
+          "Pengyi Jiang",
+          "Juncen Guo",
+          "Jingyi Wu",
+          "Lianlong Sun",
+          "Yang Liu"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "TWIN-MoE: Two-stage Intra-Expert Imputation Network for Incomplete Multimodal Learning",
+        "url": "",
+        "authors": [
+          "Liang Nathan Zheng",
+          "Jiyuan Liu",
+          "Wenhao Liang",
+          "Wei Emma Zhang",
+          "Weitong Chen",
+          "Lin Yue"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Alliance of Stochastic Routing and Reinforcement Fusion for Multi-Model Reasoning",
+        "url": "",
+        "authors": [
+          "Selim Furkan Tekin",
+          "Ling Liu"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "MSCR: Jointly Balancing Utilization Across Modalities and Discovering Synergistic Information",
+        "url": "",
+        "authors": [
+          "Xinyu Chen",
+          "Liangjian Wen",
+          "Jiang Duan",
+          "Dongkai Wang",
+          "Yong Dai",
+          "Jiayu Bai",
+          "Jianzhuang Liu",
+          "Zhen Tian",
+          "Guoping Qiu",
+          "Zhao Kan"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Inducing Fourier Geometry: A Smoothness Prior Imposes Approximate Translation Equivariance in Multimodal Stellar Embeddings",
+        "url": "",
+        "authors": [
+          "Ilay Kamai",
+          "Alex M. Bronstein",
+          "Hagai B. Perets"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "MM-LeJEPA: Correlated Gaussian Regularization for Multimodal Joint-Embedding Predictive Architectures",
+        "url": "",
+        "authors": [
+          "Haowen Bai",
+          "Rui Gong$",
+          "Meichen Liu",
+          "Ming-Xuan Weng",
+          "Bihan Wen",
+          "Kim-Hui Yap"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Cross-Dimension and Cross-Modality Relational Tensor Representation Learning for Multimodal Health Data Modeling",
+        "url": "",
+        "authors": [
+          "Jiawei Guo",
+          "Meng Zhao"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "DeliMF: Gated Cross-Attention Fusion of Structured Time Series and Clinical Text for Early Intensive Care Delirium Prediction",
+        "url": "",
+        "authors": [
+          "Yibo Yang",
+          "Zerui Huang",
+          "Haomiao Yang",
+          "Zixia Wang"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "AdamPM: Memory-Efficient LLM Optimization via Moment Pooling",
+        "url": "",
+        "authors": [
+          "Xiaowei Ji",
+          "Lishan Xu",
+          "Jianing An",
+          "Jie Luo",
+          "Wenjun Wu",
+          "Lei Huang"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "A failure of Imagination: VLMs fail to use visual representations for text, but self-distillation can help",
+        "url": "",
+        "authors": [
+          "Shashwat Singh",
+          "He He",
+          "Tal Linzen"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Think, Compress, Answer: Reinforcement Learning for Multimodal Grounding via Reasoning Compression",
+        "url": "",
+        "authors": [
+          "Jinbae Seo",
+          "Hyeongjun Kwon",
+          "Jiyoung Lee",
+          "Hyunsung Jang",
+          "Namkoo Ha",
+          "Jungin Park",
+          "Kwanghoon Sohn"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Label-Space Mismatch Distorts Cross-Cohort Evaluation in Breast Cancer Molecular Subtyping",
+        "url": "",
+        "authors": [
+          "Suxing Liu",
+          "Byungwon Min",
+          "Zhijian Zheng",
+          "Jiahao Wang"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "TempoMoE: Identifying and Steering Fast-Slow Thinking Experts for Efficient Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Xiyue Zhang",
+          "Keru Zhou",
+          "Ziyi Wang",
+          "Bing Hu",
+          "Li Wang"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "TRACE: Tracking Multimodal Clinical Trajectories for Inpatient Risk Prediction",
+        "url": "",
+        "authors": [
+          "Minjun Kim",
+          "Jong Hak Moon"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "CODA: Cohort- and Drift-aware Foundation Model for Multimodal Clinical Reasoning",
+        "url": "",
+        "authors": [
+          "Changshuo Liu",
+          "Jiaqi Zhu",
+          "Wenqiao Zhang",
+          "Xiaokui Xiao",
+          "Beng Chin Ooi"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "ViCoR: Estimating Visual Necessity via Counterfactual Residuals for Multimodal Medical Data Selection",
+        "url": "",
+        "authors": [
+          "Haotian Gan",
+          "Yudong Li",
+          "Xintian Li",
+          "Jiarui Han",
+          "Weidong Tang"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "HoloCosm: Beyond Single-Metric Benchmark Compression Across Multiple Metrics",
+        "url": "",
+        "authors": [
+          "Yupei Lin",
+          "Zhongzhan Huang",
+          "Junxin Li",
+          "Guoming Ling",
+          "Shanshan Zhong",
+          "Hefeng Wu",
+          "Yukai Shi",
+          "Liang Lin"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "RefCraft: Benchmarking Visual-Reference-Conditioned Agentic Generation through Web Development",
+        "url": "",
+        "authors": [
+          "Yuchi Wang",
+          "Rongyao Fang",
+          "Weihao Yu",
+          "Xilin Wei",
+          "Tiancheng Gu",
+          "Dingkang Yang",
+          "Hang Zhang",
+          "Dayiheng Liu",
+          "Hongsheng Li",
+          "Shuai Bai"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "OpenVLHarness: Real World Visual Agentic Tool-Use with Multimodal Memory",
+        "url": "",
+        "authors": [
+          "Yu Zhou",
+          "Cheng-Fu Yang",
+          "Rui Sun",
+          "Di Wu",
+          "Sibo Peng",
+          "Mingyang Zhang",
+          "Zhen Yang",
+          "Ruiyi Zhang",
+          "Nanyun Peng",
+          "Zhe Gan",
+          "Kai-Wei Chang"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "KPI-Aware Multimodal Anomaly Detection for 5G and Open RAN Telemetry",
+        "url": "",
+        "authors": [
+          "Chiman Salavati",
+          "Liang Wu",
+          "Kelly Wan",
+          "Mayank Darbari",
+          "Liangjie Hong"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "OceanTensorCube and ST-MMT: A Multimodal Data and Transformer System for Seven-Day Forecasting of Pyropia Bleaching",
+        "url": "",
+        "authors": [
+          "Gwangjin Kim",
+          "Cheolyoung Jang",
+          "Yosep Jo"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "SleepPairNet: Learning Multimodal Pediatric Sleep Representations with Random-Pair Cross-Attention",
+        "url": "",
+        "authors": [
+          "Saurav Raj Pandey",
+          "Harlin Lee"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Scaling Parameter-Efficient Fine-Tuning for Brain Encoding",
+        "url": "",
+        "authors": [
+          "Zhuofan Josh Ying",
+          "Guanglong Sun",
+          "Nolan Ho",
+          "Kieran Liu",
+          "Rui Yang",
+          "Andrew Chen",
+          "Nikolaus Kriegeskorte",
+          "Pony Ma",
+          "Hossein Adeli"
+        ],
+        "date": "2026-10-20"
+      },
+      {
+        "title": "Text-to-Image Generative Modeling Without Language Pretraining",
+        "url": "",
+        "authors": [
+          "Keshigeyan Chandrasegaran",
+          "Yue Zhao",
+          "Armin W. Thomas",
+          "Ehsan Adeli",
+          "Jiajun Wu",
+          "Juan Carlos Niebles",
+          "Li Fei-Fei",
+          "Michael Poli"
+        ],
+        "date": "2026-10-20"
+      }
+    ]
+  }
+]
