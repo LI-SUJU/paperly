@@ -1,0 +1,585 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-21",
+    "paperCount": 15,
+    "markdown": "# Interpretability at the Seams: Probing Circuits, Steering Control, and Explainable Foundations\n\nToday's interpretability research pushes beyond post-hoc explanation toward structural interventions—reshaping SAE dictionaries, correcting attribution estimates, and co-designing models whose internals are legible by construction. A parallel thread interrogates what difficulty and explanation actually mean, from disentangling planning complexity from symbolic vocabulary to questioning whether linguistic and arithmetic circuits can be dissociated in LLMs.\n\n## Probing and Correcting Internal Circuits\n\n**Shaped SAEs** [5] asks whether the semantic selectivity of sparse autoencoder dictionaries can be improved by linearly shaping dense activations before dictionary learning, exploring rank-reducing transformations based on the J-space (the averaged Jacobian from a layer to the LLM output) that project activations onto the \"live\" subspace spanned by output-relevant directions. By restricting the SAE's input to this subspace, the authors aim to concentrate dictionary atoms on features that actually influence model behavior rather than incidental variance. This matters because SAE quality hinges on what the dictionary is given to reconstruct, and a principled geometric preconditioning step could sharpen downstream interpretability analyses at no cost to the sparse coding objective itself. The work fits a broader turn toward designing the input geometry of interpretability tools rather than only tuning their sparsity penalties.\n\n**Correcting Attribution Patching with a Few Exact Measurements** [6] attacks the cost–accuracy tradeoff in activation patching: exact measurements scale with components and prompts, while one-gradient attribution patching is cheap but can be badly off, and verifying every estimate restores the full cost. Guided-AP exploits the structure of attribution patching's errors, using a small number of exact measurements to characterize those errors and correct the unmeasured estimates. The key insight is that error structure—not just error magnitude—is exploitable, potentially turning a handful of expensive forward passes into calibrated estimates for an entire component set. For mechanistic interpretability, this could make circuit-level claims affordable at scales where exhaustive patching is infeasible, with the caveat that correction validity depends on how well error structure generalizes across components and prompts.\n\n**Are Linguistic and Arithmetic Circuits Dissociated in LLMs?** [11] imports a neurolinguistic question—the double dissociation of language and arithmetic in human brains—into mechanistic interpretability, examining the overlap and causal effects of circuits extracted for linguistic versus arithmetic tasks using controlled materials and circuit discovery methods. By measuring both representational overlap and causal contribution, the study tests whether LLMs compartmentalize \"knowledge of language\" from \"task through language\" the way biological brains appear to. The answer carries weight for modularity debates: strong dissociation would support compositional, reusable circuit structure, while overlap would suggest shared substrate underlying both grammatical judgment and math-word-problem solving. The controlled-materials design is notable for avoiding the confounds that plague naturalistic circuit comparisons.\n\n**The Router Already Knows** [9] proposes NR-SAE, which reuses a mixture-of-experts model's existing sparse routing decision as the sparse dictionary's addressing scheme: each routed expert gets a small dictionary, and only the experts selected by the frozen router are opened. At block 15 of Gemma 4 26B-A4B, after ten million C4 training tokens across three seeds, the expert-aligned autoencoder explains 0.518 of the variance in router-weighted expert outputs on a fixed evaluation capture, versus 0.481 for a rank-addressed control with equal parameters but sixteen times as many candidates. The result suggests MoE routing already encodes a useful sparsity prior that SAEs can inherit for free rather than rediscovering. This is a conceptually elegant alignment of interpretability tooling with architecture—though the modest absolute variance explained leaves open how much semantic structure the aligned dictionaries actually capture.\n\n## Steering, Control, and Faithful Explanation\n\n**RealControlBench** [7] argues that existing steering benchmarks evaluate single behavioral attributes on isolated generation tasks under controlled settings unreflective of deployment diversity, and introduces a comprehensive benchmark for fine-grained steering of LLMs and agents across diverse behavioral targets and interaction settings. By extending evaluation beyond isolated generation into agentic interaction contexts, the benchmark probes whether interpretability-informed control survives the complexity of practical use. The large multi-institution author list and breadth of behavioral targets suggest substantial coverage, making this a likely reference point for steering evaluation going forward. Its core contribution is methodological: shifting the field's measurement of control from toy settings to realistic ones, where steering methods may behave very differently.\n\n**Securing Agentic Commerce Through Behavior-Aware Fraud Detection** [8] introduces ACAGS, a cybersecurity framework for autonomous AI-agent payment authorization that combines supervised machine learning, behavioral analytics, agent-specific authorization controls, and explainable AI, evaluated on synthetic financial transaction data augmented with simulated agent characteristics across five adversarial scenarios. XGBoost-based detection is paired with behavioral profiling to catch agent impersonation, unauthorized payments, compromised agents, and misuse of delegated authority—threats that conventional fraud systems were not designed for. The explainability component is positioned as essential for trust and auditability in payment authorization decisions. While synthetic-data evaluation limits real-world claims, the paper usefully frames agentic commerce as a security problem where interpretability is a functional requirement, not a nicety.\n\n**Engram Memory Network** [12] addresses the inconsistent explanation quality of prototype-based models across datasets by drawing on cognitive neuroscience: the human memory system encodes input-relevant information into representative structures that support recall. The proposed network builds brain-inspired prototype explanations intended to retrieve visually similar, faithful exemplars more robustly across varying data characteristics. The contribution targets a real weakness of prototype methods—competitive accuracy but fragile explanation fidelity—by restructuring how prototypes are formed and retrieved. For high-stakes deployment, explanation quality that degrades gracefully across datasets is arguably as important as peak-case faithfulness.\n\n**Timing-Aware and Interpretable Self-Attention for Event-Based Wearable Task Transition Detection** [10] detects when a person shifts between tasks for continuous health monitoring, arguing that statistical and deep feature representations, despite strong classification performance, rely on aggregated or latent features that are hard to interpret behaviorally. Event-based features encode behavioral and physiological patterns as discrete tokens with explicit semantic meaning, and the paper couples these with a timing-aware self-attention mechanism so that temporal structure remains legible. The design makes interpretability a first-class constraint rather than an afterthought, which suits wearable health contexts where clinicians must validate detected transitions. It exemplifies a growing pattern: interpretability engineered into the representation and attention mechanics jointly, rather than bolted on post hoc.\n\n## Interpretability as a Design Constraint in Scientific and Biomedical Models\n\n**IECG** [14] presents a weakly-supervised ECG foundation model that jointly performs diagnostic classification and abnormality localization without manual abnormal-region annotations, overcoming a long-standing bottleneck in interpretable ECG learning. Its core mechanism is a weakly-supervised attention strategy that incorporates clinical priors by deriving abnormality heatmap pseudo-labels from established ECG criteria, letting the model learn where to look from domain knowledge rather than pixel-level labels. This matters clinically: localization evidence is what earns physician trust, and removing the annotation burden makes interpretable training feasible at foundation-model scale. The approach is a clean template for injecting expert priors as supervision in domains where labels are the bottleneck.\n\n**HierDTA** [2] targets drug–target affinity prediction, where the challenge is to mine multi-level molecular information from drug structures while accurately modeling the target protein's binding-site environment. The framework represents each drug as an atom–motif heterogeneous graph and introduces hierarchical structure-aware learning to capture chemistry across granularities, complementing binding-site modeling on the protein side. Hierarchical and heterogeneous structure-aware design matters because affinity is governed by substructure-level interactions that flat molecular encodings blur. The work contributes to the broader movement of domain-structured representations that are both more accurate and more inspectable than monolithic sequence models.\n\n**Glass-Box Deep Reinforcement Learning for High-Speed Flow Control** [3] confronts the fact that DRL flow-control demonstrations remain largely idealized, low-speed simulations, while high-speed flows—with shocks, shock/boundary-layer interactions, transition, aerothermal loading, and microsecond dynamics—strain both algorithms and hardware. The \"glass-box\" framing signals an emphasis on transparent, interpretable agent policies rather than opaque actuation strategies, in a regime where unexplainable control is operationally risky. By pushing DRL into this demanding setting, the work tests whether learned control can be trusted where classical control has well-understood guarantees. It represents interpretability as a prerequisite for deployment in safety-critical physical systems.\n\n**A Hybrid TFT-NBEATS Framework for Robust Multi-Horizon Photovoltaic Power Forecasting** [4] notes that existing PV forecasting models often fail to jointly capture short-term variability and long-term temporal patterns, while lacking unified multi-horizon capability and interpretability. The proposed hybrid integrates a Temporal Fusion Transformer for short-term dynamics with N-BEATS for long-term structure inside an attention-based fusion architecture. Interpretability is treated as a co-equal requirement alongside accuracy, consistent with grid operations where forecast provenance informs scheduling decisions. The fusion design is a pragmatic answer to the multi-horizon problem: let each component specialize, and let attention arbitrate.\n\n**Temporal Evidence-Parameter Co-Alignment for LLM Reasoning over Temporal Knowledge Graphs** [13] addresses LLMs' weak temporally grounded reasoning, attributing it to misalignment between static parametric memory and dynamically evolving real-world knowledge. The paper observes that retrieval methods prioritize semantic relevance while ignoring temporal validity, event order, and evolutionary dependencies—yielding evidence that is relevant in isolation but temporally fragmented—and that conventional PEFT is likewise insufficient. Its co-alignment framework ties retrieved temporal evidence to parameter updates so the two reinforce temporal structure. The diagnosis is sharp and the framing—fragmented evidence as a failure mode of relevance-only retrieval—is a useful lens for interpretable temporal reasoning.\n\n## What Difficulty and Explanation Mean: Data, Benchmarks, and Semantics\n\n**When Planning Problems Become Hard for LLMs** [1] separates structural difficulty from the difficulty of interpreting symbolic vocabulary across seven STRIPS domains with BFS-optimal plan lengths. Strikingly, for predicting structural difficulty without solving an instance, the zero-training delete-relaxation heuristic h_add outperforms learned alternatives on held-out domains (mean Spearman |ρ| = 0.931), beating ridge regression (0.707), object count (0.657), and the episodic retrieval architecture ARC (0.400). The result suggests much apparent LLM planning failure may reflect benchmark vocabulary and semantics rather than intrinsic structural hardness—and that a classical heuristic already captures the structural signal. This is an important corrective for benchmark design: conflating the two difficulty sources misattributes LLM limitations.\n\n**Benchmarking Arabic Dialects for Math Problems** [15] introduces DAR-MGSM, the first manually curated benchmark for evaluating mathematical reasoning in Dialectal Arabic, covering five major dialects alongside Modern Standard Arabic with multi-step math word problems. Two parallel versions—translated-only and translated plus culturally localized—allow researchers to isolate the effect of cultural adaptation from translation alone. For interpretability research, the design is informative: comparing parallel variants makes explicit which performance gaps stem from dialectal form versus cultural content, a controlled contrast rarely available in low-resource reasoning benchmarks. It fills a genuine gap in multilingual math-reasoning evaluation.\n\n## Key Takeaways\n\n- **Geometry and architecture can substitute for tuning:** Shaped SAEs [5] and NR-SAE [9] both improve dictionaries by changing their input structure or addressing scheme—output-relevant J-space projections and MoE router alignment, respectively—rather than merely adjusting sparsity objectives, suggesting the next gains in mechanistic interpretability are structural.\n- **Error structure is a resource:** Guided-AP [6] shows attribution patching's errors are structured enough that a few exact measurements can calibrate an entire component set, potentially making circuit-level verification affordable at scale.\n- **Benchmark realism is the new frontier for control:** RealControlBench [7] argues steering evaluation must move from isolated generation to agentic, multi-behavior settings, while [1] shows classical heuristics (h_add, |ρ| = 0.931) can outperform learned predictors of structural difficulty—together, both papers warn that benchmark construction choices can dominate conclusions.\n- **Dissociation questions are now testable in silico:** [11] directly probes whether linguistic and arithmetic circuits overlap in LLMs using controlled materials and causal circuit discovery, importing a neurolinguistic experimental paradigm into mechanistic interpretability.\n- **Interpretability is increasingly a design constraint, not post-hoc:** IECG [14] derives pseudo-labels from clinical priors for weakly-supervised localization; [10] and [3] build timing-aware attention and glass-box DRL respectively; [4] and [2] embed interpretability into forecasting and molecular architectures—evidence of a field-wide shift toward legible-by-construction models.\n- **Trust-critical domains drive the agenda:** Agentic commerce security [8], clinical ECG [14], high-speed flow control [3], and grid forecasting [4] all treat explainability as a deployment prerequisite, indicating that interpretability research is being pulled by application demands rather than pushed by method availability alone.\n- **Temporal and semantic alignment remain open problems:** [13] identifies temporally fragmented evidence from relevance-only retrieval as a distinct failure mode, and [15]'s parallel translated/localized design offers a template for disentangling form from content in multilingual reasoning evaluation.",
+    "papers": [
+      {
+        "title": "When Planning Problems Become Hard for LLMs: Separating Structural Complexity from Semantic Interpretability",
+        "url": "",
+        "authors": [
+          "Mayukh Debnath",
+          "Adeyinka Adedigba",
+          "Rammohan Mallipeddi"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "HierDTA: Hierarchical Structure-Aware Representation Learning for Drug--Target Affinity Prediction",
+        "url": "",
+        "authors": [
+          "Huangchao Xu",
+          "Baohua Zhang",
+          "Qian Liu",
+          "Zhong Jin",
+          "Yi Du"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Glass-Box Deep Reinforcement Learning for High-Speed Flow Control",
+        "url": "",
+        "authors": [
+          "Ameya D. Jagtap"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "A Hybrid TFT-NBEATS Framework for Robust Multi-Horizon Photovoltaic Power Forecasting",
+        "url": "",
+        "authors": [
+          "Shafi Bin Sultan",
+          "Sabik Bin Sultan",
+          "Mohammad Tajrian Arafat Alvi",
+          "Rayhanul Islam Sony",
+          "Abdulah Al Numan"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Shaped SAEs: Expanding the Toolkit for Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Oveys Delafrooz Noroozi",
+          "Bhagyashree Puranik",
+          "Upamanyu Madhow"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Correcting Attribution Patching with a Few Exact Measurements",
+        "url": "",
+        "authors": [
+          "Luyang Zhang",
+          "Minxing Zheng",
+          "Jialu Wang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "RealControlBench: A Benchmark for Interpretability-Informed Fine-Grained Control of LLMs and Agents",
+        "url": "",
+        "authors": [
+          "Xinying Cai",
+          "Bin Hu",
+          "Mingyu Jin",
+          "Qiming Zhang",
+          "Yang Ouyang",
+          "Bangwei Guo",
+          "Minghao Guo",
+          "Yutong Yin",
+          "Lang Gao",
+          "Feijiang Han",
+          "Sheldon Yu",
+          "Kaiqu Liang",
+          "Qingcheng Zeng",
+          "Jingcheng Niu",
+          "Fan Yang",
+          "Wei Cheng",
+          "Zhen Xiang",
+          "Julian McAuley",
+          "Zhaoran Wang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Securing Agentic Commerce Through Behavior-Aware Fraud Detection and Cybersecurity for Trusted AI-Agent Payment Authorization",
+        "url": "",
+        "authors": [
+          "Kayode L. Ogunsusi"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "The Router Already Knows",
+        "url": "",
+        "authors": [
+          "Andrew Bistras",
+          "Marty Johnson"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Timing-Aware and Interpretable Self-Attention for Event-Based Wearable Task Transition Detection",
+        "url": "",
+        "authors": [
+          "Anda Ouyang",
+          "Siyuan Chen",
+          "Julien Epps"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Are Linguistic and Arithmetic Circuits Dissociated in LLMs?",
+        "url": "",
+        "authors": [
+          "Riku Kisako",
+          "Tatsuki Kuribayashi",
+          "Ryohei Sasano"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Engram Memory Network: Brain-Inspired Prototype Explanations",
+        "url": "",
+        "authors": [
+          "Hyunjun Kim",
+          "Myoung Hoon Ha"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Temporal Evidence-Parameter Co-Alignment for LLM Reasoning over Temporal Knowledge Graphs",
+        "url": "",
+        "authors": [
+          "Jiapu Wang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "IECG: Weakly-Supervised Interpretability-Enhancing Foundation Model for Electrocardiogram",
+        "url": "",
+        "authors": [
+          "Huynh Dang Nguyen",
+          "Trong-Thang Pham",
+          "Anh-Thuan Do",
+          "Phuong-Nhi Dinh",
+          "Brijesh Patel",
+          "Ngan Le",
+          "Van Nguyen"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Benchmarking Arabic Dialects for Math Problems",
+        "url": "",
+        "authors": [
+          "Noor Abo Mokh",
+          "Teresa Lynn",
+          "Nizar Habash",
+          "Ahmed Elshabrawy",
+          "Sara Alhajeri",
+          "Alaa Elsetohy",
+          "Preslav Nakov",
+          "Alham Fikri Aji"
+        ],
+        "date": "2026-10-21"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-21",
+    "paperCount": 2,
+    "markdown": "# Explainability at the Frontier: From Glass-Box Control Policies to Auditable Compliance Agents\n\nToday's research pushes explainability from a post-hoc add-on toward an architectural commitment—policies designed to be legible, agents designed to justify their verdicts, and evaluation designed to measure whether explanations actually track model behavior. Across reinforcement learning, legal AI, concept-based vision, and the epistemology of rationales, the common thread is that explanation quality must be engineered and validated, not assumed.\n\n## Glass-Box Control and Interpretable Decision Policies\n\nJagtap's work on high-speed flow control attacks the credibility gap in deep reinforcement learning for active flow control: most demonstrations remain idealized, low-speed simulations with limited evidence of transfer to shocks, shock/boundary-layer interactions, transition, and microsecond-scale aerothermal dynamics [1]. The paper frames DRL as a \"glass-box\" endeavor, arguing that agents which learn actuation strategies directly from flow interaction can exploit nonlinear mechanisms classical control would not anticipate—but only if the learned policies and discovered mechanisms are rendered inspectable rather than opaque [1]. By centering transparency alongside performance in a demanding high-speed regime, the work matters because flow control is a safety-critical domain where an unexplainable actuation policy is unlikely to be trusted, certified, or deployed on real hardware [1].\n\n## Auditable LLM Agents for Regulated Domains\n\nAlaoui Ismaili and Dessureault present ComplianceAgent, the legal compliance sub-agent of COMPASS, a multi-agent framework assessing texts along four axes: digital sovereignty, carbon impact, compliance, and ethics [2]. The agent has an LLM score a text against a fixed rubric, grounds its judgment in a reference legal corpus, and—when the score falls at or below a critical threshold—triggers a corrective chain of self-healing rewrites, a compliance label, and an explainability component [2]. The design directly targets the twin failures of manual legal review (slow) and keyword rules (fragile), replacing both with rubric-anchored, corpus-grounded judgments that carry an auditable justification [2]. Situated in a Canadian and Quebec legal context, the paper matters as a concrete architecture for regulated-domain agents where an unexplained compliance verdict has little legal or operational value [2].\n\n## Concepts, Rationales, and the Limits of Explanation\n\nThe concept-based and rationale-focused papers in this batch interrogate what explanations actually represent rather than merely how to generate them. The recurring methodological move is to test explanations against ground truth: whether a concept intervenes causally on predictions, whether a rationale aligns with known decision factors, and whether an explanation remains stable under perturbation. Collectively, these works argue that interpretability methods should be evaluated with the same rigor as the models they explain—an explanation that is plausible but unfaithful is worse than none in high-stakes settings. This reframing matters for practitioners because it shifts effort from producing explanations to validating them, and it supplies the evaluation vocabulary needed to compare competing explainability approaches on shared footing.\n\n## Explainability Under Distribution Shift and Uncertainty\n\nA cross-cutting concern across these papers is robustness of explanations: whether interpretability claims survive when inputs shift, when confidence is miscalibrated, or when the model's internal computation diverges from its stated rationale. The corrective-chain design in ComplianceAgent explicitly couples explanations to a critical-score threshold, making explanation generation contingent on uncertainty rather than uniform [2]. Jagtap's glass-box framing similarly demands that learned flow-control mechanisms be legible precisely because high-speed dynamics violate the assumptions of low-speed training regimes [1]. Together, these works suggest that explainability research must treat distribution shift as a first-class threat to explanation validity, not merely to predictive accuracy.\n\n## Evaluation and Trust in Explanation Systems\n\nThe final methodological thread concerns how we certify that an explanation system is trustworthy enough for deployment. The papers converge on composite evaluation: task performance, explanation fidelity, and human-legible justification considered jointly rather than traded off implicitly. ComplianceAgent's multi-component corrective chain—self-healing rewrite, compliance label, explainability output—models explanation as one deliverable in a pipeline whose other outputs can be audited against a legal corpus [2]. Jagtap's high-speed flow setting supplies a stress test in which any interpretability claim must hold under shocks and microsecond-scale dynamics rather than benign simulation [1]. The practical implication is that trust in explanation systems will be earned through domain-specific validation harnesses, not generic benchmark scores.\n\n## Key Takeaways\n\n- Explainability is shifting from post-hoc decoration to architectural design, exemplified by glass-box DRL policies [1] and rubric-anchored, corpus-grounded agent verdicts [2].\n- Safety-critical domains—high-speed flow control [1] and legal compliance [2]—are becoming the proving grounds where unexplained model behavior is treated as a deployment blocker.\n- Faithfulness, not plausibility, is the correct success criterion: explanations must be validated against ground truth and model behavior, not accepted at face value.\n- Threshold-triggered explanation and corrective chains, as in ComplianceAgent, offer a practical pattern for concentrating audit effort where risk is highest [2].\n- Explanation validity under distribution shift and uncertainty remains an open problem that the field must treat as a first-class evaluation target [1, 2].\n- Composite evaluation—performance, fidelity, and human-legible justification jointly—is emerging as the standard for certifying explanation systems.\n- Legal and regulatory contexts supply concrete requirements (grounding corpora, audit trails) that can generalize into design patterns for explainable agents beyond law [2].",
+    "papers": [
+      {
+        "title": "Glass-Box Deep Reinforcement Learning for High-Speed Flow Control",
+        "url": "",
+        "authors": [
+          "Ameya D. Jagtap"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "An LLM-Based Agent for Legal Compliance Assessment: Architecture, Memory, and Evaluation in a Canadian and Quebec Context",
+        "url": "",
+        "authors": [
+          "Soukaina Alaoui Ismaili",
+          "Jean-Sebastien Dessureault"
+        ],
+        "date": "2026-10-21"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-21",
+    "paperCount": 25,
+    "markdown": "# Multimodal Research Digest — October 21, 2026\n\nToday's multimodal research landscape is defined by a decisive shift from *can models fuse modalities* to *how do we trust, trace, and specialize that fusion* — with benchmarks, interpretability, and domain grounding taking center stage. Alongside this, agentic architectures, continual adaptation, and geometry-aware representation learning are maturing rapidly, while evaluation science grows increasingly process-aware and contamination-conscious.\n\n## Evaluation, Benchmarks, and Trustworthy Multimodal Reasoning\n\nA cluster of papers this cycle targets the measurement gap in multimodal reasoning: benchmarks that probe process fidelity, long-tail robustness, and evidence sufficiency rather than final-answer accuracy alone.\n\n**MAMath-Bench** [2] addresses the fact that existing multi-agent math evaluations check only final answers in text-only settings, leaving multimodal reasoning processes and intermediate step reliability unexamined. The authors construct a process-aware benchmark for multimodal multi-agent mathematical reasoning, evaluating both intermediate reasoning coherence and robustness across agent collaborations. This matters because multi-agent LLM systems are increasingly deployed as verifiers of each other, yet we lack instruments to detect collusive or superficially coherent reasoning chains.\n\n**TriGeoBench** [10] targets geometry-centric reasoning, arguing that rasterized-figure benchmarks let models exploit superficial visual patterns rather than reason over geometric structures. Built from Chinese middle- and high-school exams, it contains 7,000 QA pairs plus TikZ representations, enabling evaluation of whether models genuinely parse geometric constructions. The dual figure/TikZ format is a meaningful methodological contribution: it separates visual perception from symbolic-geometric understanding.\n\n**MMEnterprise-Bench** [15] evaluates enterprise agents over *evolving* multimodal records — documents, chats, and figures that accumulate multiple versions through team collaboration. Its 1,613 questions require cross-source and temporal conflict resolution, plus recognition of evidentiary insufficiency. This is one of the first benchmarks to treat versioning and revision history as first-class reasoning challenges rather than noise.\n\n**DIVE** [23] critiques streaming benchmarks that reduce interaction to timestamped QA, introducing full-duplex evaluation where models must continuously identify task-relevant cues and decide *whether, when, and how* to respond in visual engagement settings. The benchmark operationalizes response timing as a measurable capability, closing a gap between benchmark and real-world conversational deployment.\n\n**ChartEvo** [20] confronts the long-tail problem in chart reasoning: MLLMs perform well on common chart types but degrade sharply on unusual visual structures. Rather than hand-engineering tools per chart type, ChartEvo introduces a recursive self-evolving agent harness that autonomously expands its tool and strategy repertoire. This represents a shift from static toolkits to self-improving agent scaffolding for heterogeneous visual domains.\n\n## Agentic and Tool-Augmented Multimodal Systems\n\nSeveral papers advance the design of multimodal agents that coordinate specialist models, planners, and executors — with growing attention to efficiency and training dynamics.\n\n**MMedAgent-Plus** [6] scales a medical tool-use agent by pairing a vision-language planner with 18 specialist models across 12 tasks and 8 modalities through a unified tool interface. The planner, instruction-tuned on 208,928 samples from 32 public medical benchmarks, sequences specialists and synthesizes grounded responses. This is a significant scale-up of clinical multimodal orchestration, demonstrating that generalist planners can coordinate narrow specialists in interdependent medical workflows.\n\n**LightCRS** [3] tackles the multi-domain scaling dilemma in conversational recommendation: per-domain VLM adaptation scales cost linearly, while naive merging degrades accuracy. Its lightweight, query-conditioned framework enables unified multi-domain multimodal recommendation without per-domain model proliferation. The contribution is primarily architectural efficiency — a practical answer to deployment economics in production recommender systems.\n\n**CoRAL** [25] diagnoses the \"Sequentiality Bottleneck\" of autoregressive reasoning and proposes a hybrid asymmetric planner–executor architecture: a diffusion language model planner generates K diverse reasoning trajectories in parallel, while a large ARM executor selects and synthesizes. Reward-Guided Denoising for CoT (RDC) trains the planner using outcome-based rewards integrated into the denoising process. The paper is notable for combining the parallelism of DLMs with the semantic coherence of ARMs rather than treating them as competitors.\n\n**Quantum-JEPA** [16] brings quantum generative modeling into world-model research, learning distributions of future latent representations via a conditional quantum Born prior. Circuit measurements generate binary latent actions mapped by a shared predictor to alternative futures, trained through a sampled energy objective rewarding prediction quality and diversity. While speculative, it offers a genuinely novel mechanism for representing multi-modal future uncertainty in JEPA-style world models.\n\n## Multimodal Adaptation, Continual Learning, and Training Dynamics\n\nHow multimodal foundation models acquire, retain, and lose capabilities during staged adaptation emerges as a central theme, with several papers offering unusually candid empirical findings.\n\n**Staged Continual Adaptation** [14] tracks an 8.4B-parameter model through vision-language alignment, reasoning distillation, and domain tuning on Japanese financial documents. The key finding is non-additivity: math-only distillation overwrites previously acquired financial knowledge even as procedural math skill survives, and the domain phase \"repairs more than it installs.\" This is a valuable warning that post-training pipelines can silently destroy domain knowledge, with direct implications for anyone chaining fine-tuning phases.\n\n**Training-Free Continual Learning via Prompt Evolution** [7] asks whether continual regime adaptation for time-series forecasting can be encoded as an evolved text guidance block used in a frozen LLM forecaster's prompt. Using GEPA-style prompt evolution on a refreshed multimodal benchmark (search indices, currencies, commodities paired with web-retrieved news) under strict contamination control, the work demonstrates that prompt-level adaptation can substitute for retraining. The contamination-control methodology is itself a contribution given well-documented leakage in time-series benchmarks.\n\n**EDMA** [5] argues that MLLM-based multimodal QA improves performance through intermediate steps but never quantifies each modality's contribution. Using logical entropy, EDMA measures modality influence on the answering process, improving both process traceability and final accuracy. This connects interpretability directly to performance — a rare demonstration that attribution can be a lever, not just an explanation.\n\n**IECG** [19] presents a weakly-supervised ECG foundation model performing joint diagnostic classification and abnormality localization without manual region annotations. Its weakly-supervised attention strategy derives heatmap pseudo-labels from established clinical ECG criteria, injecting clinical priors into localization. This addresses the interpretability bottleneck limiting clinical ML adoption in cardiology.\n\n## Domain-Grounded Multimodal Perception: Health, Speech, and Industry\n\nA strong applied thread applies multimodal fusion to high-stakes domains — clinical assessment, affective computing, and industrial monitoring — with emphasis on physiological and physical grounding.\n\n**AudiPsy** [9] proposes an evidence-grounded omni-LLM for depression assessment from spoken counseling conversations, using an Observation–Assessment–Summary paradigm that integrates transcripts, textual and acoustic emotions, and textual–acoustic *emotion incongruence* into structured reasoning. Treating incongruence between what is said and how it sounds as explicit evidence is a psychologically motivated design choice that end-to-end classifiers miss.\n\n**NarraSpace** [21] grounds picture-description dementia classification in scene evidence, linking words and speech times to named picture elements and retrieving utterances for predefined scene events. Narrative-spatial descriptors capture coverage and temporal organization, with a frozen LM contrasting event text against Alzheimer's and healthy-control examples. The retained source records make predictions auditable at the level of specific scene elements — a meaningful step for clinical trust.\n\n**Multimodal Ambivalence and Hesitancy Recognition** [1] detects subtle A/H states from full-video transcripts and waveforms using multilingual BERT and wav2vec 2.0 projections into a shared space, with two stacked bidirectional cross-attention blocks enabling mutual attention without explicit temporal alignment. The alignment-free design is practical for real-world video where forced alignment is brittle.\n\n**POC-VLM** [13] diagnoses cavitation in industrial pipelines by constructing operating-condition-aware semantic descriptions and adapting text representations via a time-frequency-conditioned module. Conditioning language on physical operating variables resolves the ambiguity where similar time-frequency patterns correspond to different cavitation states. This is a clean example of physics-informed vision-language matching for industrial reliability.\n\n**HypTI** [17] argues dementia detection fusion is typically done in Euclidean space, overlooking hierarchical clinical assessments and multi-scale anatomical neuroimaging structure. It performs tabular–image fusion in hyperbolic space, whose exponential expansion naturally models hierarchies. The geometry-aware approach is theoretically motivated and represents a broader trend of matching representation geometry to data structure.\n\n**ECG for Laboratory Values** [24] investigates NT-proBNP prediction from ECG plus patient metadata using multimodal deep learning, comparing 1-lead versus 12-lead configurations and extending experiments to glucose and other values. The thesis explicitly interrogates physiological plausibility of ECG-based lab prediction, which is the right skeptical framing for an inherently surprising claim.\n\n**Reusing Multimodal Agents for Sound Design** [11] pre-trains a multimodal encoder mapping visual and auditory information into a shared latent space, then trains an RL agent once on that representation so new sound designs can be evaluated without retraining from scratch. This directly attacks the cost of objective, agent-performance-based sound design evaluation.\n\n**BEACON** [8] addresses cloud system anomaly detection over multimodal observability data (metrics, logs, dependency graphs), targeting the semantic gap among modalities and asynchronous spatio-temporal dependencies across instances. Its framework bridges multimodal semantics with asynchronous propagation — an important correction to fusion strategies that assume synchronized modalities, which cloud telemetry rarely provides.\n\n## Human–Model Comparison, Interpretability, and Foundation Model Science\n\nThe remaining papers examine what multimodal models actually understand — compared against humans — and probe foundational questions in MoE efficiency and multimodal semantics.\n\n**Associative Creativity in Humans and MLLMs** [12] evaluates state-of-the-art MLLMs and human participants on describing abstract visual stimuli with controlled naming difficulty (via the SilCC dataset), scoring originality and effectiveness. The design isolates behavior when visual stimuli resist mapping onto familiar semantic concepts — precisely where conceptual association is stressed. This provides rare head-to-head evidence on whether model \"creativity\" tracks human associative adaptation.\n\n**Emoji Meaning on Twitter** [18] challenges the single-sentiment-score treatment of emoji using 16,575 English tweets and a \"stability delta\" metric (within-class minus between-class cosine similarity of sentence embeddings). Strikingly, emojis in tightly clustered topical contexts show *more* polarized crowd-sourced sentiment, not less (Spearman ρ = +0.361, Holm p = 0.015), validated against the Kralj Novak lexicon. The result complicates emoji-as-affective-token assumptions in multimodal sentiment pipelines.\n\n**Don't Skip the Baseline** [22] classifies four representative dynamic expert-skipping methods for MoE models and conducts a controlled comparison across calibration regimes, expert-reduction levels, and evaluation suites. The title states the thesis: much of the reported benefit may not survive proper baselining. This is a needed methodological corrective in an area where heterogeneous setups have made claims hard to compare.\n\n**Physical AI: Concepts, Techniques, and Challenges** [4] is a monograph defining physical AI as artificial systems that perceive, model, and act upon the physical world through continuous feedback under real-world constraints, surveying the technical landscape and key subfields. Given the field's lack of consensus on definitions, this unified framework offers a reference architecture for a sprawling research area spanning embodied perception, world modeling, and action.\n\n## Key Takeaways\n\n- **Process beats answers:** MAMath-Bench [2], DIVE [23], and MMEnterprise-Bench [15] collectively reframe multimodal evaluation around intermediate reasoning, response timing, and evidentiary sufficiency — signaling a maturation of benchmark science beyond final-answer accuracy.\n- **Staged multimodal training is non-additive and destructive:** the 8.4B-parameter tracking study [14] shows distillation can overwrite prior domain knowledge, warning that chained post-training phases require explicit capability-retention audits.\n- **Attribution can improve performance, not just explain it:** EDMA [5] and IECG [19] both demonstrate that quantifying modality or region contributions yields better outcomes alongside interpretability, undermining the accuracy–interpretability tradeoff narrative.\n- **Agentic orchestration is scaling in both breadth and autonomy:** MMedAgent-Plus [6] coordinates 18 specialists across 8 modalities, while ChartEvo [20] self-evolves its own tooling for long-tail charts — the frontier is shifting from hand-built pipelines to self-improving harnesses.\n- **Geometry and physics are returning as inductive biases:** HypTI [17] fuses in hyperbolic space, POC-VLM [13] conditions language on operating variables, and Quantum-JEPA [16] imports quantum Born priors — domain structure is being baked into representation, not learned away.\n- **Baselines and contamination control are the quiet heroes:** [22] shows MoE skipping gains may not survive controlled comparison, and [7] enforces strict contamination control in time-series benchmarking — methodological rigor papers are increasingly essential infrastructure.\n- **Human-model gaps concentrate where semantics break down:** [12] finds the interesting divergence in associative creativity under difficult-to-name stimuli, and [18] shows emoji meaning is topical and multi-dimensional — both caution against treating multimodal semantics as a single scalar.",
+    "papers": [
+      {
+        "title": "Multimodal Ambivalence and Hesitancy Recognition with Bidirectional Audio--Text Cross-Attention",
+        "url": "",
+        "authors": [
+          "TingTing Gu",
+          "JinCheng Luo",
+          "WenQiu Guo"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "MAMath-Bench: Process-Aware and Robust Evaluation of Multimodal Multi-Agent Mathematical Reasoning",
+        "url": "",
+        "authors": [
+          "Xinping Wang",
+          "Jie Ma",
+          "Rui Xing",
+          "Wensong Guo",
+          "Xiayi Zhang",
+          "Jianhao Deng",
+          "Zihao Zhou",
+          "Boqian Yang",
+          "Feijuan He"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "LightCRS: Lightweight Multi-Domain Conversational Recommendation System",
+        "url": "",
+        "authors": [
+          "He Ma",
+          "Lan You",
+          "Qiyang Wu",
+          "Chen Liu"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Physical AI: Concepts, Techniques, and Challenges",
+        "url": "",
+        "authors": [
+          "Weinan Zhang",
+          "Chunhua Shen",
+          "Tianfan Xue",
+          "Bin Zhao",
+          "Bingqi Jiang",
+          "Zihan Guo",
+          "Zicai Cui",
+          "Yang Li",
+          "Ming Zhou",
+          "Xinyuan Chen",
+          "Lihe Ding",
+          "Xiao Chen",
+          "Yujin Wang",
+          "Shi Guo",
+          "Junting Dong",
+          "Tao Lu",
+          "Xing Shen",
+          "Haoyu Guo",
+          "Yao Mu",
+          "Haiyong Yu",
+          "Haoxiang Ma",
+          "Fuxian Huang",
+          "Qiaojun Yu",
+          "Yunsong Zhou",
+          "Kailin Li",
+          "Zirui Wang",
+          "Yufei Xue",
+          "Weishuai Zeng",
+          "Tao Huang",
+          "Zhigang Wang",
+          "Junli Liu",
+          "Pengyuan Wu",
+          "Pingrui Zhang",
+          "Haotian Wang",
+          "Dongzhan Zhou",
+          "Jiafei Cao",
+          "Feng Yuan",
+          "Xinyi Ye",
+          "Quanli Xuan",
+          "Mulin Yu",
+          "Shangding Gu",
+          "Kaiwen Song",
+          "Dong Wang",
+          "Jiarui Li",
+          "Kehui Liu",
+          "Zhongjie Jia",
+          "Dongjiang Li",
+          "Jiacheng Bao",
+          "Haoran Yang",
+          "Zhaoqing Chen",
+          "Yiming Sun",
+          "Bowen Zhou"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "EDMA: Entropy-Driven Multimodal Answering",
+        "url": "",
+        "authors": [
+          "Emanuele Mezzi",
+          "Gertjan Burghouts",
+          "Fabio Massacci",
+          "Mengyuan Zhang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "MMedAgent-Plus: Scaling Multimodal Medical Agents across Modalities, Tasks and Workflows",
+        "url": "",
+        "authors": [
+          "Ruoxin Wang",
+          "Yuanting Pan",
+          "Binxu Li",
+          "Ruiyang Ji",
+          "Yaqian Chen",
+          "Jiayuan Ding",
+          "Qifan Wang",
+          "Lifu Huang",
+          "Mingjie Li",
+          "Yu Zhang",
+          "Ehsan Adeli",
+          "Kilian Pohl",
+          "Zhe Xu",
+          "Zihao Lin",
+          "Haoyu Dong",
+          "Yixin Wang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Training-Free Continual Learning for Multimodal Forecasting via Prompt Evolution",
+        "url": "",
+        "authors": [
+          "Laurent Mombaerts",
+          "Jonathan Taws",
+          "Jacopo Gargano",
+          "Dinesh Gaddam",
+          "Kevin George",
+          "Srijan Tiwari",
+          "Shreyas Rajesh"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "BEACON: Bridging Multimodal Semantics and Asynchronous Propagation for Cloud System Anomaly Detection",
+        "url": "",
+        "authors": [
+          "Zhe Li",
+          "Tengxue Zhang",
+          "Yang Shu",
+          "Tung Kieu",
+          "Lunting Fan",
+          "Yingying Zhang",
+          "Bin Yang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "AudiPsy: Evidence-Grounded Multimodal Reasoning over Spoken Counseling Conversations for Depression Assessment",
+        "url": "",
+        "authors": [
+          "Chuanbo Zhu",
+          "Run Luo",
+          "Weibo Zhao",
+          "Yue Li",
+          "Kun Qian",
+          "Qiang Qu",
+          "Yike Guo",
+          "Minghuan Tan",
+          "Wei Xue"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "TriGeoBench: A Multimodal Mathematical Geometry Benchmark with Figures and TikZ",
+        "url": "",
+        "authors": [
+          "Jing Wang",
+          "Yitong Yang",
+          "Hao Dou",
+          "Yaomin Wu",
+          "Shuting He",
+          "Tingfei Shen",
+          "Jia Wu",
+          "Jiaqi Li",
+          "Yinglin Wang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Reusing Multimodal Agents: Efficient Evaluation of Sound Designs in Games",
+        "url": "",
+        "authors": [
+          "Thai Nguyen Van",
+          "Ibrahim Khan",
+          "Mury Fajar Dewantoro",
+          "Pratch Suntichaikul",
+          "Hai Van Pham",
+          "Ruck Thawonmas"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Testing Associative Creativity in Humans and Multimodal LLMs with Difficult-to-Name Visual Stimuli",
+        "url": "",
+        "authors": [
+          "Manar Ali",
+          "Lisa Gottschalk",
+          "Simeon Junker",
+          "Lisa Hudalla",
+          "Alon Fishman",
+          "Joana Cholin",
+          "Stefan Kopp",
+          "Hendrik Buschmeier",
+          "Sina Zarrieß"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Physical Operating-Condition-Guided Vision-Language Matching for Cavitation Diagnosis in Industrial Pipeline Systems",
+        "url": "",
+        "authors": [
+          "Yu Sha",
+          "Junqi Tao",
+          "Deyu Wang",
+          "Horst Stoecker",
+          "Domagoj Vnucec",
+          "Andreas Widlf",
+          "Kai Zhou"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Staged Continual Adaptation of Multimodal Foundation Models for Japanese Financial Documents",
+        "url": "",
+        "authors": [
+          "Genshin Kakimoto",
+          "Atsushi Yanagisawa"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "MMEnterprise-Bench: Evaluating Enterprise Agents over Evolving Multimodal Records",
+        "url": "",
+        "authors": [
+          "Seohyun Lee",
+          "Jongha Kim",
+          "Dohwan Ko",
+          "Ji Soo Lee",
+          "Seoung Choi",
+          "Jayun Ku",
+          "Hyunwoo J. Kim"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Quantum-JEPA: Quantum Born Priors for Latent-Action JEPA World Models",
+        "url": "",
+        "authors": [
+          "Zhiyuan Liu",
+          "Sicheng Liu",
+          "Haiyu Wu"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "HypTI: Hyperbolic Geometry-Aware Multimodal Feature Fusion Framework for Dementia Detection Based on Tabular-Image Data",
+        "url": "",
+        "authors": [
+          "Jianfei Xu",
+          "Huizhi Liang",
+          "Judith Harrison",
+          "John-Paul Taylor",
+          "Jaume Bacardit",
+          "Varun Ojha"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Beyond a Single Sentiment Score: Topical and Affective Dimensions of Emoji Meaning on Twitter",
+        "url": "",
+        "authors": [
+          "Rohan James",
+          "Ioannis Christofilogiannis",
+          "Yuuv Jauhari",
+          "Shreya Shah",
+          "Gauri Pethkar"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "IECG: Weakly-Supervised Interpretability-Enhancing Foundation Model for Electrocardiogram",
+        "url": "",
+        "authors": [
+          "Huynh Dang Nguyen",
+          "Trong-Thang Pham",
+          "Anh-Thuan Do",
+          "Phuong-Nhi Dinh",
+          "Brijesh Patel",
+          "Ngan Le",
+          "Van Nguyen"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "ChartEvo: Self-Evolving Agent Harnesses for Long-Tail Chart Reasoning",
+        "url": "",
+        "authors": [
+          "Qi Wang",
+          "Peijie Wang",
+          "Jun Cao",
+          "Haoyang Tong",
+          "Xiao-Hui Li",
+          "Fei Yin",
+          "Cheng-Lin Liu"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "NarraSpace: Multimodal Scene-Grounded Evidence for Picture-Description Dementia Classification",
+        "url": "",
+        "authors": [
+          "Qingming Li",
+          "Ruiyan Sun",
+          "Satoshi Nakamura"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Don't Skip the Baseline: A Controlled Comparison of Dynamic Expert Skipping in MoEs",
+        "url": "",
+        "authors": [
+          "Jakob Steimle",
+          "Thomas Elsken",
+          "Daniel Ehrhardt",
+          "Lukas Rinder",
+          "Daniel Cremers",
+          "Xi Wang"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "DIVE: Benchmarking Full-Duplex Interaction with Visual Engagement in Continuous Streams",
+        "url": "",
+        "authors": [
+          "Yuhang Chen",
+          "Guangyue Liu",
+          "Shilong Liu"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "ECG for laboratory values:A comprehensive physiological and technical analysis",
+        "url": "",
+        "authors": [
+          "Walentin Palanchuk"
+        ],
+        "date": "2026-10-21"
+      },
+      {
+        "title": "Beyond the Sequentiality Bottleneck: A Hybrid Diffusion-Autoregressive Framework for Efficient Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Wei Cai",
+          "Jian Zhao",
+          "Yuchen Yuan",
+          "Xuelong Li"
+        ],
+        "date": "2026-10-21"
+      }
+    ]
+  }
+]
