@@ -1,0 +1,177 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-22",
+    "paperCount": 3,
+    "markdown": "# Mechanistic Mirrors and Interpretable Machines: A Technical Digest\n\nToday's interpretability research spans an unusually wide methodological range—from aphasia-inspired lesioning of language models to genetic programming for solver transparency and self-supervised circuit discovery. Across these papers, a common thread emerges: interpretability is increasingly treated not as post-hoc explanation but as a structural property to be engineered, verified, and sometimes borrowed from cognitive neuroscience.\n\n## Language Models Through a Clinical Lens\n\n**Language Impairment as a Lens onto Large Language Models** [1] asks whether LLMs possess a functional organization analogous to the human language system, drawing on the clinical phenomenon of aphasia—where focal brain damage produces selective language deficits. The authors introduce a mechanistic interpretability framework with two complementary methods: classifier-guided lesioning, which ablates components associated with specific linguistic functions, and continuous activation steering, which smoothly perturbs internal representations to induce graded impairments. By systematically producing aphasia-like breakdowns in LLMs, the work tests whether functional localization in distributed representations mirrors the modularity observed in biological language systems. This matters because it offers a causally grounded, clinically inspired methodology for probing model organization, moving beyond correlational probing toward controlled disruption experiments.\n\n## Circuits, Components, and Self-Supervision\n\n**S³martCirc: Self-supervised Smart Circuit Discovery** [2] addresses the opacity of LLM decision-making by advancing mechanistic interpretability's two-stage paradigm: circuit discovery (identifying important components such as attention heads or feedforward neurons) followed by interpretation. The paper proposes a self-supervised approach to circuit discovery, presumably reducing reliance on task-specific supervision or exhaustive component search that burdens existing methods. By making circuit identification more autonomous and scalable, S³martCirc targets a key bottleneck in MI pipelines—the cost and subjectivity of determining which components matter—and contributes toward more automated, reproducible reverse-engineering of transformer computation.\n\n## Interpretability in Combinatorial Optimization\n\n**Interpretable Cutting Plane Selection for Mixed-Integer Linear Programming Using Genetic Programming** [3] tackles the static and often suboptimal handcrafted cut-selection strategies used in state-of-the-art MILP solvers. While learning-based adaptive strategies exist, most rely on neural networks that offer limited interpretability and no convergence guarantees. The authors instead apply genetic programming to evolve interpretable cut-selection policies, trading raw flexibility for transparency and analyzability. This work is notable for extending the interpretability agenda beyond deep learning into solver design, where human-readable, verifiable decision rules carry practical value for deployment in optimization-critical pipelines.\n\n## Methodological Pluralism in Interpretability\n\nTaken together, these three papers illustrate a broadening of interpretability's methodological toolkit: lesioning and steering borrowed from neuropsychology [1], self-supervised structural discovery within transformers [2], and evolutionary program synthesis for solver policies [3]. The convergence is instructive—each approach seeks human-understandable structure, whether functional localization, sparse circuits, or symbolic rules—but each also confronts the same tension between fidelity to the underlying system and accessibility to human analysts. The aphasia framework [1] and circuit discovery [2] both operate at the level of internal components, while the genetic programming approach [3] operates at the level of policy representation, suggesting the field is maturing into domain-specific notions of what \"interpretable\" should mean.\n\n## Key Takeaways\n- Interpretability methods are increasingly adapted from other disciplines—clinical neuropsychology (aphasia-inspired lesioning) [1] and evolutionary computation (genetic programming) [3]—rather than developed in isolation.\n- Causal intervention techniques like classifier-guided lesioning and activation steering [1] offer a stronger evidentiary basis than correlational probing for claims about model functional structure.\n- Circuit discovery remains a central bottleneck in mechanistic interpretability, and self-supervised approaches [2] aim to automate the identification of important components at scale.\n- Transparency concerns extend beyond LLMs: interpretable learned policies for MILP cut selection [3] show that interpretability and convergence guarantees can motivate abandoning neural approaches entirely.\n- A recurring tension across papers is fidelity versus accessibility—whether the interpretable object is a functional module [1], a sparse circuit [2], or a symbolic policy [3].\n- The diversity of targets (language function, transformer computation, solver heuristics) suggests \"interpretability\" is becoming a family of domain-specific standards rather than a single unified criterion.",
+    "papers": [
+      {
+        "title": "Language Impairment as a Lens onto Large Language Models",
+        "url": "",
+        "authors": [
+          "Muxuan He",
+          "Wang Bill Zhu",
+          "Yue Chen",
+          "Elsi Kaiser",
+          "Weizhi Du",
+          "Yao Du",
+          "Samuel Nastase",
+          "Yanjun Gao"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "Interpretable Cutting Plane Selection for Mixed-Integer Linear Programming Using Genetic Programming",
+        "url": "",
+        "authors": [
+          "Gwen maudet",
+          "Mathis Da Cunha",
+          "Grégoire Danoy"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "S^3martCirc: Self-supervised Smart Circuit Discovery",
+        "url": "",
+        "authors": [
+          "Wendy Zheng",
+          "Yinhan He",
+          "Liang Wu",
+          "Jundong Li"
+        ],
+        "date": "2026-10-22"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-22",
+    "paperCount": 9,
+    "markdown": "# Multimodal Research Digest — October 22, 2026\n\nToday's multimodal research spans from the infrastructure layer (KV-cache management in disaggregated serving) to foundational representation learning (ocean foundation models, latent geometry of diffusion priors) and robustness under missing or degraded modality evidence. A recurring theme is **handling heterogeneity and absence**: models must gracefully cope with unavailable streams, non-unique measurements, and evolving multimodal evidence without sacrificing fine-grained fidelity.\n\n## Robustness Under Missing and Degraded Modalities\n\n**MERP** [3] tackles the train-test gap in multimodal multi-label emotion recognition, where models trained on complete text, visual, and acoustic streams degrade sharply when some streams are missing at deployment. The proposed Multi-modal Emotion Recognition Perceiver maps the joint input sequence into a fixed-size latent bank, keeping repeated reasoning independent of raw input length while extracting label-specific evidence from whatever modality subset is available. This compact-representation strategy preserves emotion-specific cues under arbitrary modality subsets, making affect-aware systems more deployable in real-world conditions.\n\n**Reliability-Aware Probabilistic Fusion** [9] addresses the dual questions of evidence availability and trust when multimodal inputs are missing or degraded. The authors introduce a reliability-aware Gaussian Product-of-Experts (PoE) in which an input-dependent reliability weight tempers each modality's latent precision, while missing experts are simply omitted from the product. They characterize how reliability and availability jointly affect posterior information and expert influence, and on two clinical multimodal tasks the framework stays competitive with complete inputs while showing its clearest mean-AUROC advantage under modality absence, particularly on HAIM-MIMIC-MM—a strong signal for clinical deployment where sensors routinely drop out.\n\n## Efficient and Adaptive Inference Infrastructure\n\n**KVLearn** [1] targets a subtle but important failure of classical cache policies in disaggregated LLM serving, where prefill and decode run on separate node pools connected by a network fabric. Because a cache miss now incurs both recomputation *and* network transfer to the decode node—and admission likewise requires an extra transfer—poor retention decisions waste both memory and bandwidth. KVLearn frames this as a learning-based, cost-aware KV-cache retention problem that explicitly accounts for the network fabric, moving cache policy beyond the assumption that misses are local-only.\n\n**The Price of Choice in Selective Prediction** [4] examines the statistical cost of auditing selective classifiers that claim risk-coverage contracts via a menu of rules (thresholds or unions of K score intervals). Refuting the existential claim requires ruling out every permitted rule; the intersection-union test (IUT) achieves validity without multiplicity correction, but its sample cost grows with menu richness. The authors characterize this cost against the optimal audit, deriving minimax sample sizes for K-interval menus at fixed interior risk target α and gap γ—clarifying when flexible rule menus become statistically expensive relative to the guarantees they buy.\n\n## Latent Geometry and Generative Foundations\n\n**When Do Gaussian Priors Fail?** [2] investigates a structural limitation of the near-universal Gaussian prior on VAE latents under RL fine-tuning of latent diffusion models. The standard VAE's KL term does not merely ignore mode structure—it actively taxes separation and tightness, so with multimodal data the ELBO optimum compresses distinct modes into an overlapping latent. RL fine-tuning amplifies this overlap because the score network is under-resolved on the saddle region between modes, with dynamic-to-variational amplification rising sharply—identifying a concrete mechanism by which the default prior undermines fine-tuning on multimodal distributions.\n\n**Compositional neural networks for scattering inversion** [7] confronts the non-uniqueness of X-ray and neutron scattering inversion, where intensity-only measurements let distinct structures yield similar patterns. The authors introduce a modular framework for probabilistic multi-measurement analysis based on prior-amortized flows, enabling complementary measurements to be integrated into a machine-learning pipeline despite their heterogeneous modalities. This compositional, probabilistic treatment of multi-measurement inversion offers a principled route to reducing structural ambiguity in condensed-matter and materials characterization.\n\n## Domain Foundation Models and Benchmarks\n\n**YingLan** [6] proposes a multimodal ocean foundation model for unified representation learning from heterogeneous observations spanning satellite imagery, gridded oceanographic fields, and buoy data—sources that differ sharply in structure, physical semantics, and spatiotemporal characteristics. The model integrates physics-attribute-conditioned dynamic encoding, Spatiotemporal Increment Coupling (STIC), and ocean-specific components to learn transferable representations rather than task-specific ones. This pushes ocean modeling from bespoke pipelines toward a general foundation-model paradigm for heterogeneous Earth-observation modalities.\n\n**Omnilingual-MsASR** [5] benchmarks omni-modal LLMs on long-form, multi-speaker ASR across six languages, recordings up to 30 minutes, and scenarios with up to 20 speakers—probing who says what and when in entire videos. The benchmark characterizes the capability limits of current omni LLMs on this genuinely multimodal, multilingual task and is designed to guide future model development. Its scale and linguistic breadth make it a demanding stress test for the audio-visual grounding that omni models claim.\n\n**MHG-Mem** [8] addresses long-term memory for multimodal agents, where abstraction-based memories compress images into text and discard visually discriminative details, while pixel-preserving memories retain raw observations but fail to associate diverse observations with persistent entity identities and evolving states. The proposed multimodal hypergraph memory jointly organizes entity identity, state evolution, and provenance, preserving fine-grained visual evidence while tracking change across sessions. This provenance-preserving design directly targets the tension between fidelity and abstraction that plagues agent memory.\n\n## Key Takeaways\n\n- **Absence is the new default assumption**: MERP [3] and reliability-aware PoE [9] both show that robustness to missing modalities requires architectural (fixed-size latent banks) and probabilistic (input-dependent precision weighting) mechanisms baked in, not bolted on—with the largest gains appearing precisely when evidence is missing.\n- **Infrastructure assumptions break under disaggregation**: KVLearn [1] demonstrates that separating prefill and decode invalidates classical cache policies, since misses and admissions now carry network costs—motivating learned, cost-aware retention.\n- **The Gaussian latent prior is not neutral**: [2] shows the VAE KL term actively taxes mode separation, and RL fine-tuning amplifies this overlap—a structural explanation for failures on multimodal data with a clear mechanistic account.\n- **Statistical guarantees have a price tied to flexibility**: [4] quantifies how richer rule menus in selective prediction inflate minimax audit sample sizes, even when intersection-union tests avoid multiplicity corrections.\n- **Benchmarks are catching up to real multimodal complexity**: Omnilingual-MsASR [5] pushes omni LLMs to 30-minute, 20-speaker, six-language territory, exposing where current audio-visual grounding falls short.\n- **Domain foundation models are consolidating heterogeneous modalities**: YingLan [6] unifies satellite, gridded, and buoy observations via physics-conditioned encoding, while compositional flows [7] integrate complementary scattering measurements to combat inversion non-uniqueness.\n- **Memory must preserve provenance, not just content**: MHG-Mem [8] argues that the abstraction-vs-fidelity tradeoff in agent memory is best resolved by a hypergraph that tracks entity identity and state evolution alongside visual evidence.",
+    "papers": [
+      {
+        "title": "To Keep or Not to Keep: Learning KV Cache Retention in Disaggregated LLM Serving Systems",
+        "url": "",
+        "authors": [
+          "Dong Liu",
+          "Yanxuan Yu",
+          "Eric Jiang",
+          "Shu Wang",
+          "Ying Nian Wu"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "When Do Gaussian Priors Fail? A Latent Geometry Investigation of RL Fine-Tuning",
+        "url": "",
+        "authors": [
+          "Wang Ru"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "MERP: A Latent-Bottleneck Framework for Robust Multi-Modal Multi-Label Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Chuangxin Zhao",
+          "Meimei Zhang",
+          "Canran Xiao",
+          "Jiachen Luo",
+          "Jiajun He",
+          "Kaijie Chen",
+          "Huy Phan",
+          "Tomoki Toda",
+          "Biörn W. Schuller"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "The Price of Choice in Selective Prediction",
+        "url": "",
+        "authors": [
+          "Daniel Cieślak",
+          "Andrzej Czyżewski"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "Omnilingual-MsASR: Benchmarking Multimodal, Multilingual, Long-Form Multi-Speaker ASR of Omni Large Language Models",
+        "url": "",
+        "authors": [
+          "Yuan Ge",
+          "Pei Zhang",
+          "Xize Cheng",
+          "Lingzhou Mu",
+          "Mingyang Wang",
+          "Jin Xu",
+          "Baosong Yang",
+          "Shengxiang Gao",
+          "Jingbo Zhu",
+          "Zhengtao Yu",
+          "Tong Xiao"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "YingLan: A Multimodal Ocean Foundation Model for Unified Representation Learning from Heterogeneous Observations",
+        "url": "",
+        "authors": [
+          "Sen Jia",
+          "Siqi Wei",
+          "Junyu Wang",
+          "Zijun Lv",
+          "Pan Liu",
+          "Meng Xu",
+          "Xiyou Fu",
+          "Yuxi Sun",
+          "Qiang Liu",
+          "Shuyu Zhang",
+          "Lin Mu"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "Compositional neural networks for multimodal X-ray and neutron scattering inversion",
+        "url": "",
+        "authors": [
+          "Valentin Munteanu",
+          "Alexander Hinderhofer",
+          "Dmitry Lapkin",
+          "Vladimir Starostin",
+          "Frank Schreiber"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "Remembering Through Change: Provenance-Preserving Hypergraph Memory for Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Jielong Tang",
+          "Ling-An Zeng",
+          "Xujie Yuan",
+          "Xiao Dong",
+          "Zhiqian Xia",
+          "Qingfeng Li",
+          "Shixiong Kai",
+          "Kaichao Liang",
+          "Rong Yao",
+          "Jian Yin"
+        ],
+        "date": "2026-10-22"
+      },
+      {
+        "title": "Reliability-Aware Probabilistic Fusion for Multimodal Learning with Incomplete Evidence",
+        "url": "",
+        "authors": [
+          "Patitapaban Palo",
+          "Abhisek Tiwari",
+          "Mattia Carletti",
+          "Anshul Thakur",
+          "Xiao Gu",
+          "David A. Clifton"
+        ],
+        "date": "2026-10-22"
+      }
+    ]
+  }
+]
