@@ -1,0 +1,346 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-24",
+    "paperCount": 5,
+    "markdown": "# Decoding the Black Box: Today's Interpretability Research Bridges Mechanisms, Symbols, and Stakeholders\n\nToday's interpretability research pushes in two complementary directions: understanding the internal mechanisms of large models through geometric and causal analysis, and embedding interpretability into high-stakes domains like healthcare and sequential decision-making. Across the board, the emphasis has shifted from post-hoc explanation toward methods that are actionable—steering models, learning symbolic rules, and visualizing temporal dynamics for domain experts.\n\n## Probing and Steering Internal Representations\n\nMechanistic interpretability continues to mature as a tool not just for understanding but for control. This cluster of work identifies structured, causally relevant subspaces inside LLMs and demonstrates that interpretable directions can be exploited to change model behavior at inference time.\n\n**The Geometry of Metaphor** [3] investigates how metaphor—a core feature of human cognition—is represented inside LLMs and whether its use can be controlled. Using mechanistic interpretability techniques, the authors identify causal subspaces across models of varying architectures and sizes, then steer outputs on metaphor classification tasks across different parts of speech. They further show that generation tasks can be steered, enabling control over the metaphoricity of LLM output. This work matters because it demonstrates that abstract, high-level linguistic phenomena have geometrically localized representations that are amenable to intervention, extending steering from semantics toward figurative language.\n\n**Post-Hoc Feature Selection Layer for Neural Networks Interpretability** [5] addresses the gap between interpretability methods that require retraining and models already deployed in high-stakes settings. The authors adapt the Feature Selection Layer (FSL) into a post-hoc variant: a lightweight trainable module attached to frozen pre-trained models on tabular data, which learns feature relevance by fine-tuning its weights against the original model's learned output. The result is a practical attribution mechanism that highlights which input features the deployed model considered most important, without altering the original model at all.\n\n## Interpretability in High-Stakes Decision-Making\n\nTwo papers target domains where explanation quality is inseparable from the decision itself—clinical care coordination and sequential event prediction—and both argue that interpretability should be a first-class modeling objective rather than a post-hoc annotation.\n\n**Visualizing and Interpreting Temporal Care Team Dynamics for Cancer Survival Risk Analysis** [2] tackles the poorly understood relationship between evolving care team collaboration and patient risk in oncology. The authors construct dynamic collaboration networks from EHR-mediated communication data and build a visual analytics framework for modeling and interpreting time-varying interactions among healthcare professionals throughout treatment. By making temporal care team dynamics legible to analysts, the work connects organizational structure to evolving survival risk—an important step for operational and clinical decision support.\n\n**What Comes Next and Why: Interpretable Next-Event Prediction with Neuro-Symbolic Rules** [4] confronts the accuracy-interpretability trade-off in sequential event prediction, where the *why* behind a prediction often matters as much as the prediction itself. The authors introduce RULES, a neuro-symbolic model that learns sequential rules directly from data and integrates them with a resulting framework to handle temporal dependencies—the core challenge in extending symbolic rule learning to next-event prediction. This contribution is notable because it yields event-level justifications in a setting where prior methods sacrificed interpretability for accuracy.\n\n## Unified Perspectives and Meta-Level Analysis\n\nAlongside targeted methods, the field also needs synthesis that accounts for the newest model families and evaluation pitfalls.\n\n**Future of Time Series Anomaly Detection** [1] surveys a domain being reshaped by diffusion models, state space models, and LLMs, arguing that existing surveys under-cover these emerging architectures. It identifies gaps in the unified treatment of multivariate anomalies, cross-domain unified modeling, metric reliability, and contemporary evaluation challenges, and proposes a unified outlook for the field. For practitioners, the emphasis on metric reliability and evaluation is a timely caution: methodological advances in TSAD are only as trustworthy as the benchmarks that measure them.\n\n## Key Takeaways\n- Interpretability is increasingly *causal and interventional*: metaphor representations in LLMs can be both localized and steered on classification and generation tasks [3].\n- Post-hoc approaches like the adapted Feature Selection Layer let practitioners explain frozen, deployed tabular models without retraining [5].\n- Neuro-symbolic rule learning can bring event-level explanations to sequential prediction, addressing a core temporal-dependency challenge in next-event forecasting [4].\n- Domain-grounded interpretability (e.g., visual analytics of temporal care team dynamics in oncology) connects model structure to real clinical processes and evolving patient risk [2].\n- Abstract linguistic phenomena such as metaphor exhibit geometrically structured, controllable representations across diverse LLM architectures and scales [3].\n- The TSAD survey [1] flags metric reliability and evaluation methodology as pressing open problems, especially with LLM- and diffusion-based detectors entering the field.\n- A common thread across papers: interpretability is shifting from explaining predictions after the fact to shaping and controlling models during design, deployment, and clinical use [3, 4, 5].",
+    "papers": [
+      {
+        "title": "Future of Time Series Anomaly Detection: From Historical Review to Unified Outlook",
+        "url": "",
+        "authors": [
+          "Zhijie Zhong",
+          "Zhiwen Yu",
+          "Pengyu Li",
+          "Liujian Zhang",
+          "Qiaoli Ni",
+          "Jiang Jun",
+          "Jianming Lv",
+          "Kaixiang Yang",
+          "C. L. Philip Chen"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Visualizing and Interpreting Temporal Care Team Dynamics for Cancer Survival Risk Analysis",
+        "url": "",
+        "authors": [
+          "Yuhua Huang",
+          "Hsiao-Ying Lu",
+          "Kwan-Liu Ma"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "The Geometry of Metaphor: Probing and Steering Metaphor Representations in Large Language Models",
+        "url": "",
+        "authors": [
+          "Shihui Li",
+          "Mette Andersen",
+          "Martha Lewis"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "What Comes Next and Why: Interpretable Next-Event Prediction with Neuro-Symbolic Rules",
+        "url": "",
+        "authors": [
+          "Tim Nico Bauerschmidt",
+          "Isabel Valera",
+          "Jilles Vreeken"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Post-Hoc Feature Selection Layer for Neural Networks Interpretability",
+        "url": "",
+        "authors": [
+          "João Kenji Suwa",
+          "João Pedro Silveira e Silva",
+          "Bruno Iochins Grisci"
+        ],
+        "date": "2026-10-24"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-24",
+    "paperCount": 2,
+    "markdown": "# Reasoning Transparency Under Scrutiny: Counterfactual Probes, Multimodal Explanations, and the Interpretability of Learned Structure\n\nToday's explainability research moves decisively from \"does the explanation look plausible?\" to \"does the explanation actually track the model's computation?\" — with counterfactual probing, retrieval-based post-hoc methods, and geometric analyses of how models encode concept structure. The recurring theme is verification: coupling between stated reasoning and action, faithful multimodal counterfactuals, and the hidden geometry that determines whether explanations mean what we think they mean.\n\n## Faithfulness of Reasoning Traces in Vision-Language-Action Models\n\nDriving VLA models promise explainability by narrating scenes and reasoning in text before emitting trajectories, but this assumes the produced reasoning is separable from and causally coupled to the action. [1] directly interrogates this assumption by measuring reasoning-action coupling through counterfactual perturbations — testing whether altering the generated reasoning changes the trajectory in corresponding ways. The work formalizes the gap between \"explanation as narration\" and \"explanation as causal account,\" a distinction long theorized but rarely quantified in safety-critical embodied settings. Its contribution matters because deployment and public trust arguments for autonomous driving hinge on precisely this coupling, and if reasoning traces can diverge from action, stated rationales become decorative rather than diagnostic.\n\n## Post-Hoc Counterfactual Explanation for Multimodal Classifiers\n\nCounterfactual explanation has matured separately for tabular, time-series, text, and image data, yet no post-hoc method targeted classifiers learning from multimodal inputs. [2] identifies that existing multimodal explainers apply modality-specific attribution independently per input, producing incoherent explanations and failing to transfer across arbitrary pre-trained architectures. CRANE (Counterfactual Retrieval via Agnostic Nearest-neighbour Explanation) addresses this with a model-agnostic retrieval formulation that generates coherent counterfactuals over joint multimodal representations rather than per-modality attributions. This closes a genuine methodological gap: as multimodal classifiers proliferate in deployment, the field needs explanation tools that respect cross-modal interactions instead of decomposing them away.\n\n## Interpretability of Learned Representations and Structure\n\nSeveral papers probe what models internally represent and whether that structure is legible. *[Placeholder — additional papers in this section would be discussed here with 3–4 sentences each, citing [n].]*\n\n## Explanation Methods Under Evaluation: Metrics, Benchmarks, and Failure Modes\n\n*[Placeholder — papers evaluating explanation quality, faithfulness metrics, and benchmark design would be discussed here with 3–4 sentences each, citing [n].]*\n\n## Applications and Domain-Specific Explainability\n\n*[Placeholder — domain deployments (healthcare, science, recsys) and practitioner-facing explainability would be discussed here with 3–4 sentences each, citing [n].]*\n\n## Key Takeaways\n- The frontier of explainability is **faithfulness verification**: [1] reframes VLA reasoning traces as a hypothesis to be tested (does reasoning causally drive action?) rather than a transparency feature to be assumed.\n- Counterfactual explanation is expanding beyond unimodal silos; [2] shows that multimodal settings require joint, model-agnostic treatment because per-modality attribution yields incoherent and non-transferable explanations.\n- Post-hoc, architecture-agnostic methods (e.g., retrieval-based counterfactuals in [2]) are becoming the pragmatic default as practitioners explain frozen pre-trained models they cannot retrain.\n- Safety-critical domains (autonomous driving in [1]) are the driving testbed for explainability — the stakes force the field from plausibility toward causal coupling.\n- A persistent structural gap remains: explanation methods are proliferating faster than the metrics and benchmarks needed to validate them, making evaluation methodology a first-class research problem.\n- Cross-modal interaction is the new explanatory unit — decomposing explanations by modality, like decomposing reasoning from action, risks explaining away the very dependencies that matter.\n\n*Note: The supplied abstracts list contained only two complete entries ([1] and [2]); sections 3–5 are structured placeholders and should be populated when the full paper list is available. Paper [1]'s abstract was truncated mid-sentence, so its description is based on the visible portion.*",
+    "papers": [
+      {
+        "title": "Measuring the Reasoning-Action Coupling in Driving Vision-Language-Action Models through Counterfactuals",
+        "url": "",
+        "authors": [
+          "Gabriel Manalu",
+          "Saad Wazir",
+          "Thao Do",
+          "Seongah Kim",
+          "Hyeontaek Hwang",
+          "Tolcha Yalew Kidane",
+          "Daeyoung Kim"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "CRANE: Post-Hoc Counterfactual Retrieval for Multimodal Classifiers",
+        "url": "",
+        "authors": [
+          "Franco Rugolon",
+          "Ioanna Miliou",
+          "Panagiotis Papapetrou"
+        ],
+        "date": "2026-10-24"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-24",
+    "paperCount": 13,
+    "markdown": "# Multimodal Research Digest — October 24, 2026\n\nToday's multimodal research landscape spans trust-critical applications, causal and representational rigor, and the evaluation infrastructure needed to keep pace with increasingly agentic systems. Across the twelve papers below, a clear theme emerges: the field is moving beyond perception benchmarks toward ambiguity resolution, world-model/agent interaction, and post-hoc accountability for multimodal decisions.\n\n## Trustworthy Assistants and High-Stakes Deployment\n\n**Lighthouse** [1] presents what the authors describe as the first digital assistant for exploring the U.S. Civil Rights period using South Carolina archival data spanning text, images, and audio. The system's novelty lies in two guiding design principles: prioritizing trustworthiness of generated content and explicitly modeling and reducing potential user harm from answers. This matters because it demonstrates how multimodal retrieval assistants can be engineered for cultural-heritage settings where factual fidelity and community sensitivity are paramount, offering a template for harm-aware chatbot design beyond generic QA.\n\n**Secure Agentic AI and Multimodal Intelligence in 6G** [4] surveys the intersection of agentic AI, multimodal perception, and sixth-generation communication systems, where agents reason over heterogeneous inputs, invoke tools and network functions, and coordinate across distributed edge entities. The paper examines applications such as semantic communications, digital twins, and zero-touch network management, while foregrounding the security threats these capabilities introduce. Its contribution is a structured framing of the threat landscape for latency-critical, intent-driven multimodal agents—an important early roadmap as agentic deployment migrates into network infrastructure.\n\n**Dual Exam** [8] introduces a controlled evaluation separating two questions that are usually conflated: whether agents select good actions, and whether world models evolve state correctly. The Agent track tests 10 configurations on 1,088 items across 15 reporting categories under fixed environment response mechanisms, while the World Model track evaluates 15 configurations on 400 cases across eight scenarios under fixed action interventions, spanning physical, digital, social, and scientific domains. By decoupling action selection from state evolution, this benchmark provides diagnostic evidence about where multimodal agent–world-model pipelines actually fail, rather than aggregate task success alone.\n\n## Causal and Representational Rigor\n\n**Doubly Robust Mediation with Learned Multimodal Representations** [2] addresses a subtle flaw in using learned representations of high-dimensional multimodal health records for confounding adjustment: these representations are typically trained to reconstruct data rather than preserve the information causal identification requires. The paper derives conditions under which a representation preserves identification and develops doubly robust estimators for counterfactual outcomes and interventional direct/indirect effects under exposure-induced intermediate confounding. This work matters for digital-twin-style patient risk profiling, where phenotype-specific counterfactual claims demand formal guarantees rather than reconstruction-driven embeddings.\n\n**CRANE** [13] fills a genuine gap: counterfactual explanation methods exist for tabular, time-series, text, and image data, but none were designed post-hoc for classifiers learning from multimodal inputs. CRANE performs counterfactual retrieval via agnostic nearest-neighbor explanation, avoiding the incoherent modality-by-modality attribution that existing explainability methods produce and transferring to arbitrary pre-trained multimodal architectures. This enables coherent, model-agnostic accountability for multimodal classifiers—increasingly necessary as such systems enter regulated decision-making.\n\n**PopDRP** [7] targets population graph learning for brain disorder diagnosis, observing that demographic or acquisition similarity does not imply diagnostic agreement, and that heterogeneous subjects require different representation updates within the same graph. The framework combines diagnosis-guided relation refinement using contrastive affinity (with only training labels) and hierarchical selective state-space learning. By refining which relations drive information exchange, it moves population graphs beyond phenotypic similarity toward diagnostically meaningful connectivity—a meaningful correction for multimodal clinical pipelines.\n\n## Perception, Ambiguity, and Reasoning\n\n**TRIAD** [6] argues that existing multimodal benchmarks test perception and reasoning over already determinate inputs, leaving open whether omni-modal LLMs can resolve ambiguity distributed across channels. Each TRIAD item is a text–image–audio triplet with a question and answer options, constructed so that no single modality suffices and cross-channel evidence must be integrated. This benchmark directly probes a core property of natural communication, shifting evaluation from recognition toward genuinely multimodal disambiguation.\n\n**Edit, Don't Imitate** [3] identifies a perceptual bottleneck in visual mathematical reasoning: when a VLM misreads a diagram, downstream reasoning proceeds from false premises, and smaller models suffer disproportionately. The proposed minimal-edit corrective on-policy distillation uses reference figure descriptions and verified solutions as training-only information, with a teacher scoring and minimally editing student attempts rather than demanding imitation. This offers a data-efficient route to closing the perception gap in small VLMs without inference-time annotation or extra model calls.\n\n**PointerBench** [10] contributes a diagnostic suite of 1,500 screenshot–instruction pairs targeting fine-grained GUI grounding, moving beyond end-to-end task completion benchmarks and conventional-control focus. Its three components probe thin sub-element identification and geometric grounding in spreadsheets and other professional interfaces requiring precise localization. As computer-use agents proliferate, this benchmark isolates the grounding capability that long-horizon success metrics tend to obscure.\n\n## Efficient Multimodal Architectures\n\n**Drift Says When, Budget Says How Much** [11] demonstrates that one-shot KV cache selection at prefill is fundamentally limited for long-form multimodal generation: even an oracle selecting with uncompressed-answer attention reaches only 0.44–0.52 ROUGE-L agreement, because the visual evidence the model reads shifts as descriptions unfold. The authors propose rate-controlled KV re-selection triggered by attention drift, with a budget mechanism governing how much to re-select. This reframes KV compression as a dynamic, generation-time problem—an important insight for deploying multimodal LLMs on long outputs under memory constraints.\n\n**TTR-Compressor** [12] revisits sequence compression through test-time regression: input tokens define a regression problem whose closed-form fitted coefficients, computed efficiently in the forward pass, form the compressed representation, while the regression problem itself is learned end-to-end via backpropagation. This hybrid of learned objectives and closed-form solutions outperforms pooling and learned-projection baselines in efficient language and multimodal models. The approach is notable for combining theoretical cleanliness with practical forward-pass efficiency at a critical information bottleneck.\n\n**Trion-1** [9] introduces the first native, unified multimodal diffusion language model for proteins, built on a unified discrete token space jointly representing sequence, structure, and natural language, with a dLLM backbone replacing strict left-to-right generation. The model targets understanding, generation, and cross-modal translation while retaining LLM-style instruction following and reasoning. This represents a significant step toward general-purpose protein foundation models that treat structure and sequence as first-class modalities rather than separate prediction tasks.\n\n## Cross-Disciplinary and Distribution-Shift Robustness\n\n**Escaping the Phylogenetic Trap** [5] shows that random train/test splits induce phylogenetic leakage in protein classifiers, letting models exploit taxon-specific correlations and inflating reported ion-channel target accuracies of 80–90% that do not generalize to unseen taxa. The authors formulate cross-species prediction as structured distribution shift with taxonomic identity as a confounder, and employ persistent homology within multimodal graph neural networks to capture structural features robust to phylogeny. This is a methodological warning with broad relevance: evaluation protocol choices can silently invalidate claimed generalization in scientific multimodal ML.\n\n## Key Takeaways\n\n- **Evaluation is being disaggregated**: Dual Exam [8], TRIAD [6], and PointerBench [10] each isolate a specific capability—agent action selection vs. world-model state evolution, cross-modal ambiguity resolution, and fine-grained GUI grounding—signaling a shift from aggregate task success to diagnostic measurement.\n- **Causal identification demands representation-aware design**: Both [2] and [5] show that convenience-driven training objectives (reconstruction, random splits) can invalidate downstream claims, whether in counterfactual health analytics or cross-species protein classification.\n- **Trustworthiness is being engineered, not asserted**: Lighthouse [1] builds harm modeling into assistant design, while CRANE [13] supplies the first post-hoc counterfactual explanation framework for multimodal classifiers.\n- **Static compression is losing ground**: [11] demonstrates that one-shot KV selection fails on long-form multimodal generation, and [12] shows test-time regression offers a principled, efficient alternative for sequence compression.\n- **Small models can be fixed at the perceptual stage**: [3] shows targeted on-policy distillation with minimal edits can address the diagram-misreading bottleneck without inference-time overhead.\n- **Scientific foundation models are converging on unified token spaces**: Trion-1 [9] treats protein sequence, structure, and language natively within a diffusion LM, pointing toward interactive multimodal protein models.\n- **Agentic deployment introduces a security surface**: [4] makes explicit that multimodal agents embedded in 6G infrastructure require threat modeling co-designed with capability development.",
+    "papers": [
+      {
+        "title": "Lighthouse: On Building a Trustworthy Digital Assistant for Exploring History with Civil Rights Archives",
+        "url": "",
+        "authors": [
+          "John A. Aydin",
+          "Angelica Williams",
+          "Steven Dindl",
+          "Nathan Saunders",
+          "Kate Boyd",
+          "Vandana Srivastava",
+          "Biplav Srivastava"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "When Reconstruction Is Not Enough: Doubly Robust Counterfactual and Interventional Mediation Analysis with Learned Multimodal Representations",
+        "url": "",
+        "authors": [
+          "Cong Cao"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Edit, Don't Imitate: Minimal-Edit On-Policy Distillation for Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Wen Ye",
+          "Ailin Deng",
+          "Zirui Wang",
+          "Shixing Yu",
+          "Han Zhang",
+          "Tian Yun",
+          "Nikhil Mehta",
+          "Tarun Kalluri",
+          "Xuefei Cao",
+          "Xuezhe Ma",
+          "Hengduo Li"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Secure Agentic AI and Multimodal Intelligence in 6G Communication Systems",
+        "url": "",
+        "authors": [
+          "Satyam Gaba",
+          "Devanshu Motwani",
+          "Siva Sai",
+          "Vineet Suri",
+          "Vikas Ranjan",
+          "Vinay Chamola"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Escaping the Phylogenetic Trap: Persistent Homology Enables Cross-Species Ion Channel Classification via Multimodal Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Arezoo Bybordi",
+          "Favour Achimba",
+          "Mariam Gelashvili",
+          "Jessy Ramirez",
+          "Weigang Qiu",
+          "Mandë Holford",
+          "Anita Raja"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "TRIAD: Benchmarking Omni-Modal Ambiguity in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Zhaolu Kang",
+          "Yidi Wang",
+          "Yile Li",
+          "Siqi Zeng",
+          "Yingjie He",
+          "Richeng Xuan",
+          "Zhichao hu"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Beyond Phenotypic Similarity: Relation Refinement and Selective Population Graph Learning for Multimodal Brain Disorder Diagnosis",
+        "url": "",
+        "authors": [
+          "Yinyu Lan"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Dual Exam: Controlled Evaluation of Multimodal Agents and World Models",
+        "url": "",
+        "authors": [
+          "Zhefan Rao",
+          "Meng Chu",
+          "Xuan Zhang",
+          "Jingfan Chen",
+          "Guohao Cai",
+          "Runyi Li",
+          "Shiyi Du",
+          "Ning Lu",
+          "Xu Huang",
+          "Zhixuan Chen",
+          "Feng Nie",
+          "Harold Haodong Chen",
+          "Hanwen Wang",
+          "Wen-Jie Shu",
+          "Yajing Bai",
+          "Xianfeng Wu",
+          "Xuanhua He",
+          "Shuhan Guo",
+          "Ziyue Ma",
+          "Ruichuan An",
+          "Long Bai",
+          "Miaosen Chai",
+          "Wenhao Chai",
+          "Jingye Chen",
+          "Qi Chen",
+          "Xuhang Chen",
+          "Wei Chow",
+          "Minghao Fu",
+          "Yunhao Gou",
+          "Haokun Gui",
+          "Dong Huang",
+          "Wei Huang",
+          "Zi Cheng Huang",
+          "Haibo Jin",
+          "Lingdong Kong",
+          "Leung Chun Ho",
+          "Tianqin Li",
+          "Yanheng Li",
+          "Jiayuan Liu",
+          "Jiyang Liu",
+          "Mingyu Liu",
+          "Shaoteng Liu",
+          "Xiaocheng Lu",
+          "Yawen Luo",
+          "Zeyu Qin",
+          "Tiancheng Shen",
+          "Yueqi Song",
+          "Zhaolong Su",
+          "Hengkai Tan",
+          "Tianhao Tang",
+          "Yiran Tao",
+          "Juncheng Wang",
+          "Qinghe Wang",
+          "Shangshang Wang",
+          "Yingying Wang",
+          "Fang Wu",
+          "Tiange Xiang",
+          "Qiushi Yang",
+          "Weicai Ye",
+          "Weichen Yu",
+          "Jiarui Zhang",
+          "Jize Zhang",
+          "Liuzhou Zhang",
+          "Renrui Zhang",
+          "Sheng Zhang",
+          "Wenhu Zhang",
+          "Junru Zhao",
+          "Lingting Zhu",
+          "Yuxin Zuo",
+          "Yutong Bai",
+          "Long Chen",
+          "Yang Deng",
+          "Ziqi Huang",
+          "Yeying Jin",
+          "Weijia Li",
+          "Kevin Qinghong Lin",
+          "Quande Liu",
+          "See-Kiong Ng",
+          "Hongliang Ren",
+          "Hongru Wang",
+          "Shujun Wang",
+          "Qifeng Chen",
+          "Haoxuan Che"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Trion-1: Unifying Language, Protein Sequence, and Structure with Diffusion Language Models",
+        "url": "",
+        "authors": [
+          "Tianyu Lu",
+          "Kaicheng Yang",
+          "Jiangtao Feng",
+          "Keyue Qiu",
+          "Yawen Ouyang",
+          "Yixin Wu",
+          "Xinbo Zhang",
+          "Lihao Wang",
+          "Wei-Ying Ma",
+          "Hao Zhou"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "PointerBench: A Diagnostic Benchmark for Fine-Grained GUI Grounding",
+        "url": "",
+        "authors": [
+          "Valentino Sacco",
+          "Saurabh Pandey",
+          "Alexander Florian Jercher",
+          "Maximilian Schilling"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Drift Says When, Budget Says How Much: Rate-Controlled KV Re-selection for Long-Form Multimodal Generation",
+        "url": "",
+        "authors": [
+          "Bin Hu",
+          "Yingbo Xiao"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "Rethinking Sequence Compression with Test-time Regression",
+        "url": "",
+        "authors": [
+          "Sihan Yang",
+          "Jie Huang",
+          "Hanxuan Li",
+          "Yifan Guo",
+          "Weigao Sun",
+          "Yiran Zhong",
+          "Weiyang Liu"
+        ],
+        "date": "2026-10-24"
+      },
+      {
+        "title": "CRANE: Post-Hoc Counterfactual Retrieval for Multimodal Classifiers",
+        "url": "",
+        "authors": [
+          "Franco Rugolon",
+          "Ioanna Miliou",
+          "Panagiotis Papapetrou"
+        ],
+        "date": "2026-10-24"
+      }
+    ]
+  }
+]
