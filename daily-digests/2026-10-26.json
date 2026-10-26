@@ -1,0 +1,347 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-26",
+    "paperCount": 3,
+    "markdown": "# Interpretability Under the Lens: Theory, Faithfulness, and Causal Explanations\n\nToday's interpretability research interrogates the tools themselves—asking what a lens actually detects, whether verbal explanations are faithful or merely sufficient, and how causal structure can be surfaced in scientific and clinical models. Across theory, methodology, and application, the through-line is a demand for mechanistic grounding and honest accounting of what explanations do and do not capture.\n\n## Theoretical Foundations of Interpretability Tools\n\nOstrow, Qian, Liu, and Fiete provide a mathematical theory of the Jacobian lens (J-lens), the Anthropic-introduced interpretability tool that surfaced working-memory-like linear directions in frontier language model hidden states [1]. They demonstrate that the J-lens preferentially identifies coherent features—directions behaving as leading, spatially coherent Lyapunov modes—thereby explaining which mechanistic properties of features make them detectable. The work shows that small perturbations and the structure of the underlying dynamics govern lens sensitivity, converting an empirically useful heuristic into a principled diagnostic. This matters because it clarifies the conditions under which J-lens findings can be trusted as evidence of real internal structure rather than artifacts, giving practitioners a theoretical basis for interpreting lens outputs.\n\n## Faithfulness and the Limits of Explanation Criteria\n\nŠekrst and Geld critique Natural Language Autoencoders (NLAs), which verbalize a model's internal activations into English and validate explanations by reconstructing the original activation from that text [2]. Their central claim is that round-trip reconstruction evaluates information *sufficiency* rather than *descriptive faithfulness*: a sentence can contain enough information to identify an activation while wrongly explaining what that activation encodes. This distinction is important because it exposes a validation gap in a popular explanation pipeline—reconstruction success is often treated as evidence that the verbalizer \"understands\" the feature. The paper urges the community to separate identifiability from faithful description, with direct implications for how NLA-style explanations are evaluated and reported.\n\n## Causal and Counterfactual Interpretability in Scientific Domains\n\nQiao and Li introduce CFBrainAug, a counterfactual brain network learning framework for interpretable fMRI-based autism diagnosis that unifies data augmentation with counterfactual explanation [3]. Unlike label-preserving augmentation, CFBrainAug retrieves label-opposite yet topologically consistent brain networks, inducing modularity that both regularizes training on limited data and yields clinically meaningful counterfactual explanations. The approach tackles two linked problems in rs-fMRI machine learning: overfitting on small cohorts and limited clinical interpretability of post-hoc statistical attribution. By generating explanations that are causal-by-design rather than post-hoc, the work points toward interpretability that is intrinsic to the model's training objective—a template likely to generalize to other clinical neuroimaging tasks.\n\n## Key Takeaways\n\n- Theoretical analysis of the Jacobian lens reveals it preferentially surfaces coherent, Lyapunov-mode-like features, giving principled grounding to an empirically derived interpretability tool [1].\n- Small perturbations and underlying dynamical structure determine what the J-lens can detect, implying lens results must be interpreted relative to those conditions [1].\n- Natural Language Autoencoders validate explanations by reconstruction, which tests information sufficiency but not descriptive faithfulness [2].\n- An activation's identity can be recoverable from an explanation even when that explanation mischaracterizes what the activation encodes—a caution for NLA-based interpretability claims [2].\n- Counterfactual, label-opposite brain network augmentation serves double duty: it regularizes learning on scarce fMRI data and produces intrinsically interpretable clinical explanations [3].\n- Across all three papers, the unifying theme is methodological self-scrutiny: interpretability methods are being held to mechanistic and causal standards rather than surface plausibility.\n- The field is shifting from post-hoc attribution toward explanations that are theoretically characterized [1], faithfulness-aware [2], and baked into model design [3].",
+    "papers": [
+      {
+        "title": "A Mathematical Theory of the Jacobian Lens",
+        "url": "",
+        "authors": [
+          "Mitchell Ostrow",
+          "Daoyuan Qian",
+          "Toni Liu",
+          "Ila Fiete"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "CFBrainAug: Modularity-Induced Counterfactual Brain Network Augmentation for Interpretable fMRI-based Autism Diagnosis",
+        "url": "",
+        "authors": [
+          "Yifan Qiao",
+          "Sheng Li"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "Natural Language Autoencoders Identify Without Explaining",
+        "url": "",
+        "authors": [
+          "Kristina Šekrst",
+          "Barbara Geld"
+        ],
+        "date": "2026-10-26"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-26",
+    "paperCount": 21,
+    "markdown": "# Multimodal Research Digest: Agents, Alignment, and Benchmark Frontiers\n\nToday's multimodal research landscape is defined by a decisive shift from static fusion architectures toward dynamic, query-adaptive, and agentic systems that manage modality selection, evidence grounding, and error attribution. Equally prominent is a wave of new benchmarks and diagnostic frameworks that expose where multimodal models fail—pragmatic intent, fine-grained grounding, and modality-gap geometry—rather than merely measuring aggregate accuracy.\n\n## Agentic Pipelines and Reasoning Control\n\nSeveral papers move beyond monolithic multimodal models toward agentic architectures with traceable, verifiable reasoning. [4] addresses the difficulty of attributing errors in frozen-model agentic pipelines for multimodal emotion reasoning: modality-specific perception agents post evidence-cited observations to a shared workspace, enabling prompt-space adaptation without costly instruction tuning and making failures traceable to specific agents or stages. [11] presents MedCaseAgent, a hierarchical agentic paradigm that synthesizes publication-quality rare disease case reports from unstructured clinical notes, dynamically querying literature and knowledge bases with iterative tool-integrated reasoning. [8] introduces DriveMind for closed-loop autonomous driving, maintaining multiple scene hypotheses with evolving weights across frames rather than committing to a single explanation per frame—directly countering the premature lock-in problem of frame-by-frame MLLM drivers. [18] takes a meta-perspective, arguing agentic benchmark scores reflect model–harness co-behavior and proposing five measures—including Valid Completion Rate and Model-Harness Fit—to disentangle whether failures originate in the model or the execution harness. Together these works signal a maturation of agentic multimodal systems toward diagnosability and graded belief maintenance.\n\n## Efficiency, Adaptation, and Reinforcement Learning for MLLMs\n\nA cluster of papers optimizes how multimodal models spend computation and training signal. [5] observes that the benefit of additional modalities varies per query and formulates per-query modality selection for Omni-LLMs as an accuracy-cost optimization, keeping the underlying model fixed while adaptively choosing which modalities to supply. [9] proposes PEAR, an adaptive advantage reshaping method for LVLM reinforcement learning that fixes a flaw in prior work where scaling token entropy by visual dependency underweights high-entropy, low-visual-dependency tokens essential for reasoning exploration. [13] introduces Outcome-Conditioned Visual Credit (OVC), a plug-in RL framework separating visual-associative from reasoning credit, motivated by the insight that visual affinity alone can amplify negative-advantage updates when downstream reasoning fails. [16] tackles reasoning augmentation for multimodal embeddings, where self-generated reasoning traces are unconstrained by pairwise retrieval supervision; privileged reasoning exploration guides which traces yield informative embeddings. [17] exploits the observation that emotion confusion in MLLMs is highly localized, proposing CASE—reusable pair-specific expertise for confusion correction in frozen models—instead of costly global parameter adaptation. [19] pushes self-improvement further with on-policy self-training driven solely by coarse topic descriptions, synthesizing curricula and privileged reasoning traces without ground-truth QA pairs. The collective theme: fine-grained credit assignment and adaptive compute allocation are supplanting uniform training and fixed modality configurations.\n\n## Grounding, Retrieval, and Interpretability\n\nUnderstanding *where* multimodal models attend and *how* they ground language in perception is the focus of this group. [12] extends the retrieval-heads analysis beyond its prior confinement to limited modalities, asking whether the sparse attention-head mechanism for evidence transfer scales with audio-visual inputs—and explores how such heads can be leveraged to improve model behavior. [7] introduces SAGE, a unified 10-candidate image-selection benchmark reformulating VWSD, VerSe, and WikiDiverse into a term-centric protocol with confusable hard negatives and a context-swapped diagnostic, plus GAR, a training-free gloss-augmented reasoning framework combining definition grounding with constraint-guided verification. [6] conducts a comparative diagnostic study of structured symbolic reasoning (CEMIR) versus multimodal input enrichment (FISER) for pragmatic intent recognition in human-robot interaction, probing whether enrichment helps when ambiguity concerns unstated intent rather than missing scene information. [21] offers a geometric remedy for the modality gap in CLIP/CLAP-style models, replacing the unit sphere with the probability simplex so that nonnegative, unit-mass constraints act as cross-modal calibration forcing both modalities into a shared coordinate system.\n\n## Domain Applications: Healthcare, Chemistry, and Social Signals\n\nMultimodal methods are being deployed in high-stakes scientific and clinical settings. [10] releases RxnExBench, a benchmark of 3,565 expert-annotated reactions and 2,361 molecular structures from high-impact chemistry journals, targeting structured extraction from screen tables and substrate scopes under a unified 15-role, 26-field schema to support retrosynthesis and yield prediction. [20] proposes DIGOM, a graph framework for clinical outcome prediction that disentangles three complementary interaction types beyond standard fusion, addressing relational structure that spans modalities in healthcare data. [2] predicts perceived conversation success in spontaneous autistic–non-autistic dyadic interactions from multimodal behavioral signals—shifting from diagnostic classification toward real communicative outcomes. [15] contributes PGT-FG, a segment-level Punjabi song toxicity dataset with fine-grained multimodal annotations built from 465 YouTube-sourced songs and refined to 2,396 segments, filling a resource gap for multilingual, music-based toxicity detection. [1] targets microservice anomaly detection with an autoregressive LLM approach that preserves modality-specific characteristics rather than subsuming them in cross-modality fusion—an architectural lesson with analogues across domains. [14] closes the loop with adaptive control of scientific instruments with nonstationary responses, using multimodal agents for shot-to-shot tuning of NBI ion sources in fusion devices where static action-to-response mappings fail as unobserved conditions drift.\n\n## Key Takeaways\n\n- **Agentic decomposition is the new default for complex multimodal reasoning**: evidence-grounded verification [4], hypothesis tracking [8], and hierarchical tool use [11] all trade monolithic inference for traceable, multi-stage pipelines—and the community is now formalizing how to attribute failures within them [18].\n- **Uniform treatment of modalities and tokens is under attack from multiple angles**: per-query modality selection [5], outcome-conditioned visual credit [13], and adaptive advantage reshaping [9] all demonstrate that fine-grained allocation of compute and learning signal yields outsized gains.\n- **Confusion and error are localized, not global**: CASE [17] shows emotion confusions are pair-specific and correctable with frozen backbones, echoing the retrieval-heads finding [12] that core capabilities concentrate in sparse, identifiable components.\n- **Benchmarks are shifting from aggregate scores to diagnostic probes**: SAGE's hard negatives and context-swap tests [7], RxnExBench's fine-grained schema [10], and the intent-recognition comparison [6] are designed to reveal *why* models fail, not just how often.\n- **Geometry matters for cross-modal alignment**: the simplex-constrained representation work [21] offers a principled, architecture-agnostic fix for the persistent modality gap in contrastive models.\n- **Self-supervised and data-free training is maturing**: on-policy self-training from topic descriptions alone [19] and privileged reasoning exploration without relevance-annotated traces [16] point toward reducing dependence on curated supervision.\n- **Domain deployments demand multimodality plus dynamics**: nonstationary instrument control [14], disentangled clinical interaction graphs [20], and conversational outcome prediction [2] show real-world success hinges on modeling evolving conditions, not static snapshots.",
+    "papers": [
+      {
+        "title": "Autoregressive Multimodal Anomaly Detection with Large Language Models for Microservice Systems",
+        "url": "",
+        "authors": [
+          "Yixiang Tang",
+          "Fagui Liu",
+          "Guoxiang Zhong",
+          "Xi Yao",
+          "C. L. Philip Chen"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "Multi modal perceived conversation success prediction for spontaneous autistic and non-autistic dyadic interactions",
+        "url": "",
+        "authors": [
+          "Thanushi Withanage",
+          "Desi Jones",
+          "Noah Sasson",
+          "Elizabeth Redcay",
+          "Carol Espy-Wilson"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "ConsMSA: Semantic Distribution Consistency Learning for Multimodal Sentiment Analysis",
+        "url": "",
+        "authors": [
+          "Pan Wang",
+          "Lipeng Ke",
+          "Huajun Ying",
+          "Pritish Mohapatra",
+          "Rohan Sarkar",
+          "Suresh Lakhani",
+          "Sankar Venkataraman",
+          "Jingtong Hu"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "An Agentic Approach with Evidence-Grounded Verification for Multimodal Emotion Reasoning in Conversation",
+        "url": "",
+        "authors": [
+          "Elyas Rashno",
+          "Farhana Zulkernine"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "Efficient Omni-modal Large Language Model Inference via Per-Query Modality Selection",
+        "url": "",
+        "authors": [
+          "Shuqi Liu",
+          "Yuzhou Cao",
+          "Luke Ong"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "CEMIR vs. FISER: a comparative study of reasoning-based and enrichment-based approaches to pragmatic intent recognition",
+        "url": "",
+        "authors": [
+          "Ziya Hosseynzadeh",
+          "Farjad Fallah",
+          "Farnoosh Fallah",
+          "Soroush Gooran",
+          "Mohammad Amanloo",
+          "Hossein Sameti"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "SAGE: Sense-Aligned Multimodal Grounding Evaluation with Gloss-Augmented Reasoning",
+        "url": "",
+        "authors": [
+          "Sunjae Kwon",
+          "Suhaas Kiran DG",
+          "Zonghai Yao",
+          "Talha Chafekar",
+          "Deepali Singh",
+          "Hong Yu"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "DriveMind: Mind-Evolving Belief Tracking for Closed-Loop Autonomous Driving",
+        "url": "",
+        "authors": [
+          "Yan Shi",
+          "Kehua Chen",
+          "Jiarui Qi",
+          "Yihong Tang",
+          "Haichen Liao",
+          "Yinhai Wang"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "PEAR: Adaptive Advantage Reshaping for Perception and Exploration in Large Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Junxin Wang",
+          "Yingfeng Luo",
+          "Xiangchen Song",
+          "Weiqiao Shan",
+          "Runsong Zhao",
+          "Xinyu Liu",
+          "Shunjie Xing",
+          "Yifu Huo",
+          "Dingyang Lin",
+          "Qiuyu Gu",
+          "Yongyu Mu",
+          "Chenglong Wang",
+          "Changliang Li",
+          "Jingbo Zhu",
+          "Tong Xiao"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "RxnExBench: Benchmarking Vision-Language Models for Structured Chemical Reaction Extraction from Scientific Literature",
+        "url": "",
+        "authors": [
+          "Jiaxing Sun",
+          "Junyuan Gao",
+          "Ruikang Zhang",
+          "Hao Zheng",
+          "Lingli Ge",
+          "Xiao An",
+          "Jiang Wu",
+          "Huazheng Zeng",
+          "Jiahe Song",
+          "Chen Zhu",
+          "Haote Yang",
+          "Jingchao Wang",
+          "Lu Chen",
+          "Yuanyuan Cao",
+          "Ruijie Zhang",
+          "Shengxin Lu",
+          "Weijia Li",
+          "Lijun Wu",
+          "Conghui He"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "MedCaseAgent: From Multimodal Clinical Evidence to Rare Disease Case Reports",
+        "url": "",
+        "authors": [
+          "Hongkang Chu",
+          "Yifan Shen",
+          "Tianjiao Yu",
+          "Zhuoqing Zhong",
+          "Jianguo Cao",
+          "Meihuan Huang",
+          "Xu Cao"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "A Broader Look into MLLM's Retrieval Heads",
+        "url": "",
+        "authors": [
+          "Jia Wang",
+          "Yuqing Li",
+          "Jiangnan Li",
+          "Zheng Lin",
+          "Mo Yu"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "From Visual Affinity to Learning Credit in Multimodal Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Yuhang Han",
+          "Dingning Liu",
+          "Yujie Chen",
+          "Yaojie Zhang",
+          "Jingwei Song",
+          "Zequn Yang",
+          "Xuanming Shang",
+          "Li Ding",
+          "Zhijiang Guo",
+          "Linfeng Zhang"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "Adaptive Control of Scientific Instruments with Nonstationary Responses through Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Guoyang Shi",
+          "Hongwen Li",
+          "Yiding Yu",
+          "Zhuang Fu",
+          "Siqi Ding",
+          "Zhengyuan Chen",
+          "JianGuo Chen",
+          "Hanyue Zhao",
+          "Tianyuan Liu"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "The Punjabi Geet Toxicity Dataset (PGT-FG): Fine-Grained Multimodal Annotations for Toxic Content in Punjabi Songs",
+        "url": "",
+        "authors": [
+          "Lakhjeet Kaur",
+          "Jaspreet Kaur",
+          "Komal Rani",
+          "Yougal Attri",
+          "Ramakant KumarJaydeep Kishore",
+          "Pravin Kumar"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "Beyond Post-Hoc Rewards: Privileged Reasoning Exploration for Multimodal Embeddings",
+        "url": "",
+        "authors": [
+          "Tianyu Yang",
+          "Yijun Tian",
+          "Lars Benedikt Kaesberg",
+          "Jan Philip Wahle",
+          "Bela Gipp",
+          "Terry Ruas",
+          "Daniel Kurzawe"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "CASE: Confusion-Aware Skill Evolution for Frozen Multimodal Emotion Models",
+        "url": "",
+        "authors": [
+          "Siyu Wu",
+          "Zeyu Liang",
+          "Linghao Wang",
+          "Qiyun Zheng",
+          "Yi Yao",
+          "Ling Lo",
+          "Hongxia Xie"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "When Agents Fail: Model or Harness--Who's to Blame?",
+        "url": "",
+        "authors": [
+          "Shao Zhang",
+          "Hangfan Zhang",
+          "Yuanyuan Shi",
+          "Hao Li",
+          "Min-Le Su",
+          "Kangcong Li",
+          "Jingping Wang",
+          "Chunjiang Mu",
+          "Chen Zhang",
+          "Yang Chen",
+          "Bo Zhang",
+          "Shuyue Hu"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "On-Policy Self-Training: Data-Free Self-Improvement in Large Language Models",
+        "url": "",
+        "authors": [
+          "Leon Sick",
+          "Lukas Hoyer",
+          "Yannick Strümpler",
+          "Christian Reisswig",
+          "Timo Ropinski",
+          "Federico Tombari"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "DIGOM: Disentangled Interaction Graphs for Outcome prediction in Multimodal healthcare",
+        "url": "",
+        "authors": [
+          "Hakima Laribi",
+          "Olivier Lefebvre",
+          "Dan Poenaru",
+          "Martin Vallières"
+        ],
+        "date": "2026-10-26"
+      },
+      {
+        "title": "Closing the Modality Gap via Simplex-Constrained Representations",
+        "url": "",
+        "authors": [
+          "Shubham Gupta",
+          "Siva Reddy",
+          "Perouz Taslakian",
+          "Valentina Zantedeschi",
+          "Cem Subakan"
+        ],
+        "date": "2026-10-26"
+      }
+    ]
+  }
+]
