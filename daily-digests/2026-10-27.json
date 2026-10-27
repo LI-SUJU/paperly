@@ -1,0 +1,488 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-27",
+    "paperCount": 11,
+    "markdown": "# Interpretability Across Domains: From Mechanistic Analysis to Trustworthy Deployment\n\nToday's interpretability research spans an unusually wide range of application domains—from advertising and aviation safety to molecular design and depression screening—united by a common thread: making model behavior legible, steerable, and trustworthy. Several papers move beyond post-hoc explanation toward architectures and training procedures that are interpretable by construction, while others use mechanistic analysis to reveal where and how adaptation actually happens inside large models.\n\n## Mechanistic Analysis and Architecture-Level Interpretability\n\n**Mechanistic Insights into LoRA: Layer Sparsity for Adaptive Fine-Tuning via Path Patching** [8] investigates how Low-Rank Adaptation affects model internals, addressing the gap between LoRA's ubiquity and the limited understanding of which components it actually modifies. Using path patching as a mechanistic interpretability tool, the authors conduct a systematic component- and layer-wise analysis, finding that LoRA's adaptation effect is highly non-uniform, with substantial sparsity across layers. Critically, the important layers are highly task-dependent and show limited overlap across tasks. This matters because it challenges the default practice of all-layer LoRA and provides empirical grounding for layer-selective, task-adaptive fine-tuning strategies.\n\n**SAP-ViT: A Self-Attributing Patch Vision Transformer for Medical Image Classification** [10] targets the misalignment between ViT classifiers' global CLS-token prediction and the local evidence requirements of medical imaging. The architecture replaces CLS-based classification with direct aggregation of last-layer patch embeddings, making class predictions decomposable into patch-level contributions within the forward pass itself rather than through post-hoc attribution. Sparsity regularization on the patch-weight distribution encourages concise, readable evidence. By building attribution into the model rather than bolting it on afterward, SAP-ViT addresses a key trust barrier for clinical deployment of transformer-based diagnostic tools.\n\n**Interpretable and Steerable Molecular Graph Generation using Concept Bottlenecks** [6] confronts the lack of interpretability in deep graph generators, a serious limitation for drug discovery where transparent generation could reduce trial-and-error in candidate selection. The authors argue that common interpretability approaches like disentanglement cannot guarantee human-interpretable representations, and instead incorporate concept bottlenecks into deep graph generators so users can interpret, debug, and steer generation through human-defined concepts. This work exemplifies the shift toward interpretability-by-design in scientific discovery pipelines, where the goal is not just explanation but actionable control over generated outputs.\n\n**Stable Dimensionality Reduction via Isometric Centroid-Encoder** [4] addresses a subtler interpretability problem: supervised dimensionality reduction methods promote class compactness and separation but do not constrain class geometry, causing the relative arrangement of classes to vary across runs and undermining reproducibility. The proposed Isometric Centroid-Encoder learns class centroids directly in latent space while preserving a prescribed pairwise class-centroid geometry. By making embedding structure stable and predictable across independent runs, ICE improves both the reproducibility and the interpretability of low-dimensional visualizations—foundational properties for any downstream explanation that relies on latent-space geometry.\n\n## Interpretable Methods for High-Stakes Decision Systems\n\n**Reinforcement Learning for Controller Parameters in the Auto-Bidding System at Pinterest** [1] tackles the tension in auto-bidding between budget delivery and cost per action across heterogeneous campaigns under non-stationary market conditions—a trade-off that shifts over campaign lifespans. While PID controllers are favored in production for stability and interpretability, fixed tunings cannot adapt to diverse campaigns and shifting traffic; the authors present RLBP, which uses reinforcement learning to tune bidding parameters adaptively. The work is notable for explicitly preserving the interpretability advantages of controller-based systems while adding learned adaptivity, illustrating a pragmatic middle path between opaque end-to-end RL and rigid hand-tuned control in a live industrial system.\n\n**A Hybrid Framework for Explainable Aviation Risk: Causal Chain Extraction from Safety Reports with Physics-Based Failure Quantification and Interventional Analysis** [11] notes that aviation authorities hold decades of accident reports, yet computational work has mostly sorted them into fixed taxonomies rather than exploiting their causal narratives. The proposed hybrid framework uses a local large language model to extract ordered causal chains from 56,202 American accident reports, aggregating them into a causation knowledge graph, while physics-based models quantify failure likelihood at stated operating points, with interventional analysis layered on top. This combination of text-derived causal structure with physics-grounded quantification is a compelling template for explainable risk analysis in safety-critical industries, where explanations must be both causally coherent and quantitatively validated.\n\n**Approximate Unlearning in Prototype-based Classifiers** [7] addresses regulatory and governance demands for removing specific training data from models without the prohibitive cost of full retraining. The paper introduces a robust approximate unlearning technique for Generalized Learning Vector Quantization, a family of prototype-based classifiers, aimed at removing the effects of specified samples whether due to deletion requests or identification as noisy or corrupt. Prototype-based models are an interesting testbed precisely because their interpretability makes the effects of unlearning more inspectable—deleted data's influence can be traced through prototype movements—connecting the unlearning problem to the broader interpretability agenda.\n\n## Interpretability for Measurement and Assessment\n\n**Quantifying Meaning with SCAPE-T: Semantic Complexity from Encoder-Only Transformer Attention** [2] defines semantic complexity as the code length required to uniquely specify a text's semantic meaning, operationalizing it via SCAPE-T, an attention-derived metric built on encoder-only transformers. The authors position their approach against existing measures that either model reader effort (readability, lexical difficulty)—which correlates with surface features like word length and syntax—or quantify surface features directly (type-token ratio, word frequency). By targeting semantic integration through attention structure, SCAPE-T offers a genuinely meaning-oriented complexity metric with applications in linguistics and model interpretability alike.\n\n**Words Are the Voice of the Mind: Depression Severity Estimation from Social Traces via Mental-Guided Evidence Reasoning** [3] motivates social-media-based depression severity estimation as a way to bypass clinical interviews and self-report questionnaires that require active user participation. Existing approaches have progressed from textual-feature classification to LLM-based questionnaire completion over standardized scale items, but still fall short in capturing user-specific mental states. The proposed mental-guided evidence reasoning framework addresses this gap by grounding severity estimates in interpretable evidence drawn from users' social traces—an important step for mental health applications where clinicians and users alike need to see *why* an assessment was made, not just the score.\n\n## Domain-Specific Diagnostics and Representation Learning\n\n**Single-Cycle Battery Remaining Useful Life Prediction with Compressed Continuous Wavelet Features and Deep Neural Networks** [5] confronts the cost of extensive degradation testing for lithium-ion battery lifetime assessment by predicting end-of-life from only the initial few cycles. The challenge is that early aging dynamics are subtle; the authors address it with compressed continuous wavelet features feeding deep neural networks, extracting reliable degradation signatures from limited early-cycle data. While not framed as interpretability work per se, the wavelet-based feature engineering provides physically meaningful, inspectable signal decompositions—a form of transparency that matters for industrial adoption in safety-relevant battery management.\n\n**AdaTrendLike: Adaptive Hierarchical Detrending and Trend Likelihood Scoring for Time Series Anomaly Detection** [9] observes that existing TSAD approaches focus on reconstructing or forecasting observations while overlooking trend dynamics, a major source of non-stationarity that carries valuable anomaly information. The framework directly estimates trend likelihoods for anomaly detection via adaptive hierarchical detrending. By making trend structure—rather than raw reconstruction error—the explanatory locus of anomaly scores, AdaTrendLike offers a more diagnostically meaningful signal for operators in Industrial IoT settings, where knowing *what kind* of deviation occurred is as important as flagging it.\n\n## Key Takeaways\n- **Interpretability-by-construction is ascendant**: SAP-ViT [10], concept-bottleneck graph generation [6], and centroid-geometry-constrained embeddings [4] all build transparency into the architecture or training objective rather than relying on post-hoc explanation, a more robust path for high-stakes deployment.\n- **Mechanistic analysis yields actionable training guidance**: path patching reveals LoRA's adaptation is sparse and task-dependent [8], directly informing layer-selective fine-tuning and questioning the all-layer default.\n- **Structural stability underpins interpretability**: ICE [4] demonstrates that reproducibility of latent geometry is a precondition for trustworthy embedding-level explanations.\n- **Causal structure plus quantitative validation is a powerful hybrid**: the aviation framework [11] pairs LLM-extracted causal chains from 56K reports with physics-based failure quantification, a template for safety-critical explainable risk analysis.\n- **Industrial systems favor interpretable adaptivity**: RLBP at Pinterest [1] shows learned parameter tuning can coexist with the stability and interpretability of controller-based auto-bidding.\n- **Interpretability extends to measurement and evidence**: SCAPE-T [2] operationalizes semantic complexity via attention, and mental-guided evidence reasoning [3] grounds depression severity estimates in inspectable social-trace evidence.\n- **Unlearning and interpretability are natural allies**: prototype-based classifiers [7] make the effects of data removal traceable, connecting regulatory compliance with model transparency.",
+    "papers": [
+      {
+        "title": "Reinforcement Learning for Controller Parameters in the Auto-Bidding System at Pinterest",
+        "url": "",
+        "authors": [
+          "Yichu Zhou",
+          "Qinyi Chen",
+          "Fei Feng",
+          "Jacob Loh",
+          "Mehdi Ben Ayed",
+          "Lin Yang",
+          "Andrei Curelea",
+          "Jiajing Xu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Quantifying Meaning with SCAPE-T: Semantic Complexity from Encoder-Only Transformer Attention",
+        "url": "",
+        "authors": [
+          "Maxim Khovansky",
+          "Lev Mukhanov"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Words Are the Voice of the Mind: Depression Severity Estimation from Social Traces via Mental-Guided Evidence Reasoning",
+        "url": "",
+        "authors": [
+          "Nada Xu",
+          "Xueqin Chen",
+          "Qiang Gao",
+          "Hongru Liang",
+          "Wenqiang Lei"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Stable Dimensionality Reduction via Isometric Centroid-Encoder",
+        "url": "",
+        "authors": [
+          "Tomojit Ghosh",
+          "Siva Rama Krishna Prasad Changala",
+          "Prathyusha Kanakamalla",
+          "Harigovind Harikumar"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Single-Cycle Battery Remaining Useful Life Prediction with Compressed Continuous Wavelet Features and Deep Neural Networks",
+        "url": "",
+        "authors": [
+          "Sungeun Kim",
+          "Mingyu Jung",
+          "Yuri Kim",
+          "Jin-Sung Park",
+          "Jongbin Ryu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Interpretable and Steerable Molecular Graph Generation using Concept Bottlenecks",
+        "url": "",
+        "authors": [
+          "Sarabeshwar Balaji",
+          "Ritesh Kumar",
+          "Lav R. Varshney"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Approximate Unlearning in Prototype-based-classifiers",
+        "url": "",
+        "authors": [
+          "Sreejita Ghosh",
+          "Mohammad Mohammadi"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Mechanistic Insights into LoRA: Layer Sparsity for Adaptive Fine-Tuning via Path Patching",
+        "url": "",
+        "authors": [
+          "Fei Zuo",
+          "Yizhou Huang",
+          "Kezhi Wang"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "AdaTrendLike: Adaptive Hierarchical Detrending and Trend Likelihood Scoring for Time Series Anomaly Detection",
+        "url": "",
+        "authors": [
+          "Van Kwan Zhi Koh",
+          "Songnan Lin",
+          "Rongmo Luo",
+          "Zhiping Lin",
+          "Bihan Wen"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "SAP-ViT: A Self-Attributing Patch Vision Transformer for Medical Image Classification",
+        "url": "",
+        "authors": [
+          "Wei Zhang",
+          "Wolfgang Nejdl",
+          "Ming Tang"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "A Hybrid Framework for Explainable Aviation Risk: Causal Chain Extraction from Safety Reports with Physics-Based Failure Quantification and Interventional Analysis",
+        "url": "",
+        "authors": [
+          "Yutian Pang",
+          "Yifang Tian",
+          "Jiacheng Xie",
+          "Xinyu Zhao",
+          "Jueming Hu",
+          "John-Paul Clarke",
+          "Hans-Arno Jacobsen"
+        ],
+        "date": "2026-10-27"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-27",
+    "paperCount": 3,
+    "markdown": "# Explainability in Practice: From Data Curation to User-Facing Rationales\n\nToday's explainability research moves along two complementary tracks: making model internals legible (graphs, geospatial forecasts, training data) and delivering explanations directly to end users (propaganda rationales, LLM transparency). The unifying theme is that explanation is increasingly treated as a system-level property—spanning data, architecture, and interface—rather than a post-hoc afterthought.\n\n## Data-Centric Foundations of Explainability\n\nData quality and provenance are emerging as first-class explainability concerns, since the behavior of a model is inseparable from what it was trained on and how that data was optimized. A systematic treatment of data optimization for LLMs provides the scaffolding needed to reason about why models behave as they do—and how data interventions can be audited. [1] surveys data-related techniques across the LLM training and application lifecycle, addressing a notable gap: while surveys have covered learning strategies, alignment, explainability, and evaluation, the data dimension has lacked a consolidated review despite data being recognized as central to the LLM era. The paper catalogues a wide range of data optimization algorithms and techniques, tracing their origins and roles in training and deployment. For explainability researchers, this framing is valuable because it situates data curation as an upstream determinant of model transparency, linking data provenance and optimization choices to downstream interpretability and accountability questions.\n\n## Explaining Model Internals in Scientific Domains\n\nExplanation is particularly urgent in high-stakes scientific modeling, where domain experts need to understand both the learning setup and the forecast generation process. GNN-VIEW tackles graph-based Earth-system models, whose connectivity constrains learning before training but is built algorithmically with little intuition about the final structure—and whose forecasts remain obscure even after successful training. [3] presents an interactive browser-based visual inspection and explanation environment that addresses both pain points: static plotting is insufficient for understanding algorithmically constructed graphs, and post-training forecast reasoning is opaque. The tool's contribution is to make the graph construction and model behavior inspectable in an interactive loop, supporting developers and scientists who need intuition, not just metrics. This represents a domain-specific explainability approach in which visual analytics is tailored to the structure of the model class (graphs) and the scientific workflow.\n\n## User-Facing Explanation for Content Moderation\n\nA distinct strand of work delivers explanations directly to non-expert users, treating rationales as actionable outputs rather than diagnostics for developers. Propasafe-Hybrid targets the spread of propagandistic content on news and social media, where readers often encounter manipulated text with limited scrutiny, motivating fine-grained detection. [2] introduces a sentence-level system that pairs a fine-tuned transformer classifier with LLM-based technique classification to identify, label, and explain specific propaganda strategies. Its pipeline produces highlighted sentences, technique assignments, and concise rationales, so users can immediately understand why a sentence was flagged. This hybrid architecture—specialized classifier for detection, LLM for technique-level explanation—illustrates a pragmatic division of labor for explainability in real-time content analysis.\n\n## Explanation as a Cross-Cutting Concern\n\nTaken together, these papers suggest that explainability is being reframed from a post-hoc add-on into an architectural and workflow principle. [1] locates explanation upstream in data optimization choices; [2] embeds explanation in the output of a detection pipeline as user-facing rationales; and [3] embeds it in an interactive inspection environment for scientific model development. Each addresses a different audience—LLM researchers auditing training data, general readers encountering propaganda, and Earth-system scientists debugging graph models—yet all treat transparency as a design requirement with concrete interfaces and artifacts. The shared lesson is that effective explanation depends on matching the form of the explanation (survey taxonomy, rationale text, visual analytics) to the decision the user needs to make.\n\n## Key Takeaways\n- Explainability is increasingly treated as a system-level property spanning data, model architecture, and user interface, rather than a post-hoc diagnostic layer.\n- Data optimization for LLMs is a neglected but foundational dimension of transparency: [1] fills a survey gap by cataloguing data techniques as upstream determinants of model behavior.\n- Audience-appropriate explanation forms matter: rationales for end users [2], interactive visual analytics for scientists [3], and taxonomies for researchers [1].\n- Hybrid architectures—specialized classifiers for detection plus LLMs for explanation—offer a practical template for fine-grained, explainable content moderation [2].\n- Scientific ML needs explainability at both ends: graph construction before training and forecast reasoning after training, as addressed by GNN-VIEW [3].\n- User-facing explanations (highlighted sentences, technique labels, concise rationales) can turn detection systems into immediately actionable tools [2].\n- Across domains, the common thread is embedding transparency into concrete artifacts and interfaces that match the decision at hand.",
+    "papers": [
+      {
+        "title": "Data Optimization for LLMs: A Survey",
+        "url": "",
+        "authors": [
+          "Ou Wu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Propasafe-Hybrid: A Text-Based Hybrid Propaganda Detection Tool",
+        "url": "",
+        "authors": [
+          "Thomas Kimmeth",
+          "Avijit Roy",
+          "Vivek Sharma"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "GNN-VIEW: Visual Inspection and Explanation of Graph-based Earth-System Models",
+        "url": "",
+        "authors": [
+          "Alessandro Lucatelli",
+          "Ferdinand Unterhuber",
+          "Katharina Krenzer",
+          "Mennatallah El-Assady",
+          "Benedikt Soja",
+          "Christina Humer",
+          "Joel Oskarsson"
+        ],
+        "date": "2026-10-27"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-27",
+    "paperCount": 25,
+    "markdown": "# Multimodal Research Digest — October 27, 2026\n\nToday's multimodal research landscape is defined by a push toward grounding: models must not only perceive across modalities but reason over structured evidence, recover from failure, and operate under real-world constraints like missing data, limited compute, and multilingual deployment. Equally notable is the maturation of evaluation—benchmarks now probe integration gaps, failure recovery, and explanation faithfulness rather than final-answer accuracy alone.\n\n## Retrieval, Grounding, and Structured Multimodal Reasoning\n\n**GEMS-RAG** [1] tackles engineering standards, which are hierarchical, multimodal documents densely connected through figures, tables, and cross-references—a regime where unstructured text RAG fails on questions requiring joint reasoning over textual provisions, visual specifications, and document structure. The framework proposes graph-grounded retrieval-augmented generation that exploits the document's inherent graph structure to support joint multimodal reasoning. This matters because it moves RAG beyond flat chunk retrieval toward structure-aware grounding, a critical requirement for high-stakes technical domains.\n\n**All the Facts, Still the Wrong Answer** [7] investigates the *multi-evidence integration gap* in vision-language models: whether failures arise from reading individual facts or from combining them into globally valid decisions. Using controlled subset-selection and path-finding tasks, the authors link local fact recovery to global decision validity through conditional performance analysis, same-grid local queries, text-oracle inputs, and retrieval controls. The finding that models can recover every individual fact yet still produce wrong answers isolates integration—not perception—as a distinct bottleneck, with direct implications for how we benchmark multimodal reasoning.\n\n**MTA-Zero** [8] addresses open-world, multi-step multimodal search, where MLLMs must ground images, select tools, and integrate web evidence. Unlike prior work relying on fixed offline corpora whose question distributions cannot adapt, MTA-Zero introduces online multimodal QA-Solver co-training that requires no precomputed multi-hop corpus, enabling the deep-search agent and question generator to improve together. This self-improving loop represents a meaningful shift from static data curation to adaptive training dynamics for agentic multimodal search.\n\n**CSI-TextBench** [12] confronts a modality with no natural text pairing: WiFi Channel State Information, which passively captures indoor human activity and environmental dynamics but lacks captions or transcripts. The benchmark provides large-scale language-grounded ambient sensing data to connect CSI with the language-aligned paradigm of modern multimodal systems. This extends multimodal grounding into a sensing modality with unique privacy and ubiquity advantages over vision or audio.\n\n**AgenticCity-Bench** [19] introduces longitudinal multimodal observation of urban dynamics, covering 16 cities across six continents from 2000–2025 with 18 modalities spanning urban function, activity, and environmental state, organized around a common state representation for agentic reasoning. It addresses the inability of existing earth-observation benchmarks to model joint infrastructure–activity–environment dynamics. The longitudinal, multi-layer design makes it a demanding testbed for unified state modeling over heterogeneous urban data.\n\n## Agents, Decisions, and Failure Recovery\n\n**SMART-Med** [3] challenges two assumptions in multimodal medical multi-agent systems: always-active dense collaboration and dependence on large cloud models. It treats collaboration as a *learnable decision* via uncertainty-aware routing—many queries don't need costly multi-agent deliberation—while remaining fully local for privacy and efficiency. This reframes multi-agent orchestration as a resource-allocation problem, with direct relevance to deployable clinical AI.\n\n**Iris** [5] extends typed decision-making—choosing among discrete candidates, as in UI element selection or chart matching—from text-only System One models to visual candidates. The framework handles image, text, or hybrid candidates while preserving candidate-order invariance, scalability, and cache reuse via separate request–candidate encoding, with formal proofs supporting the design. Reusable option memory for visual candidates is an underexplored but practically important capability for agentic interfaces.\n\n**AndroidFlux** [13] argues that evaluating mobile agents from clean initial states fails to isolate error recovery, which is essential in dynamically changing environments. Built on AndroidWorld, it restores recorded trajectories to create failure-recovery scenarios and adds reward modeling for knowing when, where, and whether agents recover from intermediate errors. This shifts mobile-agent evaluation from success-rate reporting toward diagnosable robustness.\n\n**Co-Design Bench** [16] evaluates whether coding agents can translate real users' multimodal requests into working application revisions, curating 273 reference-free tasks from 37,463 queries across 26,314 real coding sessions. Its Multimodal Editing and Repository Editing tracks span grounded understanding, UI transformation, and functional implementation with optional image, audio, video, or document inputs. Grounding evaluation in authentic user sessions makes this a more ecologically valid test of agentic coding than synthetic task suites.\n\n**When Fine-Grained Credit Assignment Helps and Hurts** [25] uses movie-trailer editing—spanning content selection, narrative sequencing, rough cut, and fine cut—as a testbed for when fine-grained credit assignment in multimodal agentic RL improves learning versus when it fails under delayed outcome feedback. The task hierarchy varies complexity systematically, allowing the authors to map the conditions under which granular credit assignment is beneficial. This provides sorely needed empirical guidance for RL training of long-horizon multimodal agents.\n\n## Safety, Calibration, and Evaluation Methodology\n\n**SEDATE** [4] proposes a training-free detect–edit–verify approach for safety interventions that avoids the computational and annotation costs of existing methods and extends to multilingual settings. It detects responsible neurons, edits them, and verifies the effect, probing whether an aggression circuit is shared across languages. The cross-lingual circuit question is important: if safety-relevant circuitry is shared, lightweight edits could generalize across languages at near-zero marginal cost.\n\n**From Self-Confidence to Statistical Accuracy** [22] builds a unified statistical framework for scaling human-in-the-loop evaluation of LLMs and MLLMs, covering both direct auditing with confidence-stratified sampling and LLM-as-a-judge under alternative sampling strategies. Because model self-confidence is often miscalibrated yet potentially useful, the framework recovers population accuracy from partial verification and characterizes when judge-based evaluation pays off given calibration quality and inference cost. This gives evaluation practitioners a principled basis for choosing between auditing routes.\n\n**Faithful Explanations under Missing Modalities** [21] tests whether LLM-generated narratives of multimodal prognostic model attributions remain faithful when costly modalities (amyloid PET, CSF biomarkers) are missing—a common clinical reality—using 307 ADNI participants. It separates *phantom attribution* (crediting unobserved modalities) from *unfaithful narration* (omitting, misciting, or misjudging missing modalities). Naming and measuring these distinct failure modes is a prerequisite for trustworthy clinical explanation pipelines.\n\n**ImgMT** [17] introduces a massively multilingual text-in-image translation benchmark mined from localized SVG illustrations on Wikimedia Commons: 35,612 aligned image pairs in 1,855 sets across 129 languages, 20+ writing systems, and 4,886 language pairs, with a multi-level evaluation scheme. It fills a gap in Text Image Translation and In-Image Machine Translation evaluation, where multilingual coverage has been thin. SVG sourcing is a clever trick for obtaining naturally aligned parallel image pairs.\n\n## Domain Applications: Health, Industry, and Robotics\n\n**Explainable Multimodal AI for Breast Biopsies** [23] targets reduction of unnecessary biopsies for BI-RADS 4/5 patients by predicting benign outcomes with a ViT image encoder and DeBERTa-V3-Large text encoder, augmented with Grad-CAM explanations. The vision-language CAD framing brings modern multimodal architectures to a clinically consequential triage decision. Explainability is positioned as integral rather than post hoc, which matters for radiologist adoption.\n\n**OneEEG** [24] unifies fragmented EEG modeling across task paradigms with an EEG-MLLM that jointly models numerical EEG representations and visualizations, trained on the curated OneEEG-Instruct multi-task instruction dataset and using a task-aware mixture of projectors. The signal-visual dual encoding acknowledges that clinicians often reason over plotted EEG alongside raw signals. This is an important step toward general-purpose EEG understanding within MLLM interfaces.\n\n**Zero-Shot Wafer Map Classification** [14] eliminates labeled retraining for wafer-defect classification using a frozen large multimodal model with connected-component highlighting and morphology-, location-, and exclusion-aware rule-ordered prompts. It achieves 92.9% macro / 93.8% overall accuracy on Mixed-WM38 and 79.1% / 81.3% on WM811K, with alternative rule orders yielding 90.1–91.9%, quantifying prompt-order sensitivity. The training-free design suits fabrication environments where conditions shift and labels lag.\n\n**AgriDefend** [20] presents a $205 offline edge device fusing canopy imagery (MobileNetV2) with soil-probe trend features (moisture, pH and NPK rates of change, belowground CO2 as a soil-respiration proxy) via a Random Forest and logistic-regression gating, detecting crop stress before visible symptoms. The sub-$250 bill of materials and offline operation make it genuinely deployable in field conditions. It is a strong example of multimodal fusion delivering value at the extreme low end of the compute spectrum.\n\n**CogMemory** [10] addresses long-horizon VLA manipulation, where implicit temporal representations dilute history and explicit buffers accumulate redundancy and noise. The variational cognitive memory framework selectively preserves and reuses salient experience, framing memory as structured abstraction rather than a buffer. This is a principled response to a central bottleneck in robot learning.\n\n**TimeWorld** [18] introduces TSWM-Bench and studies action-conditioned time series world models, where planned interventions (not just historical extrapolation) reshape futures—existing TSWMs use rigid covariate schemas and multimodal forecasters treat text as passive context. Making text an active intervention specification is the key conceptual move. This connects multimodal forecasting to decision-making workflows in retail and network management.\n\n**Fed-Universe** [9] replaces federated averaging's \"one-size-fits-all\" global mean with active negotiation via an S-G-T-H stack: an edge LLM semantic surrogate standardizes heterogeneous patient inputs (S), geometric quality assurance (G), topological structure (T), and human-in-the-loop factors (H). The architecture directly targets minority suppression under cross-site heterogeneity. Elevating negotiation over averaging is a substantive reframing of federated alignment.\n\n**Large-Model Training Survey** [2] proposes a unified stage division (data/tokenization, pretraining, post-training) and a six-dimensional analytical framework spanning the full LLM/MLLM training pipeline, arguing capabilities arise from pipeline synergy rather than any single stage. By placing stages on a horizontally comparable basis, it addresses the siloed single-stage perspective of prior surveys. For multimodal researchers, it offers a rare end-to-end map connecting data curation choices to alignment outcomes.\n\n## Fusion, Ordering, and Representation Design\n\n**UniPRO** [15] systematically investigates how fusion order across visual, acoustic, and speech modalities affects multimodal video retrieval, using configurable schedules with matched components and training settings. It finds one-by-one fusion schedules outperform stacked fusion, and that order within one-by-one fusion materially changes performance—then examines data and query characteristics to guide order selection. The controlled methodology turns a folk heuristic into an empirically grounded design decision.\n\n**Hierarchical Cooperative GFlowNets** [11] addresses mode collapse in GFlowNets, where ineffective exploration concentrates samplers on a few high-reward regions, and shows that naively training parallel GFlowNets does not prevent multiple models from collapsing onto the same areas. HCG dynamically coordinates hierarchical cooperation to preserve state-space coverage. While not multimodal per se, its exploration-preserving sampling is directly applicable to compositional multimodal generation and reward-diversity problems.\n\n## Key Takeaways\n\n- **Integration, not perception, is the frontier bottleneck.** [7] isolates a multi-evidence integration gap: VLMs can recover individual facts yet fail to combine them into globally valid decisions—benchmarking must condition on local correctness to expose this.\n- **Grounding is becoming structural.** From graph-grounded RAG over engineering standards [1] to unified urban state representations [19] and language-grounded WiFi sensing [12], the field is moving beyond flat chunk retrieval toward structure- and state-aware grounding.\n- **Collaboration and memory are becoming learned decisions.** SMART-Med's uncertainty-aware routing [3], Iris's typed visual decisions with reusable option memory [5], and CogMemory's variational memory for VLA [10] all replace fixed defaults with selective, learnable allocation.\n- **Failure recovery and faithfulness are the new evaluation axes.** AndroidFlux [13] diagnoses mobile-agent recovery, while [21] names phantom attribution and unfaithful narration as distinct explanation failures under missing modalities—both target what final-answer accuracy hides.\n- **Credit assignment and fusion order have measurable sweet spots.** Fine-grained agentic RL credit assignment helps and hurts depending on task structure [25], and one-by-one fusion order materially changes retrieval performance [15]—design choices must be empirically tuned, not assumed.\n- **Low-cost, local, and training-free deployment is a first-class research goal.** A $205 offline crop-stress device [20], fully local medical multi-agent routing [3], training-free wafer-map classification [14], and training-free multilingual safety editing [4] show the field optimizing for real deployment constraints.\n- **Multilingual and missing-modality robustness remain under-addressed but are being benchmarked.** ImgMT's 129-language text-in-image suite [17], SEDATE's cross-lingual circuit probe [4], and ADNI-based faithfulness testing [21] extend multimodal rigor to linguistic and clinical-data diversity.",
+    "papers": [
+      {
+        "title": "GEMS-RAG: Graph-grounded Engineering Multimodal Standards Retrieval-Augmented Generation",
+        "url": "",
+        "authors": [
+          "Abdul Hannan Azad",
+          "Irvin Wang",
+          "Jiwan Jiang",
+          "Chenchen Kuai",
+          "Bofeng Cao",
+          "Keshu Wu",
+          "Yuzhou Wang",
+          "Xiaopeng Li",
+          "Yang Zhou"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "A Comprehensive Framework for All Stages of Large-Model Training: From Data and Tokenization, through Pretraining, to Post-Training Alignment",
+        "url": "",
+        "authors": [
+          "Xiangjing An",
+          "Zhibin Jiao",
+          "Aiting Chen"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Learning When to Collaborate: Selective Multi-Agent Medical Reasoning via Uncertainty-Aware Routing",
+        "url": "",
+        "authors": [
+          "Jiacheng Hou",
+          "Xueliang Cui",
+          "Dan Lu",
+          "Ruxin Wang"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "SEDATE: Do Large Language Models Share an Aggression Circuit Across Languages?",
+        "url": "",
+        "authors": [
+          "Sagnik Basu",
+          "Sayan Das",
+          "Somnath Banerjee",
+          "Animesh Mukherjee"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Seeing the Options: Typed Decisions over Visual Candidates with Reusable Option Memory",
+        "url": "",
+        "authors": [
+          "Fengxin Li"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "RoleHear: Pseudo-Labeling for Semi-Supervised Role-Attributed Streaming Speech Recognition",
+        "url": "",
+        "authors": [
+          "Zefang Liu",
+          "Chenyang Zhu",
+          "Sangwoo Cho",
+          "Xujun Peng",
+          "Rongqing Huang",
+          "Shi-Xiong Zhang",
+          "Sambit Sahu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "All the Facts, Still the Wrong Answer: Integration Gaps in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Yuyang Dai",
+          "Yuxia Wang",
+          "Zhuohan Xie"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "MTA-Zero: Self-Improving Multimodal Deep Search via Online QA-Solver Co-training",
+        "url": "",
+        "authors": [
+          "Xiangyu Peng",
+          "Jiaxin Zhang",
+          "An Yan",
+          "Yu Li",
+          "Ran Xu",
+          "Zeyuan Chen",
+          "Chien-Sheng Wu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Fed-Universe: A Semantic-Geometric-Topological-Human (S-G-T-H) Stack for Negotiated Alignment in Federated Systems",
+        "url": "",
+        "authors": [
+          "Ting Xu",
+          "Henry Leung"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Variational Cognitive Memory Abstraction for Long-Horizon Vision-Language-Action Models",
+        "url": "",
+        "authors": [
+          "Xinyu Liu",
+          "Daiying Tian",
+          "Chenwei Tang",
+          "Ruyang Han",
+          "Chengyang Zhang",
+          "Qingyu Zeng",
+          "Wei Ju",
+          "Liangli Zhen",
+          "Jiancheng Lv"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Hierarchical Cooperative GFlowNets",
+        "url": "",
+        "authors": [
+          "Pedro Dall'Antonia",
+          "Juan Belieni",
+          "Ana Carolina Erthal",
+          "Saullo H. G. de Oliveira",
+          "Eliezer de Souza da Silva",
+          "Diego Mesquita"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "CSI-TextBench: A Dataset and Benchmark for Language-Grounded Ambient Sensing Perception",
+        "url": "",
+        "authors": [
+          "Guozhen Zhu",
+          "Yuqian Hu",
+          "Sakila S Jayaweera",
+          "Wei-Hsiang Wang",
+          "Beibei Wang",
+          "K. J. Ray Liu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "AndroidFlux: Evaluating and Reward Modeling Failure Recovery Capabilities in Mobile Use Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Gyubeum Lim",
+          "Yemo Koo",
+          "Ghunwoo Jang",
+          "Zsolt Kira"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Zero-Shot Multi-Class Wafer Map Classification with Rule-Ordered Prompts for Large Multimodal Models",
+        "url": "",
+        "authors": [
+          "Tianjian Cao",
+          "Jun Tao"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "When Fusion Order Matters: Insights on Progressive Multimodal Representation Learning for Cross-modal Retrieval",
+        "url": "",
+        "authors": [
+          "Haoxiang Zhao",
+          "Bin Wang",
+          "Yaofei Wang",
+          "Xiao Lan",
+          "Yunfeng Diao",
+          "Xu Wang"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Co-Design Bench: Multimodal Collaborative Coding Evaluation for Agentic Models",
+        "url": "",
+        "authors": [
+          "Xilin Wei",
+          "Shengyuan Ding",
+          "Xinyu Fang",
+          "Tiancheng Gu",
+          "Yuchi Wang",
+          "Zhixun Li",
+          "Ziyu Liu",
+          "Yuhang Zang",
+          "Weixiang Yu",
+          "Cheng Lu",
+          "Chonggao Sun",
+          "Tong Zhou",
+          "Dahua Lin",
+          "Hang Zhang",
+          "Shuai Bai",
+          "Dayiheng Liu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "ImgMT: Wikipedia-based Dataset For Evaluating Text-in-Image Translation",
+        "url": "",
+        "authors": [
+          "Šárka Uramová",
+          "Petar Kirilov Petrov",
+          "Josef Jon",
+          "Ondřej Bojar",
+          "Michal Novák"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "TimeWorld: Towards Action-Conditioned Multimodal World Models for Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Hang Ni",
+          "Weijia Zhang",
+          "Hao Liu"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "AgenticCity-Bench: Longitudinal Multimodal Observations of Urban Dynamics with Agentic Reasoning",
+        "url": "",
+        "authors": [
+          "Xiaofei Yu",
+          "Kailai Sun",
+          "Yanyu Mao",
+          "Baoshen Guo",
+          "Heye Huang",
+          "Yongcai Wang",
+          "Baotong Mi",
+          "Alok Prakash",
+          "Shenhao Wang",
+          "Jinhua Zhao"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "AgriDefend: A $205 Offline Edge Device that Detects Crop Stress Before Visible Symptoms via Multimodal AI Fusion",
+        "url": "",
+        "authors": [
+          "George Xu",
+          "Nikhil Vincent",
+          "Elizabeth S. Forbes"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Faithful Explanations under Missing Modalities in Multimodal Dementia Prognosis",
+        "url": "",
+        "authors": [
+          "Firuz Kamalov"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "From Self-Confidence to Statistical Accuracy: Scaling Human-in-the-Loop Evaluation with Direct and LLM-Assisted Auditing",
+        "url": "",
+        "authors": [
+          "Harine Choi",
+          "Chenchen Kuai",
+          "Zihao Li",
+          "Jiwan Jiang",
+          "Yunlong Zhang",
+          "Zhiwen Fan",
+          "Zhengzhong Tu",
+          "Yang Zhou"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "Explainable Multimodal AI Approach to Reduce Unnecessary Breast Biopsies",
+        "url": "",
+        "authors": [
+          "Sadam Hussain",
+          "Mansoor Ali",
+          "Daly Betzabeth Avendaño-Avalos",
+          "Jose Gerardo Tamez-Peña"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "OneEEG: A Unified Signal-Visual Multimodal Language Model with Task-Aware Mixture of Projectors for Multi-Task EEG Understanding",
+        "url": "",
+        "authors": [
+          "Jiacheng Zhang",
+          "Xueyi Zhang",
+          "Xin Lu",
+          "Siqi Cai",
+          "Haizhou Li"
+        ],
+        "date": "2026-10-27"
+      },
+      {
+        "title": "When Fine-Grained Credit Assignment Helps and Hurts: Multimodal Agentic Reinforcement Learning through Video Editing",
+        "url": "",
+        "authors": [
+          "Lei Zhao",
+          "Zongheng Cao",
+          "Xinyu Hu"
+        ],
+        "date": "2026-10-27"
+      }
+    ]
+  }
+]
