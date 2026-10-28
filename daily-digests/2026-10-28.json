@@ -1,0 +1,394 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-10-28",
+    "paperCount": 3,
+    "markdown": "# Mechanistic Depth, Bayesian Dynamics, and Hybrid Reasoning: Today's Interpretability Frontier\n\nToday's interpretability research moves along three distinct axes: dissecting what survives compression inside transformer circuits, embedding interpretable structure directly into Bayesian dynamical models, and fusing statistical detectors with LLM reasoning to close semantic gaps in anomaly detection. Across these papers, a common thread emerges—interpretability is increasingly treated not as post-hoc explanation but as a design constraint and a measurable property of learned representations.\n\n## Mechanistic Interpretability of Compressed Transformers\n\n**What Survives Distillation? A Mechanistic Interpretability Study of GPT-2 and DistilGPT-2** [1] asks a question that aggregate benchmarks cannot answer: when depth-reduction distillation compresses GPT-2 into a six-layer student, which internal mechanisms are preserved and which are destroyed? The authors deploy a unusually broad mechanistic toolkit—linear CKA for representational similarity, logit lens for layer-wise prediction trajectories, attention pattern decomposition, sparse autoencoder feature statistics, and activation patching—and apply it to two canonical circuits, Indirect Object Identification (IOI) and Greater-Than (GT). Their central finding is a \"compression-collapse dichotomy\": the IOI circuit suffers disproportionately under distillation while other functionality survives, suggesting that circuit-level robustness to compression is highly uneven. This matters because it demonstrates that aggregate metric parity between teacher and student can mask severe mechanistic degradation in specific, safety-relevant capabilities—a caution for anyone deploying distilled models in settings where circuit-level fidelity is assumed.\n\n## Interpretable Structure in Physics and Engineering Models\n\n**Deep Bayesian Approaches for Interpretable Nonlinear Structural System Identification** [2] tackles the tension between flexible data-driven dynamics learning and the physical structure engineers require for diagnostics and decision-making. Classical Bayesian filtering offers principled probabilistic state estimation but depends on hand-specified transition and observation models; the authors advance the deep Bayesian filtering line by embedding learnable representations within probabilistic state-space formulations. This preserves physical structure and uncertainty quantification while enabling identification of unknown nonlinear dynamics from measured data. The contribution is a principled middle path for interpretability in engineering AI: rather than post-hoc explaining a black-box identifier, interpretability is baked in through the probabilistic state-space scaffold, which matters for safety-critical structural monitoring where decisions must be auditable.\n\n## Hybrid Statistical–Semantic Anomaly Detection\n\n**ReForest: Interpretability Meets Reasoning in Isolation Forest** [3] addresses the semantic gap in statistical anomaly detection: Isolation Forest efficiently flags numerical rarities but cannot grasp contextual meaning, missing subtle context-dependent anomalies, while LLMs reason semantically but are too costly for large-scale deployment. ReForest bridges the two by transforming the latent decision structure of Isolation Forest into a form amenable to LLM reasoning, synergizing statistical efficiency with semantic interpretation. The framework targets the best of both worlds—scalable screening plus reasoning-based contextual judgment—and represents a growing pattern of using LLMs as interpretability layers atop cheap classical detectors rather than as replacements. This matters for production anomaly detection pipelines where both cost and explanation quality are binding constraints.\n\n## Key Takeaways\n\n- Distillation can preserve aggregate metrics while selectively destroying specific circuits: the IOI circuit collapses under depth reduction in DistilGPT-2 even as other functionality survives [1], so benchmark parity is not evidence of mechanistic fidelity.\n- Mechanistic toolkits (CKA, logit lens, SAE statistics, activation patching) are maturing into standard batteries for auditing compression, enabling circuit-level rather than metric-level evaluation of distilled models [1].\n- Interpretability can be a design constraint rather than a post-hoc add-on: deep Bayesian filtering embeds physical structure and uncertainty directly into learned dynamical models [2].\n- Hybrid architectures—cheap statistical detectors wrapped with LLM reasoning—offer a pragmatic route to semantically aware, interpretable anomaly detection at scale [3].\n- A convergent theme across all three papers: explanation quality must be measured at the level of internal mechanism or model structure, not inferred from output behavior alone [1, 2, 3].\n- Circuit-level fragility under compression raises deployment questions for distilled models in safety-relevant roles, motivating mechanistic regression tests alongside standard evaluations [1].",
+    "papers": [
+      {
+        "title": "What Survives Distillation? A Mechanistic Interpretability Study of GPT-2 and DistilGPT-2",
+        "url": "",
+        "authors": [
+          "Nabeelah Faumi",
+          "Deshan Sumanathilaka"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Deep Bayesian Approaches for Interpretable Nonlinear Structural System Identification",
+        "url": "",
+        "authors": [
+          "Wei Liu",
+          "Konstantinos Vlachas",
+          "Eleni Chatzi"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "ReForest: Interpretability Meets Reasoning in Isolation Forest",
+        "url": "",
+        "authors": [
+          "Juyoung Seo",
+          "Geonwoo Bang",
+          "Dongho Kim",
+          "Moohong Min"
+        ],
+        "date": "2026-10-28"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-10-28",
+    "paperCount": 3,
+    "markdown": "# Explainability Research Digest — 2026-10-28\n\nToday's explainability research converges on a common theme: grounding model outputs in explicit, verifiable structure—knowledge graphs, ontologies, and domain-specific reasoning traces—rather than post-hoc rationalizations. Across finance, medicine, and document understanding, authors pair LLMs and multimodal transformers with symbolic scaffolding and dedicated evaluation frameworks to make high-stakes deployments auditable.\n\n## Explainability in High-Stakes Finance\n\nFinancial sentiment models have grown more capable via domain post-training, but most treat each article in isolation and offer no visibility into their reasoning—a serious liability for algorithmic trading, where context and accountability are paramount. [1] introduces **FinLLM-KG**, a model-agnostic framework that couples causal LLMs with a financial knowledge graph, injecting temporally grounded, company-level knowledge from SEC 10-K filings at inference time. This design moves beyond per-article sentiment classification toward context-aware, time-anchored predictions whose knowledge sources can be traced and inspected. The work matters because it demonstrates how retrieval over structured, auditable knowledge can simultaneously improve contextual understanding and reduce the black-box character of financial LLM deployments.\n\n## Ontology-Grounded Clinical Reasoning\n\nDifferential diagnosis demands unambiguous patient descriptions, yet incomplete clinical information routinely produces diagnostic errors—and LLMs, despite strong benchmark performance, often rely on pattern recognition rather than grounded evidence, generating plausible but unsupported conclusions. [2] proposes an **ontology-guided multi-agent reasoning** framework that structures patient cases and constrains diagnostic reasoning through explicit ontological commitments, with multiple agents decomposing the diagnostic process into inspectable steps. By anchoring reasoning in formal medical knowledge rather than latent correlations, the approach yields explanations that reference clinical evidence and can be audited by practitioners. This is a meaningful step toward trustworthy clinical AI, where explainability is not a courtesy but a precondition for adoption.\n\n## Evaluating Explainability for Document AI\n\nMultimodal transformers have set new records in document understanding, but their opacity blocks deployment in high-stakes sectors; meanwhile, XAI progress in vision and language has largely bypassed multimodal document understanding. [3] presents **DocXEval**, the first comprehensive explainability framework that adapts existing XAI methods and evaluation metrics to the multimodal document setting. The framework systematizes both explanation generation and quantitative assessment, filling a methodological gap that has left document-AI explainability anecdotal rather than empirical. Its contribution matters because rigorous benchmarks are the prerequisite for comparing explanation quality and holding document-understanding systems accountable.\n\n## Key Takeaways\n\n- **Structure beats post-hoc rationalization**: The strongest contributions this cycle ground explanations in explicit artifacts—knowledge graphs [1], ontologies [2], and standardized evaluation protocols [3]—rather than surface-level saliency.\n- **Temporal and domain grounding is the new explainability frontier**: FinLLM-KG's use of temporally anchored SEC filings [1] shows that *when* knowledge was retrieved is as important as *what* was retrieved for auditable finance.\n- **Black-box concerns are now deployment blockers, not academic caveats**: All three papers frame explainability as a precondition for high-stakes adoption in trading, medicine, and document processing.\n- **Multi-agent decomposition offers a path to inspectable clinical reasoning**: Splitting diagnosis across ontology-constrained agents [2] makes each reasoning step traceable to clinical evidence.\n- **Evaluation infrastructure is maturing**: DocXEval [3] provides the first systematic benchmark for multimodal document explainability, enabling comparative claims where none were previously possible.\n- **Model-agnostic design is a recurring virtue**: FinLLM-KG's framework [1] and DocXEval's adapted metrics [3] both aim to work across model families, future-proofing explanations as architectures evolve.\n- **Gap remains between explanation generation and clinical/financial validation**: None of the papers yet closes the loop with domain-expert user studies at scale—a natural next step for the field.",
+    "papers": [
+      {
+        "title": "FinLLM-KG: Knowledge Graph-Enhanced LLMs for Financial Sentiment Analysis in Algorithmic Trading",
+        "url": "",
+        "authors": [
+          "Giorgos Iacovides",
+          "Oliver Hannibal",
+          "Wuyang Zhou",
+          "Danilo Mandic"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Ontology-guided multi-agent reasoning for explainable differential diagnosis",
+        "url": "",
+        "authors": [
+          "Roxana Ramona Szomiu",
+          "George Ursu",
+          "Adrian Groza"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "DocXEval: A Systematic Evaluation of Explainability in Multimodal Document Understanding",
+        "url": "",
+        "authors": [
+          "Saifullah Saifullah",
+          "David Dembinsky",
+          "Stefan Agne",
+          "Andreas Dengel",
+          "Sheraz Ahmed"
+        ],
+        "date": "2026-10-28"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-10-28",
+    "paperCount": 16,
+    "markdown": "# Multimodal Research Digest — October 28, 2026\n\nToday's multimodal research landscape spans from unified embedding models and embodied agents to specialized applications in healthcare, transportation, and document understanding, reflecting the field's maturation toward production-ready systems. A notable theme is the growing emphasis on reliability, explainability, and adaptive computation—moving beyond raw capability toward trustworthy, efficient multimodal intelligence.\n\n## Unified Multimodal Agents and Self-Improvement\n\nThe push toward general-purpose multimodal agents that can reason, plan, and adapt across diverse tasks is evident in several contributions this cycle. These works grapple with the fundamental challenge of building systems that coordinate multiple capabilities while managing computational costs and ensuring reliability over extended horizons.\n\n**OmniBrain-0** [1] addresses the challenge of building general-purpose embodied intelligence that can coordinate manipulation and navigation tasks over long horizons while tracking progress and recovering from failures. The authors introduce a lightweight unified agent that integrates task understanding, planning, progress tracking, and feedback-driven recovery through a shared high-level decision model, avoiding the costly reasoning overhead of larger multimodal agents. This work matters because it demonstrates that compact models can achieve task-level reliability in embodied settings without relying on external experience or expensive inference-time compute.\n\n**The Trinity** [2] tackles two bottlenecks in scaling multimodal intelligence: the high cost of constructing heterogeneous, verifiable environments and the inability of manual Harness iteration to keep pace with task diversity. The framework introduces a recursive self-improvement approach that couples world generation with Harness evolution through three roles (Creator and others), leveraging the insight that tasks with different modalities can share the same underlying capability requirements. This capability-driven perspective on self-improvement could significantly reduce the human effort required to scale multimodal agent training.\n\n**Live-OPSD** [3] addresses the challenge of streaming multimodal assistants that must decide when to respond while events are still unfolding, producing appropriate continuations or remaining silent. The authors introduce an on-policy self-distillation method that uses privileged hints available only during training to supervise the policy on its own generated outputs, rather than relying solely on recorded assistant turns as in supervised fine-tuning. This approach is significant for deploying responsive streaming video assistants that can make real-time decisions about when visual evidence warrants intervention.\n\n**CogArena** [4] introduces a benchmark of ten experimental paradigms from social and behavioral sciences to evaluate multimodal agents in interactive behavioral experiments, addressing the concern that claims about LLM cognitive capabilities are typically tested via text prompts that bypass visual interfaces and time pressure. The benchmark raises important concerns about data contamination in online behavioral science datasets as AI agents increasingly produce human-like data. This work is critical for establishing rigorous evaluation standards as multimodal agents become capable of participating in—and potentially contaminating—human behavioral research.\n\n## Efficient Multimodal Representations and Retrieval\n\nEfficiency and adaptability in multimodal representation learning and retrieval systems emerge as key concerns, with contributions addressing unified embedding spaces, adaptive computation allocation, and routing mechanisms.\n\n**EmbeddingGemma 2** [5] presents an open multimodal embedding model that natively represents text, images, audio, video, and combinations thereof in a unified space. The approach introduces simplified per-layer embeddings and a multi-stage curriculum with modality and objective progression to ensure strong quality across unimodal, cross-modal, and mixed-modal evaluations. Notably, the model establishes a new Pareto frontier, outperforming both specialist models and models two to twelve times larger—a significant result for democratizing access to high-quality multimodal embeddings. This work matters because unified embedding models are foundational infrastructure for retrieval, clustering, and cross-modal search applications.\n\n**RouteDRAG** [6] addresses the inefficiency of always-on agentic execution in multimodal document RAG, where iterative retrieval and reasoning introduce additional computation and potentially incorrect answers for queries that don't require it. The authors' empirical analysis reveals that agentic execution provides query-dependent benefits, motivating a learned routing mechanism that decides when to invoke agentic execution versus simpler retrieval. This contribution is important for production RAG systems where computational efficiency and answer accuracy must be jointly optimized.\n\n**DocXEval** [7] presents the first comprehensive explainability framework for multimodal document understanding, adapting existing XAI methods and evaluation metrics to this domain. The work addresses the critical gap in explainability research for document understanding models, which have seen unprecedented performance breakthroughs but remain black boxes—a major obstacle to deployment in high-stakes sectors like finance, legal, and healthcare. This framework provides essential tooling for building trust in multimodal document AI systems.\n\n## Multimodal Reasoning, Calibration, and Refusal\n\nSeveral papers probe the internal representations and decision-making processes of multimodal models, examining how they handle numerical reasoning, theory of mind, and the critical ability to recognize when evidence is insufficient.\n\n**Latent Numerical Frame** [8] investigates whether multimodal models use a unified internal concept of number across modalities (text and image) and operations (addition and subtraction), or separate machinery for each path. Using causal interventions rather than similarity metrics like RSA or CKA—which cannot distinguish identical from rotated directions—the authors learn a small subspace in Gemma4-12B-it's residual stream where swapping across conditions produces consistent effects, providing evidence for a shared latent numerical frame. This work has implications for understanding how multimodal models generalize mathematical reasoning across input formats.\n\n**Perspective-Bounded Evidence Calibration** [9] addresses multimodal Theory of Mind, requiring inference of an agent's mental state from evidence available to that agent rather than the complete episode observed by the solver. The authors identify that existing LLM-based and Bayesian approaches fail to distinguish objective events from agent-admissible evidence, allowing inaccessible events or misaligned actions to influence predictions. This contribution is significant for building socially intelligent AI systems that can model others' beliefs accurately, with applications in human-AI collaboration and assistive technologies.\n\n**Refusal in Multimodal Language Models** [10] examines when MLLMs refuse to answer visually unanswerable questions, distinguishing genuine recognition of insufficient evidence from refusals driven by unrelated safety constraints. Across three MLLMs on the MoHoBench benchmark, the authors systematically manipulate inference-time instructions, post-training, and internal activation interventions to understand how each source shapes refusal behavior. This work is critical for deployment reliability—models that refuse for the wrong reasons or fail to refuse when they should both represent failure modes that need to be understood and controlled.\n\n## Multimodal Applications in Healthcare and Specialized Domains\n\nMultimodal techniques are being increasingly applied to high-stakes domains including healthcare, transportation, and construction safety, with contributions addressing reliability, interpretability, and domain-specific challenges.\n\n**Reliability-Aware Glycemic Risk Prediction** [11] introduces an anchor-based benchmarking framework for short-term hypoglycemic and hyperglycemic risk prediction, integrating longitudinal glucose sequences and multimodal patient information from 5,503,441 standardized prediction anchors across 736 individuals with type 1 diabetes. The framework evaluates sequence-based, multimodal, and state-updating digital-twin models with consistent protocols emphasizing reliability over raw predictive performance. This work matters because consistent evaluation standards and reliability-aware metrics are prerequisites for clinical deployment of AI-driven diabetes management systems.\n\n**MM-Net** [12] addresses automated polysomnography after ischemic stroke, where altered sleep neural activity and concurrent respiratory disturbances complicate analysis. The multimodal multi-task framework jointly analyzes sleep architecture and respiratory events while resolving representation inconsistency that arises when pretrained EEG encoders are trained on embeddings from seen patients but evaluated on unseen individuals. This contribution is significant for stroke rehabilitation monitoring, where comprehensive sleep and apnea assessment can inform treatment decisions.\n\n**SpecLST** [13] proposes a frequency-enhanced long-short-term spatio-temporal multimodal framework for traffic forecasting, addressing the trade-off between sequence length and memory overhead in existing spatio-temporal models while incorporating exogenous factors like road incidents and weather. The approach leverages fast Fourier transforms to efficiently capture multi-scale dynamics essential for intelligent transportation systems. This work is practical for real-world traffic management where computational efficiency and responsiveness to transient events are both required.\n\n**ReliMorph** [14] presents a reliability-routed symmetric framework for 3D deformable image registration that couples correspondence assessment with spatial context selection and deformation update strength. The method specifically targets challenging regions with homogeneous textures and severe deformation where ambiguous matches can induce erroneous updates. This contribution is important for medical image registration tasks where precision in weakly textured anatomical regions is critical for downstream clinical applications.\n\n**LM-DSB** [15] addresses the challenge of producing daily safety bulletins in construction, where manual creation takes 2-3 hours daily and yields inconsistent quality, with 25% of crews never conducting pretask planning. The lightweight multi-agent system integrates retrieval-augmented generation with a locally deployable LLM to automate structured safety communications identifying site-specific hazards and preventive measures. This work demonstrates how multimodal AI can address practical workplace safety challenges while being deployable on local infrastructure.\n\n## Foundational Methods for Multimodal Learning\n\nUnderlying these application advances are foundational methodological contributions addressing Bayesian inference, flow-based variational methods, and the theoretical understanding of multimodal representations.\n\n**Rènyi-Regularized Flow-Based Variational Inference** [16] addresses the challenge of multimodal posteriors in Bayesian model calibration using normalizing flows, where modes are separated by regions of low probability mass. The authors study this behavior in a two-parameter twin experiment and regularize the variational objective, showing that under Gaussian observation errors and priors, the minimization objective relates to the expected Tikhonov calibration objective minus differential entropy. While not explicitly multimodal in the vision-language sense, this work provides theoretical foundations relevant to uncertainty quantification in multimodal systems where calibration across heterogeneous data sources is essential.\n\n## Key Takeaways\n\n- **Unified representation is converging**: EmbeddingGemma 2's Pareto-frontier performance across five modalities, combined with evidence for shared latent numerical frames in multimodal models [5, 8], suggests the field is moving toward genuinely unified multimodal representations rather than modality-specific pipelines.\n\n- **Adaptive computation is essential**: Both RouteDRAG's query-dependent routing of agentic execution [6] and OmniBrain-0's lightweight unified agent [1] demonstrate that effective multimodal systems must dynamically allocate computational resources based on task demands rather than applying uniform reasoning depth.\n\n- **Reliability over raw performance**: Multiple papers [11, 14, 10] emphasize reliability-aware evaluation and decision-making, signaling a maturation in the field where consistent protocols and calibrated confidence are valued alongside accuracy.\n\n- **Explainability gaps remain critical**: DocXEval's identification of explainability as an under-addressed area for multimodal document understanding [7] highlights that interpretability tooling lags significantly behind capability advances, hindering deployment in high-stakes sectors.\n\n- **Self-improvement and curriculum strategies scale capabilities**: The Trinity's recursive self-improvement framework [2] and Live-OPSD's on-policy self-distillation [3] both leverage privileged training signals and capability-sharing across tasks to scale agent competence without proportional increases in human supervision.\n\n- **Benchmark contamination is an emerging concern**: CogArena [4] raises the alarm that AI agents capable of completing online behavioral experiments may contaminate the very datasets used to evaluate them, requiring new paradigms for rigorous evaluation.\n\n- **Domain-specific multimodal deployment is accelerating**: Healthcare applications spanning diabetes management [11], stroke-related sleep analysis [12], and deformable registration [14] demonstrate that multimodal methods are transitioning from benchmarks to clinically-relevant systems, with construction safety [15] and traffic forecasting [13] showing similar translational progress.",
+    "papers": [
+      {
+        "title": "OmniBrain-0: A Unified Agentic Model for Embodied Intelligence",
+        "url": "",
+        "authors": [
+          "Xiaomi Embodied Intelligence Team",
+          "Yuechen Luo",
+          "Chong He",
+          "Fang Li",
+          "Shaoqing Xu",
+          "Jingkai Wang",
+          "Menglun Su",
+          "Jiaxin Liu",
+          "Shengyin Jiang",
+          "Zhiyi Lai",
+          "Long Chen",
+          "Longlong Wang",
+          "Liang Hu",
+          "Haochen Liu",
+          "Yuncheng Jiang",
+          "Hongwei Xie",
+          "Jieming Cui",
+          "Hanbing Li",
+          "Junjie Huang",
+          "Zhixiang Duan",
+          "Hexin Zhang",
+          "Weixiang Liang",
+          "Ying Gong",
+          "Yuhan Wang",
+          "Yong Pan",
+          "Pengna Li",
+          "Kangyi Wu",
+          "Ken Deng",
+          "Kun Ma",
+          "Fuxi Wen",
+          "Zhi-xin Yang",
+          "Hangjun Ye"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "The Trinity:Capability-Driven Recursive Self-Improvement for Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Weidong Tang",
+          "Ruiheng Wang",
+          "Jingxuan Zhang",
+          "Hexin Wang",
+          "Haoyuan Chen",
+          "Zhengfeiyang Zhang",
+          "Yixing Ma",
+          "Zichen Jiang",
+          "Ziyu Guo",
+          "Haodong Li",
+          "Zhengbo Jiao",
+          "Zhiqing Cui",
+          "Xinxiang Yin",
+          "Shuo Liang",
+          "Zhenglin Wan",
+          "Hongzhan Lin",
+          "Wangbo Zhao Kaipeng Zhang",
+          "Pengfei Zhou",
+          "Odin Zhang",
+          "Yang You"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "LM-DSB: A Lightweight Multi-agent System for Automated Daily Safety Bulletin Generation in Construction",
+        "url": "",
+        "authors": [
+          "Xianxiang Zhao",
+          "Advik Mehta",
+          "Falak Sethi",
+          "Brian Gue",
+          "Qipei Mei",
+          "Lingzi Wu"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "RouteDRAG: Learning to Route and Control Agentic Execution for Multimodal Document RAG",
+        "url": "",
+        "authors": [
+          "Zekai Chen",
+          "Hao Zhu",
+          "Yu Liu",
+          "Xunkai Li",
+          "Zejian Kang",
+          "Rui Qian",
+          "Quanjiang Li",
+          "Rong-Hua Li"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "CogArena: Benchmarking Multimodal Agents on Interactive Behavioral Experiments",
+        "url": "",
+        "authors": [
+          "Kianté Fernandez",
+          "Caitlin Chen",
+          "Jialu Zhou",
+          "Bartek Sadowski",
+          "Anthony C. Miceli",
+          "Ian Krajbich"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Reliability-Aware Short-Term Glycemic Risk Prediction Using an Anchor-Based Comparative Framework of Sequence, Multimodal, and State-Updating Digital-Twin Models",
+        "url": "",
+        "authors": [
+          "Pir Bakhsh Khokhar",
+          "Carmine Gravino",
+          "Fabio Palomba"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "DocXEval: A Systematic Evaluation of Explainability in Multimodal Document Understanding",
+        "url": "",
+        "authors": [
+          "Saifullah Saifullah",
+          "David Dembinsky",
+          "Stefan Agne",
+          "Andreas Dengel",
+          "Sheraz Ahmed"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "SpecLST: Spectral-Enhanced Long-Short Term Spatio-Temporal Multimodal Modeling for Traffic Forecasting",
+        "url": "",
+        "authors": [
+          "Kenan Kang",
+          "Matthew M. Y. Kuo",
+          "Weihua Li"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Learning Where to Trust: Reliability-Guided Expert Routing and Velocity Gating for 3D Deformable Registration",
+        "url": "",
+        "authors": [
+          "Chenyu Guo",
+          "Wenjie Dai",
+          "Yiqian Chang",
+          "Zhiyuan Zhang",
+          "Yunfan Wei",
+          "Shuhan Qi"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Who Knows What - and What Does It Support? Perspective-Bounded Evidence Calibration for Multimodal Theory of Mind",
+        "url": "",
+        "authors": [
+          "Ziqi Liao",
+          "Jiaqi Shen",
+          "Yiming Na",
+          "Kedi Lyu",
+          "Shao-Yuan Lo",
+          "Hongxia Xie"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "MM-Net: A Multimodal Multi-Task Network for Sleep Staging and Sleep Apnea Assessment After Ischemic Stroke",
+        "url": "",
+        "authors": [
+          "Md Wahiduzzaman Suva",
+          "Esm E Moula Chowdhury Abha",
+          "Md Imtiaj Alam Sajin",
+          "Md Iftekharul Mobin",
+          "Jia Uddin"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Rènyi-Regularized Flow-Based Variational Inference for Bayesian Calibration",
+        "url": "",
+        "authors": [
+          "Exaucè Luweh Adjim Ngarti",
+          "Élise Arnaud",
+          "Léo Nicoletti",
+          "Victor Trappler",
+          "Arthur Vidard"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "EmbeddingGemma 2: Unified and Efficient Multimodal Representations",
+        "url": "",
+        "authors": [
+          "Henrique Schechter Vera",
+          "Sahil Dua",
+          "Jovan Andonov",
+          "Sara Smoot",
+          "Sebastian Russo",
+          "Ivan Llanos",
+          "Max Matveev",
+          "Jae Hyeon Yoo",
+          "Kat Black",
+          "Shih-Cheng Huang",
+          "Josiah Aklilu",
+          "Maarten Grootendorst",
+          "Omar Sanseviero",
+          "Chandramouli Amarnath",
+          "Ian Ballantyne",
+          "Zhe Li",
+          "Daniel Salz",
+          "Ibrahim Alabdulmohsin",
+          "Ilya Philippov",
+          "Kristen Quan",
+          "Glenn Cameron",
+          "Edouard Yvinec",
+          "Luciano Martins",
+          "Doug Reid",
+          "Sindhu Raghuram Panyam",
+          "Weiyi Wang",
+          "Hengxuan Ying",
+          "Madhuri Shanbhogue",
+          "Tanmaya Dabral",
+          "Shanfeng Zhang",
+          "Juyeong Ji",
+          "Renjie Wu",
+          "Joe Zou",
+          "Xu Chen",
+          "Yunan Zhang",
+          "Yu-Hui Chen",
+          "Matthew Soulanille",
+          "Vinod Mamillapalli",
+          "Yi-Chun Kuo",
+          "Wai Hon Law",
+          "Matt Kreileder",
+          "Alice Zheng",
+          "Suril Shah",
+          "Mogan Shieh",
+          "Pooja Consul",
+          "Alberto Montes",
+          "Andreas Hess",
+          "Andres Sevilla",
+          "Babak Samari",
+          "Brendan McCloskey",
+          "Brian Potetz",
+          "Daniel Cer",
+          "Georgios Kathareios",
+          "Gustavo Hernández Ábrego",
+          "Hesen Zhang",
+          "Ji Ma",
+          "Jiaxing Wu",
+          "Keegan Mosley",
+          "Paul Suganthan",
+          "Rui Meng",
+          "Shen Gao",
+          "Shengcao Cao",
+          "Yi-Ting Chen",
+          "Yichang Chen",
+          "Zhongli Ding",
+          "Kendra Byrne",
+          "Cormac Brick",
+          "Olivier Lacombe",
+          "Qin Yin",
+          "Tris Warkentin",
+          "Armand Joulin",
+          "Tom Duerig",
+          "Mojtaba Seyedhosseini"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Live-OPSD: On-Policy Self-Distillation for Proactive Streaming Large Video Models",
+        "url": "",
+        "authors": [
+          "Kaixuan Du",
+          "Xin Wan",
+          "Dai Guan",
+          "Ming Chen",
+          "Xiaoxi Jiang",
+          "Guanjun Jiang"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "Beyond the Readout: A Latent Numerical Frame Shared Across Modality and Operation",
+        "url": "",
+        "authors": [
+          "Oriol Juan Sabater",
+          "Alex Ferrando de las Morenas",
+          "Pau Rodríguez",
+          "Xavier Suau"
+        ],
+        "date": "2026-10-28"
+      },
+      {
+        "title": "When Visual Evidence Is Insufficient: How Instructions, Post-Training, and Internal Activations Shape Refusal in Multimodal Language Models",
+        "url": "",
+        "authors": [
+          "Ananth K Suresh",
+          "Aveen Dayal",
+          "Gouthaman KV",
+          "Aditya Pola",
+          "Vineeth N Balasubramanian"
+        ],
+        "date": "2026-10-28"
+      }
+    ]
+  }
+]
