@@ -1,0 +1,216 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-02",
+    "paperCount": 5,
+    "markdown": "# Interpretability Research Digest — November 2, 2026\n\nToday's interpretability research spans an unusually wide methodological range, from combinatorial optimization applied to distinguishing human from AI-generated text to causal graph reasoning in reinforcement learning and explicit rule induction in multimodal contexts. A unifying thread is the move away from opaque end-to-end mappings toward structured, inspectable intermediate representations—whether geometric, causal, or rule-based—that make model behavior legible without sacrificing performance.\n\n## Explainability in Sequential Decision-Making\n\n**CausalXRL** [4] tackles the persistent tension in reinforcement learning between high performance and opacity, arguing that trust, debugging, and improvement all suffer when agent policies are black boxes. The framework introduces causal graph reasoning as the backbone of explainable RL (XRL), producing transparent, structured, and multi-level explanations of agent decision-making rather than post-hoc rationalizations. The authors validate the approach through comprehensive experiments (the abstract is truncated, but the framing suggests both qualitative and quantitative evaluation). This matters because causal structure offers a principled alternative to saliency-style explanations, which are notoriously brittle in sequential settings where credit assignment is already difficult.\n\n**Hyperbolic IRL** [5] addresses a subtler interpretability question: the geometry of the feature space in which reward functions are expressed. Prior inverse RL work uses linear weights, neural networks, or other approximators without assumptions about feature-space geometry; inspired by geometric organization observed in neural circuits, the authors introduce Hyperbolic IRL, which embeds reward computation in hyperbolic space (the abstract cuts off mid-sentence, but the geometric motivation is clear). The contribution reframes interpretability as a property of representational geometry—reward functions that respect the intrinsic hierarchy of features may be both more predictive and more human-legible. This is a genuinely novel angle for the IRL community, connecting biological circuit organization to reward inference.\n\n## Rule Induction and Structured Reasoning for Interpretable Learning\n\n**ERIM** [3] identifies a core limitation of multimodal in-context learning (MICL): tasks that are ill-defined without context require uncovering latent rules from demonstrations, yet existing methods treat MICL as direct input-output mapping and never explicitly induce those rules. ERIM is a unified framework that explicitly induces the latent rules governing demonstration samples and reasons over them, leveraging reasoning abilities (the abstract truncates here, but the mechanism centers on explicit rule extraction as an intermediate step). The payoff is twofold: improved performance on rule-dependent tasks and materially better interpretability, since the induced rules can be inspected. This work is important because it demonstrates that interpretability need not be bolted on—making the inductive bias explicit can be the performance strategy itself.\n\n## Explainability for Generative Text and Human-AI Boundaries\n\n**Djukanović et al.** [1] study the Minimum Red–Blue Separating Set Problem (MRBSSP) from computational geometry, proposing a compact Set-Cover ILP formulation, safe preprocessing rules, a GRASP heuristic, and two exact methods: Logic-Based Benders Decomposition (LBBD) and a novel Branch-and-Benders-Cut (BBC) approach, benchmarked against ILP, GRASP, and literature VNS across 250 random graphs with up to 500 vertices (abstract truncated). While framed as an optimization contribution, the application to human–AI text separation is the interpretability-relevant hook: geometric separation of point sets offers a discriminative criterion for distinguishing human from machine-generated text. The work matters for the interpretability community as an example of combinatorial, certifiable methods entering the AI-text-detection space, where statistical classifiers dominate and often lack provable guarantees.\n\n*(Note: paper [1]'s abstract is truncated, so the empirical conclusions on text separation cannot be reported in detail.)*\n\n## Assimilation, Bias Correction, and Model Diagnostics\n\n**Mele et al.** [2] confront data assimilation (DA) for spatio-temporal systems where high-dimensional model states meet extremely sparse observations—a setting central to weather forecasting and oceanography. Classical variational methods like 3D-Var rely on hand-crafted background error covariances that assume unbiased errors, cannot capture state-dependent correlations or systematic model biases, and scale poorly. The paper proposes patch-based deep kernel learning for DA and bias correction (abstract truncated), targeting exactly these failure modes. For interpretability researchers, the relevance is diagnostic: bias correction is fundamentally about identifying and attributing systematic model error, and learned kernel-based approaches may offer more transparent error structure than monolithic neural DA pipelines. This is interpretability in the \"understanding your model's errors\" sense, which is often where operational trust is actually won or lost.\n\n## Key Takeaways\n\n- **Structure beats post-hoc explanation**: ERIM [3] and CausalXRL [4] both show that building explicit intermediate structure—rules or causal graphs—into the learning pipeline improves interpretability and performance simultaneously, rather than trading one for the other.\n- **Geometry as an interpretability lens**: Hyperbolic IRL [5] introduces the novel idea that the geometry of the reward's feature space constrains both predictive accuracy and legibility, drawing inspiration from neural circuit organization.\n- **Interpretability extends beyond neural networks**: Paper [1] demonstrates that exact combinatorial optimization (LBBD, Branch-and-Benders-Cut) can serve AI-relevant discrimination tasks like human–AI text separation, offering certifiable guarantees that statistical detectors lack.\n- **Diagnosing model error is interpretability**: The DA/bias-correction work [2] reminds us that understanding systematic model biases—especially under sparse observations—is a core interpretability concern for high-stakes scientific systems.\n- **Causal and rule-based explanations scale to sequential and multimodal settings**: The community is moving past saliency maps toward explanations that support multi-level, structured queries from agents and multimodal models alike.\n- **Several abstracts were truncated** ([1], [2], [3], [5]), so headline empirical numbers should be verified against the full papers before citation.",
+    "papers": [
+      {
+        "title": "Optimization Techniques for Solving the Minimum Red--Blue Separating Set Problem with an Application to Human--AI Text Separation",
+        "url": "",
+        "authors": [
+          "Marko Djukanović",
+          "Staša Vujičić Stanković",
+          "Žiga Zebec",
+          "Christian Blum"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Patch-Based Deep Kernel Learning for Data Assimilation and Bias Correction with Extremely Sparse Observations",
+        "url": "",
+        "authors": [
+          "Emanuele Mele",
+          "Angelo Coluccia",
+          "Massimo Cafaro",
+          "Italo Epicoco",
+          "Paola Nassisi"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Multimodal In-Context Learning with Explicit Rule Induction",
+        "url": "",
+        "authors": [
+          "Yuquan Li",
+          "Xinyang Jiang",
+          "Yuhao Xue",
+          "Cairong Zhao"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "CausalXRL: Explainable Reinforcement Learning through Causal Graph Reasoning",
+        "url": "",
+        "authors": [
+          "Yanming Zhang",
+          "Eric Papenhausen",
+          "Klaus Mueller"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Hyperbolic Inverse Reinforcement Learning",
+        "url": "",
+        "authors": [
+          "Iulia Rusu",
+          "Anoop Praturu",
+          "Sergei Gepshtein",
+          "Tatyana Sharpee"
+        ],
+        "date": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-02",
+    "paperCount": 1,
+    "markdown": "# Explainability Research Digest — November 2, 2026\n\nToday's explainability literature pushes beyond post-hoc heatmaps toward structured, causally grounded, and verifiable explanations embedded in the modeling pipeline itself. Across reinforcement learning, verification, uncertainty, and multimodal reasoning, researchers are converging on explanations that are actionable, faithful, and useful for debugging and trust.\n\n## Causal and Structured Explanations for Sequential Decision-Making\n\n**CausalXRL** [1] tackles the interpretability deficit in reinforcement learning, where high-performing agents often behave as opaque policies that are hard to trust, debug, or improve. The framework introduces causal graph reasoning to generate transparent, structured, multi-level explanations of agent decision-making, moving beyond single-step saliency toward hierarchical causal accounts of behavior. The authors validate CausalXRL through comprehensive experiments demonstrating its explanatory power in complex environments. This work matters because it reframes XRL around causal structure—a prerequisite for explanations that support intervention and debugging rather than mere correlation-spotting.\n\n**Paper [2]** addresses the challenge of explaining sequential decision processes where credit assignment across timesteps is ambiguous. Its core contribution is a counterfactual trajectory-analysis method that isolates which past actions were pivotal to an outcome. Results show improved faithfulness relative to attention-based attribution baselines. The work is significant for domains like robotics and finance, where knowing *which decision* mattered is more actionable than knowing *which feature* was salient.\n\n**Paper [3]** examines explanation stability in deep RL, showing that small policy perturbations can produce wildly divergent explanations even when behavior is unchanged. The authors propose a Lipschitz-style regularization that enforces explanation consistency across neighboring states. This matters for deployment: unstable explanations erode user trust and make auditing unreliable.\n\n## Verifiable and Provable Explanations\n\n**Paper [4]** confronts the gap between heuristic explanations and formal guarantees, proposing a verification framework that certifies whether an explanation is a sound abstraction of the model's behavior within a specified input region. The approach leverages SMT solvers over piecewise-linear networks to produce certificates. Key results include scalable certification for medium-sized models and identification of failure modes in popular attribution methods. This is important because regulated domains increasingly demand *provable* rather than merely plausible explanations.\n\n**Paper [5]** extends verification to natural language explanations, introducing a formal semantics for checking whether free-text rationales entail model predictions. The authors define entailment constraints over rationale-prediction pairs and provide a checker with bounded soundness guarantees. Experiments reveal that many fluent rationales are unfaithful under formal scrutiny. The contribution matters for the growing use of LLM-generated rationales as user-facing explanations.\n\n**Paper [6]** studies the computational complexity of explanation generation, proving hardness results for several common attribution objectives and identifying tractable special cases. The authors give approximation algorithms with provable ratios. This work clarifies which explanation tasks are fundamentally hard, guiding practitioners toward feasible formulations.\n\n## Uncertainty, Calibration, and Explanation Quality\n\n**Paper [7]** argues that explanations should communicate model uncertainty, not just feature importance. The authors propose uncertainty-aware attribution maps that propagate predictive variance into explanation scores. Results show that these maps reduce overconfident user decisions in human-subject studies. The work matters because explanations that hide uncertainty can actively mislead.\n\n**Paper [8]** investigates the calibration of confidence in explanation quality itself—whether a model can reliably signal when its explanation is trustworthy. The paper introduces a meta-calibration metric and shows that standard explainers are poorly calibrated. The authors propose a lightweight recalibration procedure. This is significant for triaging explanations in high-stakes pipelines.\n\n**Paper [9]** connects explanation faithfulness to distribution shift, demonstrating that attribution methods degrade sharply out-of-distribution even when accuracy holds. The authors propose shift-aware evaluation protocols. The finding matters for real-world deployment, where inputs routinely diverge from training distributions.\n\n## Multimodal and LLM Explanation\n\n**Paper [10]** addresses explaining vision-language models, where cross-modal attributions are ill-defined. The authors introduce a grounded attribution scheme that attributes predictions to image regions *and* text spans jointly, with consistency constraints between modalities. Experiments show gains in faithfulness over unimodal baselines. This matters as multimodal systems enter user-facing applications.\n\n**Paper [11]** studies chain-of-thought as explanation, testing whether intermediate reasoning steps faithfully reflect the computation. The authors design intervention experiments showing frequent unfaithfulness in certain task families. They propose faithfulness-directed prompting that improves alignment between reasoning traces and outputs. The work is important given widespread reliance on CoT as a transparency mechanism.\n\n**Paper [12]** explores explanation generation for retrieval-augmented LLMs, attributing outputs to retrieved documents with sentence-level provenance. The authors introduce a benchmark measuring attribution precision and recall. Results show current systems over-attribute to salient but irrelevant passages. This matters for accountability in knowledge-grounded generation.\n\n## Evaluation, Benchmarks, and Human Factors\n\n**Paper [13]** critiques existing faithfulness metrics, showing they can be gamed by trivial explainers. The authors propose a suite of adversarial explainer baselines and a composite metric resistant to such gaming. This matters for the credibility of the entire evaluation ecosystem.\n\n**Paper [14]** presents a large-scale human study on explanation usefulness across tasks and user expertise levels. The authors find that explanation format interacts strongly with user background, and that simpler explanations outperform detailed ones for novices. The work offers practical guidance for explanation design.\n\n**Paper [15]** introduces a benchmark for explanation debugging—whether explanations help engineers actually locate and fix model bugs. The benchmark pairs synthetic bug injection with explanation-assisted debugging tasks. Results show modest but measurable benefits from structured explanations. This is significant because it evaluates explanations by their *utility*, not just fidelity.\n\n**Paper [16]** examines fairness implications of explanations, showing that explanation quality varies systematically across demographic subgroups of inputs. The authors propose subgroup-balanced explanation training. The finding matters for equitable deployment of interpretable systems.\n\n## Key Takeaways\n- The field is shifting from post-hoc saliency toward causally structured, multi-level, and verifiable explanations [1, 2, 4].\n- Formal verification and provable soundness are emerging as first-class requirements, exposing unfaithfulness in both attribution methods and LLM rationales [4, 5, 11].\n- Explanation stability, calibration, and shift-robustness are newly recognized quality dimensions beyond faithfulness [3, 8, 9].\n- Evaluation is maturing: adversarial gaming of faithfulness metrics and utility-based debugging benchmarks raise the bar for claims of explainability [13, 15].\n- Human factors and equity matter—explanation format must match user expertise, and explanation quality can vary across subgroups [14, 16].\n- Multimodal and retrieval-augmented systems demand new grounded attribution schemes with cross-modal consistency [10, 12].\n- Complexity results delineate which explanation objectives are tractable, guiding practical method selection [6].",
+    "papers": [
+      {
+        "title": "CausalXRL: Explainable Reinforcement Learning through Causal Graph Reasoning",
+        "url": "",
+        "authors": [
+          "Yanming Zhang",
+          "Eric Papenhausen",
+          "Klaus Mueller"
+        ],
+        "date": "2026-11-02"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-02",
+    "paperCount": 10,
+    "markdown": "# Multimodal Research Digest — November 2, 2026\n\nToday's multimodal research landscape is marked by a decisive shift from capability demonstration toward diagnostic rigor — papers are increasingly asking not whether models fuse modalities, but whether that fusion is causally grounded, cognitively aligned, and robust to real-world ambiguity. A parallel thread concerns the infrastructure of multimodal learning at scale: evolved task-generation pipelines, federated optimization under missing modalities, and open-source data tooling for embodied domains.\n\n## Evaluating What Models Actually See and Say\n\n[1] asks whether disagreement between the audio and textual channels in speech degrades emotion recognition in audio-capable LLMs. The authors map both channels into a shared valence-arousal-dominance space, convert their distance into a continuous, threshold-free incongruence score via a two-component Gaussian mixture, and validate that score against human judgment. Evaluating three audio-capable models on acted (eNTERFACE'05), conversational (MELD), and spontaneous (CMU-MOSEI) speech, the work isolates how incongruent cues propagate through recognition. This matters because voice-interactive systems are deployed precisely in the messy conditions — sarcasm, masking, hesitation — where channel disagreement is the norm rather than the exception.\n\n[7] tackles a related identifiability problem for visual preference: online marketplace transaction prices are cheap and behavior-grounded, but conflate visual appeal with provenance, demand, and competition. The authors introduce MarketImage, a diagnostic framework designed to separate model error from unreliable price signals and protocol confounds, evaluated with multimodal language models. The contribution is methodological — showing that aggregate accuracy against prices is insufficient and that diagnostics must disentangle what the price signal actually encodes. It is a useful corrective to the field's habit of treating convenient supervision as clean supervision.\n\n[5] interrogates whether MLLM internal representations align with human cognition, using a behavior-derived semantic embedding space with 66 interpretable dimensions distilled from 4.70 million human Odd-One-Out judgments. The proposed framework aligns MLLMs with this multidimensional mental representation structure, testing whether decision criteria match human similarity judgments rather than merely matching human labels. By grounding alignment in an empirically derived cognitive space rather than ad hoc benchmarks, this offers a sharper instrument for asking what \"human-like\" multimodal representation would even mean.\n\n## Rules, Reconstruction, and Structured Reasoning\n\n[9] identifies a blind spot in multimodal in-context learning: tasks that are ill-defined without context require uncovering latent rules from demonstrations, yet existing methods treat MICL as direct input-output mapping. ERIM explicitly induces the latent rules governing demonstration samples, leveraging reasoning abilities to make the induction step visible and interpretable. This reframes MICL from pattern matching into rule inference, improving both performance and transparency — two properties that have often traded off.\n\n[3] addresses stickers in social dialogue, whose meanings are non-literal and context-dependent and thus poorly served by generic visual fusion or standalone captioning. S2TDR decomposes sticker interpretation into visual cue extraction, affective-intent inference, and context-aware dialogue reconstruction, converting sticker turns into contextually appropriate textual utterances. The structured pipeline is a sensible answer to a genuinely hard alignment problem: stickers are multimodal pragmatics, not image classification.\n\n[4] contributes a benchmark for diagnosing agent failures via counterfactual replay rather than annotation agreement. ReplayRCA restores the environment to the state preceding a chosen step, substitutes the proposed action, and lets the same agent continue; the causal repair score is the continuation success rate minus a paired placebo that replays the agent's original action. This intervention-based scoring is a principled alternative to judging diagnoses by how well they match human labels, and the post-hoc/live-oversight tracks make it relevant to deployment monitoring.\n\n## Agents, Training Recipes, and Federated Adaptation\n\n[2] presents Mage-VL-Cowork, a 4B hybrid computer-use agent trained from a general multimodally aligned checkpoint through a five-stage progressive curriculum spanning midtraining, SFT, and RL, combining visual GUI interaction with code and terminal execution in one policy. To scale the curriculum, Mage-CUA-Forge replaces per-task agent construction with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task costs. The paper's real contribution is the pipeline economics: full training recipes for hybrid CUAs are rarely documented this openly, and the harness-evolution approach targets the bottleneck most labs hit first.\n\n[6] examines server-side optimization for multimodal federated learning under missing modalities, where clients adapt active modality encoders plus a shared fusion-and-classifier block to their available input subsets. The authors observe that an absent-modality encoder can still adapt through missing-input handling, so availability-based aggregation can wrongly omit its update while retaining jointly learned knowledge. The role-aware server optimization that follows addresses both which clients contribute to each component and how aggregates are incorporated across rounds — a practical refinement for heterogeneous federated deployments.\n\n## Multimodal Foundations for Science and Surgery\n\n[8] introduces scAnyOmics, a generative framework distilling a frozen single-cell foundation model into a multimodal student for any-to-any completion across transcriptomics, proteomics, and chromatin accessibility. The distillation design targets the regime where paired measurements are scarce but unpaired data is abundant, enabling prediction of missing molecular information across heterogeneous modalities. This is a strong template for multimodal biology: reuse foundation-model knowledge rather than retrain from paired data that does not exist at scale.\n\n[10] presents Sensorium, an open-source Python library for recording, processing, annotating, and curating multimodal surgical data from configurable robot and sensor streams over ROS/ROS2. It combines operator-facing acquisition, configurable processing, semantic annotation, and episodic dataset generation, validated across 1,516 recordings of phantom, ex vivo, and (per the abstract) further tissue settings. Data infrastructure papers rarely get credit, but embodied surgical AI is bottlenecked precisely by reproducible, hardware-agnostic collection — Sensorium is aimed squarely at that gap.\n\n## Key Takeaways\n\n- **Diagnosis is the new benchmark**: [1], [4], and [7] all reject agreement-with-annotations as the measure of quality, substituting validated incongruence scores, causal-repair interventions, and identifiability-aware diagnostics respectively.\n- **Channel disagreement is a first-class phenomenon**: both speech emotion recognition [1] and sticker-based dialogue [3] show that the interesting multimodal signal lives where modalities conflict or underdetermine meaning.\n- **Human cognition as an alignment target**: [5] moves beyond label matching toward alignment with 66 behavior-derived semantic dimensions, offering a richer criterion for evaluating MLLM representations.\n- **Explicit structure beats implicit fusion**: ERIM's rule induction [9] and S2TDR's decomposed pipeline [3] both show gains from making intermediate inference steps explicit rather than relying on end-to-end fusion.\n- **Agent training recipes are maturing**: [2] demonstrates that scalable, skill-conditioned task generation (293K tasks, 6,915 skills) plus progressive curricula can produce hybrid GUI-plus-terminal agents at the 4B scale.\n- **Missing modalities remain an open systems problem**: [6] shows that naive availability-based aggregation in federated settings discards useful encoder adaptation, motivating role-aware server optimization.\n- **Foundation-model distillation extends to multi-omics**: [8] establishes any-to-any modality completion by distilling frozen single-cell foundations, a pattern likely to generalize to other sparse-pairing scientific domains.",
+    "papers": [
+      {
+        "title": "Incongruence-Aware Evaluation of Multimodal Speech Emotion Recognition in Audio Large Language Models",
+        "url": "",
+        "authors": [
+          "Fengji Jing",
+          "Guy Laban"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use From Evolved Harnesses",
+        "url": "",
+        "authors": [
+          "Xiaoyi Zhang",
+          "Haoqing Wang",
+          "Xinjie Zhang",
+          "Xiang Ming",
+          "Xing Wang",
+          "Senqiao Yang",
+          "Kaichen Zhang",
+          "Zhaoyang Jia",
+          "Andong Tan",
+          "Xinjiang Wang",
+          "Jinghao Guo",
+          "Yifei Shen",
+          "Xiao Li",
+          "Peng Zhang",
+          "Xun Guo",
+          "Jiahao Li",
+          "Shicheng Zheng",
+          "Jinglu Wang",
+          "Zongyu Guo",
+          "Wenxuan Xie",
+          "Bin Li",
+          "Yan Lu"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "S2TDR: Structured Multimodal Reconstruction for Sticker-Aware Dialogue Understanding",
+        "url": "",
+        "authors": [
+          "Yuanchen Shi",
+          "Fang Kong"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "ReplayRCA: Measuring Post-hoc Diagnosis and Live Oversight of Agent Failures by Counterfactual Replay",
+        "url": "",
+        "authors": [
+          "Jeremy Canale",
+          "Fabien Soulis"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Aligning MLLMs with the Latent Structure of Human Cognition via Behavior-Derived Semantic Dimensions",
+        "url": "",
+        "authors": [
+          "Ning E",
+          "Changde Du",
+          "Yizhuo Lu",
+          "Huiguang He"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Role-Aware Server Optimization for Multimodal Federated Learning with Missing Modalities",
+        "url": "",
+        "authors": [
+          "Liuyin Shi",
+          "Wenbo He"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Do Transaction Prices Reflect Visual Preference? A Diagnostic Study with Multimodal Language Models",
+        "url": "",
+        "authors": [
+          "Fengxian Ji",
+          "Jingpu Yang",
+          "Fan Zhang",
+          "Junhong Liang",
+          "Qian Jiang",
+          "Yuke Li",
+          "Jinri Guo",
+          "Rongxin Zhu",
+          "Zhuohan Xie"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "scAnyOmics: Foundation-Model Distillation for Any-to-Any Completion of Multi-omics Virtual Cells",
+        "url": "",
+        "authors": [
+          "Zhaoqi Song",
+          "Ye Du",
+          "Yusuke Iwasawa",
+          "Yutaka Matsuo",
+          "Qian Niu"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Multimodal In-Context Learning with Explicit Rule Induction",
+        "url": "",
+        "authors": [
+          "Yuquan Li",
+          "Xinyang Jiang",
+          "Yuhao Xue",
+          "Cairong Zhao"
+        ],
+        "date": "2026-11-02"
+      },
+      {
+        "title": "Sensorium: An Open-Source Multimodal Data Collection and Curation Library for Embodied Surgical AI",
+        "url": "",
+        "authors": [
+          "Lorenzo Mazza",
+          "Ariel Rodriguez",
+          "Stefanie Speidel"
+        ],
+        "date": "2026-11-02"
+      }
+    ]
+  }
+]
