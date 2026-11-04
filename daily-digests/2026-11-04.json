@@ -1,0 +1,184 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-04",
+    "paperCount": 4,
+    "markdown": "# Interpretability Research Digest: Causality, Feature Geometry, and Controlled Steering\n\nToday's papers interrogate the causal validity of interpretability methods, offer geometric theories of capability loss, and advance adaptive activation steering. A common thread is the tension between what an intervention appears to reveal and what it actually measures—whether effects belong to the network, the method, or the context.\n\n## Causal Validity of Activation Interventions\n\n**Whose Effect Is It? How Objectives Inflate Learned Subspace Interventions** [1] examines activation patching, where interpretability researchers copy part of a model's hidden state between inputs and treat larger output changes as stronger evidence for concept localization. The authors observe that learned subspace methods often produce larger output changes than copying the entire state, which naively suggests cleaner concept isolation—yet since the whole contains the part, this excess effect is suspicious. They prove that, to first order, the effects of such interventions decompose in a way that attributes the excess to the method's objective rather than the network's computation, showing that copying the full state (which learns nothing) provides the correct baseline for what the network itself produces. This matters because it challenges a widespread evidentiary practice in mechanistic interpretability: larger patching effects may signal objective-driven inflation, not sharper concept localization, and the paper supplies a formal decomposition to separate the two.\n\n## Theory of Capability Degradation and Feature Interference\n\n**Unifying and Beyond the Theory of Pervasive Capability Degradation in LLM Post-training SFT from Feature Interference** [2] tackles Pervasive Capability Degradation (PCD), where supervised fine-tuning on a target task erodes general pre-trained capabilities. Prevailing explanations invoke macroscopic distribution shift, which the authors argue lacks microscopic manipulability and leaves mitigation methods without a theoretical foundation. They develop a bottom-up geometric theory grounded in feature interference under superposition: narrow-domain SFT data disrupts the near-orthogonality of pre-trained features, and this interference propagates into degraded general capability. The contribution is a microscopic, manipulable account of PCD that unifies prior macroscopic explanations while providing a foundation for principled mitigation—valuable for both interpretability (feature geometry as an explanatory lens) and practical post-training pipelines.\n\n## Adaptive and Contextual Activation Steering\n\n**Contextual Linear Activation Steering of Language Models** [3] introduces CLAS, addressing a limitation of linear activation steering: existing methods add concept directions with a fixed strength regardless of how much steering a given input requires. CLAS decomposes steering into a fixed steering direction plus a context-dependent steering coefficient, preserving the interpretability of the direction while adapting magnitude per input. This decomposition retains the transparency that motivates linear steering—the direction remains a readable concept vector—while improving control precision across heterogeneous inputs. The work matters as a bridge between interpretability and controllability: it shows that adaptive steering need not sacrifice the semantic legibility of fixed-direction methods.\n\n**CATF: A Manager-Worker Framework for Context-Aware Time-Series Forecasting** [4] studies forecasting a target variable from its history plus diverse contextual variables such as weather and calendar information. As context diversity grows, single models struggle across regimes, while ensembles and Mixture-of-Experts rely on manual partitioning or soft routing that raises inference cost and hinders interpretability. CATF proposes a Manager-Worker architecture in which a Transformer-based Manager routes inputs to specialized Workers, aiming for regime specialization without the opacity of soft routing. Its relevance to interpretability lies in the routing structure: explicit, manager-mediated assignment offers a more legible account of which context regime drives each prediction than learned soft mixtures.\n\n## Key Takeaways\n\n- Learned subspace interventions can inflate measured effects relative to full-state patching; whole-state copying is the correct baseline for attributing effects to the network [1].\n- First-order decomposition formally separates method-induced effect from network computation, giving interpretability a rigorous test for intervention validity [1].\n- PCD in SFT is reframed microscopically: narrow-domain data disrupts near-orthogonal feature superposition, causing interference that erodes general capability [2].\n- Feature-geometric theories of degradation provide manipulable foundations that macroscopic distribution-shift accounts lack, enabling principled mitigation [2].\n- CLAS shows steering strength can be context-adapted via a learned coefficient while keeping the steering direction fixed and interpretable [3].\n- Explicit routing architectures like CATF's Manager-Worker design trade soft-routing flexibility for legible regime assignment in context-heavy forecasting [4].\n- Across all four papers, the central lesson is that interpretability claims depend on baselines, geometry, and routing structure—not on effect size alone [1,2,3,4].",
+    "papers": [
+      {
+        "title": "Whose Effect Is It? How Objectives Inflate Learned Subspace Interventions",
+        "url": "",
+        "authors": [
+          "Toygar Tanyel",
+          "Serkan Ayvaz"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "Unifying and Beyond the Theory of Pervasive Capability Degradation in LLM Post-training SFT from Feature Interference",
+        "url": "",
+        "authors": [
+          "Hang Chen",
+          "Jiaying Zhu",
+          "Wenya Wang"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "Contextual Linear Activation Steering of Language Models",
+        "url": "",
+        "authors": [
+          "Brandon Hsu",
+          "Daniel Beaglehole",
+          "Adityanarayanan Radhakrishnan",
+          "Mikhail Belkin"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "CATF: A Manager-Worker Framework for Context-Aware Time-Series Forecasting",
+        "url": "",
+        "authors": [
+          "Yueqiao Chen",
+          "Dongyu Liu"
+        ],
+        "date": "2026-11-04"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-04",
+    "paperCount": 11,
+    "markdown": "# Multimodal Research Digest — November 4, 2026\n\nToday's multimodal research landscape is defined by a push toward control and reliability: steering model internals to induce abstention, routing safety interventions through causal pathways, and stabilizing cross-modal injection into frozen backbones. A second, equally strong current targets agentic and embodied settings — from tutorial-conditioned computer-use agents and glucose-forecasting agents to symbolic-grounded delivery benchmarks and hierarchical web-task planning — while a smaller cluster advances multimodal representation learning and data protection for LVLMs.\n\n## Steering, Safety, and Cross-Modal Injection in Vision-Language Models\n\n**Dr. No** [1] tackles the propensity of large foundation models to answer questions even when available visual or textual evidence is insufficient — a critical trust failure in high-stakes settings. The authors mine sparse autoencoder (SAE) features associated with abstention versus commitment behaviors and then modulate a small set of these features at inference time via feature steering, controlling the model's tendency to decline answering without retraining. This offers a mechanistic, inference-time handle on epistemic calibration in VLMs, suggesting that abstention is a steerable internal property rather than an emergent accident. The work bridges interpretability tooling (SAEs) with practical trustworthiness interventions.\n\n**TraceRouter++** [3] challenges the \"locality hypothesis\" underlying most safety interventions, which suppress isolated neurons or features and prove brittle against complex jailbreaks. Instead, the framework traces safety-relevant causal routing pathways that span layers — harmful semantics as distributed circuits — and performs routing-level realignment using optimal transport. By targeting the circuit rather than the node, the approach aims to preserve general utility while hardening models against adversarial manipulation. This represents a shift from localized ablation to causal, pathway-level safety control.\n\n**Zero-Gated Cross-Attention (IGCA)** [6] addresses the early optimization instability that arises when injecting non-text modalities into frozen language models, which confounds architectural gains with transient training dynamics. IGCA is a zero-initialized cross-attention bridge that preserves pretrained behavior exactly at initialization (an algebraic identity) and enables gradual multimodal conditioning, integrated across six decoder layers of Falcon-40B, open_llama_30b, and Bloom-7b1 with roughly 40.4B trainable adapter parameters. The design cleanly separates architecture from training dynamics, providing a principled recipe for stable multimodal adaptation of frozen backbones.\n\n**NTUE** [7] presents the first exploration of unlearnable examples (UEs) for Large Vision Language Models, motivated by data privacy and unauthorized training concerns. Rather than pixel perturbations, the method subtly manipulates natural text paired with images to mislead LVLMs during training — exploiting the multimodal nature of these models where textual supervision is a first-class attack surface. The \"pen over pixel\" framing matters because it suggests text-side data poisoning defenses are both feasible and potentially more natural-looking than image perturbations.\n\n## Agentic Systems for Grounded and Personalized Tasks\n\n**GlucoAgent** [2] confronts glucose forecasting from rich multimodal personal context — continuous glucose monitors, smartwatches, meal logs, and health profiles — where modality relevance varies drastically across individuals and time. The LLM-based agentic system performs dynamic, case-by-case analysis at inference: for each forecast it writes and runs code over the individual's multimodal context and returns a prediction, rather than relying on a fixed fusion architecture. This inference-time program synthesis approach accommodates heterogeneous, personal data without retraining a bespoke model per user, a promising template for personalized multimodal health forecasting.\n\n**Computer-Use Agents Gain Little Benefit from a World Model When Conditioned on Tutorials** [4] performs a careful ablation of the components behind recent CUA improvements: retrieved tutorials, MLLM judges, and world-model look-ahead planning. The authors build OSWorld-Tutorial and ScienceBoard-Tutorial — datasets with curated multimodal tutorials spanning everyday and scientific domains — and propose RAG-PolicyJudge (RAG-PJ), a policy-judge framework conditioned on task-specific tutorials. The headline finding is that a world model contributes little once tutorials are in the loop, an important negative result that cautions against stacking components without isolation studies.\n\n**DualWorldBench** [5] argues that existing embodied and web-agent evaluations use simplified tasks with limited combinatorial structure, leaving robustness of multi-goal planning under temporal, physical, and multimodal constraints unclear. The benchmark is built around a shared pickup–delivery interface and evaluates agents across controlled symbolic–temporal and grounded–topological complexity in three settings, forcing integration of perception and reasoning. It fills a gap in diagnosing *where* agents fail — symbolic reasoning versus grounded execution — rather than reporting a single aggregate success rate.\n\n**JHiMA-WebRL** [11] targets long-horizon web tasks through GUIs, where monolithic policies struggle to jointly infer high-level plans, navigate intermediate states, track progress over extended histories, and execute visually grounded actions. Unlike prior modular multi-agent systems with a separate planner that is not updated jointly with the actor, this framework trains a hierarchical multi-agent system with joint reinforcement learning across planner and actor. The core investigation — whether joint planner-actor optimization beats frozen-planner modularity — addresses a key open question in agentic architecture design for multimodal web interaction.\n\n## Multimodal Representation Learning and Fusion\n\n**DGC-Net** [8] addresses multimodal sentiment analysis, where textual, acoustic, and visual cues are subtle, noisy, and inconsistent across modalities, and where transcripts alone miss vocal tone and facial expression. The model introduces cross-modal dynamic routing with global-guided compensation, moving beyond local affective cue modeling that struggles with noisy or missing modality signals. The routing mechanism adaptively weights modality contributions while the global-guided compensation recovers information when local cues are unreliable — a design directly aimed at the inconsistency problem central to MSA.\n\n**BREM-NET** [10] develops nonlinear multimodal dynamic modeling of brain-behavior processes, fusing spiking activity, LFPs, and behavior, which capture complementary spatiotemporal aspects of neural processing. Prior neural-behavioral models that separate sources of variability rely on a single neural modality; this work leverages multimodal fusion to build a unified, rich representation addressing single-modality limitations. The contribution matters for basic neuroscience and for brain-computer interface applications where dissociating behaviorally relevant dynamics from nuisance variability is essential.\n\n## Reinforcement Learning Objectives and Data-Centric Defenses\n\n**DARS** [9] addresses a known pathology of expected-return RL objectives: probability mass concentrates on a few high-reward outcomes, limiting diversity when multiple distinct solutions are desirable. Density-Aware Reward Scaling estimates the local density of outcomes within each on-policy rollout group and inversely scales rewards by this density, yielding reward-proportional sampling in continuous outcome spaces while retaining standard policy-gradient training — with no learned density model or auxiliary networks required. Though not multimodal per se, the mechanism is a lightweight, general-purpose tool potentially applicable to diverse-outcome generation tasks (including multimodal generation) where mode collapse is a concern.\n\n## Key Takeaways\n\n- **Abstention and safety are becoming internal, steerable properties.** Dr. No [1] shows SAE feature steering can induce abstention at inference, while TraceRouter++ [3] argues safety interventions must target distributed cross-layer circuits rather than isolated features — together pointing toward mechanistic, inference-time control of VLM behavior.\n- **Stability of multimodal injection is an architectural problem with clean solutions.** IGCA's [6] zero-initialized cross-attention provides an algebraic identity at init, disentangling architectural benefit from transient optimization instability in frozen-backbone adaptation.\n- **Component ablations yield sobering negative results for agents.** The finding that world models add little once tutorials condition CUAs [4] warns against assuming stacked agentic components are complementary; isolation studies are essential.\n- **Benchmarks are shifting from aggregate success to diagnostic structure.** DualWorldBench [5] separates symbolic-temporal from grounded-topological complexity, enabling failure-mode attribution in multimodal planning.\n- **Inference-time program synthesis is a viable personalization strategy.** GlucoAgent [2] writes and runs code per forecast over heterogeneous personal multimodal data, sidestepping fixed fusion architectures when modality relevance is individual- and time-varying.\n- **Text is a first-class attack surface for multimodal data protection.** NTUE [7] demonstrates that natural text manipulation, not just pixel perturbation, can serve as unlearnable examples for LVLMs.\n- **Adaptive modality weighting remains central to robust fusion.** DGC-Net [8] and BREM-NET [10] both tackle noisy, inconsistent, or complementary multimodal signals through dynamic routing and nonlinear fusion, respectively — reinforcing that handling modality unreliability is the core challenge in MSA and neural decoding alike.",
+    "papers": [
+      {
+        "title": "Dr. No: Feature Steering for Abstention in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Farid Hasanov",
+          "Riccardo Renzulli",
+          "Bahram Zonooz",
+          "Mykola Pechenizkiy",
+          "Decebal Constantin Mocanu"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "GlucoAgent: Personalized Glucose Forecasting from Multimodal Personal Context",
+        "url": "",
+        "authors": [
+          "Xingzhi Sun",
+          "Hyo Jin Kim",
+          "Zhiyuan Wang",
+          "Hao Chen"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "TraceRouter++: Causal Semantic Routing Realignment via Optimal Transport",
+        "url": "",
+        "authors": [
+          "Chuancheng Shi",
+          "Shangze Li",
+          "Wenhua Wu",
+          "Hengzhi Chen",
+          "Fei Shen",
+          "Li Zhuo",
+          "Zhiyong Wang",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "Computer-Use Agents Gain Little Benefit from a World Model When Conditioned on Tutorials",
+        "url": "",
+        "authors": [
+          "Anh Nguyen",
+          "Tianyi Xu",
+          "Phat Tran",
+          "Harry Yu",
+          "Huazheng Wang",
+          "Stefan Lee"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "DualWorldBench: Can Agents Plan Deliveries across Symbolic and Grounded Worlds?",
+        "url": "",
+        "authors": [
+          "Yang Chen",
+          "Bin Wen",
+          "Danyang Peng",
+          "Hong-Jie You",
+          "Zi-Qiao Shang",
+          "Lan-Zhe Guo"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "Zero-Gated Cross-Attention",
+        "url": "",
+        "authors": [
+          "Basavaraj R M",
+          "Manav Verma"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "The Pen is Mightier than the Pixel: Natural Textual Unlearnable Example for Large Vision Language Models",
+        "url": "",
+        "authors": [
+          "Chenyu Yi",
+          "Jiawen Zong",
+          "Sami Hormi",
+          "Bingquan Shen",
+          "Xudong Jiang",
+          "Alex Chichung Kot"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "DGC-Net: Cross-Modal Dynamic Routing with Global-Guided Compensation in Multimodal Sentiment Analysis",
+        "url": "",
+        "authors": [
+          "Linan Zhu",
+          "Huaijing Wu",
+          "Xiao Han",
+          "Yuhao Wang"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "Density-Aware Reward Scaling: A Reinforcement Learning Framework for Reward-Proportional Sampling",
+        "url": "",
+        "authors": [
+          "Ria Shekhawat",
+          "Abhijeet Sinha",
+          "Yingtao Zhu",
+          "Dianbo Liu"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "Learning Behaviorally Relevant Dynamics in Multimodal Neural Recordings",
+        "url": "",
+        "authors": [
+          "Parastoo Azizeddin",
+          "Eray Erturk",
+          "Maryam M. Shanechi"
+        ],
+        "date": "2026-11-04"
+      },
+      {
+        "title": "JHiMA-WebRL: A Joint Hierarchical Multi-Agent Reinforcement Learning Framework for Long-Horizon Web Tasks",
+        "url": "",
+        "authors": [
+          "Shanka Subhra Mondal",
+          "Jiayun Wang"
+        ],
+        "date": "2026-11-04"
+      }
+    ]
+  }
+]
