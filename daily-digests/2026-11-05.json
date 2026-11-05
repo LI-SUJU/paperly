@@ -1,0 +1,204 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-05",
+    "paperCount": 2,
+    "markdown": "# Interpretability Research Digest — 2026-11-05\n\nToday's interpretability research pushes beyond post-hoc explanations toward architectures and evaluation pipelines that are interpretable by construction, spanning question-based embeddings, entailment-driven summary evaluation, and structured transparency in multimodal and generative systems. The common thread is a shift from \"explaining after the fact\" to designing representations, benchmarks, and training signals whose semantics are inspectable from the start.\n\n## Interpretable Representations and Embeddings\n\nOda et al. tackle the friction in QA-based text embeddings, where texts are encoded as vectors of 1/0 answers to yes/no questions: such embeddings are highly interpretable and perform well, but demand that humans inspect a large question set, and the relationship between question count and appropriate granularity is underexplored [1]. Their solution constructs hierarchical questions for the embedding, where deeper levels yield increasingly specific questions, so that the representation exposes coarse-to-fine semantics rather than a flat, opaque bank of probes [1]. This structure lets practitioners trade off the number of questions against granularity in a principled way, making QA-based embeddings more practical to audit and deploy [1]. The work matters because it treats interpretability as a design axis of the embedding itself—controlling information resolution—rather than a downstream explanation layer [1].\n\n## Evaluation and Benchmarking for Interpretability\n\nSAUCE addresses the difficulty of evaluating summaries of conversations that lack a clear end goal, a setting increasingly important as LLMs are applied to speech [2]. The pipeline is reference-free and fact-based: it measures summary accuracy and fact coverage through entailment between the conversation and the generated text, and it extends this to cross-lingual conversational speech summarization [2]. Comparisons against popular summarization metrics show SAUCE effectively captures information loss caused by transcription and translation errors [2]. Its significance lies in making evaluation itself interpretable—grounding scores in checkable entailment relations over facts instead of opaque similarity, and exposing where errors enter the speech-to-summary pipeline [2].\n\n## Key Takeaways\n- Interpretability is increasingly \"by construction\": hierarchical QA embeddings [1] and entailment-based evaluation [2] build inspectable semantics into the representation or metric itself rather than explaining a black box afterward.\n- Granularity is a first-class design choice: hierarchical questions [1] let practitioners explicitly control the resolution of interpretable embeddings, addressing the underexamined question-count/granularity trade-off.\n- Reference-free, fact-grounded metrics are maturing: SAUCE [2] shows entailment between source conversation and summary can substitute for reference summaries while remaining checkable.\n- Error attribution matters: SAUCE specifically isolates information loss from transcription and translation, pointing to interpretability as a diagnostic tool for pipelines, not just models [2].\n- Speech and cross-lingual settings are emerging frontiers for interpretability, where cascaded errors make opaque metrics especially risky [2].\n- Human audit cost remains a bottleneck for question-based interpretability, which hierarchical structuring directly aims to reduce [1].",
+    "papers": [
+      {
+        "title": "Interpretable Text Embeddings Based on Hierarchical Questions",
+        "url": "",
+        "authors": [
+          "Kohei Oda",
+          "Po-Min Chuang",
+          "Kiyoaki Shirai",
+          "Natthawut Kertkeidkachorn"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "SAUCE: Summary Analysis Using Conversation Entailment",
+        "url": "",
+        "authors": [
+          "Man-Ling Sung",
+          "Hemanth Kandula",
+          "Jeff Ma",
+          "William Hartmann",
+          "Matthew Snover"
+        ],
+        "date": "2026-11-05"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-05",
+    "paperCount": 12,
+    "markdown": "# Multimodal Research Digest — November 5, 2026\n\nToday's multimodal research landscape is defined by a push toward grounding: bridging text-driven reasoning with numerical, visual, and embodied precision across time series, documents, scientific claims, and robotic laboratories. Equally prominent is a turn toward honest evaluation—new benchmarks probe what models actually know (phonology, personalization, execution skills) while efficiency work targets the deployment gap between adapter-heavy prototypes and compact edge-ready systems.\n\n## Bridging Modalities: Text, Time Series, and Phonology\n\n**[1] TSFM Meets LLM: Context as Covariates** tackles the fundamental asymmetry between LLMs, which interpret textual context but lack numerical precision, and Time Series Foundation Models (TSFMs), which are quantitatively accurate but cannot reason about textual effects—compounded by the scarcity of large-scale paired multimodal datasets. The authors propose a scalable pipeline for generating realistic multimodal time series datasets with textual covariates, enabling context-aware forecasting that conditions numerical prediction on news, reports, and annotations. This matters because it reframes text as a first-class covariate in forecasting rather than a post-hoc explanation, and the dataset-generation approach addresses a key data bottleneck for the entire subfield. [1]\n\n**[2] Phonological Knowledge of Chinese Characters in Language Models** asks how much phonological knowledge—homophony, initials, finals, tones, and polyphonic characters—text-only and multimodal LMs actually possess about Chinese characters. The authors introduce PinyinBench, a controlled benchmark, and probe 17 LMs through three complementary lenses: behavioral evaluation, layer-wise probing, and activation steering. Behaviorally, models show substantial knowledge of initials and finals, with a frontier model (DS-v4-flash) exceeding 90% on homophone judgment; the probing and steering analyses reveal where and how this knowledge is represented and causally used. The work matters because it moves beyond accuracy scores to a mechanistic account of sub-lexical knowledge in LMs, with implications for Chinese-language multimodal systems. [2]\n\n## Generative Modeling and Sampling for Multimodal Distributions\n\n**[3] Transport along Local Annealing Paths** addresses mode collapse in variational transport-map learning for multimodal sampling, a known failure mode when target distributions are multi-modal. The authors prove that geometric annealing can take a substantial detour in Wasserstein space—when mass moves between modes, the path length can vastly exceed the endpoint distance—and link this path geometry to transport learning, showing long annealing paths slow population optimization while sufficiently regular paths permit rapid convergence. This provides a principled geometric diagnostic for when annealing-based samplers will struggle, with direct consequences for generative modeling of multimodal data. [3]\n\n**[4] CoReFlow: Consistency-Relaxed Flow Maps for Probabilistic Traffic Forecasting** observes that diffusion- and flow-based generative models for traffic forecasting are designed for complex multimodal distributions, which misaligns with the limited complexity of conditional traffic data—causing them to underperform deterministic baselines while suffering slow multi-step inference. The authors introduce consistency-relaxed flow maps that adapt the generative process to the actual complexity of the conditional distribution, reducing sampling overhead while retaining uncertainty modeling. The contribution matters as a caution against importing heavy generative machinery where the data does not warrant it, and as a practical path to deployable probabilistic forecasting in Intelligent Transportation Systems. [4]\n\n## Evaluation and Benchmarks for Grounded Multimodal Reasoning\n\n**[5] SciClaimEval (NTCIR-19)** presents a pilot task on verifying scientific claims against the tables and figures of the papers in which they appear—a genuinely cross-modal grounding problem. The dataset pairs authentic claims from 180 papers in ML, NLP, and medicine with contrastive evidence versions: one table/figure supporting the claim and one minimally modified so that it does not, across two subtasks (support judgment and evidence selection). With 22 registered teams—the highest for the task type—it establishes a rigorous testbed for fine-grained scientific claim verification where minimal edits must be detected. This matters because it targets the exact failure mode of multimodal models in science: plausible-looking but unsupported claims over real figures. [5]\n\n**[6] Loop Before You Leap** investigates why multimodal models have often scored below text-only baselines in the BabyLM Challenge, testing whether additional recurrent computation—reusing layers without adding parameters or training data—can close the gap. Using a single implementation, the authors compare standard and looped Transformers under a 100M-word budget across three seeds per condition, with each image encoded as a single frozen DINOv2 feature vector used as a prefix token and caption words counted toward the budget. The study offers a clean, controlled answer about what recurrent depth can and cannot buy under data-limited pretraining, informing how multimodal architectures should allocate compute when data—not parameters—is the binding constraint. [6]\n\n**[10] MPRBench** targets multimodal personalized reasoning: the underexplored ability of MLLMs to holistically reason over heterogeneous personal information (images, text, and other modalities) to make decisions. The authors introduce a comprehensive benchmark spanning 12 sub-tasks with support for interpretable analysis of representative error cases, then conduct extensive experiments revealing where current MLLMs succeed and fail. This matters because personalization is a rapidly growing deployment context for multimodal assistants, and the benchmark's error-analysis affordances make failures actionable rather than merely scored. [10]\n\n**[11] AmbiHTMLBench** argues that Markdown—the standard output for document parsing—fails to preserve fine-grained spatial structure, table geometry, visual hierarchy, and rendering semantics, and that HTML is the better target representation for layout-sensitive documents that must remain editable, inspectable, and reusable. The benchmark requires models to recover executable HTML from real-world documents that preserves content, organization, and visual appearance. It matters because it redefines the output format question in visually rich document understanding, connecting parsing quality directly to downstream reusability. [11]\n\n**[12] BEAKER** addresses the gap in benchmarks for MLLMs as embodied brains in Self-Driving Chemical Laboratories (SDCLs), where machines must perceive scenes, reason about experimental states, and act under physical, procedural, and safety constraints. Existing lab benchmarks focus on safety, anomaly detection, or general scientific understanding, leaving execution-oriented embodied capabilities underexplored; BEAKER is an expert-curated benchmark filling that gap. This matters because it stress-tests MLLMs on the full perceive-reason-act loop in a high-stakes scientific domain, where errors carry physical consequences. [12]\n\n## Efficient Multimodal Systems: Decoding, Compression, and Search\n\n**[7] RECAP** identifies a subtle failure in speculative decoding for vision-language models: recycling target-model predictions indexed by the last token alone conflates predictions computed under different images and prefixes, and such reuse fails most often at image-sensitive decoding states. RECAP stores target predictions under one-, two-, and three-token keys, with contextual memories living only for the current request—implicitly conditioned on the image—while persistent memories handle longer-horizon reuse. The work matters because it makes training-free speculative decoding actually work in the multimodal regime by respecting the aliasing structure that images introduce. [7]\n\n**[8] UniCompress** tackles the memory and management costs of deploying a separate task adapter per skill atop a high-precision VLM backbone in embodied and edge systems. Starting from a consolidated BF16 Qwen3-VL-4B teacher, it constructs an asymmetric INT2 student using GPTQ initialization and teacher-guided quantization recovery, jointly quantizing and recovering to fold multi-LoRA expertise into one compact, adapter-free model. This matters as a concrete deployment recipe for edge intelligence: extreme low-bit quantization with teacher-guided recovery that preserves heterogeneous skills without per-task adapters. [8]\n\n**[9] ModalSearcher** defines autonomous cross-modal search: an agent that dynamically chooses among direct reasoning, text-to-text search, text-to-image retrieval, and other modalities as its information needs evolve during multi-hop evidence acquisition. Existing multimodal agentic search methods fix visual evidence at the input or a predefined trajectory position, which fails on complex real-world queries; ModalSearcher instead weaves visual evidence into the search loop adaptively. The contribution matters because it treats modality selection as a first-class action in agentic retrieval, moving beyond static image-conditioned search toward genuinely autonomous cross-modal investigation. [9]\n\n## Key Takeaways\n\n- **Text as covariate, not commentary:** [1] reframes textual context as a conditioning signal for time series foundation models, backed by a scalable multimodal dataset-generation pipeline that addresses the field's paired-data bottleneck.\n- **Mechanistic evaluation is maturing:** [2] combines behavioral testing, layer-wise probing, and activation steering to show LMs encode rich sub-lexical phonological structure—a template for asking not just *whether* but *where and how* models know things.\n- **Geometry governs generative sampling:** [3] proves annealing paths in Wasserstein space can detour dramatically between modes, and [4] shows that matching generative complexity to data complexity is essential—heavy multimodal samplers can underperform simpler baselines on low-complexity conditional distributions.\n- **Grounding is the new frontier of evaluation:** [5], [10], [11], and [12] collectively demand that models verify claims against real figures, reason over personal multimodal context, recover executable document structure, and act safely in physical laboratories—capabilities poorly captured by conventional benchmarks.\n- **Contrastive, minimally-edited evidence is a powerful benchmark design:** [5]'s paired supporting/non-supporting tables and figures isolate fine-grained grounding ability, a pattern likely to propagate to other verification tasks.\n- **Multimodal efficiency requires modality-aware design:** [7] shows last-token caching breaks under image conditioning (fixed by multi-token keys), while [8] demonstrates INT2 adapter-free compression via teacher-guided recovery—both essential for edge deployment.\n- **Agentic search must adapt modality on the fly:** [9] establishes autonomous cross-modal search as a distinct capability, where choosing *which modality to query next* matters as much as the retrieval itself; [6] adds the sobering reminder that recurrent depth alone cannot substitute for data in multimodal pretraining.",
+    "papers": [
+      {
+        "title": "TSFM Meets LLM: Context as Covariates",
+        "url": "",
+        "authors": [
+          "Hemanth Ram",
+          "Sai Shankar Narasimhan",
+          "Shubhankar Agarwal",
+          "Sandeep Chinchali"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "Phonological Knowledge of Chinese Characters in Language Models",
+        "url": "",
+        "authors": [
+          "Xiaozhe Ji",
+          "Renfen Hu",
+          "Hai Hu"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "Transport along Local Annealing Paths: Wasserstein Geometry and Multimodal Sampling",
+        "url": "",
+        "authors": [
+          "Han Chen",
+          "Sifan Liu"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "CoReFlow: Consistency-Relaxed Flow Maps for Probabilistic Traffic Forecasting",
+        "url": "",
+        "authors": [
+          "Pengnan Chi",
+          "Zhiguo Zhang",
+          "Xiaoliang Ma"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "Overview of the NTCIR-19 SciClaimEval Task: Cross-modal Claim Verification in Scientific Papers",
+        "url": "",
+        "authors": [
+          "Xanh Ho",
+          "André Greiner-Petter",
+          "Florian Boudin",
+          "Yun-Ang Wu",
+          "Sunisth Kumar",
+          "Tian Cheng Xia",
+          "Hiba Akbi",
+          "Tim Schopf",
+          "Akiko Aizawa"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "Loop Before You Leap: What Recurrent Depth Can and Cannot Buy in Data-Limited Pretraining",
+        "url": "",
+        "authors": [
+          "Daichi Hotta",
+          "Yohei Kobashi",
+          "Takeshi Kojima",
+          "Yusuke Iwasawa",
+          "Yutaka Matsuo"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "RECAP: Context-Aware Prediction Recycling with Request-Local and Persistent Memories for Multimodal Speculative Decoding",
+        "url": "",
+        "authors": [
+          "Hengjie Zhu",
+          "Dayan Wu",
+          "Xinze Liu",
+          "Peng Fu",
+          "Zheng Lin",
+          "Weiping Wang"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "UniCompress: From Multi-LoRA Experts to One Compact Model for Edge Intelligence",
+        "url": "",
+        "authors": [
+          "Mingkang Liu",
+          "Peipei Jiao",
+          "Weiming Meng",
+          "Tianyuan Liu",
+          "Lichen Pang",
+          "Junyan Li"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "ModalSearcher: Weaving Visual Evidence into Autonomous Cross-Modal Deep Search",
+        "url": "",
+        "authors": [
+          "Zhihan Yin",
+          "Ruyi Li",
+          "Chengyu Fang",
+          "Yifeng Yao",
+          "Nonghai Zhang",
+          "Pengfei Xiong",
+          "Terry Zhang",
+          "Huishuai Zhang",
+          "Dongyan Zhao"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "A Systematic Benchmark for Evaluating Multimodal Personalized Reasoning of Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Dohyun Kim",
+          "Junyong Lhim",
+          "Kwanyong Park"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "AmbiHTMLBench: A Benchmark for HTML-based Visually Rich Document parsing",
+        "url": "",
+        "authors": [
+          "Boyu Niu",
+          "Yingjie Xiong",
+          "Shurui Li",
+          "Linhan Pang",
+          "Yuntong Zhang",
+          "Han Wang",
+          "Hao Wu",
+          "Kai Zuo",
+          "Xu Tang",
+          "Xuanhe Zhou",
+          "Fan Wu"
+        ],
+        "date": "2026-11-05"
+      },
+      {
+        "title": "BEAKER: An Expert-Curated Benchmark for Embodied Brains in Self-Driving Chemical Laboratories",
+        "url": "",
+        "authors": [
+          "Fei Lin",
+          "Tengchao Zhang",
+          "Ziyang Gong",
+          "Xiaotong Yu",
+          "Bohan Zhang",
+          "Yifan Zhou",
+          "Qihao Yang",
+          "Ji Dai",
+          "Dong Li",
+          "Yining Jiang",
+          "Qinghua Ni",
+          "Jun Huang",
+          "Qiang Zhang",
+          "Yue Zhou",
+          "Zhihang Zhong",
+          "Yonglin Tian",
+          "Fei-Yue Wang",
+          "Xue Yang"
+        ],
+        "date": "2026-11-05"
+      }
+    ]
+  }
+]
