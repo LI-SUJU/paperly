@@ -1,0 +1,310 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-08",
+    "paperCount": 6,
+    "markdown": "# Interpretability Beyond the Black Box: Shaping, Certifying, and Decomposing Internal Representations\n\nToday's interpretability research pushes past post-hoc explanation toward frameworks that actively shape, certify, and decompose the internal representations of models. The papers span policy distillation for industrial control, scaling laws for SAE training data, superposition-based decompositions of user embeddings, and a sober formal account of what finite experiments can actually certify about mechanism-level quantities.\n\n## Shaping and Steering Internal Representations\n\nMechanistic Shaping proposes a unified training-time framework for constraining not only which concepts a model expresses through its outputs but also which concepts it relies on internally when making decisions—e.g., prohibiting reliance on a candidate's gender in résumé screening [1]. The approach is validated across vision, medical imaging, and language domains, at scales up to 32B parameters, and across classification, SFT, and DP-style training paradigms, suggesting representation-level specification is a general-purpose control surface rather than a domain-specific trick [1]. This matters because it reframes interpretability machinery from diagnosis into governance: specifications about concept use become enforceable constraints during training rather than audited after the fact [1].\n\n## Foundations and Safety-Oriented Surveys of Mechanistic Interpretability\n\nA broad multi-institution survey takes stock of mechanistic interpretability as an AI safety discipline, motivated by the gap between growing capability/autonomy and our understanding of how such systems compute and behave in unfamiliar situations [3]. The authors argue that studying internal representations and computations offers a path toward evaluating and controlling models, and they map the state of the field against that safety mandate [3]. Its value lies in consolidating the interpretability-for-safety agenda at a moment when the community needs shared vocabulary and open problems rather than isolated circuit findings [3].\n\nAt the formal end, a paper asks when mechanism-level quantities—functionals of a system's causal transition law describing *how* it computes rather than *what* it outputs—are identifiable from finite, partial, noisy interventions, and whether they are continuous in the mechanism and certifiable from finite data [5]. The authors answer exactly for a deliberately demanding case: the integrated information φ of IIT in stochastic networks of four and five units [5]. The result is a cautionary, rigor-improving contribution: identical behavior can arise from different mechanisms, so interpretability and consciousness assessments based on such quantities must state precisely what their experiments can and cannot certify [5].\n\n## Scaling and Data Efficiency in Sparse Autoencoders\n\nSAE training is often bottlenecked by activation storage, so this work asks how many unique activations are needed when the total training budget is fixed [4]. Quality improves rapidly with buffer size and then plateaus, at which point replaying the buffer is nearly as effective as streaming fresh activations; beyond that point, additional unique activations yield little gain in reconstruction or interpretability, and the buffer need not grow with the budget [4]. The authors characterize this diversity–repetition tradeoff with a scaling law for limited data [4]. Practically, this converts a major infrastructure cost center for interpretability research into a predictable design parameter [4].\n\n## Interpretable Representations in Applied Systems\n\nValue-oriented policy distillation targets wind farm power control under implicit balancing, where the settlement (imbalance) price is unknown in advance and is itself affected by the control strategy pursued—a challenging RL setting [2]. The distillation approach is positioned to yield interpretable control policies that remain effective under this price-feedback loop, supporting system balance and reducing the farm's imbalance costs from forecast errors [2]. It matters as a concrete deployment case where interpretability is not a luxury but a prerequisite for operator trust in grid-critical automation [2].\n\nOn the user-modeling side, user embeddings in recommendation and personalization are dense and opaque; this paper argues they can be understood as sparse superpositions of interpretable behavioral modes [6]. This structure is directly predicted by generative models of user behavior for linear embeddings and extends approximately to deep representations via the superposition hypothesis, with superimposed modes naturally decomposable [6]. The contribution bridges the superposition story from mechanistic interpretability to industrial behavioral modeling, offering a route to auditable personalization [6].\n\n## Key Takeaways\n- Interpretability is shifting from post-hoc explanation to training-time control: Mechanistic Shaping enforces *which concepts a model relies on*, not just which it outputs, across domains and scales up to 32B parameters [1].\n- The field's safety agenda is maturing into a consolidated research program, with a large multi-institution survey mapping mechanistic interpretability against AI safety needs [3].\n- Formal limits matter: finite interventional experiments cannot in general certify mechanism-level quantities, as shown exactly for IIT's φ in small stochastic networks—identical behavior need not imply identical mechanism [5].\n- SAE data requirements follow a scaling law: beyond a plateau, replaying a fixed activation buffer is nearly as good as fresh data, so buffers need not grow with training budgets [4].\n- Superposition is proving portable: user embeddings decompose into sparse superpositions of interpretable behavioral modes, bringing mechanistic tools to recommendation systems [6].\n- Applied interpretability has real stakes: value-oriented policy distillation for wind farm control must be interpretable precisely because the price signal depends on the policy itself [2].\n- Across all five works, the common thread is representation-level reasoning—shaping, certifying, scaling, and decomposing internal representations—as the unit of both analysis and intervention.",
+    "papers": [
+      {
+        "title": "Shaping & Monitoring Models through their Internal Representations",
+        "url": "",
+        "authors": [
+          "Thomas Fel",
+          "Matthew Kowal",
+          "Matt Feiszli",
+          "Satchel Grant",
+          "Andrew Lee",
+          "Chris Earls",
+          "Fatih Dinc",
+          "Vasudev Shyam",
+          "Usha Bhalla",
+          "Leon Bergen",
+          "Siddharth Boppana",
+          "Ching Fang",
+          "Michael Byun",
+          "Tristan Gallent",
+          "Nicholas Wang",
+          "Tal Haklay",
+          "Dron Hazra",
+          "Neehar Kondapaneni",
+          "Connor Watts",
+          "Ryan Panwar",
+          "Thomas Dooms",
+          "Jack Merullo",
+          "Atticus Geiger",
+          "Ekdeep Singh Lubana",
+          "Thomas McGrath",
+          "Owen Lewis"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Value-oriented policy distillation for interpretable wind farm power control",
+        "url": "",
+        "authors": [
+          "Max Bruninx",
+          "Timothy Verstraeten",
+          "Jan Decuyper",
+          "Ann Nowé",
+          "Jan Helsen"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Understanding AI from the Inside: The State of Mechanistic Interpretability for AI Safety",
+        "url": "",
+        "authors": [
+          "Fazl Barez",
+          "Tung-Yu Wu",
+          "Hunar Batra",
+          "Gabriele Dominici",
+          "Florent Draye",
+          "Yanai Elazar",
+          "Damiano Fornasiere",
+          "Antía García",
+          "Abir Harrasse",
+          "Riley Harris",
+          "Sara Hooker",
+          "Michael Lan",
+          "Belinda Z. Li",
+          "Aaron Maiwald",
+          "Narmeen Fatimah Oozeer",
+          "Naomi Saphra",
+          "Or David Shafran",
+          "Adi Simhi",
+          "Robert Trager",
+          "Shriyash Kaustubh Upadhyay",
+          "Ziyu Yao",
+          "Yu Zhao",
+          "Shay B. Cohen",
+          "Mor Geva",
+          "Yoshua Bengio",
+          "Stella Biderman",
+          "Hassan Sajjad"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Scaling Laws for SAE Training Data",
+        "url": "",
+        "authors": [
+          "Nikita Koriagin",
+          "Nikita Balagansky",
+          "Daniil Gavrilov"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Same Behavior, Different Mechanism: What Finite Experiments Can Certify About Integrated Information",
+        "url": "",
+        "authors": [
+          "Linqian Wu",
+          "Diaoxuan He"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "User Embeddings are Superpositions of Interpretable Behavioral Modes",
+        "url": "",
+        "authors": [
+          "Jonathan Kozaczuk",
+          "Zheng Dong",
+          "Noyan Evirgen",
+          "Keivan Majidi",
+          "Eddie K. H. Ng",
+          "Chris Porter",
+          "Qi Zhao",
+          "Jia Geng",
+          "Changmao Li",
+          "Brandon R. Feng"
+        ],
+        "date": "2026-11-08"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-08",
+    "paperCount": 14,
+    "markdown": "# Multimodal Research Digest — November 8, 2026\n\nToday's multimodal landscape is defined by a decisive shift from perception benchmarks toward agentic, verifiable, and causally grounded evaluation across domains as varied as clinical care pathways, PCB routing, and financial risk. At the same time, a methodological thread on leakage-aware benchmarking and representational geometry warns that many reported multimodal gains may be artifacts of flawed evaluation or shallow signal use.\n\n## Evaluation Benchmarks for Agentic and Safety-Critical Multimodality\n\n**CST-Bench** [2] targets a gap in spatial reasoning evaluation: existing benchmarks test static scene understanding, not how interventions (moves, swaps) change scene state. The authors introduce a 7,082-example benchmark covering 6 intervention types and 12 transformation operators with dense causal annotations, and propose Causal Transition On-Policy Self-Distillation to train models on these counterfactual transitions. This matters because it moves MLLM evaluation from describing scenes to reasoning about causal consequences of actions—a prerequisite for embodied and planning applications.\n\n**Multimodal-SEA** [8] evaluates personal AI agents under social engineering attacks that leverage forged multimodal content, an under-studied threat surface relative to text-only dialogue attacks. The benchmark comprises 608 expert-designed tasks across 14 domains and 152 attack scenarios, with four difficulty levels and parallel Chinese/English contexts reflecting distinct social and cultural attack patterns. It provides the first structured probe of agents' intrinsic security when they must inspect, verify, and act on multimodal requests.\n\n**TB-MathModel** [6] addresses the evaluation of mathematical modeling—turning open-ended problems into assumptions, models, and defended recommendations—where existing benchmarks either score solver fragments or rely on unchecked LLM judges. Built over 18 real CUMCM and MCM problems (2023–2025), it makes contest-style modeling agentic, verifiable, and terminal-executable simultaneously, checking both proximity to credible references and physical feasibility. This is a meaningful step toward benchmarks whose scores cannot be gamed by fluent report generation.\n\n**NPCBench** [11] argues that medical benchmarks decomposing competence into isolated questions or static vignettes fail to test care-pathway integration. The benchmark mirrors specialist training in nasopharyngeal carcinoma, progressing from guideline knowledge to case planning, longitudinal review, and CarePath integration with multimodal evidence. Its contribution is a clinical apprenticeship framing that evaluates whether models can track a patient's condition over time rather than answer atomized questions.\n\n**PCBRouteAgent** [9] tackles automated PCB routing, which requires coordinating board-level connectivity with geometric execution under strict design rules. The agent pairs a Global Routing Planner—consuming board images plus structured electrical/geometric data to specify topology, routing order, corridors, and layer transitions—with a detailed executor, mirroring how human engineers split strategy from execution. It sets a demanding real-world bar for multimodal tool-using agents in engineering workflows.\n\n## Multimodal Foundation Models in Scientific and Engineering Domains\n\n**Tokamak foundation model** [7] observes that tokamak models are typically built per-task on prescribed diagnostic subsets, discarding cross-signal information from the full multimodal observation set (waveforms, profiles, fields, scalars). The authors propose a reusable generative foundation model that adapts to each task's input-output schema—reconstruction, evolution forecasting, control-signal recovery, disruption risk—rather than fixing them. This positions fusion control as a new frontier for schema-flexible multimodal foundation models.\n\n**Polymer fragmentation** [13] notes that fragment-based molecular representations typically rely on predefined chemical rules that may be suboptimal for unseen structures. The work proposes geometry-based fragmentation for multiscale molecular representation learning, learning chemically meaningful substructures rather than imposing them. Given that specific motifs and side chains dominate polymer properties, adaptive fragmentation offers a principled route to better polymer property prediction.\n\n## Multimodal Clinical Prediction: Methodology and Pitfalls\n\n**Stroke outcome fusion** [14] evaluates whether day-1 multimodal MRI adds prognostic value for three-month functional outcome after acute ischemic stroke in 66 patients. ResNet embeddings from ADC, DWI, and FLAIR are reduced via fold-isolated PCA and fused with clinical variables and ADC-derived lesion biomarkers, with linear SVMs under eight-fold stratified group cross-validation across modality combinations. The clinical-only baseline framing makes the incremental value of imaging explicit—an important discipline often missing in fusion papers.\n\n**CXR/EHR imbalance audit** [12] delivers a cautionary result: on 29,083 MIMIC-CXR radiographs from 10,479 patients with eight diagnosis targets, a record-level split let a lookup table copying labels from same-EHR development radiographs nearly match the best model, and on unseen patients every model degraded to all-positive prediction. The authors then re-benchmark class-imbalance strategies under leakage- and label-aware protocols. This is essential reading for anyone reporting multimodal clinical gains, as it demonstrates how patient leakage can manufacture apparent progress.\n\n## Generative Augmentation and Multimodal Financial Modeling\n\n**Rare financial events** [3] addresses the scarcity and heterogeneity of extreme market movements by expressing each market window in three aligned modalities: structured variables, a spatial image transformation, and a portfolio-return sequence. Separate VAEs encode each modality, and a class-conditional diffusion model generates augmented CVaR-labeled rare windows for downstream classification. The design preserves complementary structure across representations, testing whether generative augmentation genuinely improves rare-event learning rather than merely inflating sample counts.\n\n**AMoD regulation** [1] studies how penalty-based regulation can limit surge pricing and regional under-service by profit-maximizing Autonomous Mobility-on-Demand operators in a multimodal system. Regulation is modeled as an outer control loop acting on a learning-based operator, with static fixed penalties formulated as an MDP over joint pricing and rebalancing, and dynamic regulation extending this. It connects multi-agent RL with transportation policy design, showing how adaptive penalties can shape learned operator behavior.\n\n## Interpretability and Representation Analysis of Multimodal Models\n\n**Perspective geometry** [10] investigates whether persona-conditioned perspectives actually govern multimodal judgments in Qwen3-VL-8B-Instruct, varying persona content and linguistic framing across 100 images and 53 prompting conditions while recording ratings and layer-wise hidden states. The finding of systematic representational reorganization—dissociated from behavior—suggests models may encode perspectives without those encodings driving outputs. This raises pointed questions about attributing model behavior to internal \"simulated observers.\"\n\n**Circe** [4] confronts LLM self-evaluation without references, where output-based signals can score incorrect responses highly. Rather than analyzing hidden-state trajectories, Circe uses component interaction consistency—signals from how internal components interact—as a training-free correctness probe. If validated, this offers a complementary internal signal for reliability-critical deployments where reference answers are unavailable.\n\n**Keyphrase extraction survey** [5] synthesizes theoretical approaches and practical solutions for keyphrase extraction across text and speech, a literature that has evolved from statistical methods toward LLMs and end-to-end speech processing. Its contribution is a unified analytical framework over often-disparate research strands, useful as a map of the field's trajectory across modalities.\n\n## Key Takeaways\n\n- **Causal and interventional reasoning is the new evaluation frontier**: CST-Bench [2] and TB-MathModel [6] both demand that models reason about consequences and produce verifiable, feasible outputs—not just plausible descriptions or reports.\n- **Benchmark leakage can masquerade as multimodal progress**: the CXR/EHR audit [12] shows patient-level leakage can let trivial lookup tables rival best models and collapse performance on unseen patients; record-level splits warrant scrutiny.\n- **Agentic security is multimodal security**: Multimodal-SEA [8] demonstrates that forged multimodal content creates attack surfaces that text-only evaluations systematically miss.\n- **Clinical benchmarks are shifting from facts to care pathways**: NPCBench [11] and the stroke fusion study [14] both emphasize longitudinal integration and explicit baselines over isolated accuracy numbers.\n- **Domain foundation models are going schema-flexible**: the tokamak model [7] and geometry-based polymer fragmentation [13] exemplify adapting to heterogeneous inputs/outputs rather than fixing task-specific architectures.\n- **Internal representations may not govern behavior**: the perspective geometry study [10] dissociates representation from judgment, cautioning against interpretability claims based solely on hidden-state structure—while Circe [4] shows internal signals can still be useful when carefully chosen, as with component interaction consistency.\n- **Generative augmentation must preserve cross-modal structure**: the financial diffusion approach [3] aligns three modalities to retain complementary signal, a template for rare-event synthesis more broadly.",
+    "papers": [
+      {
+        "title": "Regulating Autonomous Mobility-on-Demand Operators with Fixed and Adaptive Penalties: A Multi-Agent Reinforcement Learning Approach",
+        "url": "",
+        "authors": [
+          "Korbinian Kügler",
+          "Carolin Schmidt",
+          "Florian Dandl",
+          "Filipe Rodrigues"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "CST-Bench: Benchmarking Counterfactual Spatial Transition Reasoning with Causal Transition On-Policy Self-Distillation",
+        "url": "",
+        "authors": [
+          "Ying Li",
+          "Yongle Cheng",
+          "Jing Li",
+          "Xingquan Cai",
+          "Yawei Luo"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Scenario Augmentation for Rare Financial Events via Multimodal Latent Diffusion",
+        "url": "",
+        "authors": [
+          "Mahdi Arab Loodaricheh",
+          "Anita Raja",
+          "Indranil SenGupta"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Circe: Training-Free LLM Self-Evaluation via Component Interaction Consistency",
+        "url": "",
+        "authors": [
+          "Shuyi Miao",
+          "Zheng Li",
+          "Xu Xie",
+          "Linrui Xu",
+          "Fei Shen",
+          "Xiaoyu Du",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Automatic keyphrase extraction and annotation: modern theoretical approaches and practical solutions for text and speech",
+        "url": "",
+        "authors": [
+          "Daria Guseva",
+          "Olga Mitrofanova"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Terminal-style Mathematical Modeling Bench: The First Agentic and Verifiable Benchmark for Mathematical Modeling",
+        "url": "",
+        "authors": [
+          "Xiaojun Wu",
+          "Cehao Yang",
+          "Xuhui Jiang",
+          "Chengjin Xu",
+          "Jia Li",
+          "Jian Guo"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "A Generative Foundation Model for Multimodal Tokamak Tasks",
+        "url": "",
+        "authors": [
+          "Yingshuai Ji",
+          "Haodong Feng",
+          "Guohong Deng",
+          "Gelin Bian",
+          "Yue Wang"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Multimodal-SEA: Benchmarking AI Agent Security under Multimodal Social Engineering Attacks",
+        "url": "",
+        "authors": [
+          "Zhitao He",
+          "Chi Him Zhang",
+          "Chengru Han",
+          "Yi R Fung"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "PCBRouteAgent: How Close Are LLM Agents to Becoming PCB Routing Engineers?",
+        "url": "",
+        "authors": [
+          "Yue Zhang",
+          "Jilei Sun",
+          "Liqiang Jing",
+          "Yijie Wei",
+          "Ruohan Yang"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "The Geometry of Simulated Perspectives: Dissociating Representation and Behaviour in a Multimodal Language Model",
+        "url": "",
+        "authors": [
+          "Mathis Immertreu",
+          "Fitim Abdullahu",
+          "Thomas Kinfe",
+          "Claus Metzner",
+          "Helmut Grabner",
+          "Patrick Krauss",
+          "Achim Schilling"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "NPCBench: A Clinical Apprenticeship Benchmark for Multimodal Care-Pathway Reasoning in Nasopharyngeal Carcinoma",
+        "url": "",
+        "authors": [
+          "Pengkai Wang",
+          "Wei-Wei Zhang",
+          "Yan Li",
+          "Min Tang",
+          "Zhitian Hou",
+          "Zeyu Liu",
+          "Guanghao Zhu",
+          "Yuanyi Wang",
+          "Yanggan Gu",
+          "Wenjun Wang",
+          "Minheng Ni",
+          "Congkai Xie",
+          "Zhijie Sang",
+          "Jianmin Wu",
+          "Ying Sun",
+          "Hongxia Yang"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Leakage- and Label-Aware Benchmarking of Class-Imbalance Strategies for Multimodal Chest X-Ray and EHR Classification",
+        "url": "",
+        "authors": [
+          "Dang-Khoa Bui",
+          "Quang-Huy Tran",
+          "Minh-Khoi Nguyen-Bui",
+          "Duc-Tuan Ngo",
+          "Thanh-Trong Tran",
+          "Tuan-Khoi Nguyen",
+          "Hoang-Anh Ngo"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Towards Multiscale Molecular Representation Learning through Geometry-Based Fragmentation for Polymer Property Prediction",
+        "url": "",
+        "authors": [
+          "Makoto Takamoto",
+          "Chaitanya Sampara",
+          "Viktor Zaverkin",
+          "Daniel Oñoro-Rubio",
+          "Mathias Niepert"
+        ],
+        "date": "2026-11-08"
+      },
+      {
+        "title": "Interpretable Multimodal MRI-Clinical Fusion for Functional Outcome Prediction After Acute Ischemic Stroke",
+        "url": "",
+        "authors": [
+          "Sina Raeisadigh",
+          "Henning Müller",
+          "Abderrahmane Hedjoudje"
+        ],
+        "date": "2026-11-08"
+      }
+    ]
+  }
+]
