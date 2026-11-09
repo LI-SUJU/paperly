@@ -1,0 +1,359 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-09",
+    "paperCount": 12,
+    "markdown": "# Interpretability Research Digest — November 9, 2026\n\nToday's interpretability research spans from mechanistic probing of transformers to symbolic and prototype-based models designed for transparency by construction, reflecting a field increasingly negotiating the trade-off between fidelity and human-legible structure. A notable theme is the turn toward continuous, closed-form, and measurement-grounded representations — KANs, differentiable atoms, and calibrated neuron readings — as alternatives to purely post-hoc explanation pipelines.\n\n## Mechanistic Interpretability and Sparse Feature Decomposition\n\n**Cross-Layer TopK** [10] tackles a concrete training bottleneck in Cross-Layer Transcoders (CLTs), which decompose LLM activations into interpretable features and trace circuits across layers. The authors observe that the standard JumpReLU recipe controls sparsity only indirectly via penalty, while naive TopK extensions fix a constant number of active latents per layer, which is suboptimal when feature density varies across depth. Their proposed Cross-Layer TopK dynamically allocates sparsity across layers, better modeling the fact that a CLT must represent all layers simultaneously. This matters because CLTs are emerging as a key tool for circuit-level mechanistic interpretability, and better training recipes directly improve the fidelity of the features researchers read off.\n\n**Random Symbolic Boosting (RSB)** [3] addresses the computational expense of symbolic regression via generational evolution by constructing explicit additive symbolic models through boosting over populations of randomly generated syntax trees. The method exploits two observations: high-dimensional spaces can be spanned by sufficiently many linearly independent vectors, and syntax-tree semantics can be manipulated directly as such vectors — with theoretical grounding for Ordinary Least Squares. By eliminating generational evolution, RSB offers a cheaper route to interpretable symbolic models, broadening the practical accessibility of symbolic regression for interpretability-conscious practitioners.\n\n## Attribution, Distillation, and Reading Neurons as Measurements\n\n**Higher Order Component Attribution via Learned Surrogates** [1] probes the Particle Transformer (ParT), a state-of-the-art jet-tagging architecture in High Energy Physics whose attention mechanism injects explicit particle-correlation information but whose internal effectiveness remains poorly understood. The authors propose component attribution using Kolmogorov-Arnold Networks (KANs) as learned surrogates that tie attributions back to physically meaningful jet descriptors, allowing them to interrogate whether mechanisms such as Multi-Head Attention drive performance. This bridges mechanistic interpretability with domain science, offering physicists a principled handle on why transformer-based taggers work.\n\n**Calibrated Concept Profiles** [2] confronts a structural trade-off in interpretability: the field's shift from reading neurons directly to reading proxy models (probes, SAEs, crosscoders) fixed real problems — mixed meanings, unitless thresholds, non-transferable readings — but sacrificed the directness of naming the neurons themselves. Wilam argues that a neuron's activation varies with the prompt, so its reading should be treated as a distribution over a population rather than a point estimate, making the direct reading a *measurement* with calibration and repeatability. The contribution is a conceptual reframing with practical import: it restores comparability and reproducibility to neuron-level interpretation without reintroducing the faults that motivated proxy models.\n\n**MEDALLION** [4] addresses the difficulty of interpreting which original features drive low-dimensional embeddings produced by black-box dimensionality reduction methods like t-SNE and UMAP. The framework distills any given embedding with a neural encoder and then applies neural feature attribution to explain the resulting latent dimensions in terms of input features. By making embedding dimensions attributable, MEDALLION extends interpretability into the widely used but opaque visualization layer of scientific discovery pipelines.\n\n**Knowledge Distillation for Differentiable Logic Networks** [7] targets the accuracy gap between interpretable, edge-friendly DLNs — which learn logic operators and connections via gradient descent at orders-of-magnitude lower inference cost — and conventional neural networks, a gap rooted in vanishing gradients and scalability limits. The authors introduce distillation from a trained MLP teacher into a DLN student to narrow this gap while preserving interpretability. This is a pragmatic contribution: it improves the competitiveness of inherently interpretable models rather than retrofitting explanations onto opaque ones.\n\n**Robust Deep Prototype Classifiers via Lipschitz Training** [12] examines the interrelation of robustness and interpretability through prototype-based classifiers such as Generalized Learning Vector Quantization, which are interpretable by construction and carry a closed-form robustness certificate via their hypothesis margin. The authors note these guarantees degrade on high-dimensional data and apply Lipschitz training to restore them for deep prototype classifiers. The work reinforces the argument that a model behaving inconsistently under imperceptible perturbations is not interpretable, and offers a training recipe to make prototype classifiers both robust and legible at scale.\n\n## Interpretability for Scientific and Clinical Discovery\n\n**Glyph** [5] presents an interpretability engine for AI-driven scientific discovery in clinical data, motivated by the observation that automated phenotype extraction relies on pre-defined feature sets which cap what associations — and what agentic AI queries over population-scale data — can discover. Rather than constraining discovery to predefined phenotypes, Glyph leverages foundation models trained on large clinical corpora with an interpretability layer oriented toward scientific discovery. This matters because it reframes interpretability as an enabler of open-ended clinical hypothesis generation rather than merely a compliance requirement.\n\n**RAG-Enhanced LLMs for Interactive Explainability in Clinical Decision Support** [6] addresses the mismatch between existing XAI outputs and the formats accessible to domain experts such as clinicians, where reliance on high-risk predictive models demands transparency. The authors use retrieval-augmented LLMs to bridge complex models and end-users through natural-language, interactive explanations. The contribution is a practical architecture for interactive explainability in high-stakes settings, though it also implicitly raises questions about grounding and faithfulness of LLM-mediated explanations.\n\n**Sparse Representation Editing (SpaRE)** [11] tackles controllable molecule generation with LLMs, whose dense, entangled representations impede precise control over bespoke substructures or properties. SpaRE learns an overcomplete sparse feature space that disentangles LLM representations, enabling fine-grained editing for controllable generation. This exemplifies interpretability-driven *action* — using disentangled features not just to explain but to steer generation in drug discovery and materials design.\n\n**Continuous Dictionary Pursuit (CDP)** [9] improves on classical matching pursuit and sparse coding for interpretable signal decomposition, which suffer spectral leakage and grid mismatch when signal frequencies do not align with discrete dictionary atoms. CDP learns the parameters of closed-form functions directly from data, optimizing over a continuous manifold of differentiable atoms — unlike prior continuous pursuit methods restricted to a single atom type. The result is transparent signal decomposition without discretization artifacts, valuable wherever interpretable frequency or component analysis is required.\n\n## Position Papers and Reflections on Neurosymbolic AI\n\n**Challenges, Opportunities, and Misconceptions in Neurosymbolic AI** [8] synthesizes perspectives from the neurosymbolic community on how symbolic components can complement increasingly powerful neural models with respect to efficiency, safety, and interpretability. The authors identify two central challenges — semantic alignment between neural and symbolic components, and the computational cost of symbolic inference and learning — and dispel common misconceptions around differentiability, independence assumptions, and scalability. As a position piece, it provides a useful corrective for researchers who dismiss neurosymbolic approaches on outdated technical grounds, and clarifies where interpretability gains realistically lie.\n\n## Key Takeaways\n- **Interpretability-by-construction is resurging**: logic networks [7], prototype classifiers [12], symbolic boosting [3], and continuous dictionaries [9] all trade some raw capacity for legible structure, with distillation and Lipschitz training closing the accuracy gap rather than accepting it.\n- **Sparse decomposition remains the workhorse** for LLM interpretability, with Cross-Layer TopK [10] improving CLT training and SpaRE [11] demonstrating that disentangled sparse features enable *control*, not just explanation.\n- **Direct neuron reading is being rehabilitated as measurement** [2], reframing activations as prompt-conditioned distributions to recover reproducibility without proxy models.\n- **Attribution is moving into domain semantics**: KAN surrogates tie transformer components to physical jet descriptors in HEP [1], and MEDALLION attributes embedding dimensions back to input features [4].\n- **Clinical and scientific discovery is a proving ground** for interpretability, with Glyph [5] arguing that interpretable foundation models expand *what can be discovered*, while RAG-based interactive explanation [6] targets expert-consumable XAI.\n- **Robustness and interpretability are increasingly treated as inseparable** [12], since inconsistent predictions under imperceptible perturbations undermine human-recognizable features.\n- **Neurosymbolic AI's challenges are integration, not viability** [8] — semantic alignment and symbolic inference cost are the real bottlenecks, and several common objections are misconceptions.",
+    "papers": [
+      {
+        "title": "Higher Order Component Attribution via Learned Surrogates in High Energy Physics",
+        "url": "",
+        "authors": [
+          "Lauri Laatu",
+          "Aritra Bal",
+          "Benedikt Maier",
+          "Markus Klute",
+          "Michael Spannowsky"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Calibrated concept profiles: making the reading of a model's neurons a measurement",
+        "url": "",
+        "authors": [
+          "Piotr Wilam"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Random Symbolic Boosting: A Geometric Approach to Symbolic Regression",
+        "url": "",
+        "authors": [
+          "José R. Ortegaa",
+          "José Manuel Muñoz Contreras",
+          "Leonardo Trujillo"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "MEDALLION: Manifold Embedding Distillation and Attributions for Low-dimensional Latent InterpretatiON",
+        "url": "",
+        "authors": [
+          "Vicky Jung",
+          "Claire M. He",
+          "Irene Chang",
+          "Genevera I. Allen"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Glyph: An Interpretability Engine for AI-Driven Scientific Discovery in Clinical Data",
+        "url": "",
+        "authors": [
+          "Robbie Holland",
+          "Ashwin Kumar",
+          "Mateus A. Esmeraldo",
+          "David Le",
+          "Andrea Fisher",
+          "Jiazhen Pan",
+          "Louisa Fay",
+          "Magdalini Paschali",
+          "Vasiliki Sideri-Lampretsa",
+          "Ates Fettahoglu",
+          "Stefania Moroianu",
+          "Philipp Wesp",
+          "Ivan Lopez",
+          "Tom Nuno Wolf",
+          "McKenzie S. White",
+          "Eduardo Pontes Reis",
+          "Fatima Rodriguez",
+          "Curtis P. Langlotz",
+          "Vasilis Syrgkanis",
+          "Imon Banerjee",
+          "Akshay S. Chaudhari",
+          "Sergios Gatidis"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "RAG-Enhanced LLMs for Interactive Explainability in Clinical Decision Support Systems",
+        "url": "",
+        "authors": [
+          "Lorenzo Mannocci",
+          "Francesca Naretto",
+          "Lucia Passaro",
+          "Anna Monreale"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Knowledge Distillation from Neural Networks to Differentiable Logic Networks",
+        "url": "",
+        "authors": [
+          "Hee Yun Suh",
+          "Niraj K. Jha"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Challenges, Opportunities, and Misconceptions in Neurosymbolic AI",
+        "url": "",
+        "authors": [
+          "Giuseppe Marra",
+          "Pierre Genevès",
+          "Meghyn Bienvenu",
+          "Thomas Schiex",
+          "Sylvie Thiébaux",
+          "Silviu Maniu"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Beyond the Grid: Continuous Dictionary Pursuit for Interpretable Signal Decomposition",
+        "url": "",
+        "authors": [
+          "Nick Janssen",
+          "Melanie Schaller",
+          "Bodo Rosenhahn"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Cross-Layer TopK: Dynamically Allocating Sparsity Across Layers in Transcoders",
+        "url": "",
+        "authors": [
+          "Anyuan Zhuo",
+          "Shaohua Zhang",
+          "Tianle Li",
+          "Yuan Lin",
+          "Diandian Gu",
+          "Jun Wang",
+          "Pinyan Lu"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Controllable Molecule Generation via Sparse Representation Editing: An Interpretability-Driven Perspective",
+        "url": "",
+        "authors": [
+          "Zhuoran Li",
+          "Xu Sun",
+          "Chang Wen Chen",
+          "Wanyu Lin"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Robust Deep Prototype Classifiers via Lipschitz Training",
+        "url": "",
+        "authors": [
+          "Adia Khalid Khan",
+          "Lukas Gehring",
+          "Benjamin Paaßen"
+        ],
+        "date": "2026-11-09"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-09",
+    "paperCount": 4,
+    "markdown": "# Explainability Research Digest — November 9, 2026\n\nToday's papers show explainability maturing from a single-model concern into a systems-level discipline: benchmarking the assumptions baked into attribution methods, formalizing explanation quality as a selection criterion, and wrapping black-box predictors in post-hoc reasoning layers. Across clinical, cybersecurity, and engineering applications, the shared thread is that explanations must be evaluated, composable, and context-aware—not merely produced.\n\n## Benchmarking and Validating Explanations\n\n**MotionBench-XAI: Benchmarking What Shapes Shapley Explanations in Spatiotemporal Machine Learning** [1] tackles a subtle but consequential gap: Shapley-value explanations depend on a cascade of design choices—how \"players\" (features) are defined, how absent players are imputed, and how the cooperative game is evaluated—yet the sensitivity of explanations to these choices is rarely measured. The authors build a benchmark for spatiotemporal tasks such as Parkinson's severity assessment from motion data, systematically varying these methodological decisions and characterizing how attributions shift across spatial (joint-level) and temporal (window-level) granularities. The work matters because it converts an implicit methodological free-for-all into an empirical question, giving practitioners guidance on which Shapley configurations yield stable, meaningful explanations in domains where both *where* and *when* matter.\n\n**Surrogate Quality Score: A Novel Composite Performance Metric for Model Selection** [2] argues that predictive accuracy alone is an inadequate basis for choosing among high-fidelity ML surrogates in engineering decision-making, where complexity, forecastability, explainability, scalability, and physics-awareness can be equally decisive depending on context. The authors propose the Surrogate Quality Score (SQS), a composite metric that folds these heterogeneous attributes—including explainability—into a single systematic selection criterion. This reframes explainability as a first-class quantity to be traded off explicitly rather than an afterthought, which is precisely the kind of formalization needed if explanation quality is to influence model governance in safety-relevant engineering workflows.\n\n## LLM-Mediated Explanation and Human Access\n\n**RAG-Enhanced LLMs for Interactive Explainability in Clinical Decision Support Systems** [3] addresses the persistent mismatch between XAI outputs and the domain experts who must act on them: technical attributions are often inaccessible to clinicians, while raw LLM narration risks hallucination and unfaithfulness. The authors integrate retrieval-augmented generation with XAI pipelines in a clinical decision support setting, grounding natural-language explanations in retrieved, verifiable knowledge to support interactive, expert-facing explanation. The contribution is a concrete architecture for the \"LLM-as-explanation-interface\" pattern with retrieval as the faithfulness safeguard—an important step for deploying conversational explainability in high-stakes, regulated domains like healthcare.\n\n## Post-Hoc Reasoning and Defeasible Correction\n\n**PHISHREV+: An ASP-Based Post-Hoc Defeasible Machine Learning Framework for Phishing Detection** [4] confronts the rigidity of trained classifiers: once decision boundaries are fixed, new contextual evidence (e.g., freshly reported phishing indicators) cannot influence predictions without retraining. The framework treats classifier outputs as *defeasible beliefs* and revises them via Answer Set Programming, layering symbolic, rule-based post-hoc reasoning atop the ML predictor rather than replacing it. This hybrid neuro-symbolic design delivers both updatable decisions and intrinsically inspectable revision traces—valuable in cybersecurity, where threats drift faster than retraining cycles, and illustrative of a broader pattern: explanation as an auditable reasoning layer around opaque models.\n\n## Emerging Themes Across the Digest\n\nThree cross-cutting themes emerge. First, **explanations are being stress-tested rather than assumed**—MotionBench-XAI [1] interrogates the stability of Shapley attributions, and SQS [2] turns explainability into a measurable selection axis. Second, **the explanation interface is moving closer to the decision-maker**: RAG-grounded LLMs [3] serve clinicians in natural language, while PHISHREV+'s ASP layer [4] provides machine-checkable justification for security analysts. Third, **hybrid architectures are winning**: neither pure post-hoc attribution nor pure symbolic reasoning suffices; the frontier combines learned predictors with structured, verifiable explanation and revision mechanisms. Notably, only one paper [3] centers LLMs, suggesting the field is diversifying beyond LLM-centric XAI toward rigorous benchmarking and formal reasoning.\n\n## Key Takeaways\n- Shapley explanations are only as trustworthy as their configuration; MotionBench-XAI [1] shows that player definition, imputation, and game evaluation choices materially shape attributions and must be benchmarked explicitly.\n- Explainability is entering formal model-selection pipelines: the Surrogate Quality Score [2] treats it as a quantifiable, trade-off-able attribute alongside accuracy, complexity, and physics-awareness.\n- RAG grounding offers a credible faithfulness safeguard for LLM-generated explanations, making conversational XAI viable for clinical experts [3].\n- Post-hoc defeasible reasoning via ASP [4] enables classifiers to revise decisions with new evidence without retraining, while producing inspectable justification traces.\n- A convergent architectural pattern is emerging: opaque learned models wrapped in structured, verifiable reasoning or retrieval layers rather than explained by attribution alone.\n- Evaluation of explanations themselves (stability, faithfulness, accessibility) is becoming a research subfield in its own right, distinct from explanation generation.\n- Application domains—healthcare, cybersecurity, engineering—are driving requirements toward auditable, context-aware, and human-accessible explanations rather than one-size-fits-all attribution scores.",
+    "papers": [
+      {
+        "title": "MotionBench-XAI: Benchmarking What Shapes Shapley Explanations in Spatiotemporal Machine Learning",
+        "url": "",
+        "authors": [
+          "Mathilde Papillon",
+          "Louisa Cornelis",
+          "Nina Miolane"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Surrogate Quality Score: A Novel Composite Performance Metric for Model Selection",
+        "url": "",
+        "authors": [
+          "Maaz Ahmad",
+          "Iftekhar A. Karimi"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "RAG-Enhanced LLMs for Interactive Explainability in Clinical Decision Support Systems",
+        "url": "",
+        "authors": [
+          "Lorenzo Mannocci",
+          "Francesca Naretto",
+          "Lucia Passaro",
+          "Anna Monreale"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "PHISHREV+: An ASP-Based Post-Hoc Defeasible Machine Learning Framework for Phishing Detection",
+        "url": "",
+        "authors": [
+          "Mainak Sen",
+          "Kumar Sanka Ray",
+          "Amlan Chakrabarti"
+        ],
+        "date": "2026-11-09"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-09",
+    "paperCount": 10,
+    "markdown": "# Multimodal Research Digest — November 9, 2026\n\nToday's research spans a striking range of multimodal frontiers: from divergence-aware fusion for emotion recognition and lifelong editing of multimodal LLMs to agentic moral evaluation, medical interpretability engines, and physics-grounded industrial vision. A notable undercurrent is the shift toward *adaptive* and *reliability-aware* multimodal processing, alongside new benchmarks and datasets (dynamic graphs, moral agency) that expose gaps in how models integrate modalities and behave as autonomous agents.\n\n## Reliability-Aware Fusion and Adaptive Reasoning in Multimodal Models\n\n**Divergence-Guided Reliability-Aware Fusion and Adaptive LLM Prompting for Conversational Emotion Recognition** [1] addresses a gap in multimodal emotion recognition in conversations (MERC): existing systems don't adapt their fusion behavior to the degree of *disagreement* between modalities, which arises from semantic incongruity, concealed emotion, noisy observations, and ambiguity. Rather than diagnosing each inconsistency source separately, the authors model their *common consequence* — unreliable modality-specific evidence — and use measured divergence to drive both reliability-aware fusion and adaptive prompting of an LLM. This reframes inter-modal disagreement as a signal for learned reliability rather than noise to be averaged away. The work matters because conversational affect is precisely where modalities most often conflict, and treating divergence as informative could substantially improve robustness.\n\n**Dual-Reference Offline Optimization for Adaptive VLM Reasoning (DR-BOLT)** [4] tackles *overthinking* in vision-language models: forcing every input through long reasoning traces yields accuracy gains but unnecessary inference cost. The authors study adaptive fast/slow thinking but identify a subtle pitfall — fast answers and slow reasoning traces come from distinct behavior policies, so a single-reference offline objective misweights one mode. DR-BOLT resolves this by distinguishing the desired fast/slow *mixture reference* from the *sampling distribution*, enabling balanced optimization across both modes. This is an important contribution to efficient multimodal inference, showing that adaptive compute allocation requires careful offline RL or distribution-matching design rather than naive preference objectives.\n\n## Lifelong Editing and Alignment of Multimodal Representations\n\n**ROSE: Risk-Aware Orthogonal Subspace Navigation for Lifelong Knowledge Editing in MLLMs** [3] confronts sequential factual updates in multimodal LLMs, where each edit erodes locality and causes catastrophic forgetting of both pre-trained capabilities and prior edits. ROSE restricts parameter updates to the *orthogonal complement* of previously edited directions, using risk-aware navigation to preserve prior knowledge while incorporating new facts. The orthogonal-subspace formulation offers a principled geometric mechanism for mitigating interference across a long edit stream. Given that MLLMs increasingly require post-deployment factual currency, this work is directly relevant to practical maintenance of multimodal systems.\n\n**Flow-Guided Target-Space Alignment via Path Consistency** [9] targets a distinct alignment setting: mapping a source modality into a *fixed target space* used directly for downstream analysis, not merely as an intermediate embedding. Successful alignment must preserve both global target-distribution structure and instance-level correspondence from paired training data — yet contrastive losses capture only relative similarity, distribution-matching losses only marginal agreement, and pointwise losses only local fidelity. The proposed flow-guided, path-consistency objective bridges these, enforcing consistency along the transport path from source to target. This matters for multimodal settings like cross-modal retrieval, label transfer, and scientific measurement alignment where the target space has fixed semantics.\n\n**Fixed-point acceleration on Neural Wasserstein manifolds** [10] contributes a geometric optimization tool rather than a multimodal application per se, but its relevance is broad: probability measures are represented as pushforwards of a reference distribution through a neural map, with the parameter space equipped with the induced pullback Wasserstein metric. In this geometry, natural gradient descent becomes a fixed-point iteration on a Riemannian manifold, accelerated via a Riemannian Anderson mixing method that exploits historical residuals for approximate second-order information. This provides a general-purpose acceleration for measure-valued optimization — a core primitive in generative modeling, distribution matching, and multimodal alignment objectives like optimal transport.\n\n## Benchmarks and Datasets for Multimodal and Agentic Evaluation\n\n**MM-DyGraph** [5] introduces, to the authors' knowledge, the *first benchmark* for multimodal dynamic graph learning, where nodes and edges carry text and image signals and evolve over time. The gap is real: existing multimodal learning benchmarks largely ignore temporal graph structure, while dynamic-graph benchmarks typically omit multimodal node/edge features. MM-DyGraph provides diverse real-world datasets with fine-grained temporal annotations, together with a benchmark protocol and baseline model. This is foundational infrastructure — without such benchmarks, the community cannot systematically study how multimodal signals propagate through evolving graph structure.\n\n**ABHBench** [6] shifts moral evaluation from third-person to *first-person*: existing benchmarks ask models to judge human actions in textual vignettes, leaving untested how models behave when they are the acting agent. Built from the interactive narrative game *Detroit: Become Human*, ABHBench is a multimodal benchmark placing foundation models in human-android moral dilemmas as decision-makers. This directly addresses the evaluation gap for agentic deployment, where perception and action are coupled and moral choices have consequences within an environment. It is a timely contribution as FMs transition from advisors to autonomous actors.\n\n## Multimodal Interpretability and Scientific Discovery in Clinical Data\n\n**Glyph** [2] is an interpretability engine for AI-driven scientific discovery in clinical data, motivated by a key limitation: automated phenotype extraction relies on *pre-defined feature sets* that cap which associations can be discovered — a limitation inherited by agentic systems querying population-scale data through those tools. In contrast, foundation models trained on large volumes of clinical data can surface structure beyond predefined features, and Glyph provides the interpretability layer enabling discovery in multimodal, unstructured clinical records. The work matters because it targets the bottleneck of *hypothesis generation* at population scale and is authored by a large interdisciplinary clinical-AI team spanning radiology, cardiology, and causal inference.\n\n## Physics-Informed Multimodal Vision for Industrial Inspection\n\nTwo papers from the same group apply multimodal sensing to bolted-joint assessment. **A Physics-Informed Learning Framework for Linking Microscopic Surface Degradation to Bolted Joint Functional Behavior** [7] addresses heterogeneous degradation histories in returned products within circular engineering, where corrosion alters surface morphology, contact, friction, preload retention, and mechanical response. The framework connects microscopy and camera-based observations to functional indicators via a physics-informed multimodal workflow: defining the corrosion failure mode, generating synchronized inspection and functional-response records, and preprocessing image, roughness, and exposure signals. This is a strong example of multimodal fusion anchored in domain physics rather than generic representation learning.\n\n**PreForceVision** [8] estimates bolt preload — the quantity determining whether loads transmit via frictional clamping or through the bolt — non-contactly from bolt-head deformation. Existing techniques (strain-gauge bolts, force washers, ultrasound, bolt-length measurement) require extra hardware, coupling, calibration, or joint modification, limiting scalability across standard fasteners. The proposed physics-guided optical approach offers scalable, hardware-free preload estimation. Together, [7] and [8] show multimodal vision delivering deployable measurement where traditional instrumentation cannot scale.\n\n## Key Takeaways\n\n- **Divergence is signal, not noise**: [1] shows inter-modal disagreement in conversational emotion recognition can guide reliability-aware fusion and LLM prompting, reframing inconsistency as actionable information.\n- **Adaptive compute needs careful optimization**: [4] demonstrates that fast/slow VLM reasoning modes require dual-reference offline objectives, since distinct behavior policies make single-reference methods misweight modes.\n- **Geometry enables continual multimodal knowledge**: orthogonal-complement updates in [3] and pullback-Wasserstein fixed-point acceleration in [10] both leverage geometric structure to control interference and accelerate measure-valued optimization.\n- **Alignment must balance global and instance-level fidelity**: [9] identifies that contrastive, distribution-matching, and pointwise objectives each capture only part of target-space alignment, proposing path consistency to unify them.\n- **Benchmarks are catching up to deployment reality**: [5] fills the multimodal dynamic-graph gap and [6] moves moral evaluation to first-person agentic settings, both exposing evaluation blind spots.\n- **Predefined features cap discovery**: [2] argues automated clinical discovery is limited by fixed phenotype sets, positioning interpretable foundation-model analysis as the path beyond them.\n- **Physics-grounded multimodal sensing is deployment-ready**: [7] and [8] show optical/microscopic multimodal pipelines replacing bespoke hardware for bolted-joint inspection and preload estimation at scale.",
+    "papers": [
+      {
+        "title": "Mind the Divergence: Divergence-Guided Reliability-Aware Fusion and Adaptive LLM Prompting for Conversational Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Jingwen Wang",
+          "Jiao Li",
+          "Yuhang Qian",
+          "Yuyin Wang",
+          "Min Zhang"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Glyph: An Interpretability Engine for AI-Driven Scientific Discovery in Clinical Data",
+        "url": "",
+        "authors": [
+          "Robbie Holland",
+          "Ashwin Kumar",
+          "Mateus A. Esmeraldo",
+          "David Le",
+          "Andrea Fisher",
+          "Jiazhen Pan",
+          "Louisa Fay",
+          "Magdalini Paschali",
+          "Vasiliki Sideri-Lampretsa",
+          "Ates Fettahoglu",
+          "Stefania Moroianu",
+          "Philipp Wesp",
+          "Ivan Lopez",
+          "Tom Nuno Wolf",
+          "McKenzie S. White",
+          "Eduardo Pontes Reis",
+          "Fatima Rodriguez",
+          "Curtis P. Langlotz",
+          "Vasilis Syrgkanis",
+          "Imon Banerjee",
+          "Akshay S. Chaudhari",
+          "Sergios Gatidis"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "ROSE: Risk-Aware Orthogonal Subspace Navigation for Lifelong Knowledge Editing in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Lingyun Song",
+          "Ziyao Chen",
+          "Kang Pan",
+          "Xiaolin Han",
+          "Yifei Zhang",
+          "Xiaoqi Wang",
+          "Yudai Pan",
+          "Xuequn Shang"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Learning When to Think: Dual-Reference Offline Optimization for Adaptive VLM Reasoning",
+        "url": "",
+        "authors": [
+          "Hongbin Lin",
+          "Sizhe Zou",
+          "Juangui Xu",
+          "Xinyue Xu",
+          "Zhuoli Ouyang",
+          "Stanislav Kolchin",
+          "Chengwei Qin",
+          "Zhongxiang Dai",
+          "Yao Shu"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "MM-DyGraph: A Dataset, Benchmark, and Model for Multimodal Dynamic Graphs",
+        "url": "",
+        "authors": [
+          "Zongyuan Wu",
+          "Pengjie Wang",
+          "Lingshan Chen",
+          "Tianhang Wan",
+          "Yuan Meng",
+          "Xin Wang",
+          "Ling Feng",
+          "Wenwu Zhu"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "ABHBench: Evaluating Moral Decision-Making of Foundation Models from an Agentic Perspective",
+        "url": "",
+        "authors": [
+          "Chaoran Li",
+          "Yukun Li",
+          "Zeyuan Zhao",
+          "Shao Zhang",
+          "Xihuai Wang",
+          "Ying Wen"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "A Physics-Informed Learning Framework for Linking Microscopic Surface Degradation to Bolted Joint Functional Behavior",
+        "url": "",
+        "authors": [
+          "Nehal Afifi",
+          "Gerhard Kachel",
+          "Sven Matthiesen"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "PreForceVision: Physics-Guided Optical Estimation of Bolt Preload from Bolt-Head Deformation",
+        "url": "",
+        "authors": [
+          "Nehal Afifi",
+          "Klaus Rappenecker",
+          "Florian Peinhardt",
+          "Gerhard Kachel",
+          "Alfred Isele",
+          "Sven Matthiesen"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Flow-Guided Target-Space Alignment via Path Consistency",
+        "url": "",
+        "authors": [
+          "Ruizhi Yuan",
+          "Zeqiu Yu",
+          "Wei Gao",
+          "Wei Chen",
+          "Xiwei Tang",
+          "Lu Tang"
+        ],
+        "date": "2026-11-09"
+      },
+      {
+        "title": "Fixed-point acceleration on Neural Wasserstein manifolds",
+        "url": "",
+        "authors": [
+          "Vitalii Aksenov",
+          "Sebastian Gutierrez Hernandez"
+        ],
+        "date": "2026-11-09"
+      }
+    ]
+  }
+]
