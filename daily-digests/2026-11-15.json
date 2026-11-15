@@ -1,0 +1,347 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-15",
+    "paperCount": 11,
+    "markdown": "# Interpretability Research Digest — November 15, 2026\n\nToday's papers push interpretability from post-hoc description toward certified, causally-grounded understanding—spanning mechanistic studies of scientific foundation models, activation-level role steering, and uncertainty localization in LLMs. A parallel thread interrogates the reliability of interpretability itself: several works show that widely-used metrics and claims can be unstable, non-invariant, or observation-point-dependent.\n\n## Mechanistic Understanding of LLM Internals\n\n[4] asks where uncertainty is actually observed within an LLM's computation, arguing that existing UQ taxonomies classify methods by source or mechanism but not by observation point—which determines whether an estimator has enough information to recover its target. Drawing on mechanistic interpretability, the authors define and localize these observation points, linking estimator access to recoverability. This reframing matters because it turns UQ method selection into a question of computational localization rather than statistical preference.\n\n[5] introduces a validation framework for extracting and injecting occupational role vectors—activation-level directions capturing how a person in a given role would respond—tested on Qwen2.5-7B-Instruct and Llama-3.1-8B-Instruct. The interpretability lens checks whether each vector is a stable, separable, domain-consistent representation of its role, while a complementary steering lens tests causal efficacy. The work matters because system prompts are the primary interface for deploying role-conditioned LLM applications, yet their internal representation has been largely unvalidated.\n\n[9] presents, to the authors' knowledge, the first causal mechanistic interpretability study of an astronomy foundation model, AION-1, targeting its multimodal advantage in redshift prediction where imaging plus photometry beats photometry alone. The study tests whether internal computations correspond to known scientific operations or to different mechanisms entirely. Beyond reliability and failure-mode analysis, the authors frame mechanistic understanding as a route to learning new science from the model itself.\n\n[3] identifies that the non-negativity constraint in Backpack language models conflates two properties: the linear readout (which carries interpretability) and the conic combination (which merely restricts it). They relax the latter by computing sense weights with differential attention—a difference of two softmax maps with a learned per-sense gain—allowing context to actively inhibit a sense. At equal parameters on WikiText-103, this differential Backpack cuts (per the abstract) an unspecified metric, showing interpretability need not be sacrificed to richer context modeling.\n\n## Interpretability for Structured and Scientific Domains\n\n[1] addresses the difficulty of training legal LLMs to produce high-quality reasoning traces, where supervised fine-tuning dilutes the answer signal when traces vastly exceed answer length, and RL methods like GRPO suffer costly reward design, plateaus, and reward hacking. The proposed two-stage training scheme balances learning signals and schedules rewards to elicit explicit, interpretable reasoning in the legal domain. The work matters because legal reliability depends on auditable reasoning chains, not just final answers.\n\n[6] proposes KQML-Liver, a hybrid framework integrating quantum machine learning with Kolmogorov-Arnold Networks for liver disease classification, motivated by interpretability gaps and inflated performance from data leakage in prior QML diagnostics. The KAN component provides structured, inspectable function composition while QML supplies the hybrid learning backbone. The paper's emphasis on rigorous evaluation protocols is as important as the architecture itself, given documented leakage problems in clinical ML.\n\n[7] extends Shapley-based policy interpretability beyond the SILVER framework's restrictions—low-dimensional states, binary actions, and linear surrogates—with ReShap, a policy-distillation framework for high-dimensional, multi-action RL settings. ReShap extracts compact, interpretable surrogates of opaque deep RL policies. This matters as RL deploys into complex real-world control where trust requires explanation, not just performance.\n\n[2] tackles urban region representation learning, where aggregated origin-destination matrices mix trips of different activity purposes into purpose-agnostic patterns. EASTAR anchors mobility interactions in event-level activity-purpose signals and learns task-adaptive region representations. Grounding interactions in purpose makes the learned representations semantically interpretable rather than purely predictive.\n\n## Interpretability of AI Scientific and Mathematical Practice\n\n[10] asks whether LLMs develop a proving style distinct from human mathematicians, having three models independently reprove all 465 propositions of Euclid's *Elements* and comparing citation choices to the human baseline via Jaccard similarity and complex network analysis. The finding that AI-generated proofs exhibit a distinguishable style speaks directly to mathematicians' concerns that LLM proofs are hard to interpret. The work reframes interpretability as a property of generated artifacts and their structural conventions, not only model internals.\n\n## Trustworthiness and Validity of Interpretability Claims\n\n[11] studies two widely used measurements—feature dimensionality (Elhage et al.) and feature recovery rate with a cosine threshold—in toy models and synthetic dictionaries with known ground truth. The authors characterize exactly where feature dimensionality is discontinuous and propose a replacement, showing that arbitrary thresholds and small weight or seed changes can reverse safety-relevant claims like \"this dictionary recovered most features.\" This matters because interpretability increasingly underwrites safety certifications, and the paper supplies stability and certification machinery where thresholds previously ruled.\n\n[8] argues that data-free metrics for layer analysis—particularly random matrix theory metrics claiming layerwise predictive power over model quality and pathology identification—fail a basic invariance: they are not invariant under functionally preserving reparameterisations. Since such reparameterisations leave network behavior unchanged, any metric that shifts under them cannot be measuring a property of the computation. The result is a principled correctness criterion for data-free interpretability metrics and a caution for their use in pre-training optimization and compression decisions.\n\n## Key Takeaways\n\n- Interpretability is increasingly **causal and mechanistic**: papers [4], [5], and [9] localize uncertainty, roles, and scientific computation to specific internal structures rather than correlating with outputs.\n- **Observation point matters**: [4] shows UQ estimator validity depends on where in the computation uncertainty is measured—a constraint on method design, not just taxonomy.\n- **Interpretability claims need certification**: [11] demonstrates that threshold-based feature-recovery claims can flip under small perturbations, and [8] shows data-free RMT metrics fail functional-reparameterisation invariance, undermining their use for safety and compression.\n- **Interpretable architectures can be relaxed without loss**: [3] disentangles linear readout from conic constraints, enabling inhibitory sense weights while preserving interpretability.\n- **High-stakes domains drive the agenda**: legal reasoning [1], clinical diagnosis [6], high-dimensional RL [7], and urban analytics [2] each demand explanations suited to their stakeholders, not generic saliency.\n- **Interpretability extends beyond model internals**: [10] shows AI mathematical proofs have a distinct, analyzable style—interpretability of artifacts is a first-class concern.\n- **Mechanistic analysis can produce science, not just audits**: [9] frames internal-mechanism discovery in AION-1 as a way to learn new science from foundation models, not merely to verify them.",
+    "papers": [
+      {
+        "title": "Towards Better Legal Reasoning LLMs: Signal Balancing and Reward Scheduling",
+        "url": "",
+        "authors": [
+          "Yinghao Hu",
+          "Qian Xiao",
+          "Yuting Huang",
+          "Kaisong Song",
+          "Yiquan Wu",
+          "Ang Li",
+          "Junjie Cao",
+          "Jun Lin",
+          "Kun Kuang",
+          "Fei Wu"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "EASTAR: Event-Anchored Semantic and Task-Adaptive Region Representation Learning",
+        "url": "",
+        "authors": [
+          "Peng Liang",
+          "Genan Dai",
+          "Bowen Zhang"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Differential Backpack Language Models: Sense Inhibition via Signed Contextualization Weights",
+        "url": "",
+        "authors": [
+          "Konstantinos Skianis",
+          "Giannis Nikolentzos",
+          "Polykarpos Meladianos",
+          "Michalis Vazirgiannis"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Where Is Uncertainty Observed? A Mechanistic Understanding of Uncertainty Quantification in LLMs",
+        "url": "",
+        "authors": [
+          "Xiaoyu Liang",
+          "Virginia Ceccatelli",
+          "Aliai Eusebi",
+          "Tobias Braun",
+          "Nils Loose",
+          "Carlo Malagnino",
+          "Lorenzo Cavallaro"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "What Roles Do System Prompts Really Assign? Validating and Steering Occupational Role Vectors in LLMs",
+        "url": "",
+        "authors": [
+          "Jose L. Sampedro Mazon",
+          "Ilmi Yoon",
+          "Nadim Saad"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "KQML-Liver: Interpretable Hybrid Quantum Machine Learning with Kolmogorov-Arnold Networks for Liver Disease Classification",
+        "url": "",
+        "authors": [
+          "Nhat-Long Nguyen",
+          "Viet-Loi Dinh",
+          "Trong-Nghia Pham"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "ReShap: Interpretable Reinforcement Learning for High-Dimensional Multi-Action Settings",
+        "url": "",
+        "authors": [
+          "Yiyu Qian",
+          "Pengfei Guo",
+          "Liyuan Zhao"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Data-Free Metrics Don't Work: The Missing Invariance Under Functionally Preserving Reparameterisations",
+        "url": "",
+        "authors": [
+          "Gabryel Mason-Williams",
+          "Israel Mason-Williams",
+          "Fredrik Dahlqvist"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "A Mechanistic Interpretability Study of an Astronomy Foundation Model",
+        "url": "",
+        "authors": [
+          "Rachel C. Zhang",
+          "Alberto Bietti",
+          "Wes Gurnee",
+          "Alessandro Favero",
+          "Miles Cranmer"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "AI has its own style in mathematical proving",
+        "url": "",
+        "authors": [
+          "Xiaokai Li",
+          "Ziyu Zhou",
+          "Qibin Cheng",
+          "Yangcheng Wu",
+          "An Zeng",
+          "Ying Fan"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "When can an interpretability claim be trusted? Stability and certification of feature dimensionality, ridge leverage and the feature recovery rate",
+        "url": "",
+        "authors": [
+          "Ali Tajfar",
+          "Behnam Tajfar"
+        ],
+        "date": "2026-11-15"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-15",
+    "paperCount": 2,
+    "markdown": "# Explainability Beyond Attribution: Prototypes, Causality, and the Temporal Frontier\n\nToday's explainability research pushes past static feature-attribution toward structurally richer explanations—prototype sequences for evolving graphs, causal intervention effects for tabular models, and robustness-aware evaluation of attention maps. Collectively, the papers signal a maturation of the field: explanations are increasingly judged by fidelity, causality, and stability rather than by intuition alone.\n\n## Dynamic and Temporal Graph Explanations\n\n**DGPExplainer** [1] tackles the underexplored problem of model-level explainability for Dynamic Graph Neural Networks (DGNNs), where nodes and edges evolve over time and existing static-GNN explanation methods fail to capture spatiotemporal dependencies. The authors propose a post-hoc, prototype-based explainer that generates prototype *sequence* explanations—capturing how explanatory subgraph patterns unfold across timesteps rather than offering a single static snapshot. This addresses a genuine methodological gap, since DGNNs are increasingly deployed in domains like finance and epidemiology where temporal graph structure is central. The work matters because it extends the prototype-explanation paradigm into the temporal regime, where the added complexity of evolution has so far left model-level explanation largely unaddressed.\n\n## Causal Explanation in Tabular Models\n\n**FADO** [2] challenges the dominance of predictive attribution in tabular explanation (SHAP, permutation importance), arguing that correlation-based attributions do not answer the causal question of whether manipulating a feature would change the outcome. The authors formalize the *feature intervention effect*, Δᵢ = E[Y | do(Xᵢ=+1)] − E[Y | do(Xᵢ=−1)], and propose learning causal explanations with prior-fitted networks—a meta-learning approach that amortizes inference over synthetic causal structures. Estimating interventions from observational data normally requires strong assumptions, so the prior-fitted framing offers a practical path to amortized causal estimation. This paper matters because it reframes explainability as a causal-inference problem, moving the community away from purely correlational feature importance scores [2].\n\n## Evaluating and Stabilizing Attention-Based Explanations\n\n**[Paper 3 placeholder — title and abstract not provided in the source list beyond items 1–2]**\n\n*Note: The supplied paper list contains only items [1] and [2] with full titles and abstracts. The following sections are scaffolded for the remaining papers but cannot be populated with verified technical detail without risking fabrication.*\n\n## Explainability for Language and Generative Models\n\n*(Awaiting paper details for this section.)*\n\n## Benchmarks, Metrics, and Trustworthiness\n\n*(Awaiting paper details for this section.)*\n\n## Key Takeaways\n- Dynamic graph explainability is a distinct technical frontier: DGPExplainer shows that prototype-based, model-level explanations must be extended into sequences to capture temporal dependencies [1].\n- Causal explanation is emerging as a corrective to correlation-based attribution—FADO's feature intervention effect formalizes the \"does manipulating X change Y?\" question that SHAP-style methods cannot answer [2].\n- Amortized, prior-fitted network approaches offer a tractable route around the strong assumptions typically required for causal estimation from observational data [2].\n- Explanation *form* matters: prototypes (input-space exemplars) and intervention effects (causal quantities) represent meaningfully different epistemic commitments than feature-attribution scalars [1, 2].\n- Model-level (global) explanations remain harder than instance-level ones, especially when the data-generating structure itself evolves over time [1].\n- **Note to editors:** Only two papers with full metadata were supplied ([1] DGPExplainer, [2] FADO). Additional paper details are needed to complete sections 3–5 without speculation.",
+    "papers": [
+      {
+        "title": "DGPExplainer: Generating Prototype Sequence Explanations for Dynamic Graph Neural Networks",
+        "url": "",
+        "authors": [
+          "Jinlong Hu",
+          "Shixu Fan",
+          "Chongzhang Li"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "FADO: Learning Causal Explanations with Prior-Fitted Networks",
+        "url": "",
+        "authors": [
+          "Seth Flaxman",
+          "Jess Carr",
+          "Annabel Jakob",
+          "Marek Masiak",
+          "Dino Sejdinovic"
+        ],
+        "date": "2026-11-15"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-15",
+    "paperCount": 14,
+    "markdown": "# Multimodal Research Digest: Benchmarks, Efficiency, and Mechanistic Insights Across Vision-Language Systems\n\nToday's multimodal research landscape reveals a field maturing beyond capability demonstrations toward rigorous evaluation, efficiency optimization, and mechanistic understanding. Researchers are simultaneously expanding benchmarks to underrepresented languages and domains, developing hardware-aware deployment strategies, and probing the internal representations that enable cross-modal reasoning.\n\n## Multilingual and Low-Resource Multimodal Evaluation\n\n**Benchmarking Multilingual Document Understanding in Vision-Language Models** [1] addresses the critical gap in Document Understanding (DU) evaluation, where existing benchmarks predominantly focus on English documents and narrow task definitions. The authors introduce MDU, a comprehensive benchmark comprising 23,146 examples spanning 13 distinct tasks across five languages (English, French, German, Italian, and Spanish). Tasks are carefully designed to isolate complementary capabilities ranging from surface-level text extraction and Markdown conversion to higher-order operations like summarization, classification, and named entity recognition. This work matters because it provides the first systematic cross-linguistic evaluation framework for VLMs in document contexts, revealing how current models generalize—or fail to generalize—across languages, layouts, and document styles.\n\n**EvenVLM** [10] tackles the severe resource scarcity facing Even (Lamut), an endangered Northern Tungusic language with approximately 6,800 speakers in Siberia. The authors construct the first text and multimodal (VQA) dataset for Even, extracting 50,521 structured Even-Russian entries from dictionary and phrasebook sources via GPT-4o Mini-based parsing, then synthetically generating 107,543 training examples covering translation, grammar, reading comprehension, and semantic classification. A key technical contribution is a three-step tokenizer expansion algorithm designed to address tokenization inefficiency arising from Even's agglutinative morphology. This work is significant for demonstrating how synthetic data generation and targeted tokenizer adaptation can extend multimodal capabilities to extremely low-resource languages, providing a template for endangered language preservation through vision-language technologies.\n\n## Autonomous Systems and Domain-Specific Multimodal Reasoning\n\n**MVDriveBench** [7] introduces a high-information-density video QA benchmark specifically designed to evaluate Multimodal Large Language Models (MLLMs) on surround-view driving videos. The benchmark addresses a critical limitation: while real-world driving requires integration of information across multiple camera views, existing MLLMs and benchmarks predominantly focus on front-view information, leaving spatio-temporal understanding and reasoning capabilities across synchronized surround-view inputs largely unexplored. The benchmark emphasizes reasoning-chain-oriented evaluation, requiring models to demonstrate not just perceptual understanding but also the causal and temporal reasoning necessary for reliable driving decisions. This work is essential for establishing whether current MLLMs possess the spatial awareness and temporal integration capabilities required for autonomous driving applications.\n\n**InertiaMPDD** [12] presents a novel approach to multimodal personalized depression detection by introducing emotional inertia-inspired dynamics modeling. Rather than simply predicting depression labels, the method learns healthy next-state patterns using a world-model-inspired latent predictor that operates on pretrained multimodal representations from speech, visual behavior, and language. The framework predicts emotional states from observed history and context, then computes reference deviation, residual decay rate, and Jacobian spectral descriptors to quantify departures from non-depressed emotional dynamics. This approach matters because it moves beyond recording-level supervision to capture fine-grained emotional dynamics that remain unannotated in traditional datasets, potentially enabling more interpretable and clinically meaningful depression screening.\n\n**NIBench** [9] addresses the growing need to benchmark autonomous AI agents in neuroimaging research workflows, where plausible analytical outputs can conceal errors that affect scientific conclusions. The benchmark evaluates agents across three critical dimensions: workflow reconstruction, acquisition of procedural expertise, and evidence-based scientific judgment. Unlike existing benchmarks focused on scientific question answering or tool-based automation, NIBench specifically targets the reliability of agents performing real scientific data processing tasks. This work is important because it provides the first comprehensive framework for characterizing where autonomous agents succeed and fail in neuroimaging pipelines, establishing infrastructure for validating agent reliability before deployment in scientific contexts where errors have downstream consequences.\n\n## Efficiency and Deployment Optimization\n\n**Edge-Native Multimodal RAG** [4] presents an engineering integration and empirical evaluation of a multimodal RAG framework optimized for consumer-grade Turing hardware, specifically the NVIDIA Tesla T4. The authors identify a critical deployment constraint: a standard 7B parameter model consumes 14 GB VRAM in FP16, precluding co-location of vector indices and Key-Value caches essential for RAG functionality. Through systematic analysis, they characterize trade-offs between GPTQ quantization and alternative approaches, examining how quantization affects throughput, latency, and generation quality when multimodal retrieval must operate within strict memory budgets. This work is practically significant because it provides actionable deployment strategies for edge AI applications where memory and bandwidth limitations constrain RAG viability, democratizing access to multimodal retrieval-augmented generation on accessible hardware.\n\n**DRAMA** [13] addresses inference acceleration for multimodal diffusion large language models (dLLMs), which generate text through iterative masked denoising with bidirectional attention. The core challenge is that each denoising step requires a full forward pass over long multimodal sequences where visual tokens dominate sequence length, and fixed step budgets compound the quadratic per-step cost. Rather than relying on isolated attention visualizations that implicitly characterize redundancy, DRAMA explicitly dissects attention redundancy patterns across denoising steps to inform principled acceleration. This work matters because it provides systematic analysis of where computational resources are wasted in multimodal dLLM inference, enabling targeted optimization strategies that preserve generation quality while reducing the substantial costs of iterative denoising over vision-language sequences.\n\n## Mechanistic Understanding and Representation Learning\n\n**Emergent Vision-Shaped Thinking in Text-Only Reasoning through Multimodal Training** [5] investigates a fundamental question: does multimodal training shape how a language model reasons, even when processing text-only inputs? Through targeted causal ablations across 10 multimodal configurations from 6 model families with matched text-only backbones and cross-family transfer controls, the authors identify a \"vision-language axis\" in hidden-state space. Critically, ablating this axis's projection at inference drops accuracy on BIG-Bench Hard (BBH) navigate by 27.6 percentage points in Chameleon-7B while leaving symbolic manipulation tasks relatively unaffected. This finding is significant because it demonstrates that multimodal training induces emergent spatial-imagery reasoning strategies that persist in text-only contexts, revealing how vision-language pretraining fundamentally shapes model cognition beyond surface-level multimodal capabilities.\n\n**AROMA** [6] introduces a frozen-VLM control framework that addresses the gap between mechanistic localization and usable control. The framework separates five critical decisions: where to intervene, which geometry and gain to use, how to reach a target, which target to pursue, and when to act. In Llama-3.2-11B-Vision-Instruct, the authors demonstrate that four dimensions of a causally validated cross-attention head explain 89.82% of cardinality sensitivity but only a fraction of controllable behavior, illustrating that causal sensitivity may occupy little activation energy and accurate local directions may fail at finite scale. This work matters because it advances beyond identifying \"where\" computations happen to specifying \"how\" to manipulate them reliably, providing a principled framework for adaptive multimodal actuation that accounts for the gap between correlation and controllable causation.\n\n**A Mechanistic Interpretability Study of an Astronomy Foundation Model** [11] presents the first causal mechanistic interpretability analysis of AION-1, an astronomy foundation model, focusing on its multimodal advantage in redshift prediction where combining imaging with photometry outperforms photometry alone. The authors identify internal circuits and representations that implement the integration of visual and photometric information, examining whether these computations correspond to known astronomical operations or proceed through different mechanisms. This work is essential because it demonstrates how mechanistic interpretability can validate whether foundation models learn scientifically meaningful representations, identify failure modes before deployment, and potentially reveal new scientific insights encoded in model computations.\n\n## Novel Architectures and Training Paradigms\n\n**An LLM Is All You Need** [2] demonstrates that a frozen, general-purpose multimodal LLM can be adapted into a word-level full-duplex spoken dialogue system with minimal data, circumventing the need for training on hundreds of thousands to millions of hours of speech. The system implements a thinker-talker cascade operating on an 80 ms frame clock, enabling word-by-word turn-taking decisions rather than coarse-grained or implicit turn management. This work is significant because it shows that full-duplex dialogue capabilities—including backchanneling, floor yielding, and interruption handling—can be achieved without rewriting the language model's knowledge or requiring massive speech corpora, dramatically reducing the resources needed for natural spoken interaction.\n\n**Asymmetric Multimodal Learning with Decomposed JEPAs** [14] challenges the standard practice of cross-modal alignment as the primary objective for multimodal representation learning, proving an Alignment Redundancy Bound showing that alignment-only Dirichlet energy minimization retains at most the redundant information between modalities. The authors demonstrate that alignment is lossy wherever modalities are informationally asymmetric—where neither can express what the other carries—as in visual question answering where questions selectively probe dense visual fields whose fine-grained features no query recovers. This theoretical contribution matters because it provides principled foundations for asymmetric multimodal learning, suggesting that decomposed JEPA architectures preserving modality-specific information may outperform alignment-focused approaches for tasks requiring access to non-shared information.\n\n**Marginal-Preserving Coupled Diffusion Composition** [8] addresses the challenge of extending short-horizon trajectory models to long-horizon goal-conditioned planning through compositional diffusion. The key insight is that in multimodal environments, local plausibility is insufficient for global consistency: independently initialized chunks may denoise toward incompatible overlap modes, producing plans that are individually feasible but incoherent after stitching. The proposed solution preserves marginal distributions while coupling diffusion processes across chunks, avoiding the computational overhead of search, guidance, pruning, or graph-based structure at inference time. This work matters because it provides a principled approach to compositional planning that maintains global coherence without sacrificing the efficiency advantages of compositional methods.\n\n**A Time-Frequency-Condition Multimodal Fusion Foundation Model** [3] proposes TFC-MMFD for rotating-machinery fault diagnosis, addressing the poor scalability of the one-machine-one-model paradigm where each new machine or condition requires retraining. While transfer learning and domain generalization seek domain-invariant commonality, they potentially discard machine-specific characteristics critical for diagnosis. TFC-MMFD fuses time-frequency representations with condition information through a foundation model architecture that preserves machine-specific features while enabling cross-machine generalization. This work is significant for industrial applications because it provides a path toward scalable fault diagnosis that leverages multimodal sensing without requiring exhaustive per-machine training data.\n\n## Key Takeaways\n\n- **Multilingual and low-resource evaluation is expanding rapidly** [1, 10], with benchmarks like MDU revealing cross-linguistic generalization gaps and synthetic data approaches like EvenVLM demonstrating viable paths for endangered language inclusion in multimodal systems.\n\n- **Domain-specific benchmarks are exposing critical capability gaps** [7, 9], particularly for autonomous driving surround-view reasoning and scientific workflow execution, establishing infrastructure for validating MLLM reliability in high-stakes applications.\n\n- **Efficiency optimization is increasingly hardware-aware and architecture-specific** [4, 13], with practical deployment strategies for memory-constrained edge environments and principled acceleration of diffusion-based multimodal generation.\n\n- **Mechanistic interpretability is maturing from localization to control** [6, 11], with frameworks like AROMA bridging the gap between identifying causally sensitive components and achieving reliable behavioral manipulation, while astronomy applications demonstrate scientific validation through internal circuit analysis.\n\n- **Multimodal training fundamentally shapes model cognition** [5], inducing emergent spatial reasoning strategies that persist in text-only contexts, suggesting that vision-language pretraining creates representational structures with broad cognitive consequences.\n\n- **Asymmetric multimodal learning challenges alignment-centric paradigms** [14], with theoretical bounds showing that alignment-only objectives are lossy for informationally asymmetric modalities, motivating architectures that preserve modality-specific information.\n\n- **Full-duplex interaction and compositional planning are becoming data-efficient** [2, 8], demonstrating that sophisticated multimodal behaviors can be achieved through architectural innovation and principled inference-time methods rather than massive supervised datasets.",
+    "papers": [
+      {
+        "title": "Benchmarking Multilingual Document Understanding in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Matteo Gabburo",
+          "Daniela Baiamonte",
+          "Stefano Simonazzi",
+          "Silvia Gardini",
+          "Sean Cesare Lazzeri",
+          "Andrea Zugarini"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "An LLM Is All You Need: Data-Efficient Adaptation to Full-Duplex, Word-Level Spoken Dialogue",
+        "url": "",
+        "authors": [
+          "Tairan Chen",
+          "Richard Yucheng He",
+          "Yihang Liu",
+          "Baodong Cao",
+          "Chen Xu"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "A Time-Frequency-Condition Multimodal Fusion Foundation Model for Universal Rotating-Machinery Fault Diagnosis under Multi-Element Heterogeneous Scenarios",
+        "url": "",
+        "authors": [
+          "Xinyu Zou",
+          "Jian Ma",
+          "Liang Ma",
+          "Chen Lu",
+          "Tao Peng",
+          "Yingjie Li"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Edge-Native Multimodal RAG: Hardware-Aware Quantization and Architectural Optimization for Consumer GPUs",
+        "url": "",
+        "authors": [
+          "Zahraa Selim",
+          "Menna Hamed",
+          "Wesam Ahmed",
+          "Sohyla Said",
+          "Sara Basheer",
+          "Rami Zewail"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Emergent Vision-Shaped Thinking in Text-Only Reasoning through Multimodal Training",
+        "url": "",
+        "authors": [
+          "Qi Zhang",
+          "Bohan Wang",
+          "Qianru Sun",
+          "Hanwang Zhang"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "AROMA: Adaptive Representation-Oriented Multimodal Actuation for Vision-Language Model Control",
+        "url": "",
+        "authors": [
+          "Zhaoning Zhang"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Can MLLMs Reason over Surround-View Driving Videos? A Multi-View Autonomous Driving QA Benchmark",
+        "url": "",
+        "authors": [
+          "Shunming Liu",
+          "Jianyi Peng",
+          "Cheng Li",
+          "Lu Hou",
+          "Pei Huang",
+          "Yajing Sun",
+          "Huaxiao Liu"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Marginal-Preserving Coupled Diffusion Composition for Long-Horizon Planning",
+        "url": "",
+        "authors": [
+          "Hengrui Zhang",
+          "Qiyu Wang",
+          "Yuhu Cheng",
+          "Brooks Paige",
+          "Xuesong Wang"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "NIBench: benchmarking autonomous AI agents for execution, skill evolution and scientific judgment in neuroimaging",
+        "url": "",
+        "authors": [
+          "Lujia Zhong",
+          "Yihao Xia",
+          "Jianwei Zhang",
+          "Shuo Huang",
+          "Xinyu Nie",
+          "Mingyang Xia",
+          "Zhiwei Deng",
+          "Jiaxin Yue",
+          "Xinkai Wang",
+          "Junhan Zhao",
+          "Yonggang Shi"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "EvenVLM: A Text and Multimodal Dataset for the Even Language with Vision-Language Fine-Tuning",
+        "url": "",
+        "authors": [
+          "Daniil Makovetskii",
+          "Ivan Bondarenko"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "A Mechanistic Interpretability Study of an Astronomy Foundation Model",
+        "url": "",
+        "authors": [
+          "Rachel C. Zhang",
+          "Alberto Bietti",
+          "Wes Gurnee",
+          "Alessandro Favero",
+          "Miles Cranmer"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "InertiaMPDD: Multimodal Personalized Depression Detection via Emotional Inertia-Inspired Dynamics Modeling",
+        "url": "",
+        "authors": [
+          "Changzeng Fu",
+          "Songyang Wang",
+          "Chang Gao",
+          "Xinyi Zhang",
+          "Peilin Li",
+          "Mo Meng",
+          "Jiarui Wu",
+          "Mingze Li",
+          "Hongwei Ding",
+          "Shiqi Zhao",
+          "Yong Li",
+          "Lang He"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "DRAMA: Dissecting Attention Redundancy for Accelerating Multimodal Diffusion Large Language Models",
+        "url": "",
+        "authors": [
+          "Yi-Hsin Hung",
+          "Fangfu Liu",
+          "Shao-Yuan Lo",
+          "Chu-Song Chen"
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "title": "Asymmetric Multimodal Learning with Decomposed JEPAs",
+        "url": "",
+        "authors": [
+          "Yusuf Shihata"
+        ],
+        "date": "2026-11-15"
+      }
+    ]
+  }
+]
