@@ -1,0 +1,232 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-16",
+    "paperCount": 7,
+    "markdown": "# Interpretability at the Edges: From Agent Failures to Artistic Provocations\n\nToday's interpretability research pushes beyond benchmark explanations into harder territory—diagnosing failures in self-referential interpretation pipelines, probing mechanistic tools on realistic agent behaviors, and embedding explainability into scientific and clinical systems. At the same time, the field interrogates its own foundations, from the inference principles underlying Transformers to the cultural framing of AI through artistic installation.\n\n## Diagnosing and Validating Interpretability Itself\n\nA cluster of work this cycle turns the lens on interpretability methods themselves, asking how we know when an explanation has failed. DECODE [2] addresses the self-referential loop in which LLMs both generate and evaluate explanations with minimal human oversight, a setup that compounds reliability concerns given the absence of ground truth. The framework is designed to attribute interpretability failures to their source—whether the tool's extracted representations or the LLM used in the process are at fault—thereby separating errors that are otherwise conflated in end-to-end pipelines. This matters because automated interpretation is increasingly deployed at scale, and without principled failure attribution, practitioners cannot tell whether a bad explanation indicts the representations or the explainer. The work complements mechanistic and XAI validation efforts elsewhere in this digest by treating interpretability infrastructure as an object of study in its own right.\n\nA complementary validation strategy appears in Sandhu et al. [7], who extend the SleepXAI sleep staging framework to systematically compare five XAI methods on single-channel EEG. Rather than relying on human judgment alone, they evaluate attribution fidelity using Spearman rank correlation against AASM-defined EEG frequency bands as clinically grounded reference signals. The choice of single-channel EEG is deliberate: it is more amenable to practical clinical deployment than full polysomnography, addressing the adoption gap despite strong benchmark accuracy. This paper is notable for operationalizing domain expertise as a quantitative validation target, a template that other applied interpretability work could adopt.\n\n## Mechanistic Interpretability Meets Agents and New Architectures\n\nMechanistic interpretability has progressed substantially on isolated LLM computations, but Aghzal et al. [3] ask whether it can explain realistic agent failures, focusing on web element hallucination—agents selecting actions not available on a live website. Applying a series of mechanistic analyses to Qwen2.5-7B-Instruct interacting with live websites, they find that a linear probe trained on internal states can detect or predict such hallucinations. The case study exposes where MI tools strain under agentic conditions: distributed decision processes, external environment state, and multi-step action selection that do not map cleanly onto single-forward-pass circuits. The contribution is as much diagnostic as technical, charting the gap between MI's circuit-level successes and the demands of agent reliability.\n\nOn the architectural side, Giunti and Garavaglia [4] argue that the Transformer revolution is not merely a quantitative scaling of deep learning but the emergence of a new paradigm with a distinct principle of inference. They interpret Transformers as systems where token representations are transformed by parameterized \"transforming concepts,\" some of which are dynamically constructed from the current input during inference—previously acquired transformations are adapted and then applied. At the mechanical-structural level, this dynamic processing is realized through attention and related mechanisms. Framing interpretability in these terms offers a conceptual vocabulary for what we are actually explaining when we explain a Transformer, bridging mechanistic findings and philosophy of inference.\n\n## Interpretability by Design in Scientific and Engineering Models\n\nTwo papers embed interpretability directly into model architecture rather than retrofitting it post hoc. Li, Jaekel, and Dellen [5] investigate complex-valued product-unit residual networks (CV-PURe), which combine multiplicative product units with residual connections to explicitly model cross-feature couplings while stabilizing optimization. Standard MLPs capture nonlinear interactions only implicitly, yielding entangled representations that impair both robustness and interpretability; the product-unit design makes interactions explicit by construction. Systematic evaluation on an interaction-driven synthetic benchmark and real-world datasets assesses predictive performance alongside the structure of learned couplings. This is interpretability as inductive bias—making the model's interaction structure legible because it is architectural, not emergent.\n\nKhan et al. [6] bring a similar philosophy to mmWave beam alignment, arguing that existing DL-based methods neglect causal relationships between inputs and outputs, resulting in limited interpretability, poor generalization, and excessive beam sweeping. Their causally-aware framework integrates causal discovery into a two-stage causal beam selection process. They further address a security dimension often absent from interpretability work: DL beam classifiers are vulnerable to adversarial perturbations in received power measurements, and the paper proposes defensive variational autoencoders to counter this. The work demonstrates that causal structure can serve simultaneously as an interpretability mechanism, a generalization aid, and a robustness defense—a rare triple payoff.\n\n## Interpretation as Cultural Reflection\n\nFinally, Wei, Pham, Cayley, and Pavlick [1] offer something the technical literature rarely provides: an artistic interrogation of the AI moment itself. \"Typhoon\" is an audiovisual installation based on Conrad's novella, in which Captain MacWhirr steers the steamer Nan-Shan directly into a catastrophic storm—a study of what happens when a phenomenon exceeds available frameworks and paralysis follows the demand for action. The authors prompt an LLM seeded with Conrad's original language to feed endlessly on its own output, staging the self-referential dynamics that DECODE [2] studies empirically and that recursive explanation pipelines embody operationally. Read alongside the technical papers, the installation asks what interpretability is for when the system's scale outstrips our conceptual grasp—a question as relevant to mechanistic probing as to art.\n\n## Key Takeaways\n\n- Interpretability now needs meta-interpretability: DECODE [2] shows that LLM-generated and LLM-evaluated explanations require principled failure attribution, distinguishing representation errors from explainer errors without ground truth.\n- Domain-grounded reference signals—such as AASM frequency bands in sleep staging [7]—offer a practical substitute for missing ground truth and a template for validating XAI in high-stakes clinical settings.\n- Mechanistic interpretability's circuit-level successes do not transfer cleanly to agents; linear probes can detect web element hallucinations [3], but realistic agentic failures stress the toolchain's assumptions.\n- Conceptual foundations matter: framing Transformers as dynamically constructed transforming concepts [4] supplies vocabulary for what mechanistic explanations should ultimately capture.\n- Architectural interpretability—product-unit couplings [5] and causal discovery [6]—makes model structure explicit by design, with robustness and generalization benefits arriving alongside transparency.\n- Security and interpretability are converging concerns: causal beam alignment [6] shows adversarial vulnerability and explanation quality are symptoms of the same missing structure.\n- Artistic practice [1] and technical research are converging on the same phenomenon—recursive self-consumption—suggesting the field's cultural and empirical conversations should be read together.",
+    "papers": [
+      {
+        "title": "Activation Steering the Nan-Shan in Typhoon",
+        "url": "",
+        "authors": [
+          "Megan Wei",
+          "Damon Pham",
+          "John Cayley",
+          "Ellie Pavlick"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "DECODE: Diagnosing Interpretability Failures in Automated Interpretation Process",
+        "url": "",
+        "authors": [
+          "Dohyun Kim",
+          "Jaeung Lee",
+          "Donghee Hong",
+          "Jaemin Jo"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "Can Mechanistic Interpretability Help Explain LLM Agent Failures? A Case Study on Web Element Hallucination",
+        "url": "",
+        "authors": [
+          "Mohamed Aghzal",
+          "Mor Geva",
+          "Gregory J. Stein",
+          "Ziyu Yao"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "The Transformer Paradigm: Dynamic Processing and a New Principle of Inference",
+        "url": "",
+        "authors": [
+          "Marco Giunti",
+          "Fabrizia Giulia Garavaglia"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "Learning nonlinear interactions and cross-feature couplings with product-unit residual networks",
+        "url": "",
+        "authors": [
+          "Ziyuan Li",
+          "Uwe Jaekel",
+          "Babette Dellen"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "Causal AI-Driven Secure mmWave Beam Alignment with Defensive Variational Autoencoders",
+        "url": "",
+        "authors": [
+          "Nasir Khan",
+          "Asmaa Abdallah",
+          "Abdulkadir Celik",
+          "Ahmed M. Eltawil",
+          "Sinem Coleri",
+          "Cicek Cavdar"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "Towards Explainable Sleep Stage Classification using Single-Channel Electroencephalogram",
+        "url": "",
+        "authors": [
+          "Gurinder Kaur Sandhu",
+          "Jude Koenig",
+          "Ankita Shukla",
+          "Shruti Kshirsagar"
+        ],
+        "date": "2026-11-16"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-16",
+    "paperCount": 3,
+    "markdown": "# Explainability Across Design, Education, and Language Models: A Multi-Domain Technical Digest\n\nToday's explainability research spans from physics-informed generative design to educational decision-making and the geometric structure of LLM token spaces, revealing a field increasingly concerned with connecting opaque model behavior to actionable human understanding. Across these papers, explainability emerges not as a post-hoc add-on but as an architectural, epistemic, and pedagogical requirement embedded in how systems are designed, deployed, and interpreted.\n\n## Explainable Generative Design and Physics-Aware Engineering\n\n[1] addresses the challenge of making generative AI useful for mechanical engineering product definition, where inverse design problems require inferring design parameters from performance targets. The authors propose a unified framework combining invertible neural networks (INNs) for inverse design with real-time capable generative surrogates for physics-based simulation, allowing the design process to be controlled directly from customer requirements. By linking INN-based inference to physics surrogates, the framework enables real-time explainability of how design choices map to performance outcomes, which is critical for trust and iteration in engineering workflows. This matters because it reframes explainability as a design-time property—designers can trace and interrogate the causal pathway from requirement to geometry to predicted physics rather than treating the model as a black box.\n\n## Uncertainty and Human Responsibility in Educational AI\n\n[2] examines the opacity of AI-based decision-making in education, where deep learning and generative models increasingly support personalized learning, automated assessment, and administrative tasks. The authors argue that opacity hampers decision-making precisely when outcomes appear counterintuitive or consequential, and they connect this to questions of uncertainty quantification, explainability, and the allocation of human responsibility. The core contribution is a conceptual framing that ties explainability to human accountability: educators and administrators must be able to understand, contest, and ultimately own AI-driven decisions. This matters because education is a high-stakes, normatively loaded domain where unexplained algorithmic judgments can undermine trust, fairness, and institutional legitimacy.\n\n## Geometric Explainability of Large Language Models\n\n[3] investigates the fundamental explainability of LLMs by building a similarity network from input embeddings of six open models and mapping token-by-token generation onto that network. The key finding is that token-embedding networks are scale-free and heavy-tailed—topologically similar to random embeddings with matched covariance but far more fragmented—and that distillation barely alters this topology because input embeddings are largely inherited from pre-training. The work suggests the knowledge space is deterministic from pre-training structure, offering a geometric lens on how generations relate to learned representations. This matters because it provides a structural, model-agnostic handle on LLM interpretability that goes beyond attention visualization or prompting-based introspection.\n\n## Cross-Cutting Themes in Explainability Research\n\nThe three papers converge on a shared insight: explainability is most valuable when it is structurally grounded—whether in invertible architectures that preserve information for design traceability [1], in explicit uncertainty and responsibility frameworks for institutional decisions [2], or in the geometric topology of embedding spaces [3]. Each treats explanation as a property to be engineered or measured rather than narrated after the fact. Together they suggest that the explainability agenda is maturing from generic post-hoc tools toward domain-specific, structure-aware methods.\n\n## Key Takeaways\n\n- Explainability is increasingly designed into systems architecturally (e.g., invertible networks for traceable inverse design [1]) rather than appended post-hoc.\n- Real-time physics surrogates combined with INNs enable requirement-to-performance traceability, making explainability actionable in engineering workflows [1].\n- In high-stakes domains like education, explainability is inseparable from uncertainty quantification and the assignment of human responsibility [2].\n- LLM token-embedding networks exhibit scale-free, heavy-tailed, and fragmented topology that is largely inherited from pre-training and resistant to distillation [3].\n- Geometric analyses of embedding spaces offer a structural route to LLM interpretability that complements behavioral probing [3].\n- Across domains, the common thread is that explanations must connect model internals to human decision-making context—design, pedagogy, or language understanding [1][2][3].\n- The field is moving toward domain-specific, structure-aware explainability methods over generic post-hoc explanation tooling.",
+    "papers": [
+      {
+        "title": "Generative Design with Real-time Physics Explainability: Towards Product Definition in the Age of AI",
+        "url": "",
+        "authors": [
+          "M. de Campos",
+          "C. Drygala",
+          "E. Ross",
+          "A. Bruce",
+          "M. Bohon",
+          "H. Gottschalk"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "AI-aided Decision-Making in Education - Uncertainty, Explainability, and Human Responsibility",
+        "url": "",
+        "authors": [
+          "Fabian Kieser",
+          "Paul Tschisgale",
+          "Peter Wulff"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "Dancing Tokens on the Vocabulary Network from LLM Generation",
+        "url": "",
+        "authors": [
+          "Yuan-Chao Hu"
+        ],
+        "date": "2026-11-16"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-16",
+    "paperCount": 6,
+    "markdown": "# Multimodal Research Digest — November 16, 2026\n\nToday's multimodal research pushes beyond static perception toward robustness under conflicting signals, fairer use of non-text modalities, and agentic systems that reason through tools rather than intrinsic vision alone. Across benchmarks, training objectives, and world models, a common thread emerges: carefully auditing *how* models use each modality matters as much as adding new ones.\n\n## Robustness and Grounding in Multimodal Prediction\n\nText and time series rarely arrive in perfect agreement, and models must learn to distinguish corroborating evidence from contradiction—yet no benchmark previously isolated this variable.\n\n[1] introduces the first real-world diagnostic benchmark for multimodal time series forecasting organized by the *relationship* between text and history. The authors curate 1,762 text-window pairs spanning weather telemetry, Wikipedia web traffic, and financial streams, labeling each as Aligned, Conflicting, or Unspecified based on whether the text's directional signal agrees with, opposes, or says nothing about the historical trend. This design enables fine-grained diagnosis of whether forecasting models actually integrate text or merely latch onto it indiscriminately. It matters because AIoT deployments routinely ingest expert reports and news alongside sensor data, and this benchmark exposes failure modes invisible to aggregate accuracy metrics.\n\n[2] targets a different grounding failure: object hallucination in large vision-language models (LVLMs), which is especially severe in low-resource languages where weak cross-modal alignment lets language priors dominate image evidence. VEPO (Visual Evidence-guided Preference Optimization) avoids costly multilingual annotations and external translation/reward models, and unlike inference-time interventions it does not distort the output language. By guiding preference optimization with visual evidence directly, the method improves grounding without sacrificing linguistic naturalness. This is an important step toward equitable LVLM quality across languages rather than English-centric safety.\n\n## Efficient Representations for Structured Multimodal Data\n\nWhen tables mix numbers, categories, text, and images, the default recipe—pretrained embeddings reduced by PCA—optimizes for input variance rather than predictive relevance.\n\n[3] proposes LightTAR, a simple and inexpensive fix for multimodal tabular learning that adapts dimensionality reduction to the downstream task. Rather than replacing PCA wholesale, LightTAR augments the standard PCA representation with a few target-aware features, preserving efficiency while recovering signal that variance-based reduction discards. The method applies to both classification and regression over heterogeneous tables. Its value lies in demonstrating that a lightweight, almost trivially deployable modification can outperform variance-prioritized compression in real multimodal tabular pipelines.\n\n## Agents That See: Tools, Benchmarks, and Evaluation\n\nTwo papers interrogate the infrastructure of multimodal agency—how agents obtain visual competence, and how we can trust evaluations of it.\n\n[4] challenges the dominant \"Thinking-with-Images\" paradigm, in which agents rely on intrinsic vision and are therefore bounded by internal perceptual limits; text-only agents, conversely, have no native perception at all. Vision-as-a-Tool introduces a visual harness that decouples visual reasoning from the agent's backbone, letting agents invoke external visual tools to analyze observations and evaluate generated artifacts during coding tasks. This reframing turns perception into a callable capability rather than an architectural prerequisite. It matters because it widens the pool of usable backbones and makes perceptual improvements upgradable independently of the agent model.\n\n[5] addresses evaluation: existing reproducible web-agent benchmarks cover few applications and only text-plus-vision modalities, while live benchmarks trade reproducibility for coverage as pages drift between runs. WebArena-Pro offers a heterogeneous, multimodal, reproducible benchmark spanning diverse applications, stateful workflows, and—critically—audio and video content that prior benchmarks do not meaningfully test. Its multi-institution construction signals a community push toward standardized, drift-resistant evaluation. For practitioners, it provides the first reproducible yardstick for whether agents genuinely understand non-text media in realistic browser work.\n\n## World Models from Multimodal Earth Observations\n\nOperational ML weather models still depend on separate, expensive data assimilation (DA) systems refreshed every six hours; observation-to-observation models remove that dependency but typically omit the recursive filtering cycle that carries a background state through sparse observations.\n\n[6] presents WeatherDreamer, a world model that learns this cycle end-to-end from 18 global observing systems without any reanalysis data. The model infers a latent state directly from heterogeneous observations and recursively carries it forward, emulating the background-state propagation that makes DA effective. This is a meaningful architectural convergence of multimodal sensing and world modeling: forecasting that begins from raw, irregular observations rather than pre-digested analyses. If it holds up, it could simplify the operational weather stack and extend ML forecasting to settings lacking mature DA infrastructure.\n\n## Key Takeaways\n- Multimodal progress in 2026 is increasingly about *diagnosis and discipline*: benchmarks like [1] and [5] isolate specific failure modes (conflicting text, missing modalities, irreproducibility) rather than reporting aggregate scores.\n- Grounding remains the central safety concern: VEPO [2] shows hallucination can be mitigated via preference optimization without translation models or inference-time distortion, with particular urgency for low-resource languages.\n- Cheap, targeted adaptations can beat generic pipelines: LightTAR [3] demonstrates that task-aware dimensionality reduction meaningfully improves multimodal tabular learning at minimal cost.\n- The \"Thinking-with-Images\" assumption is being questioned: Vision-as-a-Tool [4] reframes perception as an invocable external capability, decoupling agent performance from intrinsic visual limits.\n- Evaluation infrastructure is maturing toward heterogeneity and reproducibility simultaneously—WebArena-Pro [5] explicitly closes the coverage-vs-reproducibility tradeoff and adds audio/video understanding.\n- World models are absorbing classical pipelines: WeatherDreamer [6] learns the data-assimilation filtering cycle end-to-end from 18 observation systems, bypassing reanalysis dependence.\n- A cross-cutting theme: *how* models weigh modalities (aligned vs. conflicting, variance vs. target-relevant, intrinsic vs. tool-mediated) is now a first-class research question, not an afterthought.",
+    "papers": [
+      {
+        "title": "Aligned, Conflicting, or Unspecified? A Diagnostic Benchmark for Multimodal Time Series Forecasting",
+        "url": "",
+        "authors": [
+          "Xintong Wang",
+          "Haihan Nan",
+          "Ruidong Li"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "VEPO: Mitigating Multilingual Hallucinations in LVLMs via Visual Evidence-guided Preference Optimization",
+        "url": "",
+        "authors": [
+          "Chengpeng Fu",
+          "Xiaocheng Feng",
+          "Wenshuai Huo",
+          "Yichong Huang",
+          "Baohang Li",
+          "Duyu Tang",
+          "Ting Liu"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "LightTAR: Light and Fast Target-Aware Representations for Multimodal Tabular Learning",
+        "url": "",
+        "authors": [
+          "Eilam Shapira",
+          "Alan Arazi",
+          "Shoham Grunblat",
+          "Roi Reichart"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "Vision-as-a-Tool: Visual Harness for Multimodal Agentic Coding",
+        "url": "",
+        "authors": [
+          "Haolin Yang",
+          "Wenshan Wu",
+          "Jin Jiang",
+          "Yu Cheng",
+          "Yan Xia",
+          "Ting Song",
+          "Yangyu Huang",
+          "Zhiliang Peng",
+          "Wenhui Wang",
+          "Hangbo Bao",
+          "Yuzhe Zhang",
+          "Wen-Da Wei",
+          "Tengchao Lv",
+          "Li Dong",
+          "Lei Cui",
+          "Furu Wei"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "WebArena-Pro: A Heterogeneous, Multimodal, Reproducible Benchmark for Web Agents",
+        "url": "",
+        "authors": [
+          "Imene Kerboua",
+          "Fatemeh Pesaran Zadeh",
+          "Xing Han Lù",
+          "Weijian Qi",
+          "Alexander Miller",
+          "Junyi Song",
+          "Yunjia Tian",
+          "Dongjin Kang",
+          "Seyeon Choi",
+          "Marzia Nouri",
+          "Ewen Gueguen",
+          "Matteo Boglioni",
+          "Fengyuan Liu",
+          "Zeyi Liao",
+          "Mengqi Yuan",
+          "Yue Li",
+          "Alexandre Lacoste",
+          "Alexandre Drouin",
+          "Spandana Gella",
+          "Huan Sun",
+          "Gunhee Kim",
+          "Siva Reddy"
+        ],
+        "date": "2026-11-16"
+      },
+      {
+        "title": "WeatherDreamer: Learning a World Model from Multimodal Earth Observations",
+        "url": "",
+        "authors": [
+          "Kate Duffy",
+          "Elise Penn",
+          "Tristan Ballard",
+          "August Posch",
+          "Thomas J. Vandal"
+        ],
+        "date": "2026-11-16"
+      }
+    ]
+  }
+]
