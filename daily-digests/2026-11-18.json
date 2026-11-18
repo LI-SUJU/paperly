@@ -1,0 +1,329 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-18",
+    "paperCount": 5,
+    "markdown": "# Interpretability Beyond the Black Box: From Moral Circuits to Agent Lineage\n\nToday's interpretability research pushes in two complementary directions: inward, toward precisely characterizing what internal components (attention heads, SAE features, experts) actually encode, and outward, toward governing the external context and reasoning traces that shape model outputs. Across five papers, we see a shared conviction that interpretability must be *disambiguated*—distinguishing superficially similar mechanisms—and *operationalized*, turning explanations into actionable systems.\n\n## Probing the Moral and Semantic Structure of Language Models\n\nThe most conceptually ambitious contribution today tackles a subtle but consequential confound in mechanistic interpretability. [1] asks whether components previously identified as \"moral circuits\" and \"moral features\" in language models respond to moral *content*, to normative judgment *of any kind*, or merely to the surface cue word \"morally.\" To disentangle these, the authors construct 227 minimal pairs of short phrases—validated by five annotators—that differ along a single dimension: moral standard, another normative domain (prudence, etiquette, aesthetics, evidence), or purely descriptive content. Testing across 14 models, they examine whether attention heads and sparse autoencoder features track the intended variable rather than the lexical trigger. This work matters because it exposes a general failure mode in circuit-level interpretability: components credited with abstract concepts may be keyed to shallow distributional cues, and claims about \"moral reasoning\" inside models demand exactly this kind of controlled contrast before they can be trusted.\n\n## Interpretable Generation and Editing Pipelines\n\nTwo papers embed interpretability directly into generation workflows rather than treating it as post-hoc analysis. [2] frames long-document revision as a reference-free Markov decision process, trained with reinforcement learning against automatic quality metrics (e.g., clarity, flow) instead of paired human revision targets. Because the policy operates through explicit, sequential edit actions rather than a single opaque rewrite, each revision step is inspectable, and the RL formulation captures the iterative nature of real editing. The framework thus offers a middle path between black-box rewriting and costly supervised revision data, with interpretability arising from the action structure itself. [5] takes a different route for agents: LMLineage is an out-of-band system that attributes every output sentence of an agent session to its supporting input spans with calibrated confidences—requiring no white-box model access and no extra inference passes. Building on this lineage metadata, the authors introduce concept-drift micro-compaction, which detects when the agent's working context has drifted and compacts selectively instead of waiting for the context limit and summarizing indiscriminately. Together, these papers argue that interpretability is most useful when it is woven into the control loop—shaping how documents are revised and how agent context is governed—rather than reported after the fact.\n\n## Interpretability as a Design Principle in Specialized Architectures\n\nTwo application-domain papers make interpretability a structural commitment rather than an added explanation layer. [3] addresses post-disaster human mobility recovery forecasting, where existing models are typically event-specific black boxes with limited transferability. Motivated by evidence that recovery patterns recur across disasters, ReMoE introduces an interpretable mixture-of-experts framework in which experts correspond to recurring recovery types, allowing knowledge transfer across events while making the routing decisions human-readable. Interpretability here is not cosmetic: identifying which recovery regime a region is following is directly actionable for resource allocation. [4] reports a striking result from Visa Research: a fine-tuned Llama 3.2 1B, trained on billions of rows of labeled tabular data, outperforms a wide array of tabular classifiers and even a competitive production deep learning model—challenging the prevailing view that LLMs lag tree-based and specialized tabular architectures. While the interpretability angle is lighter here, the finding reframes LLMs as general-purpose tabular engines and raises the practical question of how to explain and audit their tabular decisions once deployed at production scale.\n\n## Methodological Lessons Across the Digest\n\nRead together, these papers surface a recurring methodological theme: **contrast and attribution are the twin engines of credible interpretability**. [1] demonstrates that minimal-pair contrasts are essential for ruling out lexical confounds before attributing concepts to components. [5] shows that fine-grained attribution—sentence-level lineage with calibrated confidence—can be achieved without white-box access, democratizing interpretability to closed models and multi-source agent contexts. [2] and [3] illustrate that interpretability can be *architectural*: sequential edit actions and named expert regimes provide transparency by construction. And [4] reminds us that capability advances in unexpected domains (tabular data) will continually generate new demands for explanation and auditing.\n\n## Key Takeaways\n\n- **Lexical confounds undermine circuit claims.** [1] shows that \"moral\" components in LMs may track the word \"morally\" or generic normativity rather than moral content; 227 annotator-validated minimal pairs across 14 models set a new bar for disambiguating what internal features encode.\n- **Interpretability is moving into the control loop.** [2]'s reference-free RL formulation of document editing and [5]'s lineage-driven context compaction both use interpretable structure to *steer* generation, not just describe it.\n- **White-box access is not a prerequisite.** [5] achieves calibrated sentence-to-source attribution out-of-band, with no model internals and no extra inference passes—an important step for auditing closed and agentic systems.\n- **Architecture can be the explanation.** [3]'s mixture-of-experts maps directly onto recurring post-disaster recovery types, making transfer across events and human-readable routing a single design decision.\n- **LLMs are competitive tabular classifiers.** [4]'s fine-tuned Llama 3.2 1B beats specialized tabular models and a production baseline at billions-of-rows scale, expanding the surface area where interpretability and audit tooling will be needed.\n- **Contrastive validation should be standard practice.** Across [1], [2], and [5], the strongest interpretability claims come from controlled contrasts and explicit attribution rather than correlational probes alone.\n- **Sequential, action-level transparency fits real workflows.** Human editing and disaster response are both iterative processes; [2] and [3] suggest interpretability research should model the trajectory, not just the endpoint.",
+    "papers": [
+      {
+        "title": "Disambiguating Moral Circuits and Moral Features in Language Models: Moral content, normative judgment or cue words? Evidence from 14 models",
+        "url": "",
+        "authors": [
+          "Davide Liga",
+          "Liuwen Yu",
+          "Matteo Magnini"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "RLDE: A Reinforcement Learning Framework for Interpretable Iterative Document Editing",
+        "url": "",
+        "authors": [
+          "Nikhil Parkar",
+          "M. Marimuthu",
+          "Riya Joshi",
+          "Karthikeyan N"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "ReMoE: An Interpretable Mixture-of-Experts Framework for Human Mobility Recovery Forecasting Across Disasters",
+        "url": "",
+        "authors": [
+          "Yilin Lyu",
+          "Kang Liu",
+          "Wei Wang",
+          "Qifan Zhang",
+          "Ling Yin",
+          "Yushi Bai"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "VRLLM: Turning LLMs into Powerful Tabular Classifiers",
+        "url": "",
+        "authors": [
+          "Yingtong Dou",
+          "Shubham Jain",
+          "Junpeng Wang",
+          "Hadi Abdullah",
+          "Vineeth Rakesh Mohan",
+          "Yuzhong Chen",
+          "Liang Wang",
+          "Yiwei Cai"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "LMLineage: Content Lineage and Context Governance for LLM Agents",
+        "url": "",
+        "authors": [
+          "Wei Hou",
+          "Jingxin Geng",
+          "Xin Chen",
+          "Zheqing Jiang"
+        ],
+        "date": "2026-11-18"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-18",
+    "paperCount": 2,
+    "markdown": "# Signed Attributions, Auditable Repairs, and Concept-Level Explanations: Today's Explainability Research Digest\n\nToday's explainability research pushes beyond post-hoc heatmaps toward structurally faithful explanations: signed global surrogates for multi-label classifiers, auditable repair traces for agentic RAG, and concept-level and causal frameworks for vision and language models. Across the board, the emphasis is on verification—checking that explanations are intact, complete, and causally relevant rather than merely plausible.\n\n## Signed Attribution and Faithful Surrogates for Classifiers\n\n**FLEX for multi-label explainability.** White [1] addresses the problem that multi-label classifiers can assign correct labels for the wrong reasons, with diffuse feature combinations that vary across classifier families and lack a dominant feature. The proposed FLEX (Fisher LDA Explainer) fits a single direct multi-label Fisher LDA global surrogate over the full binary label matrix, producing signed feature attribution lists for each label within one coherent coordinate system. Across evaluated benchmarks and classifier families, FLEX reproduces the black box's predictions with consistently high fidelity, and pooling covariance across labels appears central to its behavior. The work matters because signed, globally coherent attributions give practitioners a principled way to detect \"right labels, wrong reasons\" failures that per-instance methods can obscure. [1]\n\n## Auditing and Debugging Agentic RAG Systems\n\n**RagHarnessDebugger for repair auditing.** Dechtiar et al. [2] tackle the question of how to know whether an agentic RAG system's self-repairs are actually working, given that accuracy-style metrics can be misleading. RagHarnessDebugger records every repair decision in a Jev-guided harness for contract inference and audits the record to enable complete debugging of all decisions taken during a RAG repair journey. The framework checks that each trace is intact and that each validation step holds, turning the repair process itself into an inspectable artifact. This matters for high-stakes domains like legal contract inference, where evidence-gathering and policy-testing behavior must be accountable, not just accurate. [2]\n\n## Concept-Based and Causal Explanations in Vision\n\n*(No papers in this section today.)*\n\n## Explanation Quality, Evaluation, and Human Factors\n\n*(No papers in this section today.)*\n\n## Explanation Infrastructures for Language and Multimodal Models\n\n*(No papers in this section today.)*\n\n## Key Takeaways\n- Explainability is shifting from per-instance salience toward global, signed, and structurally constrained attributions, as in FLEX's single multi-label Fisher LDA surrogate [1].\n- Correct predictions are not sufficient evidence of correct reasoning; signed attributions expose cases where classifiers succeed for the wrong reasons [1].\n- Agentic systems need process-level auditing, not just outcome metrics—RagHarnessDebugger makes every repair decision traceable and verifiable [2].\n- Trace integrity and validation checking are emerging as first-class requirements for debugging RAG repair journeys in high-stakes settings like contract inference [2].\n- Coherent coordinate systems across labels (pooling covariance) appear to be a key design choice for faithful multi-label surrogates [1].\n- Both papers emphasize verification of explanations themselves—fidelity for surrogates, intactness for traces—rather than plausibility alone [1, 2].",
+    "papers": [
+      {
+        "title": "Right Labels, Wrong Reasons: Signed Feature Attribution for Multi-Label Explainability",
+        "url": "",
+        "authors": [
+          "Kenton White"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "RagHarnessDebugger: Jev-Guided Agentic RAG in Contract Inference Repair Auditing",
+        "url": "",
+        "authors": [
+          "Moriya Dechtiar",
+          "Daniel Martin Katz",
+          "Michael J. Bommarito",
+          "Hongming Wang",
+          "Sylvain Jaume"
+        ],
+        "date": "2026-11-18"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-18",
+    "paperCount": 19,
+    "markdown": "# Multimodal Research Digest — November 18, 2026\n\nToday's multimodal research landscape is defined by a strong push toward *evaluation rigor* and *reliability* — with new multilingual, report-generation, and fairness benchmarks exposing persistent weaknesses in MLLMs — alongside a wave of *inference-time and post-hoc techniques* (head-routed speculative decoding, provenance-aware consensus decoding, visual harnesses, and residual correction) that improve multimodal systems without retraining foundation models. A parallel thread explores *how multimodal models learn and allocate signal* — through scaling laws for fusion, reward attribution in multimodal RL, flow matching over coupled measurements, and representation-subspace analyses of cross-modal inconsistency.\n\n## Benchmarks, Evaluation, and Model Behavior\n\n**MInfoVisQA** [1] addresses whether MLLMs maintain consistent understanding of information-rich visualizations when the surface language changes — a largely unmeasured capability. The authors construct a parallel benchmark of 8,960 QA configurations from 128 seed instances across 24 languages, disentangling numerical-structural data from text and programmatically synchronizing translated labels to create seed-matched, language-parallel visuals and QA pairs. Evaluating 25 MLLMs under language-aligned and cross-language settings, the work provides the first systematic quantification of language-induced brittleness in InfoVis understanding. This matters because it isolates a failure mode invisible to monolingual benchmarks and sets a baseline for multilingual multimodal robustness.\n\n**MM-ReportBench** [6] tackles the underexplored task of generating multimodal reports — fluent narratives plus faithful visualizations — from tabular data, a cornerstone capability in finance, healthcare, and policy. Existing benchmarks are limited by single-modality focus, simplistic metrics, novelty evaluation, and poor visualization assessment; the authors address these with 386 tasks across 185 real-world tables, each paired with an expert-curated reference report. The benchmark's emphasis on both narrative faithfulness and visualization quality raises the evaluation bar for table-to-report generation. It matters as one of the first comprehensive, multi-dimensional evaluations of a practically critical multimodal generation task.\n\n**The shopping-agent study** [4] tests two intuitive assumptions: that asking models to \"think harder\" improves product choices, and that reported confidence predicts correctness. Benchmarking ten frontier models on three product-choice benchmarks built from multimodal listings, the authors find that increased reasoning effort raises confidence but *not* correctness — a striking calibration failure. This matters for deployment of autonomous consumer agents, where misplaced confidence in multimodal purchasing decisions carries direct economic risk, and it cautions against equating test-time compute with decision quality.\n\n**The Omni-model inconsistency analysis** [7] investigates why models with a unified language backbone produce different answers for semantically equivalent audio, vision, and text inputs. The authors estimate a low-dimensional *Answer Subspace* from answer-position representations, separating answer-related components from the rest, and use this to distinguish information that *predicts* disagreement from representations whose perturbation *changes* the answer. Across three Omni Models and two multimodal reasoning tasks, this subspace decomposition offers a mechanistic handle on cross-modal inconsistency. It matters because it moves beyond surface-level disagreement metrics toward actionable representational diagnostics.\n\n**The OLLM fairness work** [14] argues that attribute-centric debiasing — separate fairness objectives per sensitive attribute and modality — is inadequate for omni-modal models, where stereotypes manifest in diverse, entangled forms. The paper models a *unified bias representation* across modalities and attributes and proposes a mitigation method targeting this joint structure rather than per-attribute variations. This reframing matters because it aligns debiasing objectives with how bias actually propagates through shared omni-modal representations, promising broader coverage of harmful stereotypes.\n\n## Inference-Time and Decoding Innovations for Multimodal Systems\n\n**VisHead-Spec** [3] targets the diminishing speedup of speculative decoding for VLMs under high-concurrency serving, where long image-token ranges make draft prediction compute-bound; block-diffusion drafters help by emitting multiple draft tokens per forward pass but leave head-level structure unexploited. The proposed method routes visual attention at the head level to make drafting more efficient while preserving target-model outputs. This matters for production VLM serving, where batching-induced compute bottlenecks erode the practical value of speculative decoding.\n\n**PACD** [11] addresses cross-modal hallucinations in Omni-LLMs, where one modality improperly influences predictions about another. Existing training-free decoding methods rely on modality perturbation or relevance weighting, but fusion interference and shared errors can suppress correct unimodal predictions or let erroneous consensus persist; PACD introduces provenance-aware consensus decoding that tracks the source of each modality's contribution. This matters as a training-free intervention that improves reliability of omnimodal reasoning without retraining.\n\n**PhysScope** [17] confronts a subtle failure in physics reasoning: VLMs interpret diagrams correctly but apply physical constraints outside the states or conditions in which they hold, propagating premise errors through calculations. PhysScope is an inference-time visual harness that links physical *scopes* to visual observations, constructs derived views, and enforces explicit constraints on state distinctions and conditions — all without weight updates. This matters because it demonstrates that structured, scope-aware visual scaffolding can self-correct VLMs at test time, a lightweight complement to training-based remedies.\n\n**The multimodal RL reward-attribution work** [12] asks whether the allocation of a trajectory-level outcome reward across a response can be inferred from the model's own multimodal computation, given that visual evidence is used only at sparse, uneven positions. Rather than relying on grounding signals or external token-level weighting, the authors learn where rewards should \"land\" in multimodal reasoning trajectories. This matters for making multimodal post-training more sample-efficient and for aligning credit assignment with where visual evidence actually drives the answer.\n\n## Agents and Tooling for Multimodal Scientific and Clinical Work\n\n**DiscoveryAgent** [2] tackles the central design tension in scientific AI agents: balancing autonomous investigation with scientists' ability to inspect and redirect work. The domain-agnostic system lets scientists select, refine, or replace hypotheses between research rounds, while audit agents interrogate checkpointed records to trace claims and reproduce analyses. Across two predictive modeling tasks, DiscoveryAgent produced the best results while preserving scientist control. It matters as a concrete architecture for human-in-the-loop agentic science that treats auditability as a first-class requirement.\n\n**The Retriever–Perceiver–Reasoner framework** [16] addresses multimodal scientific document reasoning, where evidence is distributed across text, figures, and tables and answer-level feedback cannot distinguish acquisition errors from utilization errors. The Retriever sequentially selects source-aligned evidence under a context budget; the Perceiver builds a question-conditioned representation; and the system uses this decomposition to support self-improvement. This matters because separating *retrieval* from *use* of multimodal evidence enables targeted self-correction in document QA.\n\n**EDA** [13] critiques multimodal depression assessment methods that summarize long recordings into global behavioral descriptions, obscuring the source and decision relevance of individual observations. Its Observe–Verify–Assess framework localizes literature-informed acoustic and visual cues into source-linked Evidence Records with temporal intervals and measurements, then has frozen multimodal agents verify whether cited media support each observation. This matters for clinical trust: evidence-grounded, inspectable assessments are a prerequisite for adoption in mental-health screening.\n\n**OICycle** [15] frames longitudinal clinical decision making as a POMDP where belief over latent patient state must be updated from irregular, multimodal, incomplete records — a setting where snapshot deep models and hand-specified POMDPs both fall short. The Observe–Infer–Intervene cycle learns belief states end-to-end from real EHR-style multimodal streams. This matters as a bridge between learning-based clinical prediction and principled sequential decision making under partial observability.\n\n**The scanned-assessment extraction system** [9] targets paper-based cognitive and behavioral assessments (MMSE, MoCA, Mini-Cog, NICHQ Vanderbilt) where handwriting and scanning artifacts impede large-scale processing. The modular pipeline pairs a form classifier with form-specific score extraction using multimodal LLMs under human oversight, including qualitative analysis of hand-drawn content. This matters for real-world clinical operations, where digitizing legacy paper instruments remains a stubborn bottleneck.\n\n## Representation, Fusion, and Generative Modeling Foundations\n\n**The vision-language scaling-laws paper** [10] systematically compares late fusion (continued pre-training of an off-the-shelf LM on image-text data) against early fusion (mixing modalities from the start), a choice currently driven by expensive heuristics. By analyzing learning dynamics across multimodal pre-training, the authors derive scaling behavior that clarifies the trade-offs between paradigms. This matters because principled fusion recipes could substantially reduce the cost of VLM development and inform architecture decisions at scale.\n\n**MOSA** [8] addresses data-limited scientific generative modeling, where each experiment yields several coupled measurements of the same physical entity but standard models train on a single direction, discarding supervision. Using random masking, measurements serve as either conditioning inputs or prediction targets, yielding multiple supervised denoising tasks per experiment; the flow-matching approach is demonstrated on molecules and spectra. This matters because it extracts far more training signal from expensive experimental data — a general recipe for multimodal scientific generative models.\n\n**WoRD** [19] brings diffusion-based posterior inference to online goal recognition over continuous trajectories, where symbolic methods abstract away motion and dynamics-based methods require hard-to-acquire models. WoRD learns waypoint-based diffusion posteriors over candidate goals without an explicit dynamics model, improving accuracy on ambiguous trajectory prefixes where motion knowledge matters most. This matters as a multimodal, learning-based alternative to model-dependent goal recognition.\n\n**The neural envelope method** [18] addresses multimodality-induced local optima in surrogate-based multidisciplinary design optimization for urban air mobility takeoff trajectories. Convex envelopes convert multimodal design spaces into unimodal ones for efficient convex optimization, but naive convexification can yield infeasible designs under complex constraints; the proposed neural envelope method learns envelopes that preserve feasibility. This matters as a practical bridge between gradient-based efficiency and global search in safety-critical engineering design.\n\n## Key Takeaways\n\n- **Reasoning effort ≠ correctness in multimodal decision-making.** Across ten frontier shopping agents, thinking harder increased confidence without improving choices [4], underscoring calibration as a first-order deployment risk.\n- **Multilingual and cross-modal consistency remain weak points.** MInfoVisQA [1] and the Answer Subspace analysis [7] both reveal that semantically equivalent inputs across languages or modalities yield inconsistent MLLM behavior — a gap invisible to standard benchmarks.\n- **Training-free, inference-time interventions are maturing.** Head-routed speculative decoding [3], provenance-aware consensus decoding [11], and PhysScope's visual harness [17] all improve multimodal reliability or efficiency without touching model weights — an increasingly attractive deployment path.\n- **Evaluation is shifting from single-modality accuracy to multi-dimensional faithfulness.** MM-ReportBench [6] demands both narrative fidelity and visualization quality, while EDA [13] requires source-linked, verifiable evidence — a broader trend toward inspectable multimodal outputs.\n- **Credit assignment and fusion design are the new frontiers of multimodal training.** Learning where rewards land in reasoning trajectories [12] and deriving scaling laws for early vs. late fusion [10] attack fundamental questions about *how* multimodal models should learn, not just what they learn.\n- **Scientific and clinical agents are converging on auditability as a design principle.** DiscoveryAgent [2], the Retriever–Perceiver–Reasoner framework [16], and OICycle [15] all build checkpointing, verification, or belief-tracking into the loop — human oversight is being architected in, not bolted on.\n- **Data-efficient multimodal supervision is achievable through clever masking.** MOSA [8] shows that treating coupled measurements as interchangeable inputs and targets multiplies supervised signal per experiment — a broadly applicable lesson for data-limited scientific domains.",
+    "papers": [
+      {
+        "title": "MInfoVisQA: A Multilingual Benchmark for Information-Rich Visual Question Answering",
+        "url": "",
+        "authors": [
+          "Changjiang Jiang",
+          "Jiang Zhou",
+          "Xinbin Yuan",
+          "Fan Zhang",
+          "Tao Feng",
+          "Zhuohan Xie"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "DiscoveryAgent: A Framework for Scientist-centric Agentic AI",
+        "url": "",
+        "authors": [
+          "Owen Queen",
+          "Ioana Ciuca",
+          "Emma Dann",
+          "Jean Somalwar",
+          "Carine You",
+          "Steven Dillmann",
+          "Viraj Manwadkar",
+          "Evan Gorrell",
+          "Harrison G Zhang",
+          "Jonathan K Pritchard",
+          "Risa H Wechsler",
+          "James Zou"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "VisHead-Spec: Head-Routed Visual Attention for Multimodal Speculative Decoding",
+        "url": "",
+        "authors": [
+          "Xin Guo",
+          "Arushi Rai",
+          "Xiang Zhou",
+          "Qiang Zhang",
+          "Siyu Lin",
+          "Xiangjun Fan",
+          "Lizhu Zhang"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "Thinking Harder Doesn't Lead to Better Choices: Reasoning Effort Increases the Confidence but Not the Correctness of LLM Shopping Agents",
+        "url": "",
+        "authors": [
+          "Adi Krishnamoorthy",
+          "X. Y. Han"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "CorrectCast: Selective Multimodal Context for Scale-Aware Residual Correction in Precipitation Nowcasting",
+        "url": "",
+        "authors": [
+          "Henan Wang",
+          "Shengwu Xiong",
+          "Yifang Zhang",
+          "Pengfei Duan"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "MM-ReportBench: A Comprehensive Benchmark for Multimodal Report Generation from Tables",
+        "url": "",
+        "authors": [
+          "Teng Lin",
+          "Nan Tang"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "Understanding Cross-Modal Inconsistency through Representation Subspaces in Omni Models",
+        "url": "",
+        "authors": [
+          "Seonghyeon Cho",
+          "Chanjun Park"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "Every Measurement, Every Direction, All at Once: Multimodal Flow Matching for Molecules and Spectra",
+        "url": "",
+        "authors": [
+          "Thorben Prein",
+          "Elton Pan",
+          "Rafael Gómez-Bombarelli",
+          "Santiago Miret"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "A Visual Information Extraction System Using Multimodal Large Language Models for Scanned Cognitive and Behavioral Assessments",
+        "url": "",
+        "authors": [
+          "Enshuo Hsu",
+          "Linh Nguyen",
+          "Sunyang Fu",
+          "Heath Goodrum",
+          "Sandra Stansberry",
+          "Kirk Roberts",
+          "Hongfang Liu",
+          "Yen-Chi L. Le"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "Scaling Laws for Vision-Language Fusion",
+        "url": "",
+        "authors": [
+          "Seng Pei Liew",
+          "Teppei Suzuki",
+          "Seiya Tokui"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "PACD: Provenance-Aware Consensus Decoding for Mitigating Cross-Modal Hallucinations in Omnimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Chang Sun",
+          "Yijun Tian",
+          "Zhenwei Tang",
+          "Yuchen Deng",
+          "Yifan Simon Liu",
+          "Chenxu Wang",
+          "Wei Wang"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "Eyes in the Update? Learning Where Rewards Land in Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Lixuan He",
+          "Tianzhe Chu",
+          "Shulin Tian",
+          "Shikang Zheng",
+          "Feng Chen",
+          "Yi Ma"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "EDA: Observe, Verify, and Assess for Evidence-Grounded Multimodal Depression Analysis",
+        "url": "",
+        "authors": [
+          "Changzeng Fu",
+          "Ming Shang",
+          "Xinyi Zhang",
+          "Jiadong Wang",
+          "Runhao Zeng",
+          "Shiqi Zhao"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "Beyond Attribute-Centric Fairness: Modelling and Mitigating Unified Bias Representation in Omni-modal Large Language Models",
+        "url": "",
+        "authors": [
+          "Runqi Lin",
+          "Suqin Yuan",
+          "Zihao Fu",
+          "Chris Russell"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "OICycle: Observe, Infer, and Intervene Cycle for Belief-State Learning in Longitudinal Clinical Decision Making",
+        "url": "",
+        "authors": [
+          "Jitindra Fartiyal",
+          "Pedro Freire",
+          "Sergei K. Turitsyn",
+          "Sergei G. Solovski"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "Synergizing Evidence Retrieval and Utilization for Self-Improving Multimodal Scientific Document Reasoning",
+        "url": "",
+        "authors": [
+          "Frank Nie",
+          "Ethan B. Liu",
+          "Yuan Zhu",
+          "Jindong Han"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "PhysScope: Agentic Multimodal Physics Reasoning with Grounded Visual Memory",
+        "url": "",
+        "authors": [
+          "Haoyang Liu",
+          "Kecheng Liang",
+          "Xinyu Li",
+          "Weixing Chen",
+          "Yang Liu"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "A Neural Envelope Method for Rapid Gradient-based Optimum Takeoff Trajectory Design",
+        "url": "",
+        "authors": [
+          "Samuel Sisk",
+          "Xiaosong Du"
+        ],
+        "date": "2026-11-18"
+      },
+      {
+        "title": "WoRD: Diffusion-Based Posterior Inference for Online Goal Recognition",
+        "url": "",
+        "authors": [
+          "Almog Anschel",
+          "Sarah Keren"
+        ],
+        "date": "2026-11-18"
+      }
+    ]
+  }
+]
