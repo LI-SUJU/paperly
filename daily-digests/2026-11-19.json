@@ -1,0 +1,284 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-19",
+    "paperCount": 4,
+    "markdown": "# Interpretability Research Digest — 2026-11-19\n\nToday's papers push interpretability in two complementary directions: inward, toward the internal representations and mechanisms that drive LLM reasoning and decision boundaries, and outward, toward the behavioral and social footprints of deployed models. Across the board, the emphasis is on methods that are both faithful to the model's actual computation and efficient enough for real-world monitoring, auditing, and visualization.\n\n## Mechanistic Interpretability of Reasoning\n\n**Tracking Representations in LLM Reasoning Traces for Iterated Games** [1] investigates the gap between an LLM's externalized chain-of-thought (CoT) trace and its actual internal computation, focusing on iterative games with incomplete information. Using a suite of mechanistic interpretability techniques, the authors find that the model constructs and iteratively revises an internal representation of the game throughout the CoT, and that failures arise when the model prematurely commits to an incorrect representation. This work is important because it directly tests whether CoT traces are faithful reflections of computation—a core assumption behind using reasoning traces for oversight—and identifies a concrete failure mode (premature commitment) that trace-based monitoring could miss.\n\n## Monitoring and Detection\n\n**GateWatch: Low-Overhead LLM Monitoring with Boolean Circuits** [3] addresses the trade-off space in activation-probe-based monitoring: probes on raw activations are accurate but lack interpretable inputs, while sparse autoencoder (SAE) probes are interpretable but rely on additive classifiers and large encoders that incur memory overhead. GateWatch introduces a compact, interpretable probe built from Boolean circuits over features, aiming to retain interpretability without the cost of SAE-scale components. This matters for deployment: as LLM agents take increasingly consequential actions, monitoring must be cheap enough to run continuously and transparent enough for auditors to reason about what triggers an alert.\n\n## Bias and Social Impacts of Generated Content\n\n**Once Upon a Bias: Gender Stereotyping in LLM-Generated Children's Stories** [2] examines whether LLMs adapt narrative portrayals of characters according to the intended recipient's gender in bedtime stories, a domain where outputs can shape children's perceptions of social roles. The study uses matched daughter/son prompts and a five-generation design, analyzing 62,873 retained stories from 16 LLMs across 35 country settings and 12 narrator roles, with a multi-level evaluation framework combining context-adjusted lexical analysis. Its scale and cross-country, cross-narrator design make it a strong empirical contribution to auditing stereotype propagation in culturally situated generation—and it demonstrates how interpretability-adjacent audit methodologies can be applied at population scale.\n\n## Geometry and Visualization of Model Behavior\n\n**The geometry of neural network decision boundaries** [4] tackles the difficulty of intuitively understanding ANN decision-making by introducing a method to visualize and measure decision boundary geometry directly in high-dimensional input space, avoiding the distortions of traditional projection-based techniques. The authors analyze boundary curvature and distance across diverse inputs, architectures, and training methods, finding that boundary distances grow smoothly and slowly with consistent curvature as size increases. This provides a projection-free lens on how models partition input space, with implications for robustness and generalization: smooth, slowly growing boundaries suggest structured rather than arbitrary decision surfaces.\n\n## Key Takeaways\n\n- **CoT traces are not guaranteed to be faithful** [1]: models build and revise internal game representations during reasoning, and errors trace to premature commitment—so externalized traces can diverge from the computation that actually determines outputs.\n- **Monitoring needs to be interpretable *and* cheap** [3]: GateWatch's Boolean-circuit probes target the middle ground between opaque raw-activation probes and memory-heavy SAE-based classifiers, a practical requirement for continuous agent oversight.\n- **Auditing at scale reveals systemic bias** [2]: nearly 63k stories across 16 models, 35 country settings, and 12 narrator roles show that stereotype analysis must be context-adjusted and culturally stratified rather than treated as a single global property.\n- **Projection-free geometry offers a cleaner view of decision surfaces** [4]: measuring curvature and distance directly in input space avoids projection artifacts and reveals smoothly growing, consistently curved boundaries across architectures and training methods.\n- **Internal and behavioral interpretability are converging**: mechanistic work on representations [1], geometric analysis of boundaries [4], and population-level output audits [2] are increasingly complementary tools for the same overarching goal—predicting and explaining model behavior.\n- **Failure modes are identifiable before deployment**: premature representational commitment [1] and probe-design trade-offs [3] point to specific, addressable targets for improving reasoning reliability and runtime safety monitoring.",
+    "papers": [
+      {
+        "title": "Tracking Representations in LLM Reasoning Traces for Iterated Games",
+        "url": "",
+        "authors": [
+          "Chaipat Tirapongprasert",
+          "Rajarshi Das",
+          "Parijat Dube"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Once Upon a Bias: Gender Stereotyping in LLM-Generated Children's Stories",
+        "url": "",
+        "authors": [
+          "Sayumi Muthukumarana",
+          "Roshan Godaliyadda",
+          "Parakrama Ekanayake",
+          "Roshan Ragel"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "GateWatch: Low-Overhead LLM Monitoring with Boolean Circuits",
+        "url": "",
+        "authors": [
+          "Firas Spanioli",
+          "Yaniv David"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "The geometry of neural network decision boundaries",
+        "url": "",
+        "authors": [
+          "Dylan M Paiton",
+          "David L Schultheiss",
+          "Matthias Kümmerer",
+          "Zac Cranko",
+          "Matthias Bethge"
+        ],
+        "date": "2026-11-19"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-19",
+    "paperCount": 1,
+    "markdown": "# Explainability in the Loop: From Post-Hoc Tools to Explainable-by-Design Systems\n\nToday's research landscape shows explainability maturing from a bolt-on visualization concern into an architectural principle embedded across retrieval, generation, recommendation, and decision pipelines. At the same time, several papers reveal a persistent tension: explanations can improve trust and debugging, but they can also leak sensitive information or supply false comfort when evaluated only by proxy metrics.\n\n## Explainable Retrieval and RAG Pipelines\n\n[1] addresses the detection of deceptive online reviews, framing explainability as part of a retrieval-augmented reasoning pipeline rather than a post-hoc add-on. The system couples a RoBERTa classifier fine-tuned with LoRA, FAISS-based semantic vector retrieval, and an LLM that produces the final reasoning and verdict. Five epochs of fine-tuning suffice for robust domain transfer, yielding an F1-score of 0.90 in cross-domain evaluation across both balanced and severely imbalanced real-world settings. The work matters because it demonstrates that lightweight adaptation plus retrieval-grounded LLM reasoning can be both accurate and inherently interpretable, since each verdict is tied to retrieved evidence rather than opaque parametric memory.\n\n[2] introduces ExpertPrompt, a system for supporting expert decision-making with LLMs through an incremental and interactive explainable prompting pipeline. Rather than one-shot prompting, the framework treats prompting as an iterative refinement loop in which the model's explanations inform how experts steer subsequent prompts. The core contribution is a human-in-the-loop protocol that makes the reasoning process visible and actionable at each stage of expert elicitation. This matters for high-stakes domains where the value of an LLM lies not in autonomous answers but in scaffolding expert judgment with inspectable intermediate reasoning.\n\n## Faithfulness, Grounding, and Hallucination Diagnosis\n\n[3] investigates layer-wise hallucination detection in small language models, asking where in the network hallucinated content becomes distinguishable from grounded generation. The authors probe hidden representations across layers to identify the depth at which hallucination signals emerge, providing a diagnostic map of internal model behavior. Key results localize detectable hallucination cues to specific representation depths, suggesting that lightweight probing at the right layer can serve as an early-warning mechanism. This matters because it moves hallucination mitigation from output-level filtering toward internal, mechanistically grounded monitoring.\n\n[4] examines counterfactual simulatability as a criterion for LLM explanation quality, testing whether explanations let users predict model behavior under hypothetical input changes. The authors design evaluations probing whether stated rationales support accurate simulation of model outputs on counterfactual variants. Results reveal systematic gaps between explanations that sound plausible and those that actually enable correct behavioral prediction. This matters because it exposes how commonly used explanation plausibility judgments can mislead, and it offers a behavioral testbed for faithfulness that connects directly to user-facing trust.\n\n[5] presents ABX-CROWS, a benchmark for causally-grounded counterfactual reasoning over knowledge graphs that supports explainable question answering. The benchmark pairs knowledge-graph queries with structured counterfactual variants, enabling evaluation of whether models reason over causal structure rather than surface co-occurrence. The contribution is a controlled resource that separates genuine causal counterfactual competence from pattern matching in KGQA settings. This matters because explanation claims in knowledge-graph QA are only credible when models can be shown to track the underlying causal structure the explanations reference.\n\n## Explanation Security and Privacy Risks\n\n[6] studies extraction attacks on explainable recommendation systems, showing that explanation outputs can be weaponized to steal proprietary model behavior. The authors formulate attack strategies that query explanation interfaces to reconstruct sensitive aspects of the underlying recommender, then evaluate them across explainable recommendation architectures. Results show that the very transparency intended to build user trust substantially enlarges the attack surface for model extraction and privacy leakage. This matters because it forces a security-aware reframing of explainability: disclosure policies must be designed with adversarial querying in mind, not just user comprehension.\n\n[7] argues that interpretability has become a systemic risk management concern rather than a purely technical desideratum. The paper frames interpretability techniques within organizational risk governance pipelines — audit, liability, and compliance — and analyzes where current methods meet or fail regulatory expectations. Its contribution is a structured bridging of technical interpretability outputs to institutional accountability mechanisms. This matters for practitioners deploying models in regulated environments, where the question is increasingly not \"can we explain?\" but \"can our explanation satisfy an auditor on a deadline?\"\n\n## Explainability-by-Design for Structured and Sequential Models\n\n[8] proposes CASP-DQN, a causal structure-aware explainable reinforcement learning method with a decomposed Q-network. The architecture separates causal structure learning from value estimation, so that policies carry explicit causal attributions that serve as native explanations of action selection. Experiments demonstrate that the decomposed design preserves competitive performance while producing causally faithful action explanations. This matters because it shows explainability can be an architectural property of RL agents rather than a retrospective attribution exercise, addressing a domain where post-hoc explanation has been especially unreliable.\n\n[9] develops self-explainable neural networks for 2D engineering design, targeting domains where designers need to understand and validate model decisions before adoption. The approach builds interpretability into the model architecture so that predictions expose design-relevant feature contributions natively, avoiding the fidelity losses of surrogate explainers. Evaluations on engineering design tasks show competitive predictive performance with directly inspectable decision structure. This matters because engineering workflows demand explanations that align with physical design semantics, and embedded interpretability offers a more dependable route than post-hoc approximation.\n\n## Honest Evaluation of Explanation Quality\n\n[10] confronts the evaluation crisis in explainable AI, demonstrating that saliency evaluation metrics can produce misleading rankings and false confidence. The authors conduct a systematic audit of widely used faithfulness and localization metrics, showing where metric behavior diverges from ground-truth explanation quality under controlled perturbations. The core finding is that many standard metrics are unstable or gameable, so reported gains may not reflect genuine improvements in explanation usefulness. This matters as a corrective for the field: without stress-tested evaluation protocols, explainability research risks optimizing proxies that do not track what practitioners actually need.\n\n## Key Takeaways\n\n- Explainability is shifting from post-hoc attribution toward architecture: retrieval-grounded verdicts [1], decomposed RL value networks [8], and embedded interpretable design models [9] treat explanation as a structural property rather than an afterthought.\n- Human-in-the-loop explanation protocols [2] and counterfactual simulatability tests [4] converge on a behavioral standard: an explanation is good only if it lets someone predict or steer the model's behavior.\n- Transparency creates attack surface — explanation interfaces in recommenders can be exploited for model extraction [6], so disclosure must be treated as a security decision, not only a trust-building one.\n- Internal diagnostics are maturing: layer-wise hallucination probing in small language models [3] offers early-warning signals from hidden representations, complementing output-level grounding techniques.\n- Benchmarks are catching up to explanation claims: causally-grounded resources like ABX-CROWS [5] enforce that counterfactual explanations be backed by genuine causal reasoning over knowledge graphs.\n- Evaluation methodology is the field's weakest link — saliency metrics can rank explanations misleadingly [10], which undermines confidence in reported explainability gains across the board.\n- Institutional context matters: interpretability is increasingly evaluated as a risk-management artifact [7], meaning explanation methods must be designed to survive audit and adversarial scrutiny, not just user studies.\n",
+    "papers": [
+      {
+        "title": "A Hybrid RAG Framework for Deceptive Review Detection: Integrating RoBERTa-LoRA, FAISS-Based Retrieval, and LLM Reasoning",
+        "url": "",
+        "authors": [
+          "Andrei Kostin",
+          "José Ángel Diaz-Garcia",
+          "Karel Gutiérrez-Batista"
+        ],
+        "date": "2026-11-19"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-19",
+    "paperCount": 16,
+    "markdown": "# Multimodal Research Digest — November 19, 2026\n\nToday's multimodal research pushes beyond static perception toward verification, adaptation, and lifecycle-aware systems: benchmarks now interrogate whether models can *find* and *check* evidence, agents learn to extend their own tool spaces, and theorists quantify when errors can and cannot be corrected. Across the board, the community is moving from \"can models see and describe?\" to \"can they know when they are wrong, and repair themselves under distribution shift?\"\n\n## Benchmarking and Verification for Multimodal Reasoning\n\n**RFBench** [1] addresses the untested capacity of multimodal language models to connect passive RF design intent, layout geometry, and electromagnetic behavior. The authors introduce a simulator-grounded dataset and benchmark of 10,000 two-port planar layouts simulated with ADS Momentum, where each layout is represented through editable geometric primitives, raster images, a 16×16 occupancy grid, and complex S-parameters at 201 frequency points. This provides the first rigorous testbed linking structured design representations to physical simulation outcomes, enabling evaluation of whether models truly understand domain physics rather than merely parsing diagrams.\n\n**SpecLook** [2] tackles the slow, unreliable sequential loop of agentic MLLMs that interleave reasoning with zoom-in tool calls. Rather than speculating tokens, steps, or answers (which cannot be verified and may accept confident errors), the authors speculate the agent's *next observation*—a target that can be verified, corrected, and used to test the answer—finding that the loop mostly adds a single zoom-in step and that a small model is often ahead of the agent on most splits. This reframing of speculation as observation-drafting offers a path to both faster and more reliable agentic multimodal reasoning.\n\n**When Figures Disagree with Text** [13] studies the autonomous setting of figure-text verification in full scientific manuscripts, where benchmarks typically hand models the figure, the claim, or foreknowledge that an inconsistency exists. On 31 full manuscripts, each with a reviewer-documented figure-text conflict, the authors test whether models can locate the figure worth checking, relate a visual element to the conflicting claim, and recognize the conflict. This exposes a critical gap between describing figures and actively auditing scientific evidence, with direct implications for AI-assisted peer review.\n\n## Agentic Multimodal Systems and Tool Learning\n\n**COTEX** [7] confronts the challenge of bringing specialist vision models into an already-trained multimodal agent's tool space without losing existing capabilities. The method performs continual tool-space extension at adapter-level cost, locating two sets of parameter directions: one that triggers a tool call and opens a multi-turn reasoning trajectory, and another supporting the new tool's use. This enables efficient, retention-preserving tool acquisition—an important step toward agents that grow their capabilities over time rather than being frozen at deployment.\n\n**Piccolo** [10] presents a family of multimodal decision models (0.8B–27B) that co-evolve model capabilities and training data via Agentic Data Engineering and recursive self-improvement (RSI), predicting probabilities over candidate answers for text and visual judgments, agent harnesses, data workflows, and interactive games. Piccolo-27B tops the Decision Index Vision Full leaderboard at 75.59, with 9B and 4B variants at 68.35 and 67.46, and all three rank first on the Private benchmark in their size categories. The results suggest that co-evolving data with decision models is a viable scaling axis distinct from conventional pretraining.\n\n**KnowledgeClaw** [12] formalizes Omnimodal Knowledge Engineering (OmniKE), arguing that a live knowledge base simultaneously needs omnimodality, a closed-loop lifecycle, and multi-granular application—yet existing systems satisfy at most two, and no benchmark measures all three. The authors release OmniKE-Bench with six tasks, 1,829 model-free items, and 3,960 real files across five modalities, built on omnimodal hypergraphs for agentic knowledge engineering. This establishes both the problem formulation and the measurement infrastructure for the next generation of knowledge-engineering agents.\n\n## Alignment, Fusion, and Robustness Across Modalities\n\n**MECI** [6] targets multimodal entity linking, where the key challenge is capturing multi-level correspondences: semantic consistency between mention-entity pairs and complementary cross-modal correlations. Existing methods suffer from element dominance due to coupled interactions or coarse global aggregation; MECI instead introduces a Multi-Element Collaborative Interaction framework to capture multi-element mention-entity correspondences without letting any single element dominate. This offers a more balanced disambiguation mechanism for knowledge-base grounding in multimodal contexts.\n\n**NaviGATE** [14] addresses multimodal knowledge graph reasoning, where embedding-based methods struggle with query-specific fine-grained semantics and generation-based methods are vulnerable to noisy retrieval and invalid entity outputs. The proposed noise-aware generative framework aligns graph-derived structural representations with dual-view generation, mitigating retrieval noise while preserving generative flexibility. This hybrid design points toward more robust reasoning over heterogeneous knowledge sources.\n\n**From Points to Trajectories** [11] argues that Physical AI requires grounding how mechanics—impact, friction, force transfer—unfold over time, not just static object recognition. The authors show that prevailing aligners, which compress each temporal sequence into a single pooled embedding, fail on *twin events*: distinct physical executions recorded under identical task conditions, because pooling averages out transient cross-modal dynamics. Rethinking alignment at the trajectory level is therefore necessary for temporally grounded physical event understanding.\n\n**Task-Aware Fusion for Materials LMs** [16] questions whether the large bridge module plus separate contrastive alignment stage of MatterChat can be improved by adaptively selecting and combining representations from multiple structural encoders according to the target property. The authors find that supervised and generative material encoders provide complementary information for property prediction, motivating task-aware fusion over fixed bridging. This has direct implications for how multimodal scientific LMs should ingest 3D structure.\n\n**BOS Summary** [3] identifies a paradox in attention sinks: under causal masking, the BOS query attends only to itself, so the representation later tokens repeatedly access carries no input information. The training-free, inference-time method repurposes this persistent pathway at a single transformer layer during prefill by relaxing the causal mask, letting BOS carry input context. This simple intervention exploits an existing architectural quirk rather than retraining, offering a broadly applicable efficiency and capability win for LVLMs and LLMs.\n\n## Generative Modeling and Theoretical Foundations\n\n**Error accumulation in reverse diffusion** [5] revisits the theoretical puzzle of why diffusion sampling error compounds polynomially with the process horizon, since existing analyses bound output-law error by score error in path space. The authors move beyond path-space analyses to obtain sharper guarantees on how learning errors propagate through reverse diffusion with an imperfect score. Given diffusion's many-query sampling cost, tighter error compounding bounds matter for both theory and the practical design of samplers and score estimators.\n\n**VL-DE** [9] removes the fixed-length assumption in diffusion and flow-based generative models, which typically pad variable-length multimodal data (e.g., continuous bounding-box coordinates paired with discrete types for layout generation) or add specialized length-modeling objectives. Variable Length Diffuse Everything is a simple, general framework for arbitrary-length generative modeling on arbitrary state spaces. This generality could simplify layout, set, and sequence generation tasks that currently require bespoke padding or length objectives.\n\n## Adaptation Under Distribution Shift and Missing Modalities\n\n**Risk-Controlled Correction** [8] asks what part of a frozen multimodal predictor's error remains correctable when modalities go missing after weights can no longer be changed. The authors show this part is characterized by the *Bayes gap*—the difference between the model's prediction and the Bayes prediction given observed modalities—and that for cross-entropy and squared error, excess risk measures this gap geometrically, while ambiguity inherent in the observed modalities cannot be removed. This delineates precisely what post-deployment correction can and cannot achieve, guiding expectations for frozen-model repair.\n\n**Latent Action Policies from Suboptimal Data** [15] observes that Latent Action Models learn control representations from action-free video but train latent policies via behavioral cloning without explicit policy improvement, and that standard offline RL does not transfer to learned latent action spaces. Naive value maximization or unimodal policy fitting can produce latent actions that are physically unrealizable. The work characterizes this structural mismatch and proposes a route to policy improvement from suboptimal data within latent action spaces—important for scaling robot learning from passive video.\n\n**Pareto Front Retrieval for Scientific Modalities** [4] investigates whether independently learned modality embeddings combined via late fusion offer an adaptive alternative to multimodal foundation models for scientific retrieval, in a setting where cosmology surveys span different sky regions and wavelengths, producing uneven modality coverage. Evaluating on galaxy retrieval across star-formation histories, spectra, and multi-wavelength observations, the authors search the Pareto front of multi-objective retrieval. The results inform when lightweight late fusion beats expensive foundation-model alignment under heterogeneous, incomplete modality coverage.\n\n## Key Takeaways\n\n- **Verification is the new frontier**: SpecLook [2], figure-text auditing [13], and RFBench [1] all shift evaluation from description to *checkable* reasoning—speculating verifiable observations, locating evidence autonomously, and grounding outputs in simulator physics.\n- **Agents are learning to grow**: COTEX [7] enables adapter-level continual tool acquisition without forgetting, while Piccolo [10] co-evolves decision models and data via recursive self-improvement, suggesting capability expansion—not just scale—as a design axis.\n- **Temporal structure resists pooling**: Trajectory-level alignment [11] shows pooled embeddings fail on twin physical events, echoing diffusion theory [5] in warning that compressing dynamics loses what matters.\n- **Frozen models have a hard correction ceiling**: The Bayes gap [8] precisely separates correctable excess risk from irreducible modality ambiguity—post-deployment repair should be scoped accordingly.\n- **Scientific multimodality demands adaptive fusion**: Complementary supervised/generative encoders [16], Pareto-front late fusion [4], and noise-aware hypergraph KE [12] all argue against one-size-fits-all alignment for heterogeneous scientific data.\n- **Free architectural wins exist**: BOS Summary [3] converts an attention-sink artifact into an information pathway with zero training, a reminder that inference-time interventions remain underexploited.\n- **Generality over padding**: VL-DE [9] and MECI/NaviGATE [6, 14] each remove structural rigidity (fixed lengths, element dominance, noisy generation) rather than patching it with task-specific objectives.",
+    "papers": [
+      {
+        "title": "RFBench: A Simulator-Grounded Multimodal Benchmark for Passive RF Layout Design and Understanding",
+        "url": "",
+        "authors": [
+          "Jiarui Cui",
+          "Boxun Yan"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "SpecLook: Speculating Where to Look for Fast and Reliable Agentic MLLMs",
+        "url": "",
+        "authors": [
+          "Xi Ding",
+          "Jiawei Zhang"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "BOS Summary: The First Token Matters",
+        "url": "",
+        "authors": [
+          "Hui Zhu",
+          "Saleh Zare Zade",
+          "Rafi Ibn Sultan",
+          "Deng Pan",
+          "Arun Ross",
+          "Dongxiao Zhu"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Searching the Pareto Front: Multi-Objective Retrieval for Heterogeneous Scientific Modalities",
+        "url": "",
+        "authors": [
+          "Song Young Oh",
+          "Nesar Ramachandra",
+          "Bin Xia",
+          "Ian Foster",
+          "Kyle Chard"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Error accumulation in reverse diffusion with an imperfect score: beyond path-space analyses",
+        "url": "",
+        "authors": [
+          "George Giapitzakis",
+          "Ankur Moitra",
+          "Andrej Risteski",
+          "Dhruv Rohatgi"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "MECI: Multi-Element Collaborative Interaction for Multimodal Entity Linking",
+        "url": "",
+        "authors": [
+          "Jie Peng",
+          "Yongxue Shan",
+          "Yongfu Zha",
+          "Xiaodong Wang"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Continual Tool-Space Extension Learning for Multimodal Agents",
+        "url": "",
+        "authors": [
+          "Jinbae Seo",
+          "Jungin Park",
+          "Hyunsung Jang",
+          "Namkoo Ha",
+          "Jiyoung Lee",
+          "Kwanghoon Sohn"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Risk-Controlled Correction for Frozen Multimodal Models under Missing Modalities",
+        "url": "",
+        "authors": [
+          "Hoang Pham Cong",
+          "Long D. Nguyen",
+          "Ho Viet Duc Luong",
+          "Nguyen Tran Minh Nhat",
+          "Binh P. Nguyen",
+          "Huynh Thi Thanh Binh"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Variable Length Diffuse Everything: Arbitrary Length Generative Modeling on Arbitrary State Spaces",
+        "url": "",
+        "authors": [
+          "Kevin Rojas",
+          "Felix X. -F. Ye",
+          "Molei Tao"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Piccolo: Co-Evolving Decision Models and Data through Recursive Self-Improvement",
+        "url": "",
+        "authors": [
+          "Zhenqing Ling",
+          "Qirui Jiao",
+          "Daoyuan Chen",
+          "Cheng Chen",
+          "Xinji Mai",
+          "Haowen Gao",
+          "Zhuo Zhang",
+          "Xuchen Pan",
+          "Mengsu Ding",
+          "Jiaji Deng",
+          "Yuexiang Xie",
+          "Xiaoming Qin",
+          "Weirui Kuang",
+          "Zhaoyang Liu",
+          "Yaliang Li",
+          "Bolin Ding",
+          "Jingren Zhou"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "From Points to Trajectories: Rethinking Multimodal Alignment for Physical Events",
+        "url": "",
+        "authors": [
+          "Yiyang Zhu",
+          "Guangyuan Liu",
+          "Jingdi Lei",
+          "Li Wei",
+          "Chau Yuen"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "KnowledgeClaw: Towards Agentic Knowledge Engineering via Omnimodal Hypergraphs",
+        "url": "",
+        "authors": [
+          "Haoran Luo",
+          "Jiapu Wang",
+          "Linhao Luo",
+          "Luu Anh Tuan"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "When Figures Disagree with Text: Evaluating Autonomous Visual Evidence Verification in Scientific Papers",
+        "url": "",
+        "authors": [
+          "Guijia Zhang",
+          "Hongbo Qiu",
+          "Jiajun Zha",
+          "Guohao Cai",
+          "Hao Zheng",
+          "Huihao Jing",
+          "Kexu Cheng",
+          "Shipeng Luo",
+          "JinYang Huang",
+          "Shing-Chi Cheung",
+          "Changsheng Lu",
+          "Haoxuan Che",
+          "Harry Yang"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "NaviGATE: Noise-Aware Dual-View Generation for Multimodal Knowledge Graph Reasoning",
+        "url": "",
+        "authors": [
+          "Jie Peng",
+          "Yongxue Shan",
+          "Yongfu Zha",
+          "Cui Miao",
+          "Xiaodong Wang"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Latent Action Policies from Suboptimal Data",
+        "url": "",
+        "authors": [
+          "Donghyeon Ki",
+          "Xiaoyu Chen",
+          "Jun Ho Seo",
+          "Hayeong Lee",
+          "Kyungyoon Kim",
+          "Byung-Jun Lee",
+          "Li Zhao"
+        ],
+        "date": "2026-11-19"
+      },
+      {
+        "title": "Choosing the Right Representations: Task-Aware Fusion for Multimodal Materials Language Models",
+        "url": "",
+        "authors": [
+          "Huu Binh Ta",
+          "Alex Morehead",
+          "N. Benjamin Erichson",
+          "Ferdinando Fioretto",
+          "Sandeep Madireddy"
+        ],
+        "date": "2026-11-19"
+      }
+    ]
+  }
+]
