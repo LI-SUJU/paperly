@@ -1,0 +1,389 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-20",
+    "paperCount": 2,
+    "markdown": "# Interpretability Research Digest — 2026-11-20\n\nToday's interpretability research pushes beyond post-hoc explanation toward architectures and training objectives that make interpretability a first-class design constraint, from disentangling sparse autoencoder objectives to embedding explicit losses in symbolic learners. Across the set, a common thread emerges: interpretability is increasingly treated as something to be structurally separated, explicitly optimized, or formally verified rather than merely observed after the fact.\n\n## Sparse Autoencoders and Feature Disentanglement\n\n**DualSAE: Separating Interpretability and Reconstruction in Sparse Autoencoders** [1] addresses a foundational tension in SAE-based mechanistic interpretability: a single sparse code is forced to serve both reconstruction fidelity and interpretability, objectives that need not align. The authors propose DualSAE, a modular framework that augments a standard SAE (the \"Sparse Branch,\" capturing dominant semantics) with a plug-in Residual Branch that absorbs the residual reconstruction burden separately. This decoupling allows the sparse code to specialize toward interpretable features while the residual branch maintains fidelity, yielding a cleaner division of labor than monolithic SAEs. The work matters because it reframes a core SAE design trade-off as an architectural decomposition problem, potentially improving feature quality without sacrificing reconstruction — a prerequisite for reliable circuit-level analysis.\n\n## Explainability for Structured and Tabular Data\n\n*(No papers in this category today; the digest below covers the remaining thematic clusters.)*\n\n## Explicit Objectives and Transparent Learners\n\n**Loss-Guided Tsetlin Machines** [2] targets a transparency gap in the Tsetlin Machine, a rule-based learner whose learning signal is fixed to an implicit margin-based update rule (MBUR) with no user-selectable objective. The authors replace MBUR with an explicit, swappable loss function driving clause feedback and weight updates, while leaving the Tsetlin Automaton and clause logic untouched — preserving the model's inherently interpretable propositional structure. They instantiate the framework with cross entropy, symmetric cross entropy, and asymmetric loss, and evaluate Loss-Guided TM across tasks. The contribution matters because it demonstrates that symbolic, interpretable learners can adopt modern task-specific losses without forfeiting their transparency, bridging the gap between glass-box models and contemporary objective engineering.\n\n## Key Takeaways\n\n- **Interpretability as architecture, not afterthought:** DualSAE [1] shows that separating interpretability from reconstruction via a modular residual branch can resolve a structural conflict in SAEs, suggesting future interpretability tools will bake such separations into design rather than patching them post-hoc.\n- **Decoupling objectives is a recurring lever:** Both papers [1, 2] gain leverage by disentangling objectives that were previously conflated — sparse coding vs. reconstruction in SAEs, and learning signal vs. clause logic in TMs.\n- **Glass-box models can modernize:** Loss-Guided TM [2] proves interpretable symbolic learners need not be stuck with fixed update rules; swappable losses (CE, SCE, ASL) can be integrated while preserving transparency.\n- **Task-specific losses reach interpretable models:** The adoption of asymmetric and symmetric losses in TMs [2] signals that interpretability research is absorbing advances from mainstream loss design.\n- **Reconstruction fidelity remains a bottleneck:** DualSAE's residual branch [1] implicitly acknowledges that interpretable sparse codes alone under-reconstruct inputs — a caveat worth tracking in downstream feature-quality claims.\n- **Modularity aids adoption:** Both contributions are framed as plug-in or swappable components, lowering the barrier to integrating them into existing SAE and TM pipelines.",
+    "papers": [
+      {
+        "title": "Separating Interpretability and Reconstruction in Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Anh Tien Nguyen",
+          "Dimitris Samaras",
+          "Mahdi S. Hosseini"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Loss-Guided Tsetlin Machines: Making the Learning Objective Explicit",
+        "url": "",
+        "authors": [
+          "Mayur Shende",
+          "Runar Helin",
+          "Ole-Christoffer Granmo",
+          "Vladimir I. Zadorozhny"
+        ],
+        "date": "2026-11-20"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-20",
+    "paperCount": 3,
+    "markdown": "# Explainability in Specialized Domains: From Faithfulness Guarantees to Clinical and Financial Trust\n\nToday's research attacks explainability at three pressure points: the theoretical mismatch between gradient-based attribution and non-continuous model inputs, the practical demand for interpretable high-stakes decision policies, and the consolidation of explanation methods into user-facing tooling. Across these papers, the shared theme is that explanation quality is domain-dependent—faithfulness assumptions that hold for continuous predictors break down on embeddings, while neural flexibility may be deliberately traded for model transparency in finance.\n\n## Faithfulness and the Limits of Path Attribution\n\n[2] tackles a foundational flaw in path-based attribution methods such as Integrated Gradients when applied to genotype embedding models: these methods assume the model accepts arbitrary interpolated points between baseline and input, but genotype models map discrete allele dosages {0,1,2} through embeddings defined only at those discrete values. The authors propose attributing predictions via observed cohort paths—trajectories through the embedding space that correspond to real genotype configurations—rather than synthetic interpolations through invalid input regions. This grounds attribution in clinically plausible genetic variants, enabling identification of which variants actually drive neuroimaging-based disease predictions. The work matters because it exposes a silent correctness assumption in mainstream attribution tooling and offers a domain-faithful alternative for multimodal clinical models where trust depends on naming concrete genetic evidence.\n\n[1] frames the general problem of explanation quality for language models: explanations are simplified approximations, and the design goal is to jointly optimize faithfulness to the underlying computation, plausibility to users, and usefulness for deciding whether to rely on outputs. The abstract emphasizes explanations as instruments for surfacing model errors, failure modes, and bias in complex reasoning tasks where LMs support human judgment. While the excerpt is truncated, the framing positions varied explanation strategies as a way to triangulate model behavior rather than relying on any single attribution signal. This matters as a conceptual anchor: it argues that no single explanation type suffices, and evaluation must weigh fidelity against human interpretability.\n\n## Interpretable-by-Design Policy Models\n\n[3] introduces X Hedging, a response to two limitations of Deep Hedging: neural hedging policies are opaque and data-hungry, which hurts both interpretation and performance in data-constrained settings. The core substitution is architectural—replacing neural networks with the LightGBM tree ensemble to estimate hedging strategies—trading some policy flexibility for inductive transparency and lower sample requirements. The result is a hedging framework whose decisions can be inspected via feature attributions native to tree ensembles, making risk positions defensible to stakeholders. This matters as a case study in the \"interpretable-by-design versus post-hoc explanation\" tradeoff: in regulated financial decision-making, choosing an inherently legible model class may dominate explaining a black box after the fact.\n\n## Methodological Assumptions as Explanation Failure Modes\n\nRead together, [1] and [2] sharpen a point often glossed over in explainability research: explanation methods embed assumptions about model input spaces, and violations of those assumptions produce attributions that are numerically valid but semantically meaningless. [2] demonstrates this concretely for discrete embeddings, while [1] argues that because all explanations are approximations, users need varied explanation types and explicit faithfulness evaluation to detect when approximations mislead. The implication for practitioners is that attribution pipelines must be audited against input-domain constraints—interpolating through invalid allele dosages is the explainability analogue of training on leaked features. This has direct consequences for model validation regimes in clinical and other high-stakes deployments.\n\n## Toward Deployable Explanation Frameworks\n\nA cross-cutting contribution of this set is movement from explanation algorithms toward end-to-end frameworks: [2] yields cohort-grounded variant attributions usable in clinical reporting, [3] delivers a complete hedging pipeline with explainability as a design constraint, and [1] articulates the evaluation criteria (faithfulness, plausibility, decision utility) that such frameworks must satisfy. None of the papers treats explanation as a visualization afterthought; each embeds it in the model or the decision workflow itself. The emerging picture is that explainability maturity is measured not by which attribution method is used, but by whether the method's assumptions survive contact with the domain's input semantics and regulatory context.\n\n## Key Takeaways\n- Path-based attribution methods like Integrated Gradients silently assume continuous, valid input spaces; genotype embedding models violate this, and cohort-path attribution [2] offers a domain-faithful fix.\n- The discreteness of allele dosages {0,1,2} means synthetic interpolations can pass through inputs the model was never defined on—a general failure mode for explanations of embedding-based models.\n- Explainability design should jointly optimize faithfulness, plausibility, and decision usefulness, with varied explanation types compensating for the approximate nature of any single method [1].\n- X Hedging [3] shows that in data-constrained, regulated domains, interpretable-by-design model classes (LightGBM tree ensembles) can be preferable to post-hoc explanation of opaque neural policies.\n- Explanation quality is domain-dependent: assumptions baked into attribution tooling must be audited against input semantics before deployment in clinical or financial workflows.\n- Clinical adoption of multimodal genotype-neuroimaging models hinges on naming concrete genetic variants, making faithful attribution a prerequisite for trust rather than a nice-to-have [2].\n- The field is shifting from isolated explanation algorithms toward integrated frameworks where explainability is a design constraint on the model and decision pipeline itself [1, 2, 3].",
+    "papers": [
+      {
+        "title": "Enhancing Understanding of Language Models with Varied Explanations",
+        "url": "",
+        "authors": [
+          "Jingyi Sun"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Explainability of genotype embedding models through observed cohort paths",
+        "url": "",
+        "authors": [
+          "Amashi Niwarthana",
+          "Aloysius Tan",
+          "Jagath C. Rajapakse"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "X Hedging: towards an eXplainable artificial intelligence option Hedging framework",
+        "url": "",
+        "authors": [
+          "Bjørn André Aaslund",
+          "Johannes Berge",
+          "Ayoub Haida",
+          "Ying Ni",
+          "Rita Pimentel"
+        ],
+        "date": "2026-11-20"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-20",
+    "paperCount": 21,
+    "markdown": "# Multimodal Research Digest — November 20, 2026\n\nToday's multimodal landscape pivots sharply from perception toward **grounded action, reliability, and efficiency**: agents that navigate 3D worlds, audit generated environments, and guide real users sit alongside work on hallucinated safety rationales and internal-state monitoring. A parallel thread targets the infrastructure of multimodal reasoning—structured document extraction, memory management, scene-graph supervision, and foundation models for science domains.\n\n## Grounded Agents: Spatial Action, Auditing, and Guidance\n\n**TuringSpace** [7] asks whether MLLMs can close the perception-action loop the way humans do when solving CAPTCHAs: inferring 3D layout from a 2D view, acting, and correcting after feedback. The authors build a synthetic web environment of 125 interactive CAPTCHAs spanning five spatial reasoning categories, motivated by the observation that existing CAPTCHA benchmarks are largely solved and rarely spatial, while spatial benchmarks rarely require action. This establishes a benchmark where success demands iterative, feedback-driven interaction rather than single-shot recognition. It matters because it directly tests the \"act-and-correct\" capability that real-world deployment requires but static VQA benchmarks cannot measure.\n\n**Efficient Multimodal Agents for Auditing 3D Worlds** [8] tackles the flip side of generative world-building: automatically detecting glitches like floating objects, walk-through walls, and objects that mutate unobserved. The authors identify three required abilities—navigating to suspect objects, triggering behavior-conditional glitches, and recognizing what is wrong—and argue current auditors are either accurate-but-expensive or cheap-but-unreliable. The contribution targets an accuracy/cost Pareto improvement so that auditing can scale as both a QA tool and a reward signal for world-building agents. This is foundational infrastructure for any RL or evaluation pipeline over generated 3D content.\n\n**FLUID** [18] rethinks real-time task guidance, where multiple responses and timings may be appropriate and silence is sometimes optimal—flexibility that fixed-target dialogue benchmarks miss. Grounded in naturally occurring human-human guidance from WTaG and HoloAssist, FLUID unifies modeling, evaluation, and enabling of evidence-grounded guidance. The framework's emphasis on situated evidence and timing makes it a more faithful testbed for assistant agents operating alongside users in physical tasks.\n\n**StarTV-Agent** [13] addresses traffic scenario understanding, where fine-grained visual evidence must combine with spatial-temporal reasoning and specialized perception tools. Its two challenges—sparse terminal rewards giving weak intermediate guidance, and repeated planning costs across similar tasks—are met with a fast-slow architecture combining policy learning and experience evolution, echoing human cognition. The persistent tool-orchestration angle makes it a practical template for cost-aware multimodal agent design.\n\n**ForeSeek** [17] critiques retrieval-driven long-video agents for reactively fetching clips by local saliency without a global temporal plan. Its foresight-driven approach forms visually grounded expectations over the timeline, converting reactive retrieval into predictive exploration. This reframes long-video reasoning as planning under uncertainty—a meaningful departure from dominant retrieve-then-answer pipelines.\n\n## Reliability and Safety of Multimodal Models\n\n**Monitoring medical LLMs through verbalized thoughts** [2] makes a striking claim: a manipulated model can produce an entirely ordinary-looking answer, but its internal state—translated to natural language via a natural-language autoencoder over Gemma-3-27B activations—exposes the manipulation. An input-blind judge reads the \"thoughts\" channel and the answer separately across two clinical attack objectives (e.g., omitting a pathology). This shifts safety monitoring from inputs/outputs to internal-state inspection, with clear implications for clinical deployment where silent failures are unacceptable.\n\n**When Safety Rationales Hallucinate** [11] systematically studies *rationale hallucination* in multimodal safety guards, distinguishing visual rationale hallucination (unsupported visual facts) from safety attribution hallucination (grounded content given wrong safety interpretation). Across rationale-generation methods, backbones, and datasets, the authors find the problem widespread and not consistently diminishing with scale or method sophistication. This is an important caution: rationale generation, often assumed to improve trust, can itself be a failure mode.\n\n**MM-SystemOneBias** [19] evaluates whether fast \"system-one\" multimodal decision models preserve semantic decisions across presentation changes, ignore irrelevant additions, and distinguish consistent from conflicting evidence. It benchmarks 13 models on 5,323 examples, providing a common protocol to compare decision models against their backbones—filling a gap where decision-interface bias and multimodal behavior were studied separately. For deployment in moderation or action selection, such bias profiling is a prerequisite.\n\n**Probing the \"Conscious\" Mind** [20] introduces MC-Lens, a multimodal Jacobian lens mapping vision-encoder and language-decoder intermediate states into a shared semantic space defined by the decoder's output vocabulary. Framed through Global Workspace Theory, it probes selective access and integration of concepts in VLMs—connecting mechanistic interpretability to cognitive theory. Beyond neuroscience analogy, the lens offers a concrete tool for comparing what vision versus language pathways contribute to internal representations.\n\n## Document, Memory, and Knowledge Infrastructure\n\n**TETHER** [1] confronts structured knowledge extraction from design-driven long documents, where bottom-up methods relying on visual cues fail when visual prominence decouples from logical depth, and direct LLM extraction hallucinates without spatial grounding. Its training-free framework anchors on the Table of Contents as macro-structure, enabling elastic hierarchy extraction and recovery. The ToC-anchoring insight is elegant: cheap global structure as a scaffold for grounded local extraction, with no training required.\n\n**MemFolder** [14] targets the coupled cost problem in long-term agent memory: growing record counts inflate retrieval overhead, while longer retrieved contexts inflate prefill and attention costs. Its structure-guided memory folding sequentially reduces records while avoiding the pitfalls of pruning (evidence loss) and naive consolidation (fewer but longer units). For any persistent multimodal agent, this addresses a binding constraint on deployment economics.\n\n**FG-GraphBench** [9] identifies insufficient coverage of fine-grained entities and relationships in scene-graph benchmarks, plus the failure of MLLMs to exploit graph-structured information. The benchmark and accompanying method organize visual entities as nodes and relationships as edges to strengthen fine-grained visual understanding. This bridges structured representation learning and MLLM capability—an underexplored supervision channel.\n\n**MKA Benchmark** [3] measures autonomous agents on end-to-end professional knowledge work requiring visual understanding across CAD blueprints, schematics, radiographs, charts, and maps, producing real deliverables (.xlsx, .pptx, .pdf, etc.). The authors note existing benchmarks leave this untested—removing image-viewing tools collapses Gemini 4 Carbon's scores. By demanding multi-file synthesis into standalone artifacts, MKA sets a much higher bar than QA-style evaluation and directly measures economic utility.\n\n## Domain Foundation Models and Specialized Systems\n\n**MatVerse** [10] builds a materials science foundation model atop Intern-S2-Preview via large-scale domain post-training, spanning text, molecular/crystal structures, characterization data, microscopy images, and structure-property relationships. The heterogeneity of materials information makes this a demanding multimodal integration problem. As a technical report, it signals the maturation of domain-specialized multimodal foundation models beyond biomedicine.\n\n**A Neurosymbolic Framework for 30-Day Diabetic Readmission** [4] fuses structured EHR data, dense clinical embeddings, and knowledge-grounded symbolic extraction on the Diabetes 130-US Hospitals dataset (101,766 encounters), explicitly handling code-mixed Hinglish and negation that general-purpose LMs parse unreliably. The neurosymbolic design targets exactly where LLMs are weak—negation and code-mixing—while retaining embedding-based richness. It's a pragmatic blueprint for clinical prediction where interpretability and robustness are non-negotiable.\n\n**Rad-Linter** [15] checks chest X-ray reports against image-derived evidence: a pretrained classifier scores nine pathologies, and a 1.5B LoRA-tuned model checks report-score consistency, compared against a keyword-and-negation rule baseline using controlled counterfactual report-score pairings from OpenI. The small-model, evidence-grounded design is notable for cost-sensitive clinical QA. Counterfactual evaluation gives it a rigor often missing in report-checking work.\n\n**DRVEXO-4B-Unified** [5] presents a modular speech-vision assistant on a 4B backbone with a temporal residual connector for acoustic sequences, explicit text boundaries for incremental speech synthesis, and three task-conditioned scoring heads for ranking action candidates. The architecture cleanly separates generation from authorization, leaving action approval to the application. It's a useful reference design for composable, safety-aware multimodal assistants.\n\n## Learning Paradigms: Goals, Features, and Fast Decisions\n\n**CCGP-2M / VLM-guided RL** [12] addresses sparse-reward exploration in Craftax-style environments by fine-tuning a VLM to generate high-level goals, backed by a new multimodal goal-preference dataset from interaction trajectories. Unlike prompt-only LLM guidance, task adaptation yields more consistent, contextually appropriate goals. This demonstrates that goal-generation itself benefits from learning, not just prompting.\n\n**System-One RSI** [16] attacks the latency gap: reasoning models understand multimodal tasks well but deliberate too slowly for sub-second control, while fast models lack fine-grained task experience. Inspired by coached motor learning, it couples a high-frequency OODA inner loop with an outer self-improvement loop. The bio-inspired dual-loop framing is a compelling answer to the reasoning-versus-reactivity tradeoff in interactive agents.\n\n**Active Feature Acquisition by Distilling an Oracle Teacher** [21] replaces self-constructed utility targets in AFA with an explicit oracle teacher: at training time, labels plus unobserved features determine a teacher that ranks acquisition choices in closed form. Distilling this oracle yields a principled policy for budgeted feature acquisition under monetary, temporal, or privacy costs. The closed-form teacher construction is a clean theoretical contribution that sidesteps the instability of learned utility proxies.\n\n**Keystone** [6] finds that in diffusion/flow models, the outcome is largely settled as denoising starts—visible in early previews—yet reward-model verifiers fail on blurry previews, forcing best-of-N to fully denoise doomed candidates. Judging previews at key steps enables cheap test-time search without wasted computation. This reframes test-time search as early commitment detection, with direct efficiency gains for text-to-image systems.\n\n## Key Takeaways\n- **Action-grounded evaluation is the new frontier**: TuringSpace [7], MKA [3], and 3D world auditing [8] all demand iterative action and real deliverables, exposing gaps that static VQA benchmarks hide—removing image tools reportedly collapses Gemini 4 Carbon on MKA.\n- **Internal states leak what outputs conceal**: verbalized thoughts [2] and MC-Lens [20] show that activation-level inspection is both a safety monitor and an interpretability tool, while [11] warns that generated rationales themselves frequently hallucinate.\n- **Structure is a cheap, powerful prior**: ToC anchoring [1], scene graphs [9], and memory folding [14] all exploit explicit structure to improve grounding or cut costs without expensive training.\n- **Fast-slow and dual-loop designs proliferate**: System-One RSI [16], StarTV-Agent [13], and ForeSeek [17] independently converge on separating reactive execution from deliberative planning—or replacing reactive retrieval with predictive exploration.\n- **Small, specialized models remain competitive in high-stakes domains**: Rad-Linter's 1.5B LoRA model [15] and the neurosymbolic readmission framework [4] prioritize evidence-grounding and robustness over scale.\n- **Test-time compute must be spent wisely**: Keystone [6] shows early denoising previews predict final outcomes, enabling early-abort search; ForeSeek [17] and MemFolder [14] likewise target wasted retrieval and prefill costs.\n- **Learning beats prompting for guidance signals**: VLM-generated goals improve only after task-specific fine-tuning [12], and oracle-teacher distillation [21] replaces heuristic utility targets with closed-form supervision.",
+    "papers": [
+      {
+        "title": "TETHER: Training-Free, Elastic, ToC-Anchored Hierarchy Extraction and Recovery in Design-Driven Long Documents",
+        "url": "",
+        "authors": [
+          "Yu Zou",
+          "Yan Chen",
+          "Jialei Zeng",
+          "Xiaorui Zhou",
+          "Aixi Zhong",
+          "Qi Zhou",
+          "Haoran You",
+          "Ke Jiang",
+          "Changyu Hu"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "What the model knows but does not say: monitoring medical LLMs through verbalized thoughts",
+        "url": "",
+        "authors": [
+          "Frederik Hauke",
+          "Jan Clusmann",
+          "Hanna Kreutzer",
+          "Christiane Kuhl",
+          "Tianyu Han",
+          "Felix Barajas Ordonez",
+          "Sven Nebelung",
+          "Jakob Nikolas Kather",
+          "Daniel Truhn"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "MKA: Evaluating Multimodal Knowledge Agents on end-to-end professional tasks",
+        "url": "",
+        "authors": [
+          "Anima Singh",
+          "Suhas Yogin",
+          "Weicheng Kuo",
+          "Ivor Rendulic",
+          "Ivan Jurin",
+          "Antoine Yang",
+          "Oran Kelly",
+          "Rohan Doshi",
+          "Hammad Ayyubi",
+          "Ioana Bica",
+          "Sergi Caelles",
+          "Matthew Conniff",
+          "Dan Graur",
+          "Anastasija Ilić",
+          "Ahmet Iscen",
+          "Chao Jia",
+          "Tomasz Kępa",
+          "Chunyuan Li",
+          "Noah Ó Donnaile",
+          "Filip Pavetic",
+          "Goran Petrovic",
+          "Khalid Salama",
+          "Zhicheng Wang",
+          "Polina Zablotskaia",
+          "Yiqian Zhang",
+          "Ming Zhao",
+          "Benjamin Caine",
+          "Mario Lučić",
+          "Melvin Johnson",
+          "Radu Soricut",
+          "Jean-Baptiste Alayrac"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "A Neurosymbolic Multimodal Framework for 30-Day Diabetic Readmission Prediction: Integrating Structured EHR Data, Dense Clinical Embeddings, and Knowledge-Grounded Symbolic Extraction",
+        "url": "",
+        "authors": [
+          "Una Suman Kumar Patro",
+          "Sibangi Subhadarsani",
+          "Narendra Badam"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "DRVEXO-4B-Unified: Design and Evaluation of a Modular Speech-Vision System",
+        "url": "",
+        "authors": [
+          "Zeyuan Li"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Keystone: Judging Previews at Key Steps for Test-Time Search in Diffusion Models",
+        "url": "",
+        "authors": [
+          "Jiajun Fan",
+          "Chaoran Cheng",
+          "Ziwen Wang",
+          "Changyi Yang",
+          "Bangji Yang",
+          "Qinglong Zheng",
+          "Ge Liu"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "TuringSpace: Grounding Spatial Intelligence in Action with Interactive CAPTCHAs",
+        "url": "",
+        "authors": [
+          "Xuwei Ding",
+          "Skylar Zhai",
+          "Linxin Song",
+          "Jiarui Feng",
+          "Dongqi Fu",
+          "Huajun Xi",
+          "Junnan Li",
+          "Jingcheng Liang",
+          "Jieyu Zhao",
+          "Yinglong Xia",
+          "Hong Li",
+          "Jian Kang"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Efficient Multimodal Agents for Auditing 3D Worlds",
+        "url": "",
+        "authors": [
+          "Jingbo Yang",
+          "Ziyan Jiang",
+          "Li An",
+          "Jiabao Ji",
+          "Yujian Liu",
+          "Tommi Jaakkola",
+          "Yang Zhang",
+          "Shiyu Chang"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "FG-GraphBench: Benchmarking and Enhancing Fine-Grained Visual Understanding with Multimodal Scene Graphs",
+        "url": "",
+        "authors": [
+          "Sicheng Liu",
+          "Xunkai Li",
+          "Ziyu Han",
+          "Xingnan Zhang",
+          "Ru Zhang",
+          "Rong-Hua Li"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "MatVerse: A Foundation Model for Materials Science",
+        "url": "",
+        "authors": [
+          "Xuanyu Zhu",
+          "Qian Tan",
+          "Bo Chen",
+          "Jiaqing Xie",
+          "Yang Han",
+          "Mei Wu",
+          "Wanhao Liu",
+          "Xuanze Lin",
+          "Yuchen Zhou",
+          "Shijie Wang",
+          "Biqing Qi",
+          "Shixiang Tang",
+          "Wenwei Zhang",
+          "Tianfan Fu",
+          "Kai Yu",
+          "Lu Chen",
+          "Yuqiang Li",
+          "Xin Chen"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "When Safety Rationales Hallucinate: Diagnosing and Grounding Multimodal Safety Guards",
+        "url": "",
+        "authors": [
+          "Yingshuo Wang",
+          "Weixiang Zhao",
+          "Guancheng Li",
+          "Jiahe Guo",
+          "Yu Zhang",
+          "Yanyan Zhao"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Goal-Guided Reinforcement Learning via Fine-Tuning Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Yajie Qi",
+          "Wei Wei",
+          "Lin Li",
+          "Lijun Zhang",
+          "Jianye Hao"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Generalist Meets Specialists: An Evolving Multimodal Agent with Persistent Tool Orchestration for Traffic Scenario Understanding",
+        "url": "",
+        "authors": [
+          "Linjia Kang",
+          "Binhan Jiang",
+          "Juan Yang",
+          "Zhiqin Song",
+          "Xiangsen Wu",
+          "Qionglin Ren",
+          "Jiang Liu",
+          "Zhongjiang He",
+          "Hao Sun"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "MemFolder: Structure-Guided Memory Folding for Efficient Agent Memory Management",
+        "url": "",
+        "authors": [
+          "Xuyang Liu",
+          "Chenwen Lu",
+          "Junxi Wang",
+          "Siyu Ren",
+          "Xinying Lin",
+          "Siteng Huang",
+          "Hongli Sun",
+          "Linfeng Zhang",
+          "Honggang Chen"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Multimodal Error Detection in Chest X-ray Reports: A Large Language Model Reading Image Evidence",
+        "url": "",
+        "authors": [
+          "Yanda Cheng",
+          "Bo Wen",
+          "Yuhao Lu"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "System-One RSI: Building Muscle Memory for Interactive Agents through Guided Practice",
+        "url": "",
+        "authors": [
+          "Qingxu Fu",
+          "Xuanfa Jin",
+          "Ziqian Chen",
+          "Zhaoyang Liu",
+          "Bolin Ding"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "ForeSeek: Foresight-Driven Reasoning for Long-Form Video Understanding",
+        "url": "",
+        "authors": [
+          "Yuchen Sun",
+          "Siyuan Cheng",
+          "Shi-Zhe Chen",
+          "Yixin Qin",
+          "Jinwen Luo",
+          "Zheng Wei"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "FLUID: Flexible, Evidence-Grounded Situated Task Guidance",
+        "url": "",
+        "authors": [
+          "Yunqi Zhao",
+          "Run Peng",
+          "Ze Dong",
+          "Ryan Lu",
+          "Yinpei Dai",
+          "Joyce Chai"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "MM-SystemOneBias: Evaluating Bias in Multimodal Jev-Style System One Decision Models",
+        "url": "",
+        "authors": [
+          "Jinzhe Li",
+          "Qi Wang",
+          "Dandan Guo",
+          "Li Liu",
+          "Yuan Wu",
+          "Yi Chang"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Probing the \"Conscious\" Mind: Selective Access and Global Workspace in Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Jiahao Huang",
+          "Jun Wang"
+        ],
+        "date": "2026-11-20"
+      },
+      {
+        "title": "Active Feature Acquisition by Distilling an Oracle Teacher",
+        "url": "",
+        "authors": [
+          "Yang Meng",
+          "Zixin Ding",
+          "Robert L. Grossman",
+          "Yuxin Chen"
+        ],
+        "date": "2026-11-20"
+      }
+    ]
+  }
+]
