@@ -1,0 +1,280 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-23",
+    "paperCount": 6,
+    "markdown": "# Interpretability Research Digest — November 23, 2026\n\nToday's papers probe the fragility of interpretability itself—showing that causal abstraction can be fooled by spurious pathways, that introspection methods need robustness engineering, and that interpretability goals increasingly shape system design (from compressed reasoning to RFIC debugging). Across domains, researchers are asking not just whether models can be explained, but whether our explanation methods can be trusted.\n\n## Causal Abstraction and Its Failure Modes\n\n**Parasite Features: Causal Abstraction Through Spurious Pathways** [1] identifies a fundamental vulnerability in Causal Abstraction, a leading framework for mechanistic interpretability. The authors construct \"parasite features\"—spurious directions in representation space where one direction discriminates an input feature and another steers the model toward an output, allowing them to pass equivalence tests without faithfully representing the underlying algorithm. Since methods like Distributed Alignment Search (DAS) test for causal equivalence, these spurious pathways satisfy the formal criteria while remaining mechanistically unfaithful. This work matters because it establishes that passing causal abstraction tests does not guarantee a correct mechanistic account, and it suggests the need for stronger validation criteria in interpretability pipelines.\n\n## Robustness of Introspection and Explanation Methods\n\n**WaXup: Weight Averaging of Experts as Data Augmentation for Robust Introspection** [4] addresses the brittleness of trainable introspection methods, which repurpose a model as a self-diagnostic tool trained to verbalize what it learned during finetuning. Building on the MiXup data augmentation framework, WaXup augments introspection training by averaging weights of finetuned experts, creating interpolated models that broaden the training distribution. This improves generalization and robustness of the model's self-reports beyond what training on individual finetuned experts achieves. The contribution is significant because introspection is increasingly pitched as a scalable alternative to mechanistic methods, and this work shows how to make it more reliable rather than anecdotal.\n\n**Realistic Robustness Evaluation of Tabular Data Driven Models** [2] tackles the understudied problem of adversarial robustness in tabular data, where ML models are widely deployed in high-stakes settings but adversarial example research lags behind vision and text. The authors introduce AURORA, a modular open-source tool integrating multiple adversarial perturbation methods and evaluation metrics specifically for tabular classification. By standardizing realistic robustness evaluation, AURORA enables practitioners to audit deployed tabular models systematically. Though not interpretability per se, it connects to the theme of trustworthy model assessment—interpretability claims are only meaningful if the models themselves are robustly characterized.\n\n## Interpretable and Auditable Reasoning in LLMs\n\n**Reasoning in Fewer Tokens: Concept-Normalized Multilingual Scratchpads and Reversible Model-Adaptive Reasoning Codes** [3] confronts the tension between chain-of-thought's reasoning gains and its inference costs, noting that prior efficiency methods (token discarding, continuous latent representations) sacrifice interpretability and auditability. The authors propose a compression framework that applies BPE to reasoning corpora to learn a vocabulary of Private Use Area tokens, each representing compressed reasoning chunks that remain decodable and thus auditable. This preserves the auditability that lossy compression destroys while reducing autoregressive decoding length. The work is notable for treating interpretability as a design constraint rather than an afterthought in efficiency research.\n\n## Interpretability in Scientific and Engineering Domains\n\n**Can Language Models See the Circuit in Pixelated RFIC Passives?** [5] asks whether a frontier language model can understand, predict, and edit the responses and layout of inverse-designed, pixelated RFIC passive devices—QR-code-like structures that are unintuitive even to expert designers. The study probes the model's ability to interpret these high-dimensional designs and debug performance deviations, testing LLMs as interpretability aids in a highly specialized engineering workflow. This matters as a stress test of whether general-purpose models can serve as domain-expert interpreters in design spaces where human intuition fails.\n\n**Spatiotemporal Graph Neural Networks for Fault Detection and Structural Learning in Chemical Processes** [6] addresses a failure mode of classical fault detection: when operating conditions vary over time, fixed-reference methods produce false alarms during legitimate transitions and miss moderate faults. The proposed spatiotemporal GNN decomposes the normal operating space into operating-condition-specific subspaces linked by transition functions, trained with a dual objective combining reconstruction loss and a structural learning term. Evaluated on the Tennessee Eastman benchmark, the framework makes fault detection condition-aware and its learned structure interpretable. This demonstrates how architectural interpretability—explicitly modeling regimes and transitions—can directly improve safety-critical monitoring.\n\n## Key Takeaways\n\n- Causal abstraction tests can be passed by spurious \"parasite features,\" so mechanistic interpretability needs stronger validation than equivalence testing alone [1].\n- Trainable introspection benefits from data augmentation via weight averaging of experts (WaXup), improving robustness and generalization of self-reports [4].\n- Efficiency-oriented reasoning compression can be designed to remain auditable, preserving interpretability as a first-class constraint [3].\n- Standardized, realistic robustness evaluation for tabular models (AURORA) fills a critical gap for high-stakes deployments [2].\n- LLMs are being tested as interpreters of unintuitive engineering artifacts (pixelated RFIC passives), extending interpretability into expert design workflows [5].\n- Explicitly structured models—OC-specific subspaces with transition functions—yield both better fault detection and interpretable structure in chemical processes [6].\n- A cross-cutting theme: interpretability is shifting from post-hoc explanation toward baked-in structural guarantees and adversarial self-scrutiny of explanation methods themselves.",
+    "papers": [
+      {
+        "title": "Parasite Features: Causal Abstraction Through Spurious Pathways",
+        "url": "",
+        "authors": [
+          "Denis Sutter",
+          "Qing Yao",
+          "Sasha Boguraev",
+          "Julian Minder",
+          "Antonio Di Maio",
+          "Thomas Hofmann",
+          "Kyle Mahowald",
+          "Tiago Pimentel"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Realistic Robustness Evaluation of Tabular Data Driven Models",
+        "url": "",
+        "authors": [
+          "Miguel Silva",
+          "Eva Maia",
+          "João Vitorino",
+          "Isabel Praça"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Reasoning in Fewer Tokens: Concept-Normalized Multilingual Scratchpads and Reversible Model-Adaptive Reasoning Codes",
+        "url": "",
+        "authors": [
+          "Rabimba Karanjai",
+          "Suryabhan Singh Hada",
+          "Hemanth Hegadehalli Madhavarao",
+          "Qun Gu",
+          "Libin N. George",
+          "Wenhuan Sun",
+          "Neha Monga",
+          "Richard Williamson",
+          "Prakhar Mehrotra"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "WaXup: Weight Averaging of Experts as Data Augmentation for Robust Introspection",
+        "url": "",
+        "authors": [
+          "Marc Boëlle",
+          "Lucas Dixon",
+          "Alexandre Ramé"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Can Language Models See the Circuit in Pixelated RFIC Passives?",
+        "url": "",
+        "authors": [
+          "Jonathan Zhou",
+          "Kaushik Sengupta"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Spatiotemporal Graph Neural Networks for Fault Detection and Structural Learning in Chemical Processes: Use Case on the Tennessee Eastman Process",
+        "url": "",
+        "authors": [
+          "Rayane Ammar Khodja",
+          "Alexandre Voisin",
+          "Victor Costa",
+          "Fanny Casteran",
+          "Benoit Celse",
+          "Benoît Iung"
+        ],
+        "date": "2026-11-23"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-23",
+    "paperCount": 14,
+    "markdown": "# Multimodal Research Digest — November 23, 2026\n\nToday's multimodal research landscape is defined by a decisive turn toward efficiency, robustness, and interpretability rather than raw scale. Across retrieval, generation, medical reasoning, and evaluation pipelines, researchers are confronting the hidden costs of multimodal systems—redundant visual computation, cross-lingual collapse, unreliable judges, and opaque reasoning—with targeted algorithmic interventions spanning token deletion, inference-time steering, and adaptive routing.\n\n## Efficient Token and Computation Management\n\nSeveral papers tackle the core inefficiency of multimodal inference: visual tokens are expensive, and not all of them—or the images that produce them—are needed. [1] introduces Depth-Linked Residual Tokens (DepThink), addressing the tension between looped language models, which gain parameter efficiency and reasoning capacity at the cost of sequential latency, and parallelizable learnable special tokens, which are fast but lack sequential refinement and exhibit redundant representations. DepThink bridges these by linking residual tokens across depth, enabling efficient single-pass inference with depth-wise refinement for multimodal retrieval and generation. This matters because it charts a middle path between two previously incompatible efficiency paradigms.\n\n[5] extends Dynamic Token Merging (DTM)—originally developed in MrT5 for byte-level text encoders—to the vision modality and decoder-only models, arguing DTM is a general token deletion framework. A lightweight delete gate scores contextualized hidden states, acts as a differentiable attention bias during training, and physically removes tokens at inference, directly attacking the hundreds-of-visual-tokens cost that makes VLM inference expensive even when prompts depend on only part of an image. The work is notable for reframing a text-domain technique as a modality-agnostic deletion primitive.\n\n[10] asks a sharper question: when are images even needed in multimodal machine translation? Arguing that surface-level textual ambiguity does not imply visual dependence, the authors formulate visual invocation as source-text sufficiency prediction, routing decisions based on a pre-visual signal rather than gating after costly visual encoding. This avoids the redundant visual computation that unconditional or post-encoding gating schemes cannot escape. [4] similarly addresses adaptive computation in early time-series classification, proposing COMPASS, a two-stage framework preserving two modality-associated temporal branches and one fusion branch, with cross-modal feature exchange, gated fusion, and branch-wise supervision at every prefix. The second stage jointly optimizes when to stop and which branch should provide the final prediction—recognizing that modality-associated and fused branches may differ in predictive ability at the same observed prefix.\n\n## Robustness, Bias, and Reliability in Multimodal Evaluation\n\nA cluster of papers interrogates whether multimodal systems and their evaluators can be trusted. [3] investigates whether in-context label bias reaches LLM-as-judge pipelines in multimodal video QA evaluation, holding generated answers fixed and varying only the Yes/No balance of the judge's few-shot examples across four demonstrations. The key finding—that the bias is directional rather than symmetric—implies judge scores inherit the prompt's label distribution in structured, predictable ways, with direct consequences for the validity of open-ended multimodal evaluation. [9] introduces Scientific Model Robustness, defining a model's ability to detect anomalies, assess solvability, and self-calibrate under Information Error (inconsistencies) and Information Loss (insufficiency), operationalized through the RoSci-Bench diagnostic. This challenges the field's assumption that science VLMs receive complete and accurate inputs, exposing fragility in wild scenarios.\n\n[12] probes a different capability boundary: can VLMs synthesize executable game-playing programs rather than acting step-by-step? The authors note that existing game benchmarks send current visual observations before each action, a paradigm with fundamental deployment limitations, and instead evaluate whether models can produce programs that play games autonomously. [2] targets interpretability in pathology, where MLLMs read H&E alone despite clinical readouts like CD8+ T-cell density and Ki67 index requiring mIF cell phenotypes, and where R1-style reinforcement learning rewards only final answers leaving reasoning unchecked. Their framework combines H&E and mIF with step-level reasoning supervision—an important step toward verifiable clinical multimodal reasoning.\n\n## Cross-Lingual, Cross-Modal, and Unified Representation\n\n[6] confronts the disproportionate accuracy collapse of small VLMs on low-resource languages in multimodal fact verification, a gap normally closed with prohibitive scale or language-specific fine-tuning. ORBIT instead estimates span-specific offset vectors from parallel claim-evidence instances and applies them as an inference-time intervention, mitigating collapse without retraining—an attractive algorithmic alternative to scaling. [7] presents LingSante-Pulse, a unified physiological pretraining framework in which a shared, signal-conditioned encoder processes each physical channel independently, supporting variable numbers and combinations of signals for both multimodal assessment and single-sensor inference, with pairwise cross-modal alignment and random-feature prediction objectives. This flexibility matters for clinical and wearable settings where modality coverage is partial and overlapping.\n\n[8] formalizes heterogeneous capability density (HCD)—how broadly and effectively a model serves heterogeneous task families per unit of resident inference memory—motivated by on-device deployment where per-capability specialized models duplicate vision-language capacity under tight budgets. WePM proposes hierarchical conflict reconciliation to handle capabilities requiring visual evidence at different spatial granularities under a fixed token budget, targeting unified MLLMs that avoid this duplication.\n\n## Multimodal Applications: Detection, Search, and Education\n\n[11] models misinformation spreader detection as a temporal, user-centric, behavior-driven learning problem, addressing evolving user behavior, semantic noise from ignored stance, and cold-start users via a multimodal architecture. Early detection of amplifiers of false narratives has clear practical stakes. [14] describes an industrial Dual-Tier Sentiment Framework for scalable UX attribution in web search: Tier 1 uses a fine-tuned encoder-decoder LLM (Gemini XS-based) on telemetry features as a macro-level sentiment regression detector with multi-task regularization, complementing finer-grained diagnosis of visual-spatial UX anomalies that surveys and automated metrics miss. [13] reviews 41 studies (PRISMA 2020) mapping Generative AI capabilities to learning style models (VARK, Kolb, Felder-Silverman, Honey & Mumford) for large online classes, synthesizing implementations and benefits while flagging open challenges—a useful bridge between multimodal generative tools and pedagogical theory.\n\n## Key Takeaways\n\n- **Efficiency is being reframed as an input-selection problem**: DepThink [1], DTM [5], and text-only routing [10] all show that deciding *what* to process (tokens, images) beats optimizing *how* to process everything.\n- **Evaluation pipelines are themselves biased systems**: [3] demonstrates that LLM judges inherit directional label bias from their few-shot prompts, undermining multimodal evaluation validity.\n- **Robustness under imperfect inputs is a blind spot**: RoSci-Bench [9] and the step-level TIME reasoning work [2] expose how VLMs assume complete, accurate information—an assumption that fails in science and clinical practice.\n- **Inference-time interventions can substitute for scale**: ORBIT [6] mitigates cross-lingual collapse without retraining, echoing a broader trend of algorithmic fixes over compute-heavy solutions.\n- **Unified models are being designed around memory budgets**: HCD and WePM [8] provide a formal metric and reconciliation mechanism for on-device multimodal capability density.\n- **Adaptive stopping generalizes across modalities**: COMPASS [4] shows joint stop-and-select decisions are necessary when modality branches diverge in predictive power over time.\n- **Task paradigms themselves are being questioned**: [12] argues step-by-step visual interaction should give way to executable program synthesis, while [13] and [14] push generative multimodal AI into education and industrial UX measurement respectively.",
+    "papers": [
+      {
+        "title": "Depth-Linked Residual Tokens for Multimodal Retrieval and Generation",
+        "url": "",
+        "authors": [
+          "Jiangfan Zhang",
+          "Wentao Bao",
+          "Xian Wu",
+          "Xiangjun Fan",
+          "Jianpeng Cheng",
+          "Jun Xiao"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Beyond Final Answers: Interpretable Tumor Immune Microenvironment Reasoning from H&E and mIF",
+        "url": "",
+        "authors": [
+          "Yixuan Duan",
+          "Kexin Geng",
+          "Hanwen Xu",
+          "Wei Qiu"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Your Judge Inherits Your Prompt: In-Context Label Bias in an LLM-as-Judge Is Directional, Not Symmetric",
+        "url": "",
+        "authors": [
+          "Abdullah Ahmad",
+          "Ahmed J. O. Ahmed",
+          "Luca Citi"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "COMPASS: Cross-modal Observation with Multi-Path Adaptive Stopping and Selection for Early Time Series Classification",
+        "url": "",
+        "authors": [
+          "Cheng-En Chung",
+          "Yujia Wu",
+          "Oscar Tai-Yuan Chen",
+          "Vincent S. Tseng"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Dynamic Token Merging for Efficient Vision-Language Models",
+        "url": "",
+        "authors": [
+          "Chris Gu",
+          "Marco Andono Sie",
+          "Nathan Zhou",
+          "Christopher Potts",
+          "Julie Kallini"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "ORBIT: Offset-based Activation Steering for Cross-lingual Multimodal Fact Verification",
+        "url": "",
+        "authors": [
+          "Huy Trieu",
+          "Duy-Minh Nguyen-Tran",
+          "Thanh-Dat Nguyen",
+          "Huy Tien Nguyen",
+          "Tung Le"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "LingSante-Pulse: Unified Physiological Pretraining through Random-Feature Prediction and Cross-Modal Alignment",
+        "url": "",
+        "authors": [
+          "Linxiao Yang",
+          "Wenwei Wang",
+          "Tian Zhou",
+          "Bingqing Peng",
+          "Zihao Zhang",
+          "Zuyi Zhu",
+          "Jinjie Gu",
+          "Liang Sun"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "WePM: Hierarchical Conflict Reconciliation for Unified MLLMs",
+        "url": "",
+        "authors": [
+          "Zhiqiang Yuan",
+          "Qiwei Yan",
+          "Liwei Yang",
+          "Jinzhe Liu",
+          "Yang Liu",
+          "Zhongyan Hou",
+          "Liyan Xu",
+          "Peixiang Luo",
+          "Jiapei Zhang",
+          "Ying Deng",
+          "Jie Zhou",
+          "Jinchao Zhang"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "RoSci: Exploring Robustness in Science VLMs",
+        "url": "",
+        "authors": [
+          "Junying Wang",
+          "Yijin Guo",
+          "Yalun Wu",
+          "Ziheng Jiao",
+          "Farong Wen",
+          "Qihang Yan",
+          "Wenzhe Li",
+          "Ye Shen",
+          "Qi Jia",
+          "Chunyi Li",
+          "Zicheng Zhang",
+          "Guangtao Zhai"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "When Are Images Needed in Multimodal Machine Translation? Text-Only Routing for On-Demand Visual Context",
+        "url": "",
+        "authors": [
+          "Xinyu Wang",
+          "Yingfeng Luo",
+          "Yuxin Gao",
+          "Anxiang Ma",
+          "Jingbo Zhu",
+          "Tong Xiao"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "SMSD: A Semantic Misinformation Spreader Detection Approach",
+        "url": "",
+        "authors": [
+          "Zeeshan Bin Siddique",
+          "Michael Bewong",
+          "Md Geaur Rahman",
+          "Sajal Halder",
+          "Selasi Kwashie"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Can Vision-Language Models Synthesize Executable Game-Playing Programs?",
+        "url": "",
+        "authors": [
+          "Yao Tong",
+          "Jiaxin Qi",
+          "Dingyu Zhang",
+          "Jianqiang Huang"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "Integrating Generative Artificial Intelligence with Learning Style Models: Opportunities, Challenges, and Future Directions",
+        "url": "",
+        "authors": [
+          "Malithi Nawarathne",
+          "Prasanna Haddela",
+          "Nuwan Kodagoda"
+        ],
+        "date": "2026-11-23"
+      },
+      {
+        "title": "The Dual-Tier Sentiment Framework: Scalable Multimodal UX Attribution in Web Search",
+        "url": "",
+        "authors": [
+          "Yi Ding",
+          "Gaurav Kumar",
+          "Rui Min",
+          "Isabella Ye",
+          "Bhavika Goyal",
+          "Emilio Antunez",
+          "Huihui Chen",
+          "Ke Xu",
+          "Xiaowei Sun",
+          "Xin Xu",
+          "Huijie Feng",
+          "Pradyumna Narayana",
+          "Golnaz Farhadi"
+        ],
+        "date": "2026-11-23"
+      }
+    ]
+  }
+]
