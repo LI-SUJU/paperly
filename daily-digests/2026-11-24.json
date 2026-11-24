@@ -1,0 +1,519 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-24",
+    "paperCount": 5,
+    "markdown": "# Interpretability Beyond Prompts: Self-Editing Models, Physics-Grounded Encoders, and Concept-Level Explanations\n\nToday's interpretability research pushes past post-hoc attribution toward methods that embed interpretability in model architecture, training objectives, and weight-level self-modification. Across clinical sensing, diffusion models, EEG foundation models, and mechanistic circuit discovery, the shared theme is making internal representations legible—whether as human movement concepts, natural-language answers, or spectrally consistent circuits.\n\n## Concept-Level and Clinical Interpretability\n\n**FoGConcept** tackles a persistent gap in clinical sensing: IMU-based models detect freezing of gait in Parkinson's patients accurately but offer no human-understandable rationale [1]. The authors identify nine movement concepts—gait initiation, rhythmic bilateral gait, trembling in place, shuffling steps, pivot turns, and others—encoded by a multi-scale FoG model, showing these concepts recur across sub-populations and sensor scales. This shifts FoG detection from opaque classification to concept-grounded explanation, which matters for clinician trust and for validating that models latch onto genuine motor signatures rather than spurious correlates. The work exemplifies a broader trend of extracting semantically meaningful intermediate units from time-series models rather than importing vision-style saliency wholesale [1].\n\n**PhyMind** interrogates a foundational design choice in EEG foundation models: the free-form masked-reconstruction decoder used almost universally in pretraining [4]. By replacing it with a generative forward model—68 cortical regions driven by damped stochastic oscillators and an Ornstein-Uhlenbeck aperiodic process, projected through a fixed boundary-element lead field onto each recording's montage—the decoder must explain masked signal in physically meaningful cortical terms. This makes the pretraining objective itself an interpretability constraint, tying learned representations to neurophysiological generators rather than arbitrary reconstruction. It's a compelling argument that architectural inductive biases can double as explanation mechanisms in scientific domains [4].\n\n## Self-Interpretation and Weight-Space Reasoning\n\n**Self-WSP** extends Weight-Space Programming to the model itself: Qwen3.5-0.8B reads its own weights, proposes edits, and continues as both solver and editor [2]. The headline results are striking—GSM8K accuracy rising from 11.8% to 62.2% and MATH500 from 7.0% to 32.2%, sometimes via edits to only 16 parameters. Beyond raw gains, this demonstrates a form of introspective self-modification where the model's \"understanding\" of its own computation is operationalized as targeted parameter surgery. For interpretability researchers, this raises productive questions about whether weight-space edits constitute a legible explanation of capability change, and whether minimal-edit solutions reveal localized computational structure [2].\n\n**DAO (Diffusion-specific Activation Oracle)** ports the LatentQA paradigm from LLM activations to diffusion model activations, enabling open-ended natural-language interrogation of intermediate generation states [3]. Where prior DM interpretability offers limited support for free-form questions, DAO translates activations into answers about the ongoing generation process. This is a meaningful methodological transfer: activation oracles provide a flexible interface for probing internal representations without pre-specifying hypotheses, and extending them to diffusion models opens interpretability for a class of generative systems that has lagged behind LLMs in mechanistic understanding [3].\n\n## Mechanistic Circuit Discovery\n\n**Spectral Circuit Analysis (SCA)** attacks a brittle prerequisite in the dominant circuit-discovery paradigm: activation patching depends on task-specific, expensive prompt pairs, silently coupling discovered circuits to prompt-design choices [5]. SCA proposes a gradient-spectral pipeline that achieves consistent circuit discovery without this prompt-engineering dependency, promising circuits that are faithful to the behavior rather than to the intervention design. If circuit discovery is to mature into a reliable science, decoupling findings from arbitrary prompt artifacts is essential—SCA's spectral formulation is a principled step in that direction [5]. The paper also implicitly challenges the field to report circuit stability across discovery methods, not just patching scores [5].\n\n## Cross-Cutting Themes and Open Questions\n\nTwo tensions run through today's papers. First, interpretability is increasingly *built in* rather than bolted on: PhyMind's physics-constrained decoder [4] and Self-WSP's weight-level self-editing [2] both make the model's internal structure itself the explanatory surface. Second, evaluation remains unsettled—FoGConcept's nine concepts [1] and DAO's natural-language answers [3] are human-legible, but the field still lacks standard criteria for judging whether an explanation is *faithful* versus merely plausible. SCA's critique of prompt-coupled circuits [5] is a warning that applies broadly: interpretability artifacts may reflect the interrogation method as much as the model.\n\n## Key Takeaways\n\n- Interpretability is migrating from post-hoc attribution to architectural and training-time constraints, as seen in PhyMind's generative forward-model decoder [4] and Self-WSP's weight-space self-editing [2].\n- Self-WSP shows models can achieve genuine capability gains through minimal, targeted weight edits (16 parameters yielding 50+ point GSM8K jumps), reframing self-interpretation as operational self-modification [2].\n- Activation oracles are generalizing across model classes: DAO extends LatentQA-style natural-language interrogation from LLMs to diffusion models, enabling open-ended probing of generation dynamics [3].\n- Domain-grounded concepts—nine movement concepts for FoG [1], 68 cortical regions for EEG [4]—provide explanation vocabularies that clinicians and neuroscientists can audit, unlike generic saliency maps.\n- Circuit discovery's reliance on engineered prompt pairs is a systemic validity threat; SCA's gradient-spectral approach offers prompt-independent consistency, but cross-method circuit stability remains an open benchmark problem [5].\n- A shared unresolved question across all five papers: how to certify that an explanation (concept, answer, circuit, or edit) is faithful to the model's actual computation rather than an artifact of the probing interface [1, 3, 5].\n- The convergence of concept-level explanation and built-in interpretability suggests a future where models are designed to be legible, with interpretability evaluated as a first-class architectural property rather than a retrospective analysis.",
+    "papers": [
+      {
+        "title": "FoGConcept: Identifying Interpretable Movement Concepts for Freezing-of-Gait Detection from Multi-Scale IMU Signals",
+        "url": "",
+        "authors": [
+          "Chuntian Chi",
+          "John Clapham",
+          "GinaMari Blackwell",
+          "Leslie Cloud",
+          "Ingrid Pretzer-Aboff",
+          "Yanfu Zhang",
+          "Huajie Shao",
+          "Gang Zhou"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Self-WSP: Can Language Models Improve Themselves Through Weight-Space Programming?",
+        "url": "",
+        "authors": [
+          "Guoming Ling",
+          "Shanshan Zhong",
+          "Kaixuan Zhang",
+          "Zhongzhan Huang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Interpreting Diffusion Model Activations in Natural Language",
+        "url": "",
+        "authors": [
+          "Yukinori Yamamoto",
+          "Kotaro Yoshida",
+          "Ryotaro Shimizu"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "PhyMind: Physics-Informed Masked Autoencoding for EEG Foundation Models",
+        "url": "",
+        "authors": [
+          "A Adith"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Beyond Patching: Consistent Circuit Discovery via Gradient Spectral Analysis",
+        "url": "",
+        "authors": [
+          "Yujie Zhang",
+          "Tianyi Zhao",
+          "Guanghui Min",
+          "Chen Chen"
+        ],
+        "date": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-24",
+    "paperCount": 2,
+    "markdown": "# Explainability Research Digest — 2026-11-24\n\nToday's explainability research spans clinical EEG diagnostics, human-in-the-loop operational automation, and the broader question of how explanations hold up under real deployment conditions. The common thread is a shift from building explainers to *stress-testing* them—across tasks, cohorts, and human workflows—and asking whether the explanations that emerge are stable, actionable, and trustworthy.\n\n## Clinical and Physiological Explainability\n\n**Benchmarking EEG feature families for ADHD research in children and adolescents [1]** tackles a persistent reproducibility problem in clinical machine learning: EEG feature definitions and evaluation protocols vary so widely that study results cannot be compared. The authors systematically compare seven feature families (and four combinations) across four overlapping attention-task cohorts drawn from two serious games, with 123–140 participants each, using repeated nested participant-held-out evaluation. Critically, they go beyond predictive performance to assess the *stability of held-out explanations*—asking whether the features driving model decisions remain consistent across resampling and cohorts. This matters because explainability in clinical settings is only useful if the explanations themselves are reproducible; a diagnostic model whose rationale shifts from run to run is not clinically deployable, regardless of accuracy.\n\n## Human-in-the-Loop and Operational Explainability\n\n**Human-in-the-Loop Runbook Improvement with Agentic Support Automation [2]** addresses the friction in production support operations, where runbooks—documents enumerating triage steps and remediation procedures—become stale as incidents evolve. The work proposes agentic automation that supports operators in maintaining and improving these runbooks rather than replacing human judgment, keeping humans in the loop for emergent, unplanned support requests. The core contribution is a workflow in which explanations of agent-suggested runbook updates must be interpretable enough for operators to evaluate and accept them. This is explainability in its most applied form: the explanation is not a post-hoc saliency map but the interface through which a human decides whether to trust an automated recommendation under operational time pressure.\n\n## Trustworthy Explanations Under Distribution Shift\n\nA cross-cutting question raised by [1] and [2] is whether explanations remain valid when the data or task context shifts. In [1], the nested participant-held-out design directly tests explanation stability across held-out participants—a proxy for distribution shift in clinical populations. In [2], runbooks must remain accurate as support requests are \"emergent\" and take \"many forms,\" meaning the automated support must explain itself against novel incident types. Together, these papers illustrate that explainability research is increasingly evaluated on *robustness of the explanation*, not merely fidelity to a single model's behavior.\n\n## Evaluation Methodology for Explanations\n\nBoth papers contribute to the maturing methodology of explainability evaluation. [1] offers a rigorous benchmarking framework—repeated nested cross-validation with participant-level held-out splits—that separates model performance from explanation stability, enabling fair comparison across feature families. [2] contributes an operational evaluation setting where the metric of interest is whether human operators can act on explanations to improve runbooks. The implicit lesson across both is that there is no single explainability metric: clinical settings demand reproducibility and cohort stability, while operational settings demand actionability and timeliness. Researchers should match explanation evaluation to deployment context rather than defaulting to generic faithfulness scores.\n\n## Key Takeaways\n\n- **Explanation stability is a first-class metric.** [1] shows that benchmarking explainability requires testing whether held-out explanations remain consistent across resampling and cohorts, not just whether models predict well.\n- **Clinical explainability must be reproducible to be useful.** Varying feature definitions and evaluation methods undermine comparability; standardized benchmarking frameworks like the one in [1] are a prerequisite for clinical adoption.\n- **Human-in-the-loop systems make explanations the decision interface.** In [2], explanations of agent-suggested runbook changes are what operators evaluate before accepting automation—explainability is inseparable from the workflow.\n- **Distribution shift is the hidden stress test for explanations.** Both papers implicitly evaluate explanations against novel participants or emergent incident types, highlighting robustness as a core requirement.\n- **Context dictates the right explainability metric.** Reproducibility and cohort stability matter in clinical EEG; actionability and speed matter in support operations—researchers should choose evaluation criteria accordingly.\n- **Agentic automation succeeds by augmenting, not replacing, human judgment.** [2] demonstrates that keeping operators in the loop for runbook improvement is a viable strategy for trustworthy automation.\n- **Benchmarking frameworks are maturing.** The combination of repeated nested held-out evaluation [1] and operational human-in-the-loop evaluation [2] signals a broader shift toward deployment-grounded explainability assessment.",
+    "papers": [
+      {
+        "title": "Benchmarking EEG feature families for ADHD research in children and adolescents: performance and explainability across attention tasks",
+        "url": "",
+        "authors": [
+          "Javier Sanchis",
+          "Jorge García-Carrasco",
+          "Álvaro Navarro",
+          "Tahar Kechadi",
+          "Juan Trujillo"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Human-in-the-Loop Runbook Improvement with Agentic Support Automation",
+        "url": "",
+        "authors": [
+          "Rocker D'Antonio",
+          "Harry Xie"
+        ],
+        "date": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-24",
+    "paperCount": 31,
+    "markdown": "# Multimodal Research Digest — November 24, 2026\n\nToday's multimodal research landscape is defined by a decisive shift from *perception* to *robust agency*: papers increasingly interrogate how MLLMs behave under distribution shift, partial observability, and adversarial or ambiguous inputs rather than merely expanding benchmark accuracy. A second strong current is infrastructure-level work—harnesses, routers, memory systems, and compact guardrails—that treats the orchestration layer around frozen models as the primary site of improvement.\n\n## Agents, Games, and Interactive Environments\n\nAutoPILOT [1] tackles the gap between multimodal models that can play games when the environment pauses for them and those that fail under real-time pressure, locating much of the failure in the *harness* that mediates perception, memory, and action. Its key innovation is expanding what a single model call can produce: instead of one primitive action per inference, the model may emit a primitive, launch an open-loop macro, or author a closed-loop controller. This reframes the agent's action frequency as decoupled from its reasoning frequency, a subtle but important architectural insight for real-time embodied agents.\n\nRuleCraft [6] probes whether MLLMs actually *apply* game rules when only shown game imagery, introducing 1,240 image questions over 155 Minecraft rules with outcomes verified in the game engine, each posed in text, named-image, and bare-image conditions. Six widely used models know the rules and recognize the game, yet default to real-world physics on bare images; naming the game boosts accuracy by 8.2–19.8 points on the main set and 33.8–52.7 on a stress-test set. The work cleanly separates rule knowledge from rule application, showing that context cues—not capability—gate grounded reasoning.\n\nEvoViM [9] addresses *deferred queries*, where the question only arrives after exploration, forcing agents to retain visual evidence without knowing what will matter. Its recursively self-evolving framework has a frozen MLLM convert interaction experience into a visual program that stores images and computes directly on pixels, with operations deciding how evidence is used per task. This is a notable instance of memory-as-program rather than memory-as-retrieval, and it keeps the underlying model frozen while evolving the surrounding skill structure.\n\nGameAnything [18] is an open-source agentic platform that transforms multimodal inspirations into playable extensions of existing games through iterative development, integrating coding agents with an independent playtesting critic and persistent development state. It targets the underexplored setting of adapting multimodal references rather than explicit specifications, and crucially evaluates actual gameplay experience rather than just generated artifacts. StudioBench [12] complements this at the benchmark level with 160 tasks across eight video genres and five task types, requiring MLLMs to produce minutes of finished audiovisual content using 33 atomic generation tools. Together these papers signal that \"agentic multimedia production\" is maturing from clip generation toward end-to-end, tool-orchestrated creative workflows.\n\nReVAgent [23] targets reasoning-intensive instructional video generation, where rendered animations can contradict the underlying explanation. Its multi-agent framework solves a problem, generates keyframes, and synthesizes video while sharing the execution record of a solution program so agents can reuse intermediate results and verify consistency. The emphasis on *execution-grounded* scene construction is a meaningful step toward videos whose visuals are causally faithful to their explanations.\n\n## Safety, Reliability, and Uncertainty\n\nAV-FLARE [2] argues that attention-based multimodal emotion recognition implicitly weights modalities without explicitly modeling input reliability, despite noisy audio and occluded video. It estimates fine-grained reliability scores across both temporal and feature dimensions *before* temporal modeling, using them to modulate representations. This \"reliability-first\" design is a clean separation of concerns that could generalize well beyond affect.\n\nEmoRouter [10] observes that different modality combinations yield different predictions per utterance—audio and vision can recover labels missed by text but can also corrupt correct ones—and proposes adaptive modality cascading rather than processing all modalities uniformly. The per-utterance routing framing is pragmatic and directly addresses the heterogeneity that plagues omni-modal MER. DUE [13] approaches multimodal intention analysis from the uncertainty side, jointly estimating input-side aleatoric and sentence-level epistemic uncertainty from a single generation via Dirichlet perturbations of cross-layer representations, producing an ordered token uncertainty sequence rather than scalar statistics. Preserving structured dependencies in uncertainty is a genuine methodological advance over token-averaging baselines.\n\nGuarding with Judgment [11] reformulates multimodal safety from binary allow/refuse into four actions—allow, warn, review, refuse—grounded in the distinction between established hazards and conditions needing verification. With 20,126 training audits and the JudiBench benchmark linking each action to diagnostic judgments and source evidence, it moves safety toward *calibrated intervention* rather than blanket refusal. MobileGrail [20] addresses the privacy cost of cloud-hosted guardrails for mobile GUI agents, proposing an on-device model with recurrent task state retaining only decision-relevant evidence so authorization and execution progress persist beyond short contexts. Deployable, privacy-preserving guardrails are an underappreciated prerequisite for real-world GUI agents.\n\nNesterenko et al. [15] deliver a genuinely cautionary diagnostic: Qwen2-Audio fabricates answers to 92.5% of unanswerable synthesized-speech questions while an ASR cascade reaches 2.5% hallucination at 6.7% over-refusal, but the identical protocol on 376 native SQuAD 2.0 human-read questions reverses the conclusion. The paper's real contribution is methodological—showing that benchmark construction (synthesized vs. native speech) can invert conclusions about where failure lives (reasoning vs. perception)—plus a pre-generation probing mitigation.\n\n## Retrieval, Knowledge, and Document Understanding\n\nGERF [3] tackles token-inefficient multimodal retrieval for schema-guided scientific IE, where critical experimental details scatter across text, tables, figures, and captions, and existing pipelines rely on full-document or page-level retrieval. Its token-efficient retrieval framework targets the granularity mismatch that makes scientific extraction expensive. VistaTree [17] handles long multimodal documents exceeding context windows by building a summary tree directly from rendered page images—segmenting into page spans, recursively grouping into a topic hierarchy, refining sibling summaries, and using node summaries for query-time selection. Operating on rendered images rather than parsed text sidesteps layout-parsing errors, a practical advantage for figure-heavy documents.\n\nGraphSeer [19] names and formalizes *knowledge graph relational image retrieval* (KRIR): given a photo and a relation, retrieve the related MMKG entity (e.g., the team of a pictured player), a task neither link prediction nor standard image retrieval addresses since the query entity is new. This is a well-motivated problem formulation that exposes a real blind spot in MMKG research. ToolSmith [27] observes that multimodal search agents depend on small hand-crafted tool libraries that freeze when new query types or failure modes appear, and proposes automatic tool generation inspired by how human practitioners fashion new tools from familiar parts. Growing the tool library autonomously is a scalable alternative to manual curation.\n\nMMMem [25] targets the retention gap in long-term multimodal agent memory: agents accumulate conversations, images, and documents but rarely consolidate task-specific experience, allowing mistakes to recur. Its task-aware framework extracts and consolidates experience from completed tasks rather than merely storing and retrieving records. X-AQA [7] unifies action quality assessment with MLLMs and multi-domain learning, contributing X-AQA-40K (40,163 samples from 22 sources across sports, fitness, rehabilitation, and general skills) and converting heterogeneous annotations into a unified formulation—the first general-purpose AQA training and evaluation framework.\n\n## Model Adaptation, Routing, and Representation Learning\n\nSP-B/SP-V [5] systematically studies permutation bias in MLLMs, categorizing it into four scenarios and tracing root causes via text-option reordering in MCQA. Their shared-positions design with blocked cross-unit attention (SP-B), extended to bidirectional cross-unit attention (SP-V) for modality exchange, connects permutation robustness to set-encoding principles. RoTTT [16] proposes rotation-based test-time training to adapt MLLMs at inference without the computational overhead of multi-sample TTT or the error reinforcement of biased self-generated supervision. A rotation-based, single-pass adaptation signal is an elegant way to sidestep TTT's central failure mode.\n\nAdaptRouter [30] learns to route queries across a changing pool of experts using a compact multimodal decision model trained by policy learning from native task feedback—no routing labels—with separate losses for open-weight versus API experts sharing a quality-cost trade-off. Handling *evolving* task and model pools without catastrophic forgetting of earlier tasks is the differentiator from fit-once routers. WeMM-Ecom [29] presents a five-size MLLM family (0.8B dense to 35B MoE with 3B active) for WeChat e-commerce, using two-stage continued pre-training with progressively increasing e-commerce data followed by hybrid-thinking post-training combining on-policy distillation and RL. It is a strong industrial case study in domain-specializing without sacrificing general capability.\n\nCAMEO [28] addresses partially paired, small-scale multimodal data—critical in biomedicine where unimodal datasets and foundation models abound but paired data is scarce—via adversarial learning with a cross-modal latent alignment mechanism that works with any pre-trained unimodal encoder. This is a practical recipe for the common real-world regime of incomplete pairing. RoFE [31] finds that PCA compression of frozen image/text embeddings—the standard interface for feeding multimodal features into tabular PFNs—is surprisingly harmful, and proposes rotated frozen embeddings instead. The negative result about PCA is itself valuable, and the fix is cheap. SleepXA [22] composes independently pretrained EEG and ECG foundation models using synchronized polysomnography rather than training a multimodal sleep model from scratch, a sensible composition-over-training pattern for physiological signals.\n\n## Evaluation, Benchmarking, and Applied Multimodal Systems\n\nCONCOR [24] critiques contrastive decoding evaluation: generative and discriminative benchmarks measure final task scores confounded by candidate filtering, trajectory changes, and response biases, making it hard to isolate the contrastive adjustment itself. Its contrastive correction evaluation isolates the underlying mechanism—an important corrective for a literature that has largely measured CD by end-task hallucination rates. OmniDecisionBench [14] provides the first holistic benchmark for multimodal System One models, assigning 45 datasets (192,975 records) to five capability families and twelve angles across four typed interfaces, scoring both accuracy and candidate-probability calibration, with single-factor diagnostics varying visual presentation and textual evidence sufficiency. Calibration-aware evaluation of native-probability models is a timely complement to accuracy-only VLM benchmarks.\n\nTamperCert [26] confronts degree-certificate forgery with a dedicated benchmark, motivated by real cases such as the University of Hong Kong's 2024 discovery of roughly 30 forged master's enrollments. The scarcity of public benchmarks for this high-stakes verification task makes the contribution valuable beyond the technical method. Beyond Unit Tests [8] presents an LLM autograder for flow-structured Jupyter notebook questions, generating rubrics from reference solutions and applying a softening pass so later answers are judged in light of earlier student choices. Path-aware grading addresses a real validity problem in open-ended assessment, where equally valid divergent choices must not be penalized downstream. Particle Belief Representations [21] studies how to encode particle-filter beliefs—weighted, unordered sets—as inputs to RL policies under partial observability, comparing statistical summaries, CGF features, and permutation-invariant set encoders across eight tasks. While not strictly multimodal, its finding that pooling-based set encoders and gradient-trained encoders work best informs how any agent should consume structured, multimodal belief states.\n\n## Key Takeaways\n- **The harness is the bottleneck, not the model**: AutoPILOT [1], MMMem [25], and EvoViM [9] all show that what a frozen model sees, remembers, and can emit per call matters more than raw model capability for real-time and long-horizon agency.\n- **Knowledge ≠ application**: RuleCraft [6] demonstrates that MLLMs possess game rules but default to real-world physics on bare images, with context cues alone yielding 8–53 point swings—a sharp warning about conflating memorized knowledge with grounded reasoning.\n- **Benchmark construction can invert conclusions**: [15] shows synthesized vs. native speech protocols reverse judgments about whether hallucination lives in perception or reasoning, urging caution across all multimodal diagnostics.\n- **Reliability and uncertainty deserve explicit, structured treatment**: AV-FLARE [2], DUE [13], and EmoRouter [10] all argue that implicit attention weighting over modalities is insufficient and that fine-grained, per-dimension reliability should be estimated before fusion.\n- **Safety is moving from refusal to calibrated intervention**: Guarding with Judgment [11]'s four-action framework and MobileGrail [20]'s on-device, privacy-preserving guardrails reflect a maturation toward nuanced, deployable safety.\n- **Composition beats training from scratch under data constraints**: CAMEO [28], SleepXA [22], RoFE [31], and ToolSmith [27] all succeed by composing or adapting existing frozen components rather than training new multimodal models.\n- **Evaluation methodology is itself a research frontier**: CONCOR [24], OmniDecisionBench [14], and X-AQA [7] reveal that confounded metrics, missing calibration measurements, and fragmented task formulations are first-order obstacles to trustworthy multimodal progress.",
+    "papers": [
+      {
+        "title": "AutoPILOT: A Visual Agent Harness for Real-Time Gameplay",
+        "url": "",
+        "authors": [
+          "Mark Zhao",
+          "Pengcheng Wang",
+          "Rui Yang",
+          "Jiarui Yao",
+          "Xirui Jiang",
+          "Yuxi Chen",
+          "Bingxuan Li",
+          "Hanyang Chen",
+          "Ke Yang",
+          "Manling Li",
+          "Tong Zhang",
+          "Huan Zhang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "AV-FLARE: Feature-Level Reliability Estimation for Multimodal Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Ines Jemmali",
+          "Alaa Nfissi",
+          "Wassim Bouachir",
+          "Nizar Bouguila"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "GERF: A Token-Efficient Multimodal Retrieval Framework for Schema-Guided Scientific Information Extraction",
+        "url": "",
+        "authors": [
+          "Yiyu Qian",
+          "Xing Wu"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "From Reward Engineering to Data-Centric Reinforcement Learning for Effective Agentic Visual Tool Use",
+        "url": "",
+        "authors": [
+          "Jin Cui",
+          "Xinyue Long",
+          "Jiepeng Zhou",
+          "Boran Zhao",
+          "Pengju Ren",
+          "Hao Dong"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Reducing Permutation Sensitivity in Multimodal Large Language Models via Shared Positions and Attention-Only Distillation",
+        "url": "",
+        "authors": [
+          "Yifei Cheng",
+          "Xiaolin Zhang",
+          "Yu-Xuan Qiu"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Multimodal LLMs Know the Game but Assume the Real World",
+        "url": "",
+        "authors": [
+          "Jianxin Gao",
+          "Bohan Chen",
+          "Runze Li",
+          "Qi Zhang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "X-AQA: Unifying Action Quality Assessment with Multimodal Large Language Models and Multi-Domain Learning",
+        "url": "",
+        "authors": [
+          "Kaili Zheng",
+          "Wei Ding",
+          "Yuchen Ding",
+          "Kaiwen Wang",
+          "Xun Zhu",
+          "Chenyi Guo",
+          "Yudong Zhang",
+          "Ji Wu"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Beyond Unit Tests: Path-Aware Rubric-Guided LLM Autograding of Notebooks",
+        "url": "",
+        "authors": [
+          "Salman Hajizada",
+          "Mohammed Yusuf Ansari",
+          "Gianni Di Caro"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "EvoViM: Recursively Self-Evolving Visual Agents for Exploration with Deferred Queries",
+        "url": "",
+        "authors": [
+          "Xinyu Cao",
+          "Tianjie Ju",
+          "Zhuosheng Zhang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "EmoRouter: Adaptive Modality Cascading for Multimodal Emotion Recognition",
+        "url": "",
+        "authors": [
+          "Fangxu Yu",
+          "Lingzhi Yuan",
+          "Dehai Min",
+          "Tao Feng",
+          "Ge Liu",
+          "Furong Huang",
+          "Tianyi Zhou"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Guarding with Judgment: Learning to Intervene for Multimodal Safety",
+        "url": "",
+        "authors": [
+          "Jipei He",
+          "Cheng Cheng",
+          "Liuguo Wang",
+          "Zihan Wen",
+          "Changlin Yu",
+          "Wentao Song",
+          "Suyun Zhao"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "StudioBench: Benchmarking Agentic Multimodal Large Language Models for Productive Audiovisual Creation",
+        "url": "",
+        "authors": [
+          "Xinglong Xu",
+          "Yuxia Zhu",
+          "Siyuan Li",
+          "Lixu Tian",
+          "Xiaofei Zhao",
+          "Yuxin Liu",
+          "Caijun Jia",
+          "Jintao Chen",
+          "Bihui Yu",
+          "Alden Cai",
+          "Asher Qin",
+          "Jingxuan Wei",
+          "Cheng Tan"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Dual-Side Uncertainty Estimation: Calibrating Data and Model Uncertainty into a Shared Probability Space",
+        "url": "",
+        "authors": [
+          "Jiaxuan Gao",
+          "Yang Hu",
+          "Feihong Lu",
+          "Yudi Huang",
+          "Qingyun Sun",
+          "Jianxin Li"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "OmniDecisionBench: Evaluating and Benchmarking the Multimodal Jev-Style System One Decision Models",
+        "url": "",
+        "authors": [
+          "Tianxiang Gao",
+          "Jinzhe Li",
+          "Yue Zhou",
+          "Dandan Guo",
+          "Qi Wang",
+          "Diana Inkpen",
+          "Yuan Wu",
+          "Yi Chang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Can Speech LLMs Recognize When Audio Evidence Is Insufficient? A Diagnostic Study and a Pre-Generation Probing Mitigation",
+        "url": "",
+        "authors": [
+          "Vladislav Nesterenko",
+          "Polina Doronicheva",
+          "Olga Golubeva",
+          "Polina Sheviakova"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Learning from Another Angle: Rotation-Based Test-Time Training for Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Changyu Liu",
+          "Fei Zhao",
+          "Yiyang Liu",
+          "Xi Xiao",
+          "Tianyang Wang",
+          "Cheng Han"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "VistaTree: Question Answering over Long Multimodal Documents with Image-Derived Summary Trees",
+        "url": "",
+        "authors": [
+          "Yexiang Cheng",
+          "Xiaochen Zheng",
+          "David Tokar",
+          "Tatyana Y. Doktorova"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "GameAnything: From Any Inspirations to Playable Game Worlds",
+        "url": "",
+        "authors": [
+          "Wenyi Wu",
+          "Siqi Liu",
+          "Yuru Feng",
+          "Zixuan Song",
+          "Aayush Salvi",
+          "Sibo Zhu",
+          "Kun Zhou",
+          "Biwei Huang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "GraphSeer: Multimodal Knowledge Graph Relational Image Retrieval with MLLMs",
+        "url": "",
+        "authors": [
+          "Linyu Li",
+          "Zhi Jin",
+          "Yuanpeng He",
+          "Haoran Duan",
+          "Dongming Jin",
+          "Wenchun Jing",
+          "Xuan Zhang",
+          "Gadeng Luosang",
+          "Nyima Tashi"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "MobileGrail: Learning Compact Guardrails for On-Device deployable Mobile GUI Agent Safety",
+        "url": "",
+        "authors": [
+          "Zhiyu Zhang",
+          "Yuankai Li",
+          "Muhao Chen"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Particle Belief Representations for Reinforcement Learning under Partial Observability",
+        "url": "",
+        "authors": [
+          "Himanshu Gupta",
+          "Brendan Crowe",
+          "Christoffer Heckman",
+          "Bradley Hayes",
+          "Zachary Sunberg"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "SleepXA: Composing Pretrained Neural and Cardiac Foundation Models for Sleep Representation Learning",
+        "url": "",
+        "authors": [
+          "Xiaoyu Chen",
+          "Xiao Gu",
+          "Chao Zhang",
+          "Wen Wu",
+          "Shuaicong Hu",
+          "Qinfan Xiao",
+          "Jie Yang",
+          "Chen Chen",
+          "Wei Chen"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "ReVAgent: Multi-Agent Reasoning-Intensive Video Generation",
+        "url": "",
+        "authors": [
+          "Yehui Yang",
+          "Jing Fan",
+          "Jun Hu",
+          "Shangyao Chen",
+          "Jinhua Bian",
+          "Song Wang",
+          "Ruize Han"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Rethinking the Evaluation of Contrastive Decoding for Hallucination Mitigation in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Ting Chen",
+          "Geng Li",
+          "Guohao Chen",
+          "Hanjia Lyu"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "MMMem: Self-Improving Agents with Task-Aware Multimodal Experience Consolidation",
+        "url": "",
+        "authors": [
+          "Yuxuan Chen",
+          "Changwei Lv",
+          "Yunfei Li",
+          "Zhongjing Du",
+          "Kehui Tan",
+          "Zijun Liao",
+          "Ruochong Zheng",
+          "Hao Chen",
+          "Can Deng",
+          "Zheni Zeng",
+          "Chang Liu",
+          "Jie Chen"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "TamperCert: A Benchmark for Detecting Text Tampering in Degree Certificates",
+        "url": "",
+        "authors": [
+          "ChiFung Kwan",
+          "Kangzhong Wang",
+          "Youqian Zhang",
+          "Weijie Chen",
+          "Jiaqi Gao",
+          "Yongjian Wu",
+          "Eugene Yujun Fu",
+          "Qingqing Ye",
+          "Haibo Hu"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "ToolSmith: An Automatic Tool-Generation Framework for Multimodal Search Agents",
+        "url": "",
+        "authors": [
+          "Rui Sun",
+          "Junhua Huang",
+          "Luca Zancato",
+          "Md Mofijul Islam",
+          "Kai-Wei Chang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "Learning Multimodal Representations from Partially Paired, Small-Scale Data",
+        "url": "",
+        "authors": [
+          "Merel Kuijs",
+          "Till Richter",
+          "Rushin H. Gindra",
+          "Korbinian Traeuble",
+          "Christian Matek",
+          "Rebeka Luknárová",
+          "Tingying Peng",
+          "Fabian J. Theis"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "WeMM-Ecom: Advancing Multimodal Content Understanding for WeChat E-Commerce",
+        "url": "",
+        "authors": [
+          "Binhui Xie",
+          "Jinmin Li",
+          "Haomiao Tang",
+          "Guangting Wang",
+          "Song Jin",
+          "Jianwei Zhu",
+          "Fengyun Rao",
+          "Jing Lyu"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "AdaptRouter: Adaptive Routing across Evolving Tasks and Models",
+        "url": "",
+        "authors": [
+          "Jingpu Yang",
+          "Fengxian Ji",
+          "Tianhao Li",
+          "Juanfan Wu",
+          "Yufeng Wang",
+          "Shuxin Zheng",
+          "Xiaoqing Zhang"
+        ],
+        "date": "2026-11-24"
+      },
+      {
+        "title": "RoFE: Rotated Frozen Embeddings for Low-Data Multimodal Tabular Learning",
+        "url": "",
+        "authors": [
+          "Yihao Qiao",
+          "Jiajian Ma",
+          "Wushuang Rui",
+          "Abhishek Jha",
+          "Aarti Darji",
+          "Yiqiu Shen"
+        ],
+        "date": "2026-11-24"
+      }
+    ]
+  }
+]
