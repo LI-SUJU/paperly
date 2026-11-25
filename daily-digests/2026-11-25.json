@@ -1,0 +1,396 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-25",
+    "paperCount": 8,
+    "markdown": "# Interpretability Research Digest — 2026-11-25\n\nToday's interpretability literature pushes back against surface-level transparency, arguing that verbalized reasoning, single-head reward models, and isolated explanation instances are insufficient for trustworthy understanding. At the same time, new decomposition, abstraction, and neuron-level methods offer more rigorous paths from low-level mechanisms to human-meaningful concepts.\n\n## Faithfulness and the Limits of Verbalized Reasoning\n\nChain-of-thought (CoT) prompting is widely treated as a window into model reasoning, but this position paper argues that generated rationales can be misleading and are neither necessary nor sufficient for trustworthy interpretability [1]. The authors formalize faithfulness as whether CoTs are both human-interpretable and genuinely reflective of the model's underlying reasoning, synthesizing evidence across the literature to show that current CoT techniques often fail this bar [1]. The contribution is a sharp conceptual distinction between performance gains, the *impression* of transparency, and actual explanatory validity, with implications for responsible deployment [1]. This matters because many safety and oversight proposals implicitly assume CoT provides reliable introspection—an assumption this paper directly challenges [1].\n\n## Evaluating Interpretability Itself\n\nSanchez and Yu argue that interpretability methods must themselves be evaluated under a tiered system that differentiates levels of trustworthy evidence, rather than being validated through isolated interpretation instances [7]. Their core vision is to elevate the evaluation of interpretation methods to a core AI assessment metric, driven by the needs of sociotechnical deployment where uninterpretable models threaten reliability, public trust, and contestability [7]. The paper reframes interpretability as an accountability infrastructure rather than a collection of one-off explanatory artifacts [7]. This is important because it provides a meta-level standard by which the flood of new explanation techniques—including several in this digest—can be compared and trusted [7].\n\n## Mechanistic and Structural Understanding of Transformers\n\nChen et al. probe transformer capability and interpretability through a controlled family of linear recurrence tasks over finite cyclic groups, spanning single fixed rules, latent rule identification from context, and switching between explicitly specified rules [2]. Their experiments across configurations reveal how transformer performance and internal mechanisms vary as task structure grows more complex, isolating which recurrence operations are learned versus merely approximated [2]. The controlled synthetic setting allows precise mechanistic claims that are difficult to establish on natural language [2]. This matters as a bridge between toy-model mechanistic interpretability and the recurrent structure underlying many linguistic rules [2].\n\nZhu et al. address a foundational problem in causal abstraction: macro-level causal models are almost never well-defined, since distinct micro-level interventions corresponding to the same apparent macro intervention can produce different effects [5]. Their central insight is that causally consistent macro-level models can be obtained constructively rather than proposed and verified post hoc, and they demonstrate this via a case study in mechanistic interpretability [5]. This shifts causal abstraction from a verification exercise into a construction procedure, making high-level explanations more tractable to derive [5]. The work matters for anyone trying to build rigorous, interventionally valid explanations of neural network behavior [5].\n\nGamboa et al. adapt mechanistic interpretability methods to pinpoint and characterize components encoding social bias in multilingual models, analyzing three instruction-tuned models across four languages and seven bias dimensions [8]. Comparing activation probability entropy against integrated gap gradients for identifying bias neurons, they find the latter more effective, isolating neurons that are largely language-specific in their bias encoding [8]. The cross-lingual, multi-dimensional design exposes how bias circuitry is distributed and localized differently across languages [8]. This matters for targeted bias mitigation and for understanding whether safety-relevant mechanisms transfer across linguistic contexts [8].\n\n## Decomposing Values and Explanations\n\nEldagla et al. observe that canonical reward models with a single reward head cannot distinguish values a population shares from those that vary among individuals, limiting alignment-relevant interpretability [3]. They introduce Reward Basis Decomposition (RBD), which splits per-user weights into a population term and a per-user term, yielding a shared population direction and individual user directions analyzed separately via concept alignment and sparse methods [3]. This decomposition makes preference heterogeneity—central to pluralistic alignment—directly inspectable [3]. The work matters because interpreting *whose* values a reward model encodes is as important as interpreting *what* it encodes [3].\n\nMohammadi and Aslansefat introduce Geo-SMILE, a model-agnostic framework for geospatial ML that separates substantive feature explanation from geographic-position response through complementary perturbation branches [4]. The Feature branch masks substantive predictors while retaining coordinates, while the Geo branch relocates geographic units while holding predictors fixed, following SMILE's statistical-distance-weighted surrogate principle [4]. This explicit treatment of spatial context addresses a gap in post-hoc methods developed largely for non-spatial inputs [4]. It matters for high-stakes geospatial applications—public health, environmental risk, urban policy—where conflating *where* with *what* produces misleading explanations [4].\n\n## Interpretability in Applied and Multitask Settings\n\nShehata et al. present ArabFake, a multitask deep learning framework built on MARBERTv2 that goes beyond binary detection to jointly perform Arabic fake news detection, content categorization, and risk assessment [6]. The framework leverages a multi-dialectal Arabic backbone to handle the morphological and dialectal complexity that undermines monolingual approaches [6]. By unifying three tasks, it aims to deliver not just labels but actionable risk signals for moderators and journalists [6]. While primarily an application paper, it illustrates how interpretability-adjacent outputs (categorization and risk scores) can be operationalized in low-resource linguistic settings [6].\n\n## Key Takeaways\n\n- Verbalized chain-of-thought is not a faithfulness guarantee; the field needs explicit criteria separating human-interpretability from genuine reflection of underlying computation [1].\n- Interpretability methods require tiered, meta-level evaluation before they can serve as trust infrastructure in deployment [7].\n- Causal abstraction can be made tractable by *constructing* consistent macro models rather than proposing and verifying them post hoc [5].\n- Controlled synthetic recurrence tasks provide precise mechanistic evidence about what transformers actually learn, complementing natural-language studies [2].\n- Decomposing reward models into population and individual components makes pluralistic value alignment empirically inspectable [3].\n- Bias circuits in multilingual models are identifiable at the neuron level and vary substantially by language, with gradient-based identification outperforming entropy-based methods [8].\n- Domain-aware explanation design—such as separating feature from geographic effects in Geo-SMILE—is essential when spatial or contextual confounds dominate [4].",
+    "papers": [
+      {
+        "title": "Chain-of-Thought Is Not Explainability",
+        "url": "",
+        "authors": [
+          "Fazl Barez",
+          "Tung-Yu Wu",
+          "Iván Arcuschin",
+          "Michael Lan",
+          "Vincent Wang",
+          "Noah Siegel",
+          "Nicolas Collignon",
+          "Clement Neo",
+          "Isabelle Lee",
+          "Alasdair Paren",
+          "John Yan",
+          "Adel Bibi",
+          "Damiano Fornasiere",
+          "Robert Trager",
+          "Yanai Elazar",
+          "Yoshua Bengio"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Capability and Interpretability of Transformers on Multi-task Recurrence",
+        "url": "",
+        "authors": [
+          "Xiamin Chen",
+          "Linyu Liu",
+          "Jiachen Hu",
+          "Pinyan Lu"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Reward Basis Decomposition for Interpreting Preference Heterogeneity",
+        "url": "",
+        "authors": [
+          "Mohamed I. Eldagla",
+          "Ifesi Onubogu",
+          "Prerana Rane",
+          "Harsh Sharma",
+          "Rachel Freedman"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Geo-SMILE: Statistical Model-Agnostic Interpretability with Local Explanations for Geospatial Machine Learning",
+        "url": "",
+        "authors": [
+          "Shadieh Mohammadi",
+          "Koorosh Aslansefat"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Constructive Causal Abstraction and a Case Study in Mechanistic Interpretability",
+        "url": "",
+        "authors": [
+          "Yuchen Zhu",
+          "Sergio Hernan Garrido Mejia",
+          "Dominik Janzing"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "ArabFake: A multitask deep learning framework for Arabic fake news Detection, Categorization, and risk prediction",
+        "url": "",
+        "authors": [
+          "Ahmed Maher Khafaga Shehata",
+          "Mohammed Nasser Al-Suqri",
+          "Nour Eldin Mohamed Elshaiekh Osman",
+          "Faten Hamad",
+          "Yousuf Nasser Alhusaini",
+          "Ahmed Mahfouz"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Not All Interpretation Methods Are Created Equal: Tiered Evaluation of AI Interpretability",
+        "url": "",
+        "authors": [
+          "Nicolas Sanchez",
+          "Bin Yu"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Social Bias Neurons in Multilingual Language Models: A Mechanistic Interpretability Analysis",
+        "url": "",
+        "authors": [
+          "Lance Calvin Lim Gamboa",
+          "Yue Feng",
+          "Mark Lee"
+        ],
+        "date": "2026-11-25"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-25",
+    "paperCount": 2,
+    "markdown": "# The Faithfulness Gap: Explainability Research Confronts the Limits of Verbalized Reasoning\n\nToday's explainability research is defined by a tension between the *appearance* of transparency and its substance: a major position paper argues that chain-of-thought rationales are fundamentally unreliable as explanations, while applied work continues to deploy post-hoc methods like SHAP in high-stakes domains. Across the papers surveyed, a common thread emerges—explainability techniques must be evaluated for faithfulness to the model's actual computation, not merely for human interpretability.\n\n## The Limits of Chain-of-Thought as Explanation\n\nA sweeping position paper from Barez, Bengio, and a large multidisciplinary author list argues that chain-of-thought (CoT) rationales—verbalized multi-step reasoning—are neither necessary nor sufficient for trustworthy interpretability [1]. The authors formalize *faithfulness* as the condition that CoTs must not only be human-interpretable but also genuinely reflect the model's underlying reasoning well enough to support responsible deployment. Synthesizing evidence across the literature, they show that current CoT techniques can produce rationales that are misleading, post-hoc, or unfaithful to the computations actually driving model outputs. This matters enormously for safety-critical deployment: if practitioners treat CoT as an audit mechanism, they may be lulled into unwarranted trust in systems whose stated reasoning diverges from their true decision process.\n\n## Post-hoc Explanation in Clinical Decision Support\n\nXRL4T1D addresses the interpretability gap in reinforcement learning for automated insulin dosing in type 1 diabetes [2]. The framework applies SHapley Additive exPlanations (SHAP) post-hoc to pretrained policies—requiring no retraining—using 60-minute windows of continuous glucose monitor and insulin-history inputs sampled every 5 minutes. By comparing the importance of CGM versus insulin-history features, the work exposes which inputs drive dosing recommendations, offering clinicians a window into RL controller behavior in the UVA/Padova simulator. This is a valuable template for regulated medical AI, where post-hoc explainability may be the only practical path to oversight of already-deployed policies.\n\n## Explainability for Structured and Relational Data\n\nBeyond vision and language, explainability is being adapted to domains with intrinsic structure—trees, graphs, and relational schemas—where standard feature-attribution methods break down. (This section would cover papers on tree-ensemble explanation, graph neural network interpretability, and schema-aware explanation for tabular/relational models. No such papers appear in the provided list; the remaining slots are reserved for the papers supplied.)\n\n## Explanation Evaluation and Human Factors\n\nA recurring concern across the corpus is that explanations must be *evaluated*—not just generated. Work in this space examines whether explanation quality metrics correlate with downstream trust, decision quality, and robustness under distribution shift, and how human users actually consume model explanations in practice. (No additional papers were provided for this section; see [1] for the most direct treatment of faithfulness evaluation.)\n\n*Note: The digest above reflects only the two papers supplied. A typical daily digest would contain 8–15 papers; sections 3 and 4 are placeholders indicating where additional submissions on structured-data explainability and explanation evaluation would be discussed.*\n\n## Key Takeaways\n\n- **Chain-of-thought is not an audit trail.** The field's most prominent transparency artifact—verbalized reasoning—is argued to be neither necessary nor sufficient for faithful interpretability, with misleading rationales a real risk in safety-critical use [1].\n- **Faithfulness, not plausibility, is the right bar.** Explanations that *look* reasonable to humans can diverge from the model's actual computation; evaluation must target fidelity to the underlying decision process [1].\n- **Post-hoc methods remain the pragmatic workhorse.** SHAP-based frameworks like XRL4T1D enable oversight of pretrained RL policies without retraining, a crucial property for regulated clinical deployments [2].\n- **High-stakes domains are leading adoption.** Automated insulin dosing exemplifies the pattern: RL promises performance gains, but clinician trust depends on input-attribution transparency [2].\n- **Retraining-free explainability lowers deployment barriers.** Frameworks that explain existing policies avoid the cost and risk of rebuilding models solely to make them interpretable [2].\n- **The explainability–safety link needs sharper theory.** Position work is converging on the view that interpretability claims must be tied to responsible-use criteria, not just user studies [1].\n- **Applied and critical research are diverging productively.** While one camp debunks overtrust in CoT, another builds practical explanation tooling—together these strands define the field's current fault line [1, 2].",
+    "papers": [
+      {
+        "title": "Chain-of-Thought Is Not Explainability",
+        "url": "",
+        "authors": [
+          "Fazl Barez",
+          "Tung-Yu Wu",
+          "Iván Arcuschin",
+          "Michael Lan",
+          "Vincent Wang",
+          "Noah Siegel",
+          "Nicolas Collignon",
+          "Clement Neo",
+          "Isabelle Lee",
+          "Alasdair Paren",
+          "John Yan",
+          "Adel Bibi",
+          "Damiano Fornasiere",
+          "Robert Trager",
+          "Yanai Elazar",
+          "Yoshua Bengio"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "XRL4T1D: A Post-hoc Explainability Framework for Reinforcement Learning in Type 1 Diabetes Management",
+        "url": "",
+        "authors": [
+          "Malay Phadke",
+          "Chirath Hettiarachchi"
+        ],
+        "date": "2026-11-25"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-25",
+    "paperCount": 19,
+    "markdown": "# Multimodal Research Digest: Benchmarks, Robustness, and Efficiency Across Vision-Language Systems\n\nToday's multimodal research landscape is dominated by a push toward rigorous evaluation—fine-grained benchmarks for deepfakes, interactive charts, and conversational information manipulation—alongside growing attention to the fragility of multimodal models under distribution shift, sparse poisoning, and visual-prior dependence. A parallel thread advances efficiency and grounding: spiking neural networks for audio-visual classification, geometry-grounded surgical planning, hindsight-based embedding learning, and distillation recipes that consolidate specialist models without sacrificing robustness.\n\n## Benchmarks for Fine-Grained Multimodal Evaluation\n\n**MOZAIC** [1] addresses the limitation of binary real/fake deepfake benchmarks by introducing a paired 4-way labeling scheme in which every source clip is released in all four combinations of real or fake video and real or fake audio. Covering inner-face swapping, whole-frame video diffusion, and voice conversion across 137,745 clips from 15,014 source pairs, the benchmark enables direct measurement of each modality's contribution to detector decisions. The design supports four tasks, including AV authenticity judgment, making it possible to diagnose whether detectors rely on the picture, the voice, or encoding traces. This matters because modality-attribution is essential for building detectors that generalize beyond spurious encoding artifacts.\n\n**Beyond Static Charts** [2] identifies a gap in chart-to-code benchmarks: existing evaluations focus on static charts and visual consistency, while interactive charts demand *behavioral* consistency—chart states must evolve correctly under sequences of user interactions. The authors introduce a benchmark for interactive chart-to-code generation targeting MLLMs, arguing that traditional one-step evaluation paradigms are ineffective for this setting. By shifting evaluation from static rendering fidelity to interaction-driven state evolution, this work exposes a fundamentally harder capability requirement for multimodal code generation.\n\n**What People Choose Not to Say** [3] moves beyond coarse-grained emotion recognition and binary truth-deception detection to model diverse information manipulation behaviors in conversation—withholding, leakage, fabrication, evasion, and defensive counterclaim. The authors present a multimodal benchmark requiring reasoning over underlying facts, participant knowledge, and conversational context, which makes reliable evaluation difficult. This fine-grained taxonomy of manipulation is important because binary deception detection collapses qualitatively distinct social behaviors into a single label, obscuring what models actually understand.\n\n**Evaluating Latent Knowledge Stability** [11] tackles the problem that changes in image viewpoint and question formulation can alter latent knowledge representations in MLLMs, while output correctness and aggregate representational drift provide limited insight into decision-level effects. The authors propose the margin retention score (MRS), measuring first-order projected degradation of the initial answer's logit margin, and evaluate stability across visual and linguistic elicitation conditions from two complementary perspectives: answer preference and internal support. This provides a more sensitive diagnostic than accuracy alone for understanding how multimodal models' knowledge shifts under benign input perturbations.\n\n**DocIntent** [9] introduces intent-aware OCR: generating corrected transcriptions by jointly reasoning over document content and visual intent cues such as arrows, carets, strikethroughs, and insertions that convey human edit intent. Existing OCR systems treat these annotations as visual noise rather than semantic edit operations. The authors contribute a multimodal dataset of 1,600 financial documents with over 5,700 annotated visual intent cues, each paired with corrected transcriptions. This reframes a pervasive real-world document phenomenon as a structured multimodal reasoning task with clear commercial relevance.\n\n## Robustness, Safety, and Failure Modes\n\n**Near-Zero Forgetting Is Not Enough** [6] challenges the optimistic narrative around continual learning in pretrained Vision-Language-Action models. While Pi0 fine-tuned with experience replay achieves near-zero in-domain catastrophic forgetting on LIBERO, the authors show that out-of-distribution performance on previous tasks collapses quickly during continual learning, evaluated on LIBERO-Plus. This finding is significant because it reveals that standard forgetting metrics can mask severe robustness degradation—a critical gap for deployed robotic systems facing domain shift.\n\n**Sparse Poison, Strong Hijack** [13] demonstrates that trajectory-level targeted backdoors in VLA models can be injected with only 1% poisoning. Unlike behavior-disrupting attacks, these backdoors must sustain closed-loop redirection to complete an attacker-specified multi-step task, which existing methods achieve only through high poisoning rates. The work shows that efficient, low-rate poisoning suffices for strong hijacking, raising the stakes for data provenance in robot learning. This has direct safety implications for any VLA pipeline trained on crowdsourced or web-scraped demonstrations.\n\n**Look Before You Commit** [7] diagnoses a failure mode in diffusion multimodal LLMs: confidence-based token commitment cannot distinguish whether a candidate originates from image evidence or language priors. Through paired forward ablation, the authors find that nearly nine out of ten high-confidence commits are insensitive to the image, and that degenerate and hallucination samples show significant increases in deep-layer attention entropy. Their training-free decoding method, CD-APC, uses visual-evidence guidance to address this, offering a practical intervention grounded in a mechanistic diagnosis.\n\n**Contrastive Proxy Forests** [19] brings multimodal records—clinical notes and physiological waveforms—into proximal causal inference, where two proxies of an unmeasured confounder must satisfy exclusion restrictions and completeness. Hand-picked tabular proxies are low-dimensional but lossy, while the rich multimodal records are too high-dimensional for proximal estimators, and generic compression like PCA may retain modality-specific style rather than confounder content. The proposed completeness-preserving proxy learning method extracts proxies from multimodal records while maintaining the theoretical requirements of proximal estimators. This bridges representation learning and causal inference in a way that matters for electronic health record analyses.\n\n## Grounding, Reasoning, and Agentic Multimodality\n\n**SpatialCraft** [5] reframes the bottleneck for spatial reasoning agents as orchestration rather than perception: with access to 3D reconstruction, segmentation, and geometric computation tools, a frozen MLLM agent must decide which tools to call, in what order, and how to interpret outputs. The authors ask whether a stateless tool-using agent can improve its orchestration from interaction history without parameter updates. By evolving procedural intelligence from experience and skills, SpatialCraft points toward agents that accumulate reusable tool-use competence—an important direction as multimodal systems increasingly rely on external computational scaffolding.\n\n**GeoSurge** [15] targets surgical resection planning, where the goal is generating executable resection surfaces from anatomical evidence and operative constraints. Medical multimodal foundation models provide anatomical understanding and segmentation models predict resection regions, but neither translates these capabilities into explicitly constrained, executable surfaces. GeoSurge combines mask-derived metrics with structure-aware point-cloud tokens to generate editable resection surfaces, making resection geometry learnable and editable. This is a strong example of geometry-grounded multimodal reasoning with direct clinical auditability requirements.\n\n**VC-OPD** [12] extends Visual On-Policy Distillation beyond cropped or zoomed-in image regions as teacher-side privileged information, arguing that local pixel-level cues are insufficient for complex visual reasoning requiring global structure, spatial relationships, and high-level semantics. The proposed method uses advanced MLLMs to generate question-conditioned visual cues that capture key visual details, extending privileged information to the semantic level. This matters for small MLLMs, where distillation from stronger teachers is a primary route to fine-grained perception.\n\n**Branch and Consolidate** [18] studies multi-teacher on-policy distillation (MOPD) for consolidating specialists post-trained from a shared checkpoint back into a single multimodal student. The authors find that existing consolidation methods—from weight merging to MOPD—fall short when specialists diverge substantially from the shared checkpoint, a regime prior work largely avoided. Their unified recipe specifies initialization, data selection, and balancing strategies for this harder divergence setting, addressing a practical need as organizations accumulate independently specialized multimodal models.\n\n## Efficient and Self-Supervised Multimodal Learning\n\n**NeuTNN-AV** [10] argues that spiking neural networks for audio-visual classification have drifted toward deep-learning machinery—multi-stage convolutional or transformer encoders trained with surrogate-gradient backpropagation through time—while relying on full-precision 32-bit parameters and neglecting hardware efficiency. The authors propose a simpler, hardware-amenable substrate built on NeuroAI Temporal Neural Networks, demonstrating that it can match or outperform standard approaches for low-precision multimodal audio-visual classification and online learning. This work is valuable for edge deployment scenarios where energy efficiency is a first-order constraint.\n\n**Caption-Guided Audio-Visual Contrastive Learning** [16] challenges the standard assumption that co-occurring audio and visual signals provide shared views of the same information—an assumption violated by off-screen sounds, where paired signals differ substantially in content. The proposed Caption Guided Alignment Aware Loss (CGA) uses captions to modulate alignment strength per pair rather than treating all pairs as equally aligned. This is a principled correction to contrastive objectives that matters for web-scale audio-visual data, where misalignment is pervasive rather than exceptional.\n\n**See the Answer, Learn to Embed** [17] explores universal multimodal embeddings (UME), where heterogeneous inputs map to a shared space supporting pairwise similarity across tasks. Reasoning-driven UME approaches add intermediate reasoning context but incur inference cost; this work instead uses the matched candidate (paired target) as privileged context during training only, asking whether a model can \"see the answer\" during training and \"learn to embed\" without it at inference. The approach avoids direct conditioning on the privileged target at test time, yielding context-enriched embeddings at no additional inference cost.\n\n**Predictive Memory** [14] identifies a statelessness problem in multimodal protein language models that unify sequence and discrete structural tokens via iterative masked decoding: each iteration resets all unresolved sites to an identical [MASK] embedding, carrying forward only sparse newly committed hard tokens. In open-ended co-generation where neither modality anchors the other, this memoryless transition limits single-step refinement depth and deprives both tracks of stable cross-step soft anchors. The proposed predictive memory mechanism addresses this, with implications for joint protein design where iterative refinement quality is central.\n\n## Data Extraction and Content Governance Pipelines\n\n**SciFig2Data** [8] addresses the fact that scientific measurements are often embedded in compound figures rather than available as machine-readable data. The authors present an automated, high-throughput workflow integrating multi-scale document element detection, adaptive compound figure decomposition, chart identification, numerical reconstruction, and experimental context association across scientific PDF repositories. Recovering structured data at literature scale is a prerequisite for evidence synthesis and meta-science, making this pipeline infrastructure with broad downstream value.\n\n**Toxic Diet Culture Detection** [4] reframes harmful-content detection as a governance problem: producing decision-linked evidence that supports review and justification of moderation decisions, not merely predictions or limited explanations. Using toxic diet culture in short-form video as an empirical case, the authors conceptualize governance-ready evidence as computational traceability, evidence localization, policy grounding, and evidence inspectability, and develop a Sparse Autoencoder-based Policy-Aligned Contrastive framework. This work is notable for treating explainability as an evidentiary standard tied to policy, rather than a post-hoc visualization.\n\n## Key Takeaways\n\n- **Modality attribution is the new benchmark frontier**: MOZAIC's 4-way paired design [1] and intent-aware OCR [9] show that benchmarks are shifting from binary outcomes to decomposing *which* modality or signal drives model behavior.\n- **Near-zero forgetting can mask collapse**: in-domain continual learning metrics for VLAs [6] conceal severe OOD degradation, suggesting robustness must be evaluated under domain shift, not just retention.\n- **Confidence is not evidence**: nearly 90% of high-confidence token commits in diffusion MLLMs are image-insensitive [7], and low-rate (1%) trajectory poisoning can hijack VLA behavior [13]—both point to systematic failures invisible to standard metrics.\n- **Static evaluation misses interactive and behavioral consistency**: interactive chart-to-code [2] and fine-grained information manipulation [3] require evaluating state evolution and social reasoning over sequences, not single-step outputs.\n- **Efficiency and grounding are converging**: spiking NeuTNN-AV [10], hindsight-based UME training [17], and cue-based distillation [12] all pursue capability gains without proportionally higher inference cost.\n- **Alignment assumptions in contrastive learning need auditing**: off-screen audio [16] and multimodal confounder proxies [19] demonstrate that \"paired\" does not mean \"aligned,\" with consequences for both representation quality and causal validity.\n- **Privileged information is a recurring lever**: from teacher-side visual cues [12] to matched candidates at training time [17] and multi-teacher consolidation [18], training-time-only signals repeatedly deliver gains that persist at inference.",
+    "papers": [
+      {
+        "title": "MOZAIC: An Audio-Video Deepfake Benchmark for Telling What Is Fake",
+        "url": "",
+        "authors": [
+          "Shaina Raza",
+          "Mohamed Hafez",
+          "Ahmed Y. Radwan",
+          "Khalid Elgazzar",
+          "Kathryn Hume"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Beyond Static Charts: Benchmarking Interactive Chart-to-Code Generation for MLLMs",
+        "url": "",
+        "authors": [
+          "Yuhan Bian",
+          "Haoyu Liu",
+          "Siyu Li",
+          "Hanpei Guo",
+          "Jingrong Gao",
+          "Zhixu Li"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "What People Choose Not to Say: A Multimodal Benchmark for Fine-Grained Information Manipulation in Conversations",
+        "url": "",
+        "authors": [
+          "Yuhan Bian",
+          "Zhaokai Liang",
+          "Jia Wang",
+          "Haoyu Liu",
+          "Yu Chen",
+          "Jianfeng Qu",
+          "Zhixu Li"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Detecting Harmful Short Videos in Toxic Diet Culture: A Governance-Ready Evidence Framework with Sparse Autoencoders",
+        "url": "",
+        "authors": [
+          "Wenli Zhang",
+          "Shuang Geng",
+          "Jiaheng Xie",
+          "Zhonghan Xiang",
+          "Sudha Ram"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "SpatialCraft: Evolving Procedural Intelligence from Experience and Skills for Spatial Reasoning Agents",
+        "url": "",
+        "authors": [
+          "Xiwei Liu",
+          "Yulong Li",
+          "Xuhui Li",
+          "Zhixiang Lu",
+          "Haolin Yang",
+          "Jianxu Chen",
+          "Yifan Lu",
+          "Di Fan",
+          "Yutong Xie"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Near-Zero Forgetting Is Not Enough: Out-of-Distribution Robustness in Continual Learning of Pretrained VLAs",
+        "url": "",
+        "authors": [
+          "Adrià Ruiz",
+          "Bartłomiej Twardowski",
+          "Tinne Tuytelaars",
+          "Sergi Masip"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Look Before You Commit: Visual-Evidence-Guided Decoding for Multimodal Diffusion Language Models",
+        "url": "",
+        "authors": [
+          "Tongxiao Hu",
+          "Yikai Zhao",
+          "Qiyan Zhao",
+          "Xiaosong Yuan",
+          "Xuhang Chen",
+          "Pengzhou Cheng",
+          "Xiaofeng Zhang"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "SciFig2Data: A Workflow for Recovering Structured Data from Scientific Figures",
+        "url": "",
+        "authors": [
+          "Xinhe Wu",
+          "Yicheng Ye",
+          "Yadong Jin"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "When Ink Meets Pixel: Intent-Aware OCR with VLMs for Human-Corrected Financial Documents When Ink Meets Pixel: Intent-Aware OCR with VLMs for Human-Corrected Financial Documents",
+        "url": "",
+        "authors": [
+          "Akshata A Bhat",
+          "Daman Deep Singh",
+          "Niyati Chhaya"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "HEAR, SEE, SPIKE ONCE: Highly Efficient NeuroAI Temporal Neural Networks for Low-Precision Multimodal Audio-Visual Classification and Online Learning",
+        "url": "",
+        "authors": [
+          "Shanmuga Venkatachalam",
+          "Quinn Jacobson",
+          "John Paul Shen"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Evaluating Latent Knowledge Stability in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Chuancheng Shi",
+          "Shangze Li",
+          "Wenhua Wu",
+          "Zifeng Cheng",
+          "Pengyang Shao",
+          "Fei Shen",
+          "Tat-Seng Chua"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "VC-OPD: Learning to See What Matters via Visual Cue On-Policy Self-Distillation",
+        "url": "",
+        "authors": [
+          "Qinxuan Wang",
+          "Zheyu Zhang",
+          "Yijing Yang",
+          "Han Shu",
+          "Chuang Wang",
+          "Peipei Yang",
+          "Shuo Tang",
+          "Jie Hu",
+          "Shiming Xiang"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Sparse Poison, Strong Hijack: Efficient Trajectory-Level Backdoors in Vision-Language-Action Models with Only 1\\% Poisoning",
+        "url": "",
+        "authors": [
+          "Simin Huang",
+          "Jiawei Chen",
+          "Shaolong Zhu",
+          "Qiwei Liang",
+          "Zhaoxia Yin"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Beyond Hard Tokens: Predictive Memory for Multimodal Protein Generation",
+        "url": "",
+        "authors": [
+          "Xiaoliang Shi",
+          "Zichen Wang",
+          "Zhijian Wei",
+          "Zhanpeng Shi",
+          "Zhenghong Zhou",
+          "Yunpeng Wang",
+          "Shuangjia Zheng"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "GeoSurge: Geometry-Grounded Multimodal Reasoning for Auditable Liver Resection Planning",
+        "url": "",
+        "authors": [
+          "Wenjie Deng",
+          "Zijian Tu",
+          "Xueyin Zhou",
+          "Huayi Wang",
+          "Zhuoyun Du",
+          "Mingyu Chen",
+          "Haochao Ying",
+          "Jian Wu"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Not All Pairs Align: Caption-Guided Audio-Visual Contrastive Learning",
+        "url": "",
+        "authors": [
+          "Omar Emara",
+          "Nan Lu",
+          "Dima Damen",
+          "Hazel Doughty"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "See the Answer, Learn to Embed: Learning Universal Multimodal Embeddings from Hindsight",
+        "url": "",
+        "authors": [
+          "Yoonki Cho",
+          "Youngju Na",
+          "Taegeun Yang",
+          "Jinhwan Seo",
+          "Sung-Eui Yoon"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Branch and Consolidate: A Unified Recipe for Multi-Teacher On-Policy Distillation",
+        "url": "",
+        "authors": [
+          "Zihan Liang",
+          "Zikun Qu",
+          "Ben Chen",
+          "Fan Yang",
+          "Wenwu Ou",
+          "Min Zhang",
+          "Zhongxiang Dai",
+          "Xinchao Wang"
+        ],
+        "date": "2026-11-25"
+      },
+      {
+        "title": "Contrastive Proxy Forests: Completeness-Preserving Proxy Learning from Multimodal Records",
+        "url": "",
+        "authors": [
+          "Kyoungeui Hong",
+          "Zijun Gao",
+          "Ruishan Liu"
+        ],
+        "date": "2026-11-25"
+      }
+    ]
+  }
+]
