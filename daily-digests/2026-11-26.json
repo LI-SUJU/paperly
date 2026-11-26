@@ -1,0 +1,298 @@
+[
+  {
+    "topic": "interpretability",
+    "date": "2026-11-26",
+    "paperCount": 4,
+    "markdown": "# Interpretability for Discovery: Symbolic Equations, Explainable Attribution, and Foundation-Model Probes\n\nToday's interpretability research extends beyond explaining black-box predictions toward using interpretability as a discovery instrument—symbolic regression recovers physical laws, LLM-guided pipelines mine mathematical structure, and embedding analyses test whether foundation models encode physically meaningful concepts. A parallel thread preserves classical transparency (stylometric attribution, core-loss equations) while quantifying the trade-offs incurred when adding performance.\n\n## Symbolic and Equation-Level Interpretability\n\nWang et al. [1] address the accuracy–interpretability trade-off in magnetic core-loss modeling, where the compact Steinmetz Equation is interpretable but limited, while ML predictors are accurate but opaque. Their Symbolic Sparse Identification (SSI) framework casts core-loss modeling as data-driven symbolic regression, recovering explicit equations directly from measured data without presuming a functional form. The contribution is a bridge between empirical compactness and ML-level accuracy, yielding human-readable expressions that magnetic component designers can deploy and scrutinize. This matters because it demonstrates interpretability as an output—an equation—rather than a post-hoc explanation.\n\nPatternMiner [3] tackles AI-driven mathematical discovery, noting that LLM-based conjecture resolution and narrow interpretable models for open-ended, object-based exploration each have complementary weaknesses. The system combines LLM guidance with the training and interpretation of small models, aiming to move beyond simple empirical pattern detection while retaining human-in-the-loop exploration. The key contribution is a hybrid architecture in which interpretable models serve as the mechanistic core and LLMs supply the scaffolding for automated discovery. This matters for interpretability research because it positions small, inspectable models as discovery engines rather than mere explanation targets.\n\n## Interpretability as a Design Constraint in Applied ML\n\nSavoy [2] revisits the Delta authorship-attribution method, which is based on most frequent words and thus readily interpretable and explainable in plain English, but not always accurate. The study applies a resampling method to the selected stylistic features, reporting improved attribution accuracy while preserving the interpretability of outcomes. The main drawback is additional computational time from resampling. This matters as a concrete case study in the \"performance without opacity\" pattern: transparency is treated as a constraint to be maintained, not a cost to be traded away.\n\n## Probing Foundation-Model Embeddings for Physical Meaning\n\nEl Moussaoui et al. [4] evaluate AlphaEarth Foundation Model (AEF) embeddings for agricultural LULC and irrigation-type mapping in water-scarce Morocco. AEF embeddings are benchmarked against single-date and time-series remote-sensing features using XGBoost, CatBoost, and TabPFN, and the study probes whether embeddings offer an efficient, transferable alternative to conventional features. The core question is physical interpretability: whether foundation-model representations encode meaningful, sensor-grounded concepts rather than opaque correlates. This matters because interpretability assessment of geospatial foundation models is a prerequisite for trusting them in operational resource management.\n\n## Key Takeaways\n- Interpretability is increasingly a *construction principle*: SSI [1] and resampling-improved Delta [2] deliver transparent outputs by design rather than post-hoc explanation.\n- Symbolic regression [1] reframes the accuracy–interpretability trade-off as a false dichotomy by producing deployable equations directly from data.\n- Hybrid systems [3] suggest a division of labor: LLMs for open-ended exploration, small interpretable models for mechanistic insight and verification.\n- Interpretability of foundation models [4] is being tested via downstream benchmarks and physical grounding, not just internal probes.\n- Classical transparent methods [2] remain competitive when augmented, but computational cost is a recurring, explicit trade-off.\n- Explainability in plain language (most frequent words in [2], explicit equations in [1]) remains a practical gold standard worth preserving.\n- Overall, the field is shifting from \"explaining models\" toward \"using interpretability to discover\" — equations, patterns, and physically meaningful representations.",
+    "papers": [
+      {
+        "title": "Discovering Explicit Magnetic Core-Loss Equations via Symbolic Sparse Identification",
+        "url": "",
+        "authors": [
+          "Haoyu Wang",
+          "Jialin Zheng",
+          "Ziyang Xu",
+          "Yihao Wu",
+          "Alex Hanson"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "How resampling method can help us: Improving the Delta model",
+        "url": "",
+        "authors": [
+          "Jacques Savoy"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "PatternMiner: Automated Mathematical Discovery Through LLM-Guided Training and Interpretation of Small Models",
+        "url": "",
+        "authors": [
+          "Michael Ruofan Zeng",
+          "Junaid Hasan",
+          "Xuanyu Yang",
+          "Emily Xia Meng",
+          "Henry Kvinge"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Assessing the Physical Interpretability of AlphaEarth Foundation Embeddings Through Multi-Sensor Satellite Time-Series Benchmarking for Agricultural Mapping",
+        "url": "",
+        "authors": [
+          "El Houcine El Moussaoui",
+          "Chouaib El Hachimi",
+          "Saïd Khabba",
+          "Salwa Belaqziz",
+          "Bouchra Ait Hssaine",
+          "Abderrahman Lahrouni",
+          "Salah Er-Raki",
+          "Abdelghani Chehbouni"
+        ],
+        "date": "2026-11-26"
+      }
+    ]
+  },
+  {
+    "topic": "explainability",
+    "date": "2026-11-26",
+    "paperCount": 2,
+    "markdown": "# Fidelity Before Interpretation: Explainability Research Confronts Its Own Validity\n\nToday's explainability research is defined less by new attribution algorithms than by a maturation of method: explanations are increasingly required to prove their faithfulness before anyone is allowed to interpret them. The papers span post-hoc explanation auditing, inherently interpretable model design, causal driver discovery in high-stakes forecasting, and LLM self-explanation, collectively treating explanation quality as an empirical claim to be tested rather than a visualization to be presented.\n\n## Fidelity-First Post-Hoc Explanation\n\n**Feature-Based Explainability of Transformer Scoring Models** [1] tackles the opacity of transformer-based automated essay scoring, where strong human agreement coexists with little insight into which response characteristics drive predictions. The authors analyze roughly 12,700 English Language Arts responses per prompt across three prompts in Grades 6 and 8, using separate DeBERTa-v3-base research models for Expression and Conventions and representing each response with engineered features. Their central methodological move is a \"fidelity-first\" framework: explanatory fidelity is established quantitatively *before* feature importance is interpreted, inverting the common practice of interpreting attributions without validating them. This matters because it offers a template for accountable explanation in educational assessment, where score validity carries direct consequences for students.\n\n*(Note: the provided abstract appears truncated mid-sentence, so the specific fidelity metrics and feature-level findings could not be summarized.)*\n\n## Causal and Inherently Interpretable Models in High-Stakes Domains\n\n**Predicting acute food crises with causal machine learning** [2] addresses a problem where prediction alone is insufficient: humanitarian actors need to know which drivers are actionable. The authors enrich the Harmonized Food Insecurity Dataset with monthly, subnational driver variables spanning 80 countries from 2007–2024, and build missing-data-resilient pipelines forecasting crisis occurrence at 3, 6, and 9-month lead times—using FEWS NET classifications and, for the first time at scale, IPC/CH classifications. Under nested cross-validation the pipelines beat no-skill baselines by 15–50 percentage points in PR-AUC, and the causal framing supports discovery of drivers that can be acted upon rather than merely correlated ones. This is explainability in its most consequential form: explanation as a basis for intervention. *(Abstract truncated; downstream causal validation results were not available.)*\n\n## Explanation Evaluation and LLM Self-Explanation\n\n*(No papers in today's list fell into this section; the digest proceeds to the remaining thematic clusters.)*\n\n## Human-Centered and Application-Grounded Explanation\n\nThe educational scoring work [1] exemplifies a broader shift toward application-grounded explanation: the value of an explanation is indexed to the decisions it informs—here, score interpretation for assessment stakeholders, with fidelity as a gatekeeping criterion. Similarly, the food-crisis forecasting effort [2] anchors explanation in operational use, where a driver variable earns its place by being both predictive and actionable for humanitarian responders. Together these papers argue implicitly that explainability research should be evaluated against domain workflows, not benchmark aesthetics.\n\n## Methodological Rigor as the Through-Line\n\nAcross both papers, the most transferable contribution is procedural: [1] formalizes fidelity-before-interpretation as a pipeline stage, while [2] embeds explanation within a nested cross-validation regime resistant to missing data—a persistent confounder in real-world driver analysis. Both treat confounds (unvalidated attributions; missing driver variables) as first-class problems rather than caveats. The convergent lesson is that trustworthy explanation requires pre-registered quality criteria and evaluation designs matched to deployment conditions.\n\n## Key Takeaways\n- The field is pivoting from producing explanations to *validating* them: [1] makes explanatory fidelity a precondition for interpreting feature importance, a discipline applicable far beyond essay scoring.\n- High-stakes explanation is increasingly causal in ambition: [2] frames driver discovery as the path from prediction to actionable intervention in food-crisis response.\n- Real-world explanation must survive messy data—[2]'s missing-data-resilient pipelines and nested cross-validation offer a robustness template for driver analysis generally.\n- Scale and coverage matter for credibility: [2]'s 80-country, 2007–2024 subnational dataset and first-at-scale use of IPC/CH classifications substantially broaden the evidentiary base for food-insecurity forecasting.\n- Domain grounding is the new evaluation bar: both papers judge explanations by their fitness for assessment professionals or humanitarian responders, not by generic interpretability metrics.\n- Educational assessment remains a proving ground for explainable AI, with [1] demonstrating that transformer scoring models can be opened up via feature-based post-hoc analysis when fidelity is established first.\n- Caveat for readers: both abstracts were truncated in the source list, so quantitative fidelity results [1] and causal validation findings [2] should be verified against the full papers.",
+    "papers": [
+      {
+        "title": "Feature-Based Explainability of Transformer Scoring Models: A Fidelity-First Framework for Automated Writing Assessment",
+        "url": "",
+        "authors": [
+          "Michael Hemenway",
+          "Edward W. Wolfe"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Predicting acute food crises and discovering actionable drivers with causal machine learning",
+        "url": "",
+        "authors": [
+          "Mélissande Machefer",
+          "Michele Ronco",
+          "Michele Meroni",
+          "Jordi Cerdà-Bautista",
+          "Francesco Collivignarelli",
+          "Chungmann Kim",
+          "Nicolas Rost",
+          "Alessia Matanó",
+          "Esther Rodrigo-Bonet",
+          "Philipp Zimmer",
+          "Gustau Camps-Valls",
+          "Christina Corbane",
+          "Felix Rembold"
+        ],
+        "date": "2026-11-26"
+      }
+    ]
+  },
+  {
+    "topic": "multimodal",
+    "date": "2026-11-26",
+    "paperCount": 14,
+    "markdown": "# Multimodal Research Digest — November 26, 2026\n\nToday's multimodal research landscape shows a clear pivot from capability demonstration toward rigorous evaluation, safety auditing, and grounded reasoning. Across perception limits, cultural safety, medical tool-use, and evidence-seeking agents, researchers are probing where multimodal systems fail and building architectures—often agentic or distillation-based—to close those gaps.\n\n## Perception Limits, Embodied Grounding, and Navigation\n\n[1] asks whether multimodal models can perceive duration the way humans do, operationalizing psychophysics via a melody-recognition task in which melodies are progressively slowed until unrecognizable. Testing 21 models against a human baseline, the study finds most models cannot recognize well-known melodies without labelled information, exposing sharp limits in temporal/audio perception. This matters because multimodal models are increasingly deployed in time-sensitive tasks where perceptual fidelity is assumed rather than verified.\n\n[10] introduces Navigent, an agentic vision-and-language navigation framework pairing a frozen MLLM with a Geometry-Grounded Execution Critic (GEC) that checks action-to-motion consistency and detects when the agent has passed landmarks or entrances. The design targets long-horizon reliability: tracking progress, catching commanded-versus-actual motion discrepancies, and grounding decisions in geometric evidence. It represents a shift toward modular verification layers around frozen models rather than end-to-end task-specific policies.\n\n[11] presents PoVi, a benchmark and agentic framework for poetry-to-video generation that reconstructs poem semantics into an evidence-bounded representation before progressively generating narration, interpretation, character assets, and video. It explicitly evaluates semantic grounding, discourse coherence, and audiovisual realization—dimensions standard text-to-video metrics miss. The work matters because poetic language is compressed, culturally dependent, and heavily figurative, stress-testing whether generative pipelines can handle non-literal meaning.\n\n## Safety, Fairness, and Cultural Evaluation\n\n[4] extends the Multimodal Safety Test Suite to Japanese as its 12th language, contributing 320 machine-translated and post-edited cases plus 82 culturally localized images. The framework adds a 5-point scale rewarding useful (not merely safe) responses and separates image recognition from safety judgment, addressing the English-centricity of VLM safety evaluation. This is an important step toward culturally valid safety benchmarking rather than translation-only porting.\n\n[9] audits a fused multimodal moderation pipeline for short-video platforms—combining video, speech, and on-screen text—asking where in the pipeline subgroup asymmetry can be detected. The authors argue a single accuracy score is compatible with errors falling almost entirely on one language community, and stage a fairness audit across pipeline components. The work is valuable because it treats fairness as a localization problem within fused architectures, not a single aggregate metric.\n\n## Agents, Tool-Use, and Hallucination Mitigation\n\n[5] proposes EVA, an Evidence-seeking Visual Agent that reframes multimodal reasoning as explicit evidence acquisition and verification, motivated by the observation that self-reflection and multi-agent debate can reinforce unchecked visual assumptions. EVA addresses failure modes where models select wrong tools, pass incorrect parameters, or ignore retrieved evidence. This matters as a structural alternative to introspection-based hallucination mitigation, which cannot escape flawed premises.\n\n[7] presents EATS, an experience-augmented tool-selection strategy for medical reasoning agents that leverages accumulated tool-use trajectories to cope with uncertain, distribution-shifted neural tool outputs. The core insight is that selecting medical tools from descriptions is harder than deterministic tool use (calculators, dictionaries), so experience must substitute for description quality. It highlights a practical bottleneck in clinical agent deployment: tool routing under domain-specific uncertainty.\n\n[6] introduces LANTERN, a framework in which an MLLM improves lesion-finding through error-driven recursive learning, targeting small brain metastases that occupy less than a quarter of a visual token at 384 px. Frontier MLLMs find fewer than 30% of 0.1–1 mL lesions at one false positive per scan, and fine-tuning transfers poorly across datasets. LANTERN's contribution is turning the model's own misses into a structured learning signal, addressing a concrete clinical failure mode.\n\n## Multimodal Embeddings, Distillation, and Adaptation\n\n[3] introduces Aligned Machine, a public-facing interactive platform that converts broad participation into a continuously growing Human-Aligned Similarity Benchmark for evaluating multimodal embedding similarity via human comparative judgments. It targets the weakness of static, expert-labeled, coarse Likert benchmarks—scalability and annotation confidence—by harnessing crowdsourced pairwise comparisons. The work matters because embedding models shape search and retrieval, yet their similarity judgments are rarely validated against human meaning.\n\n[13] proposes Uni-MOPD, treating the student's starting point as a design variable: a training-free uniform merge of same-base specialists initializes the student, followed by short multi-teacher on-policy distillation with uniform treatment. This contrasts with prior multi-teacher distillation that refines the procedure while initializing from a base or SFT checkpoint. The \"strong start, simple recipe\" finding suggests capability integration depends heavily on initialization, offering a cheaper path to unified multimodal models.\n\n[12] proposes C2LoRA-TS, which encodes text and generates temporary LoRA updates for selected weight matrices of a frozen time-series foundation model, conditioning forecasts on textual context not reflected in observed series. This is a complementary mechanism to input- or representation-level multimodal fusion: adaptation happens in parameter space. It matters for forecasting settings where auxiliary text (news, reports) carries signal absent from numerical history.\n\n## Reasoning, Generation, and Benchmarking\n\n[14] empirically tests whether generated helper images improve visual reasoning: a model describes the helper it needs, then answers using original plus generated images. Across 13 vision-language model and generator pairs, generation lowers mean accuracy by 3.7 points, with declines on nine of ten tasks (e.g., −10.47 on VSTAR), and unified models BAGEL and Janus-Pro-7B each lose accuracy on eight tasks. The negative result is important: \"thinking in images\" is not automatically beneficial and can introduce distracting or misleading visual evidence.\n\n[8] introduces Puzzling-Bench, 23,777 human-written puzzles with community-verified answers from the Puzzling Stack Exchange archive (2014–2026), spanning riddles, ciphers, logic grids, lateral thinking, wordplay, and recreational math—about a third with images. Each item carries the author-accepted answer, a short reference answer, author hints, community tags, and creation dates, enabling hint ablations, category analysis, and rolling post-cutoff evaluation. The benchmark matters for measuring genuine reasoning rather than memorization, and the image subset extends it into multimodal territory.\n\n[2] proposes a resource-efficient multimodal fusion framework for early rice blast forecasting, modeling spectral-temporal dependencies across heterogeneous meteorological and remote sensing data under computational and energy constraints. It targets the high overhead and limited dependency modeling of existing agricultural forecasting frameworks, aiming to optimize crop management and reduce pesticide use. The work is a strong example of constrained multimodal fusion delivering food-security impact in sustainable agriculture.\n\n## Key Takeaways\n\n- **Perception and generation both have hard limits**: duration perception in audio [1] and image-generation-assisted reasoning [14] both show multimodal models underperforming intuitive expectations—generated helpers actively hurt accuracy by 3.7 points on average.\n- **Verification beats introspection**: EVA [5] and Navigent [10] both argue that unchecked assumptions and self-reflection fail; external evidence acquisition, geometric critics, and explicit consistency checks are the emerging remedy.\n- **Safety evaluation is going multilingual and multi-dimensional**: Japanese MSTS [4] and the fused-pipeline fairness audit [9] show aggregate scores mask subgroup and cultural failures, pushing toward localized, component-level evaluation.\n- **Agentic tool-use needs experience, not just descriptions**: EATS [7] and LANTERN [6] demonstrate that domain-specific uncertainty and rare-finding errors require learning from accumulated trajectories and the model's own misses.\n- **Initialization is a first-class design variable in distillation**: Uni-MOPD [13] shows a training-free specialist merge before short on-policy distillation rivals elaborate procedure refinement.\n- **Parameter-space conditioning is a viable fusion alternative**: C2LoRA-TS [12] conditions frozen time-series foundation models on text via generated LoRA updates rather than input concatenation.\n- **Human-aligned, continuously refreshed benchmarks are in demand**: Aligned Machine [3] and Puzzling-Bench [8] both emphasize scalability, community verification, and rolling post-cutoff evaluation over static expert labels.",
+    "papers": [
+      {
+        "title": "Psychophysics of Duration Perception in Multimodal Large Language Models",
+        "url": "",
+        "authors": [
+          "Auss Abbood",
+          "Zihao Fu",
+          "Nigel Collier"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Resource-Efficient Multimodal Fusion for Early Rice Blast Forecasting in Sustainable Agriculture",
+        "url": "",
+        "authors": [
+          "Shubhajyoti Das",
+          "Pritam Bikram",
+          "Arindam Biswas",
+          "Samrat Paul",
+          "Parimal Sinha",
+          "Bhargab B. Bhattacharya"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Aligned Machine: A Benchmark for Evaluating Multimodal Embedding Similarity via Human Comparative Judgements",
+        "url": "",
+        "authors": [
+          "Jiechen Li",
+          "Hannah Groos",
+          "Brinnae Bent"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Multimodal Safety Evaluation of Vision-Language Models in Japanese",
+        "url": "",
+        "authors": [
+          "Su Myat Noe",
+          "Hisami Suzuki",
+          "Kouta Nakayama",
+          "Naoaki Okazaki"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "EVA: Evidence-seeking Visual Agent for Hallucination-Resistant Multimodal Reasoning",
+        "url": "",
+        "authors": [
+          "Ting Lei",
+          "Yu Chen",
+          "Yang Liu"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Can Its Own Misses Teach an MLLM to Find Small Brain Metastases?",
+        "url": "",
+        "authors": [
+          "Yixuan Duan",
+          "Kexin Geng",
+          "Hanwen Xu",
+          "Wei Qiu"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "EATS: Scaling Tool-Use Experience for Medical Reasoning Agents",
+        "url": "",
+        "authors": [
+          "Mingyuan Li",
+          "Tong Jia",
+          "Haoran Wang",
+          "Wenbo Qi",
+          "Ziyuan Yang",
+          "Bowen Ma",
+          "Jie Gui",
+          "Baosheng Yu"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Puzzling-Bench: Evaluating Language Models on 23,777 Human-Written Puzzles with Community-Verified Answers",
+        "url": "",
+        "authors": [
+          "Abhinav Sharma",
+          "Li Li",
+          "Chien Van Nguyen",
+          "Sai Karthik Navuluru",
+          "Bo Ni",
+          "Xiangbo Gao",
+          "Xiaolei Huang",
+          "Yue Zhao",
+          "Nesreen K. Ahmed",
+          "Tyler Derr",
+          "Yu Wang",
+          "Hongjie Chen",
+          "Zhengzhong Tu",
+          "Thien Huu Nguyen",
+          "Ryan A. Rossi",
+          "Franck Dernoncourt"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Where Does the Asymmetry Enter? Staging a Fairness Audit Across a Fused Multimodal Moderation Pipeline",
+        "url": "",
+        "authors": [
+          "Kardelen Subasi",
+          "Jarosław A. Chudziak"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Navigent: A Geometry-Grounded Agentic Framework for Vision Language Navigation",
+        "url": "",
+        "authors": [
+          "Xinyu Zhou",
+          "Weiren Cai",
+          "Yitong Chen",
+          "Shenghai Yuan",
+          "Zihang Mu",
+          "Boyu Ma",
+          "Jiahua Dong",
+          "Yanshuo Lu",
+          "Jiaqi Bai",
+          "Jianfei Yang"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "PoVi: Agentic Poetry-to-Video Generation with Knowledge Grounding and Figurative Understanding",
+        "url": "",
+        "authors": [
+          "Yuxia Zhu",
+          "Shiying Zhang",
+          "Lingzhuang Sun",
+          "Song Yang",
+          "Siheng Wu",
+          "Xinglong Xu",
+          "Sizhe Qiu",
+          "Hao Liang",
+          "Cheng Tan",
+          "Asher Qin",
+          "Wentao Zhang"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Text-Conditioned Low-Rank Adaptation of Time-Series Foundation Models for Multimodal Forecasting",
+        "url": "",
+        "authors": [
+          "Kunqi Li",
+          "Bin Liang",
+          "Zhidong Li"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Strong Starts, Simple Recipes: Unified Multi-Teacher On-Policy Distillation from Multimodal Specialists",
+        "url": "",
+        "authors": [
+          "Wenzheng Chang",
+          "Taiqiang Wu",
+          "Yuqi Xu",
+          "Yongfu Zhu",
+          "Zelin Peng",
+          "Ji Zhao",
+          "Shuai Dong",
+          "Wenpu Liu",
+          "Caoyuan Ma",
+          "Xuehui Wang",
+          "Ziyue Wang",
+          "Weichu Xie",
+          "Haiyuan Wan",
+          "Ngai Wong",
+          "Tong He",
+          "Wenqi Shao",
+          "Jiaqi Wang"
+        ],
+        "date": "2026-11-26"
+      },
+      {
+        "title": "Can image generation help visual reasoning? An empirical study",
+        "url": "",
+        "authors": [
+          "Xueyang Yu",
+          "Yifan Jing",
+          "Taiming Lu",
+          "Linrong Cai",
+          "Zhipeng Cai",
+          "Yunyang Xiong",
+          "Gabriel Sarch",
+          "Zhuang Liu"
+        ],
+        "date": "2026-11-26"
+      }
+    ]
+  }
+]
